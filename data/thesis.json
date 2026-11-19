@@ -1,16 +1,18 @@
 {
   "headline": "Inference optimisation is turning from a craft into a *search*.",
   "subhead": "Agents rewrite the serving stack against replayed real traffic: one model, one workload, one chip at a time.",
+  "intro": "Serving a large language model is its own engineering discipline: kernels that run on the chip, an engine that batches requests, a scheduler that decides which machine does what. Until recently people tuned all of it by hand, once per model. During 2026, teams began handing that work to coding agents that profile the stack, rewrite parts of it, measure the result on real traffic and keep what wins. This page tracks that change: who is doing it, what the evidence shows, where the claims outrun the evidence, and whether your own reading of it is holding up. An agent re-examines it every three days.",
   "picture": [
     {
-      "head": "Everyone announced the same loop at once",
-      "text": "Within three weeks Inferact, Together, two academic groups and both open engines described agents that profile an engine, write kernels, measure, and keep what wins.",
+      "head": "Ten teams have announced the same loop since October",
+      "text": "Agents that profile an engine, rewrite part of it, measure, and keep what wins. Providers, both open engines, academics and one customer. Fourteen more teams described versions earlier.",
       "signals": [
         "2026-11-inferact-autonomous-inference-system",
         "2026-11-04-together-compiler",
         "2026-11-09-inferenceforge",
         "2026-10-16-vllm-kimi-k3-megakernel"
-      ]
+      ],
+      "more": "roster"
     },
     {
       "head": "It fits the stack to what you have",

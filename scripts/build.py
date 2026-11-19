@@ -30,9 +30,10 @@ VERDICTS = {"holding", "sharpen", "unsupported", "wrong"}
 CHANGE_TYPES = {"added", "revised", "retired", "confidence", "tension", "watch", "course", "model"}
 LOOP_STATUS = {"working", "bottleneck", "unproven"}
 FIGURE_TYPES = {"pairs", "bars"}
+ROSTER_STAGES = {"production", "upstream", "research", "claimed", "retracted"}
 
 # Word caps. The page is figure-first; prose that outgrows these belongs behind a link.
-CAPS = {"picture.head": 9, "picture.text": 34, "verdict.short": 18, "figure.takeaway": 22,
+CAPS = {"intro": 120, "roster.gist": 28, "picture.head": 9, "picture.text": 34, "verdict.short": 18, "figure.takeaway": 22,
         "signal.gist": 85, "signal.changes": 55, "signal.caveats": 70}
 
 errors, warnings = [], []
@@ -103,6 +104,7 @@ def main():
     course = load(DATA / "course.json") or {}
     glossary = load(DATA / "glossary.json") or []
     figures = load(DATA / "figures.json") or []
+    roster = load(DATA / "roster.json") or {}
 
     signals = []
     for path in sorted((DATA / "signals").glob("*.json")):
@@ -201,7 +203,8 @@ def main():
         need(shift.get(side) or {}, ["label", "steps"], f"model.json shift.{side}")
 
     # ---- thesis
-    need(thesis, ["headline", "subhead", "picture", "claims"], "thesis.json")
+    need(thesis, ["headline", "subhead", "intro", "picture", "claims"], "thesis.json")
+    cap(thesis.get("intro"), "intro", "thesis.json intro")
     picture = thesis.get("picture") or []
     if len(picture) > 5:
         err("thesis.json: 'picture' holds at most 5 points. Replace one; do not add a sixth.")
@@ -241,6 +244,33 @@ def main():
                 warn(f"claim {cid}: only supporting evidence is logged. Go and look for the counter-case.")
             if not sum(ev.values()):
                 warn(f"claim {cid}: no evidence attached at all.")
+
+    # ---- roster
+    need(roster, ["recent_from", "entries"], "roster.json")
+    if not is_date(roster.get("recent_from")):
+        err("roster.json: recent_from must be YYYY-MM-DD")
+    seen_systems = set()
+    for entry in roster.get("entries") or []:
+        where = f"roster.json '{entry.get('who')}'"
+        need(entry, ["who", "system", "kind", "when", "means", "stage", "gist", "read"], where)
+        key = (entry.get("who"), entry.get("system"))
+        if key in seen_systems:
+            err(f"{where}: listed twice")
+        seen_systems.add(key)
+        for field in ("when", "updated"):
+            if entry.get(field) is not None and (entry[field] == "undated" or not is_published(entry[field])):
+                err(f"{where}: {field} must be YYYY-MM-DD or YYYY-MM")
+        if entry.get("means") not in mech_ids:
+            err(f"{where}: unknown means '{entry.get('means')}'")
+        if entry.get("stage") not in ROSTER_STAGES:
+            err(f"{where}: stage must be one of {sorted(ROSTER_STAGES)}")
+        if entry.get("read") not in READ:
+            err(f"{where}: read must be 'opened' or 'relayed'")
+        if entry.get("signal"):
+            known_signals([entry["signal"]], where)
+        elif not str(entry.get("url", "")).startswith("http"):
+            err(f"{where}: needs a 'signal' id or an absolute 'url'")
+        cap(entry.get("gist"), "roster.gist", f"{where} gist")
 
     # ---- figures
     figure_ids = set()
@@ -367,6 +397,7 @@ def main():
         "thesis": thesis,
         "signals": signals,
         "figures": figures,
+        "roster": roster,
         "tensions": tensions,
         "watch": watch,
         "course": course,
@@ -402,11 +433,23 @@ def brief(b, evidence):
     add("")
     add(f"> **{thesis['headline'].replace('*', '')}** {thesis['subhead']}")
     add("")
+    add(thesis["intro"])
+    add("")
     add("## Five things to know")
     add("")
     for point in thesis["picture"]:
         add(f"- **{point['head']}.** {point['text']} ({', '.join(link(s) for s in point['signals'])})")
     add("")
+    entries = sorted(b["roster"].get("entries", []), key=lambda e: e.get("updated") or e["when"], reverse=True)
+    if entries:
+        add("## Who is building the loop")
+        add("")
+        add("| First described | Who | What they did | Stage |")
+        add("|---|---|---|---|")
+        for e in entries:
+            url = by_id[e["signal"]]["url"] if e.get("signal") else e["url"]
+            add(f"| {e['when']} | [{e['who']}: {e['system']}]({url}) | {e['gist']} | {e['stage']} |")
+        add("")
     add("## Course check")
     add("")
     add(f"**Your working framing:** {course['reader_framing']}")

@@ -2,11 +2,15 @@
   "id": "2026-11-19",
   "n": 0,
   "agent": "Claude Code (Fable 5.2)",
-  "summary": "Founding sweep. It started from five sources the reader supplied, then ran three searches for what they left out. The same day the reader clarified that local means fitted to what you have, not on-device hardware, so the on-device claim was retired and the per-device evidence folded into C2. 35 signals are active.",
+  "summary": "Founding sweep. It started from five sources the reader supplied, then ran three searches for what they left out. The same day the reader clarified that local means fitted to what you have, so the on-device claim was retired, and asked for a complete list of who is building the loop, which a second check extended. 37 signals are active.",
   "changes": [
     {
       "type": "course",
       "text": "The reader clarified that local means fitted to what you have (different devices), not on-device hardware. The framing is restated in those terms and that part now holds."
+    },
+    {
+      "type": "added",
+      "text": "A roster of every team found that has described the loop, 25 entries with a one-line gist each. A second check for ones missed added eight. Two became signals: an agent loop that learned a new NPU, and RoofLang."
     },
     {
       "type": "revised",
@@ -61,7 +65,8 @@
     "The five reader-supplied sources and the pages they cite",
     "Agent-driven and self-improving inference optimisation, February to November 2026, including critiques and failed replications",
     "Workload-aware and per-customer serving across providers, open engines and papers",
-    "Local runtimes, ML compilers and kernel generation, plus essays for and against local inference"
+    "Local runtimes, ML compilers and kernel generation, plus essays for and against local inference",
+    "A second check for loop announcements missed: other providers, chip vendors, model labs and the public scoreboard"
   ],
   "rejected": [
     {
@@ -126,6 +131,25 @@
     {
       "title": "Agent-written kernels on a DGX Spark (arXiv 2607.24762) and from a local 7B model (arXiv 2611.12079)",
       "reason": "reported as counter-evidence for the local claim but relayed with too little detail; queued as watch item W4 to read first-hand"
+    },
+    {
+      "title": "HeyGen Auto-Optim",
+      "url": "https://www.heygen.com/research/auto-optim-ai-model-inference-speedup",
+      "reason": "an agent made a video decoder 3x faster; not LLM serving"
+    },
+    {
+      "title": "Fireworks product launches at Forge (3 Nov)",
+      "url": "https://fireworks.ai/blog/fireworks-unveils-new-products-at-forge-to-help-companies-build-specialized-intelligence",
+      "reason": "a faster tier, caching and on-customer-GPU deployment; nothing about an optimisation loop"
+    },
+    {
+      "title": "TileRT tops AgentX on AMD (AMD technical article)",
+      "url": "https://www.amd.com/en/developer/resources/technical-articles/2026/tilert-agentx-on-amd-instinct-gpus.html",
+      "reason": "the page timed out, so how its kernels are produced is unknown; try again next sweep"
+    },
+    {
+      "title": "ISO-Bench (arXiv 2602.19594) and TokenSpeed",
+      "reason": "a benchmark of coding agents on inference workloads, and a community engine not described as agent-optimised; seen in search results only"
     }
   ],
   "next_due": "2026-11-22"

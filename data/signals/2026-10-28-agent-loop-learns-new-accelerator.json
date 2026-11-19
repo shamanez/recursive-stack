@@ -1,0 +1,52 @@
+{
+  "id": "2026-10-28-agent-loop-learns-new-accelerator",
+  "title": "A case study of a multi-agent kernel-optimization loop that learns a new AI accelerator",
+  "url": "https://arxiv.org/abs/2610.38329",
+  "org": "Byonggon Chun",
+  "published": "2026-10-28",
+  "kind": "paper",
+  "layers": [
+    "kernels",
+    "loop",
+    "hardware"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "An agent loop built for a chip the models have barely seen: an NPU programmed in a new, thinly documented Rust DSL. The loop first builds its own knowledge of the target, by summarising and checking the documentation, microbenchmarking the chip and recording what the compiler allows, and rechecks it when the toolchain changes. Over 12 days it optimised three decode kernels for a 12B model.",
+  "changes": "The clearest case of the loop fitting itself to hardware it has to learn first. The knowledge it accumulates is its own and gets re-tested, which is the kind that seems to help.",
+  "caveats": "One author's case study and a competition entry. Three kernels measured alone on a shared device, with no end-to-end serving result. The abstract does not say how much a person steered it.",
+  "numbers": [
+    {
+      "metric": "Three decode kernels, geometric mean",
+      "value": "9.29x",
+      "baseline": "the vendor's official baseline kernels",
+      "verification": "self-reported",
+      "setup": "FuriosaAI RNGD NPU, Gemma-4-12B"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "A chip with almost no kernel ecosystem and sparse documentation, brought up by an agent loop in 12 days."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The winning kernels came from measuring this chip's own limits, not from general CUDA knowledge."
+    },
+    {
+      "claim": "C5",
+      "direction": "complicates",
+      "note": "The loop builds and re-tests its own knowledge of the target. That accumulation helped; it is not the loop improving itself."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Device time was scarce and noisy, so cheap checks screened designs and late changes needed repeated comparisons."
+    }
+  ],
+  "added": "2026-11-19",
+  "read": "opened",
+  "status": "active"
+}

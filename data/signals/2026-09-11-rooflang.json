@@ -1,0 +1,34 @@
+{
+  "id": "2026-09-11-rooflang",
+  "title": "RoofLang: enabling AI-driven architecting of LLM inference systems",
+  "url": "https://arxiv.org/abs/2609.12551",
+  "org": "Ziyue Yang, Yuting Jiang, Lei Qu, Peng Cheng",
+  "published": "2026-09-11",
+  "kind": "paper",
+  "layers": [
+    "loop",
+    "engine",
+    "serving"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "Argues that agent loops driven by profiling can only tune the stack they are handed. It proposes a small language for describing inference workloads, a set of changes that can be checked, and an evaluator that does not depend on any one implementation, so an agent can search whole architectures. A persistent agent is reported to have found designs that raise throughput and interactivity on a current model.",
+  "changes": "An attempt at the thing C4 says is missing: a cheap way to judge a design without building and benchmarking it. If it holds up, evaluation stops being the bottleneck for architecture-level search.",
+  "caveats": "Abstract only. The agent-found gains (6 to 50%) have no named baseline, so they are not in the ledger. Nothing says the evaluator's predictions were checked against a real engine under real traffic.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "complicates",
+      "note": "Proposes an evaluator independent of any implementation. Unproven, but a direct attempt at the cheap oracle."
+    },
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "By the authors' account, a persistent agent found new architectures for a current model and chip, not only settings."
+    }
+  ],
+  "added": "2026-11-19",
+  "read": "opened",
+  "status": "active"
+}

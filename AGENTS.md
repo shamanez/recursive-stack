@@ -17,7 +17,7 @@ reader's own framing is holding up. An agent updates it every three days.
 
 ```
 data/                 the source of truth; everything else is generated from it
-  thesis.json         headline, the five points, and the claims with confidence history
+  thesis.json         headline, intro paragraph, the five points, and the claims with confidence history
   course.json         the reader's framing, judged part by part
   signals/*.json      one file per source that moved something
   figures.json        charts drawn from numbers in the signals
@@ -25,6 +25,7 @@ data/                 the source of truth; everything else is generated from it
   watchlist.json      dated checks, and the feeds every sweep looks at
   model.json          vocabulary: stack layers, means, places, timescales, the loop, the then/now flow
   glossary.json       plain definitions; auto-linked on the page
+  roster.json         every team that has described the loop, one line each
   cycles/*.json       one record per sweep: what changed, what was left out
   meta.json           title, cadence, repo URL
 site/template.html    the page: all CSS, JS and figure code. Data is injected at build
@@ -69,10 +70,22 @@ exactly. In Claude Code, `/sweep` does this.
   more than 0.15 per sweep unless a condition the claim named in advance has
   occurred.
 
-## The page is figure-first
+## The page is figure-first, with text where it explains
 
 The human reads this to get oriented fast. They asked for figures and flow charts
-over paragraphs, with links for anyone who wants depth.
+over paragraphs, with links for anyone who wants depth. They also said text is
+fine when it is needed to explain. So: a figure for anything that can be drawn,
+a short paragraph where a newcomer would otherwise be lost, and never a paragraph
+that only repeats a figure.
+
+- `intro` in `data/thesis.json` is the landing paragraph (120 words). It says what
+  the inference layer is, what changed, and what this page does about it. Keep it
+  true as the thesis moves.
+- `data/roster.json` lists every team found that has described the loop, with a
+  one-line `gist` (28 words) saying what that team actually did, not what it calls
+  itself. The human asked for this list to be complete. Each sweep looks for teams
+  missing from it. An entry points to a signal if it has been weighed against the
+  thesis, otherwise to a url.
 
 - Before writing a sentence, ask whether a figure already on the page should
   change instead: a loop stage's `status`, a claim's confidence, a row in

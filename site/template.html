@@ -89,7 +89,8 @@ main > * { min-width: 0; }
 .hero { display: grid; gap: 12px; max-width: 880px; }
 .hero h1 { font-size: clamp(30px, 5vw, 48px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.08; }
 .hero h1 em { font-style: normal; color: var(--accent); }
-.hero .sub { font-size: 18px; color: var(--ink-2); max-width: 60ch; }
+.hero .sub { font-size: 18px; color: var(--ink); max-width: 60ch; font-weight: 500; }
+.hero .intro { font-size: 15.5px; line-height: 1.65; color: var(--ink-2); max-width: 74ch; }
 .facts { display: flex; flex-wrap: wrap; gap: 6px 20px; font: 400 13px/1.5 var(--font-data); color: var(--ink-2); }
 .facts b { color: var(--ink); font-weight: 500; }
 .sec { display: grid; gap: 14px; }
@@ -230,6 +231,34 @@ details > summary:hover { color: var(--accent); }
 .key-from { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink-3); display: inline-block; }
 .key-to { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: inline-block; }
 .key-ref { width: 1px; height: 12px; background: var(--ink-3); display: inline-block; }
+
+/* ---------- figure: roster of who is building the loop */
+.roster { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 6px; display: grid; }
+.rrow { display: grid; grid-template-columns: 92px minmax(0, 220px) minmax(0, 1fr) 150px; gap: 14px; align-items: start; padding: 10px; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; width: 100%; cursor: pointer; color: inherit; text-decoration: none; font-size: 14px; }
+.rrow:first-child { border-top: 0; }
+.rrow:hover { background: var(--inset); }
+.rrow .rdate { font: 400 12px/1.5 var(--font-data); color: var(--ink-3); }
+.rwho { display: grid; gap: 2px; }
+.rwho strong { font: 600 14px/1.3 var(--font-display); display: flex; gap: 7px; align-items: baseline; }
+.rwho strong .rmark { flex: none; }
+.rwho span { font-size: 12.5px; color: var(--ink-2); }
+.rwho small { font-size: 11.5px; color: var(--ink-3); }
+.rgist { color: var(--ink-2); font-size: 13.5px; line-height: 1.45; }
+.rstage { justify-self: end; }
+.rmark { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--m-agent); border: 2px solid var(--m-agent); }
+.rmark.is-open { background: transparent; }
+.rmark.is-online { border-radius: 1px; transform: rotate(45deg) scale(0.85); background: var(--m-online); border-color: var(--m-online); }
+.rmark.is-online.is-open { background: transparent; }
+.rmark.is-bad { border-color: var(--crit); background: transparent; }
+.strip-mark { cursor: pointer; }
+.strip-mark .shape { fill: var(--m-agent); stroke: var(--m-agent); stroke-width: 2; }
+.strip-mark.is-open .shape { fill: var(--surface); }
+.strip-mark.is-online .shape { fill: var(--m-online); stroke: var(--m-online); }
+.strip-mark.is-online.is-open .shape { fill: var(--surface); }
+.strip-mark.is-bad .shape { stroke: var(--crit); fill: var(--surface); }
+.chart .tick { stroke: var(--line-2); stroke-width: 1; }
+.more-link { font-size: 13px; font-weight: 500; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+.more-link:hover { text-decoration: underline; }
 
 /* ---------- lists */
 .changes { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
@@ -393,6 +422,8 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   .top-in .ghost { margin-left: auto; }
   .frow { grid-template-columns: minmax(0, 1fr) auto; }
   .frow .ftrack { grid-column: 1 / 3; grid-row: 2; }
+  .rrow { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .rstage { justify-self: start; }
 }
 @media (max-width: 480px) { .tiles { grid-template-columns: minmax(0, 1fr); } }
 </style>
@@ -492,7 +523,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   const section = (title, note, ...body) => el('section', { class: 'sec' }, el('h2', null, title), note ? el('p', { class: 'sec-note', 'data-prose': true }, note) : null, body);
   const mechLegend = () => el('div', { class: 'legend' }, M.mechanisms.map(m => el('span', { 'data-tip': m.desc, tabindex: '0' }, mech(m.id), m.name)));
 
-  const state = { mapMode: 'mechanism', loopSel: null, sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
+  const state = { mapMode: 'mechanism', loopSel: null, rosterAll: false, sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
 
   // =====================================================================
   // FIGURES
@@ -615,6 +646,74 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       g, el('p', { class: 'small muted' }, `${recent} of ${dated.length} dated signals landed in the last 30 days.` + (clipped ? ' Older months are cut off.' : '')));
   }
 
+  // Who has described the loop: a timeline of first announcements, then one line on each.
+  const ROSTER = (D.roster && D.roster.entries) || [];
+  const STAGE = { production: ['good', '✓', 'In production'], upstream: ['good', '✓', 'Merged upstream'], research: ['warn', '◐', 'Research result'], claimed: ['serious', '?', 'Claimed, unchecked'], retracted: ['crit', '✕', 'Walked back'] };
+  const rLatest = e => e.updated || e.when;
+  const rLive = e => e.stage === 'production' || e.stage === 'upstream';
+  const rClass = e => (e.means === 'online' ? ' is-online' : '') + (e.stage === 'retracted' ? ' is-bad' : rLive(e) ? '' : ' is-open');
+  const rOpen = e => { if (e.signal) openSignal(e.signal); };
+  function rosterStrip(list) {
+    const now = todayUtc(), lo = Math.min(...list.map(e => utc(e.when))), hi = Math.max(now, ...list.map(e => utc(e.when)));
+    const span = Math.max(hi - lo, 30 * 864e5);
+    const W = 720, L = 16, R = 16, step = 18;
+    const x = t => L + (t - lo) / span * (W - L - R);
+    const placed = [];
+    const marks = list.slice().sort((a, b) => a.when.localeCompare(b.when)).map(e => { const cx = x(utc(e.when)); const level = placed.filter(p => Math.abs(p - cx) < 15).length; placed.push(cx); return { e, cx, level }; });
+    const top = Math.max(...marks.map(m => m.level));
+    const base = 22 + top * step + 12, H = base + 24;
+    const g = svg('svg', { viewBox: `0 0 ${W} ${H}`, role: 'group', 'aria-label': 'When each team first described the loop' });
+    g.append(svg('line', { class: 'axis', x1: L, x2: W - R, y1: base, y2: base }));
+    const d = new Date(lo); d.setUTCDate(1);
+    for (let i = 0; d.getTime() <= hi; i++) {
+      const t = d.getTime(), mm = d.getUTCMonth();
+      if (t >= lo) {
+        g.append(svg('line', { class: 'tick', x1: x(t), x2: x(t), y1: base, y2: base + (mm % 3 === 0 ? 6 : 3) }));
+        if (mm % 3 === 0 && x(t) < W - R - 30) g.append(svg('text', { x: x(t), y: H - 5, 'text-anchor': 'middle' }, `${MON[mm]} ${d.getUTCFullYear()}`));
+      }
+      d.setUTCMonth(mm + 1);
+    }
+    marks.forEach(({ e, cx, level }) => {
+      const cy = base - 12 - level * step;
+      const tipText = `${e.who} · ${e.system} · ${fmt(e.when)} · ${STAGE[e.stage][2]}`;
+      const shape = e.means === 'online' ? svg('rect', { class: 'shape', x: cx - 5, y: cy - 5, width: 10, height: 10, transform: `rotate(45 ${cx} ${cy})` }) : svg('circle', { class: 'shape', cx, cy, r: 6 });
+      const node = svg('g', { class: 'strip-mark' + rClass(e), tabindex: '0', role: 'button', 'aria-label': tipText, 'data-tip': tipText }, shape);
+      const act = () => { if (e.signal) openSignal(e.signal); else { const row = document.getElementById(`r-${ROSTER.indexOf(e)}`); if (row) row.scrollIntoView({ block: 'center' }); } };
+      node.addEventListener('click', act);
+      node.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); act(); } });
+      g.append(node);
+    });
+    return el('figure', { class: 'chart' },
+      el('div', { class: 'vhead' }, el('strong', null, 'When each team first described it'), el('span', { class: 'stamp' }, 'hover or select a mark')),
+      g, el('div', { class: 'legend' }, el('span', null, el('i', { class: 'rmark' }), 'in production or merged upstream'), el('span', null, el('i', { class: 'rmark is-open' }), 'research result or claim'), el('span', null, el('i', { class: 'rmark is-online' }), 'adapts without agents'), el('span', null, el('i', { class: 'rmark is-bad' }), 'walked back')));
+  }
+  function figRoster() {
+    if (!ROSTER.length) return null;
+    const all = ROSTER.slice().sort((a, b) => rLatest(b).localeCompare(rLatest(a)));
+    const recent = all.filter(e => rLatest(e) >= D.roster.recent_from);
+    const holder = el('div', { class: 'sec', id: 'roster' });
+    const row = e => {
+      const inner = [el('span', { class: 'rdate' }, fmt(e.when), e.updated ? el('span', { style: 'display:block' }, `upd. ${fmt(e.updated).replace(/ \d{4}$/, '')}`) : null),
+        el('span', { class: 'rwho' }, el('strong', null, el('i', { class: 'rmark' + rClass(e), 'aria-hidden': 'true' }), e.who), el('span', null, e.system), el('small', null, e.kind)),
+        el('span', { class: 'rgist', 'data-prose': true }, e.gist, e.read === 'relayed' ? el('span', { class: 'muted' }, ' (relayed)') : null),
+        el('span', { class: 'rstage' }, pill(STAGE[e.stage]))];
+      const id = `r-${ROSTER.indexOf(e)}`;
+      return e.signal ? el('button', { class: 'rrow', id, type: 'button', onclick: () => rOpen(e) }, inner) : el('a', { class: 'rrow', id, href: e.url, target: '_blank', rel: 'noopener' }, inner);
+    };
+    const draw = () => {
+      const list = state.rosterAll ? all : recent;
+      holder.replaceChildren(rosterStrip(all),
+        el('div', { class: 'controls' }, el('div', { class: 'seg', role: 'group', 'aria-label': 'Which teams to list' },
+          el('button', { type: 'button', 'aria-pressed': String(!state.rosterAll), onclick: () => { state.rosterAll = false; draw(); } }, `Since ${fmt(D.roster.recent_from).replace(/^1 /, '')} · ${recent.length}`),
+          el('button', { type: 'button', 'aria-pressed': String(!!state.rosterAll), onclick: () => { state.rosterAll = true; draw(); } }, `All · ${all.length}`)),
+          el('span', { class: 'small muted' }, 'Select a row for the detail and the source.')),
+        el('div', { class: 'roster' }, list.map(row)));
+      annotate(holder);
+    };
+    draw();
+    return holder;
+  }
+
   function figWatch() {
     const list = checks.slice().sort((a, b) => a.due.localeCompare(b.due));
     if (!list.length) return null;
@@ -660,13 +759,15 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     const hero = el('section', { class: 'hero' },
       el('p', { class: 'eyebrow' }, 'What is happening to the inference layer'),
       el('h1', null, D.thesis.headline.split('*').map((part, i) => i % 2 ? el('em', null, part) : part)),
-      el('p', { class: 'sub', 'data-prose': true }, D.thesis.subhead),
+      el('p', { class: 'sub' }, D.thesis.subhead),
+      D.thesis.intro ? el('p', { class: 'intro', 'data-prose': true }, D.thesis.intro) : null,
       el('p', { class: 'facts' },
         el('span', null, el('b', null, active.length), ' signals'), el('span', null, el('b', null, claims.length), ' claims under test'),
         el('span', null, el('b', null, D.tensions.filter(t => t.status !== 'settled').length), ' open tensions'), el('span', null, el('b', null, openChecks.length), ' checks pending')));
 
     const points = el('section', { class: 'sec' }, el('h2', null, `${D.thesis.picture.length} things to know right now`),
-      el('div', { class: 'points' }, D.thesis.picture.map(p => el('div', { class: 'point' }, el('h3', null, p.head), el('p', { 'data-prose': true }, p.text), srcChips(p.signals)))));
+      el('div', { class: 'points' }, D.thesis.picture.map(p => el('div', { class: 'point' }, el('h3', null, p.head), el('p', { 'data-prose': true }, p.text), srcChips(p.signals),
+        p.more === 'roster' && ROSTER.length ? el('button', { class: 'more-link', type: 'button', onclick: () => { const r = document.getElementById('roster'); if (r) r.scrollIntoView({ block: 'start' }); } }, `All ${ROSTER.length} teams and what each one did ↓`) : null))));
 
     const course = D.course;
     const coursePanel = el('section', { class: 'panel' },
@@ -689,6 +790,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     return [banner, hero,
       section('The shift, in one picture', null, figShift()),
       el('div', { class: 'cols' }, points, coursePanel),
+      ROSTER.length ? section('Who is building the loop', 'Every team found so far that has described it, with what each one actually did.', figRoster()) : null,
       section('How sure, claim by claim', 'Bar length is confidence. The counts are signals for, mixed and against. Select a claim for its evidence.', figClaims()),
       section('The loop everyone is building', null, figLoop()),
       featured.length ? section('The numbers that carry the argument', null, el('div', { class: 'fig-grid' }, featured.map(figure))) : null,

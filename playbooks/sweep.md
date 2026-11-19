@@ -103,10 +103,21 @@ paragraphs, with links for depth. So update the pictures before the prose:
 - **The loop** (`loop` in `data/model.json`). Each stage has a `status`:
   `working`, `bottleneck` or `unproven`. Change one only when the evidence has
   changed, and say so in the cycle record. Keep each stage's `signals` current.
+- **The roster** (`data/roster.json`). The human asked that no team be missed. Run
+  at least one search each sweep aimed only at finding teams absent from it:
+  providers, open engines, model labs, chip vendors, workload owners, academics.
+  Add each with `when` it was first described and a one-line `gist` of what it
+  actually did. Update `stage` when a research result ships or a claim is walked
+  back, and move `recent_from` forward so the front page shows about the last six
+  weeks.
 - **The then/now flow** (`shift` in `data/model.json`). Four steps a side. Change
   it only if the mechanism itself has changed.
 
 Then the words, all of them capped (the build warns when a cap is exceeded):
+
+- `intro` in `data/thesis.json`: the landing paragraph, 120 words at most. Text is
+  welcome where it explains something a figure cannot. Rewrite it only when it has
+  stopped being true.
 
 - `picture` in `data/thesis.json`: five points at most, each a `head` (9 words),
   a `text` (34 words) and the `signals` that back it. Someone reading only these
