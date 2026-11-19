@@ -109,7 +109,7 @@ Serving a large language model is its own engineering discipline: kernels that r
 Founding sweep. It started from five sources the reader supplied, then ran three searches for what they left out. The same day the reader clarified that local means fitted to what you have, so the on-device claim was retired, and asked for a complete list of who is building the loop, which a second check extended. 37 signals are active.
 
 - **course**: The reader clarified that local means fitted to what you have (different devices), not on-device hardware. The framing is restated in those terms and that part now holds.
-- **added**: A roster of every team found that has described the loop, 25 entries with a one-line gist each. A second check for ones missed added eight. Two became signals: an agent loop that learned a new NPU, and RoofLang.
+- **added**: A roster of every team found that has described the loop: 25 entries with a one-line gist each. A second check found five not seen before (RoofLang, an NPU kernel loop, KDA, FlashVector, Astra); five the first sweep saw and left out are now listed too. Two became signals.
 - **revised** `C2`: Widened from the workload to what you have: traffic, model and chip together. Confidence unchanged at 0.8.
 - **retired** `C8`: The on-device claim is retired as out of scope, with five signals that only argued for or against local hardware. Four that show per-device specialisation now count under C2.
 - **tension** `T6`: Dropped. It was premised on the on-device reading.

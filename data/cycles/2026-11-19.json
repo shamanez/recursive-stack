@@ -10,7 +10,7 @@
     },
     {
       "type": "added",
-      "text": "A roster of every team found that has described the loop, 25 entries with a one-line gist each. A second check for ones missed added eight. Two became signals: an agent loop that learned a new NPU, and RoofLang."
+      "text": "A roster of every team found that has described the loop: 25 entries with a one-line gist each. A second check found five not seen before (RoofLang, an NPU kernel loop, KDA, FlashVector, Astra); five the first sweep saw and left out are now listed too. Two became signals."
     },
     {
       "type": "revised",
