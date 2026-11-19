@@ -3,7 +3,7 @@
 
 Live dashboard: <https://shamanez.github.io/recursive-stack/>
 
-Cycle 0 · as of 2026-11-19 · next sweep due 2026-11-20 · 62 active signals
+Cycle 0 · as of 2026-11-19 · next sweep due 2026-11-20 · 65 active signals
 
 > **Inference is becoming load-aware: the stack now fits itself to the traffic.** Six levers move with the load, from which model answers to which kernel runs. Coding agents are what make re-tuning them affordable.
 
@@ -26,7 +26,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 | 1. Which model answers | Does this session need a frontier model, or will a cheaper open one do? | How hard the first task of the session looks, live load and price on each model, and whether a cache would be lost by switching. | working | Vendors report 33 to 60% lower cost at equal quality. Outside tests split: a trained router halved cost with caching priced in; seven shipped routers failed to beat a cheap default. |
 | 2. Which machine takes it | Which server already holds this session's context? | Where the session's cached context lives, and how many uncached tokens or active streams each server has in flight. | working | 2.9x input throughput on code generation against round-robin, and nothing on a decode-bound workload. The saturation threshold has to be recalibrated per model and chip. |
 | 3. How the cluster is divided | How much of the cluster should read prompts, and how much should write answers? | The mix of long prompts and steady generation, and which contexts agents are still waiting to reuse. | early | 1.28x over the best fixed split once traffic shifts, in a research system. In vLLM, a cap on long prefills raised tokens per GPU-second by up to 93%, at the cost of first-token time. |
-| 4. How tokens get written | How far ahead can a cheap draft guess before the big model has to check? | How predictable the output is in this domain (code and maths speculate well, chat does not) and how full the batches are right now. | working | About 3x for one request at a time, falling to between 1x and 1.5x at 32 concurrent. A load-aware scheduler raised a lab's live throughput by about half. A drafter that keeps learning adds about 1.25x. |
+| 4. How tokens get written | How far ahead can a cheap draft guess before the big model has to check? | How predictable the output is in this domain (code and maths speculate well, chat does not), how full the batches are right now, and how many recent guesses were accepted. | working | About 3x for one request, falling to 1 to 1.5x at 32 concurrent. A load-aware scheduler with a new drafter raised live throughput by half. Choosing draft length by batch size alone added up to 15%. A drafter that keeps learning adds 1.25x. |
 | 5. How the engine runs it | What are the fastest kernels and settings for this model, on this chip, under this traffic? | Batch sizes, sequence lengths, cache-hit rates, and which parts of the model real inputs actually exercise. | working | 43% more throughput under a per-user speed floor against the best published run. Merged agent-written kernels: 1.3 to 1.9x on decode. Kernel gains measured alone mostly vanish end to end. |
 | 6. What the model is | Could a smaller model, trained on this domain, do the job a bigger general one does now? | The domain's tasks and tool-calling format, logged production outputs to learn from, and where the general model fails or is slower than it needs to be. | early | On narrow jobs: nearly double the pass rate at flat cost for a legal agent, and 0.9 s against 45 s for one summarisation task. On general coding, a newer untuned model beat a tuned one. |
 
@@ -35,8 +35,8 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 ## Open ground: what nobody has shown
 
 - **How to tell that traffic has drifted.** Every loop re-tunes when the load changes. No provider has published how it detects that, with what signal, threshold or window.
-- **Judging a change on traffic you have not seen.** Replay only covers what was recorded. The maintainers of vLLM say they cannot yet simulate unseen traffic, which is what would let a loop run without production access.
-- **Tuning the levers together.** Each lever is tuned on its own, yet they are coupled through the cache and the model. One system sets speculation by load; nobody tunes routing, decoding and the engine jointly.
+- **Judging a change on traffic you have not seen.** Replay only covers what was recorded. vLLM's maintainers say they cannot yet simulate unseen traffic. One provider has published an engine simulator; nobody has shown how well one predicts a real engine.
+- **Tuning the levers together.** Each lever is tuned alone, yet they are coupled through the cache and the model. Two systems set speculation by load; nobody tunes routing, decoding and the engine jointly.
 - **What the loop costs per model.** One figure exists: about 200 GPU-hours for one bespoke engine. With many models, cost per model per month decides whether any of this pays.
 - **A router against the best fixed model, fairly.** Vendors report large savings; an outside test found none. Nobody has compared a shipped router with the best single model in its pool on agentic work with caching priced in.
 - **Whether gains compound from one cycle to the next.** The recursive claim needs gain per cycle to rise, or a model trained on optimisation traces to beat its teacher. Nobody has shown either.
@@ -46,7 +46,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 1. **Record your traffic and learn to replay it.** Capture real sessions at your gateway with their timing, context lengths and cache behaviour, strip the content, and replay them against a candidate stack at real concurrency. Replayers exist; the capture and redaction side you write yourself. _What it has bought others:_ Nothing by itself. It is what let an academic group with no customers top the public board, and what one company replays to drive its own loop.
 2. **Add gates that catch a fake win.** Measure every change end to end inside the full engine, never a kernel alone. Check outputs in three layers: kernel tests across shapes, a token-probability comparison, and task evals that exercise the changed path. Fail on request errors. _What it has bought others:_ Protection. Kernel speed-ups of 1.6 to 6.6x shrank to about 1x end to end, and one in sixteen agent runs in an independent benchmark gamed the measurement.
 3. **Tune what needs no new code.** Search the settings you already have against the rig: cache-aware and sticky routing, the prefill and decode split, caps on long prefills, cache retention. Use plain search here, not agents. _What it has bought others:_ The largest reported gains for the least risk: 2.9x from cache-aware routing on code generation, up to 93% from a prefill cap. One default flag explained 78% of a gap between two engines.
-4. **Fit the decoding to the traffic.** Measure how well your traffic speculates, by domain and by load, before building anything. Train a draft model for each target model, and let the amount of speculation follow the load. _What it has bought others:_ About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler: about half more live throughput. Tuning the drafter to the workload: 20 to 45%.
+4. **Fit the decoding to the traffic.** Measure how well your traffic speculates, by domain, by load and by model, before building anything. Train a draft model for each target model, and let the draft length follow the live batch size, down to zero. _What it has bought others:_ About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler with a new drafter: about half more live throughput. Draft length by batch size alone: up to 15%. Tuning the drafter to the workload: 20 to 45%.
 5. **Automate bringing up each new model.** Have an agent port each new model into your engine against an exact oracle: its outputs must match the reference layer by layer. Then run steps 3 and 4 for it from a script, not by hand. _What it has bought others:_ Published skills let a coding agent port a model by chasing layer-by-layer divergence. One open engine reports a port to a new accelerator in under a week. A typical start-up changes its top model within a month.
 6. **Point agents at the engine.** Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Start with the models that carry most of your traffic. People review the evidence and approve what ships. _What it has bought others:_ 43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours.
 7. **Choose between models, and tune one where the job is narrow.** Send each session to the cheapest model that can do it, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader. _What it has bought others:_ Routing: 33 to 60% lower cost by vendors' accounts, disputed outside. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.
@@ -113,11 +113,11 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 | | Claim | Confidence | For / mixed / against |
 |---|---|---|---|
 | C1 | Given a harness built by people, coding agents now find and land inference optimisations that survive end-to-end measurement in production engines. | 70% | 11 / 6 / 3 |
-| C2 | The best serving configuration depends on what you are running: the traffic shape, the model and the chip. Kernels and settings tuned for one combination leave double-digit gains unclaimed on another, and all three keep changing. | 80% | 25 / 2 / 0 |
+| C2 | The best serving configuration depends on what you are running: the traffic shape, the model and the chip. Kernels and settings tuned for one combination leave double-digit gains unclaimed on another, and all three keep changing. | 80% | 28 / 2 / 0 |
 | C3 | Tuning the stack to one customer's own traffic is worth enough over a well-tuned class-level stack to justify doing it per customer, continuously. | 35% | 5 / 7 / 5 |
-| C4 | Proposing optimisations has become cheap. Knowing whether one is real (on realistic inputs, end to end, with outputs intact) is the binding constraint, together with the human review that still gates what ships. | 80% | 20 / 3 / 0 |
+| C4 | Proposing optimisations has become cheap. Knowing whether one is real (on realistic inputs, end to end, with outputs intact) is the binding constraint, together with the human review that still gates what ships. | 80% | 20 / 4 / 0 |
 | C5 | The optimisation loop is becoming recursive: the models being served power the agents that optimise their serving, the agents improve their own process, and gains compound from one cycle to the next. | 30% | 8 / 3 / 3 |
-| C6 | New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary. | 70% | 10 / 1 / 0 |
+| C6 | New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary. | 70% | 11 / 1 / 0 |
 | C7 | Open engines absorb specialised wins within weeks, so a private performance lead over upstream vLLM or SGLang is short-lived. | 55% | 8 / 0 / 2 |
 | C9 | Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made. | 70% | 7 / 6 / 1 |
 | C10 | Tuning an open model to one domain or harness (post-training, reinforcement learning, distillation) works as an inference optimisation: a smaller tuned model does a narrow job at lower cost and latency than a general one. | 45% | 6 / 3 / 3 |
@@ -157,6 +157,14 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 - Online-trained drafter: 1.92x → 1.57x ([Together AI](https://www.together.ai/blog/aurora))
 - Older drafter, independent study: 1.73x → 1.21x ([UC Berkeley](https://arxiv.org/abs/2601.11580))
 
+**What making speculation adaptive adds.** Over a fixed setting, adapting has bought 8 to 50% in practice. An oracle shows about 2x is there to find.
+
+- Oracle picking the method per token: 2.2x ([UC Berkeley](https://arxiv.org/abs/2601.11580))
+- Load-aware scheduler with a new drafter: 1.51x ([DSpark authors](https://arxiv.org/abs/2607.05147))
+- Drafter that keeps training on traffic: 1.25x ([Together AI](https://www.together.ai/blog/aurora))
+- Draft length chosen by batch size, best case: 1.15x ([Rui Li and co-authors](https://arxiv.org/abs/2512.22420))
+- Draft length priced each step, steady load: 1.0x ([Doubleword](https://blog.doubleword.ai/adaptive-speculation))
+
 **What choosing the model saves, by who measured it.** Vendors report a third to three-fifths off. Outside, a trained router halved cost; no shipped router beat a cheap default.
 
 - Cursor Router: 60% ([Cursor](https://cursor.com/blog/router))
@@ -168,8 +176,16 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 
 ## What changed in cycle 0
 
-Founding sweep, steered six times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. 62 signals are active.
+Founding sweep, steered seven times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. A link on adaptive speculative decoding added three signals, a figure and a tension late in the day; no confidence moved. 65 signals are active.
 
+- **added** `2026-06-22-doubleword-adaptive-speculation`: The reader sent a provider's simulation of a policy that re-chooses the draft length at every step. It ties the best fixed length at a steady load; the gain is in not being wrong when load moves. Its open simulator is a candidate for the cheap oracle C4 names.
+- **added** `2026-06-08-economics-of-speculative-decoding`: The companion analysis: on mixture-of-experts models a guessed token costs most at small batches, so the best draft length can be zero there. Lever 4 now says it depends on the model's architecture.
+- **added** `2025-12-27-nightjar`: A measured figure for adaptive over fixed speculation: 8% on average and up to 15% in vLLM, with fixed speculation up to 30% slower than none at high load.
+- **added**: New figure on the Evidence tab: what making speculation adaptive adds, from 1.0x in a steady-load simulation to 1.5x live and a 2.2x oracle bound.
+- **tension** `T10`: Opened. Measured tables show speculation fading as batches fill; a cost model of mixture-of-experts models predicts the opposite. Nobody has measured it.
+- **watch** `W20`: Opened, due 2026-12-19: a mixture-of-experts model measured with and without speculation across load, or the simulator checked against a real engine.
+- **revised**: Lever 4, the decoding build step and two open-ground items updated. A simulator joined the reusable parts, the Doubleword blog joined the feeds, and draft length joined the glossary.
+- **revised**: Page: charts not marked featured now appear under More charts on the Evidence tab, and the bars in every chart share one scale. Rows had been sized separately, so bars in one chart could start and end at slightly different points.
 - **course**: The reader answered the two open questions: build the measuring rig first, and the tracker is for building, positioning research and placing a bet. Open ground (six things nobody has shown) added to the big picture. The repository and page were made public.
 - **course**: The reader serves many model families. Churn (C6) joins the claims their position rests on, the provider view now leads with the work that repeats per model, and bringing up a new model is its own step in the build order. W19 opened.
 - **course**: The reader widened the frame to inference becoming load-aware and adaptive, and asked how the parts connect and how to build one. Framing restated; all four parts re-judged.
@@ -204,6 +220,7 @@ Founding sweep, steered six times the same day. The reader clarified that local 
 - **T7** Choose the model once per session, or for every request? _Settles when:_ An independent agentic benchmark with caching priced in compares the two on the same tasks. One early result has a trained per-step router halving cost.
 - **T8** Is a router worth building, or is a good default model enough? _Settles when:_ A vendor publishes its router against the best fixed model in its own pool, on tasks someone else chose.
 - **T9** Tune a model for the job, or wait for the next general one? _Settles when:_ A tuned model is followed against each new general release on the same task for six months.
+- **T10** Does speculation pay less as batches fill, or more? _Settles when:_ Someone measures a mixture-of-experts model in a real engine, with and without speculation, from 1 to 128 concurrent.
 
 ## Watchlist
 
@@ -224,6 +241,7 @@ Founding sweep, steered six times the same day. The reader clarified that local 
 | 2026-12-19 | A second workload owner, not a provider, describing its own loop on its own traffic. |
 | 2026-12-19 | Any router published against the best fixed model in its own pool, on tasks someone else chose. |
 | 2026-12-19 | Any provider publishing how long and how much it takes to get a new model from release to tuned serving, with or without agents. |
+| 2026-12-19 | A mixture-of-experts model measured in a real engine with and without speculation from 1 to 128 concurrent, or the Doubleword simulator compared with a real engine. |
 | 2026-12-31 | A provider publishing per-customer against class-level tuning on the same endpoints. |
 | 2026-12-31 | A tuned open model followed against the next general release on the same task. |
 

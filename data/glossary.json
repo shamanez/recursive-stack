@@ -73,7 +73,11 @@
   },
   {
     "term": "MoE",
-    "def": "Mixture of experts: a model architecture in which each token is routed to a few of many sub-networks. Which experts fire depends on the input, so benchmarks on random tokens mislead."
+    "def": "Mixture of experts: a model architecture in which each token is routed to a few of many sub-networks. Which experts fire depends on the input, so benchmarks on random tokens mislead, and a small batch shares few of them.",
+    "aka": [
+      "mixture of experts",
+      "mixture-of-experts"
+    ]
   },
   {
     "term": "PDL",
@@ -218,5 +222,14 @@
   {
     "term": "concurrency",
     "def": "How many requests a server is handling at once. Most speed tricks look best at a concurrency of one and fade as it rises."
+  },
+  {
+    "term": "draft length",
+    "aka": [
+      "draft lengths",
+      "speculation length",
+      "speculative length"
+    ],
+    "def": "How many tokens the draft model guesses ahead before the large model checks them. Longer drafts gain more when the guesses are good and waste more when they are not, so the best length moves with the load."
   }
 ]

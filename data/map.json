@@ -74,11 +74,11 @@
       "name": "How tokens get written",
       "question": "How far ahead can a cheap draft guess before the big model has to check?",
       "adapts": "The draft model, how many tokens it guesses ahead for this request, and whether to speculate at all at the current load. The drafter itself can keep training on live traffic.",
-      "listens": "How predictable the output is in this domain (code and maths speculate well, chat does not) and how full the batches are right now.",
+      "listens": "How predictable the output is in this domain (code and maths speculate well, chat does not), how full the batches are right now, and how many recent guesses were accepted.",
       "clock": "request",
       "status": "working",
-      "bought": "About 3x for one request at a time, falling to between 1x and 1.5x at 32 concurrent. A load-aware scheduler raised a lab's live throughput by about half. A drafter that keeps learning adds about 1.25x.",
-      "connects": "A drafter is tied to one exact model and quantisation: tune or swap the model (levers 1 and 6) and it must be rebuilt. Verification competes with real requests for batch room, so it is tuned together with lever 3.",
+      "bought": "About 3x for one request, falling to 1 to 1.5x at 32 concurrent. A load-aware scheduler with a new drafter raised live throughput by half. Choosing draft length by batch size alone added up to 15%. A drafter that keeps learning adds 1.25x.",
+      "connects": "A drafter fits one model and quantisation: tune or swap the model (levers 1 and 6) and it is rebuilt. Architecture also sets what a guess costs; on mixture-of-experts models, by one analysis, most at small batches. Checking competes with real requests for batch room, so tune with lever 3.",
       "signals": [
         "2026-07-06-dspark",
         "2026-08-18-dflash-2",
@@ -86,7 +86,10 @@
         "2026-03-19-speed-bench",
         "2025-12-31-speculative-decoding-performance-or-illusion",
         "2026-09-23-modal-trillion-tokens",
-        "2025-10-10-together-atlas"
+        "2025-10-10-together-atlas",
+        "2025-12-27-nightjar",
+        "2026-06-22-doubleword-adaptive-speculation",
+        "2026-06-08-economics-of-speculative-decoding"
       ],
       "claims": [
         "C2",
@@ -275,15 +278,18 @@
       "levers": [
         "decode"
       ],
-      "do": "Measure how well your traffic speculates, by domain and by load, before building anything. Train a draft model for each target model, and let the amount of speculation follow the load.",
-      "bought": "About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler: about half more live throughput. Tuning the drafter to the workload: 20 to 45%.",
-      "watch": "Under load some drafters fall below break-even. A purpose-trained drafter only matched the one shipped with the model in one outside test. It must be rebuilt whenever the model changes.",
+      "do": "Measure how well your traffic speculates, by domain, by load and by model, before building anything. Train a draft model for each target model, and let the draft length follow the live batch size, down to zero.",
+      "bought": "About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler with a new drafter: about half more live throughput. Draft length by batch size alone: up to 15%. Tuning the drafter to the workload: 20 to 45%.",
+      "watch": "Under load some drafters fall below break-even. On mixture-of-experts models small batches may not pay at all. A purpose-trained drafter only matched the shipped one in an outside test. Rebuild it whenever the model changes.",
       "signals": [
         "2026-08-18-dflash-2",
         "2026-07-06-dspark",
         "2026-03-19-speed-bench",
         "2026-08-11-thoughtworks-nemotron-test",
-        "2026-09-23-modal-trillion-tokens"
+        "2026-09-23-modal-trillion-tokens",
+        "2025-12-27-nightjar",
+        "2026-06-22-doubleword-adaptive-speculation",
+        "2026-06-08-economics-of-speculative-decoding"
       ],
       "parts": [
         {
@@ -300,6 +306,11 @@
           "label": "Aurora",
           "url": "https://www.together.ai/blog/aurora",
           "note": "Together's open-source drafter that keeps training on live traffic."
+        },
+        {
+          "label": "inference-lab",
+          "url": "https://github.com/doublewordai/inference-lab",
+          "note": "Doubleword, MIT licence. Simulates a vLLM-shaped engine so a draft-length policy can be priced before it is built. Its figures are upper bounds until calibrated against a real engine."
         }
       ]
     },
@@ -458,26 +469,30 @@
     },
     {
       "head": "Judging a change on traffic you have not seen",
-      "text": "Replay only covers what was recorded. The maintainers of vLLM say they cannot yet simulate unseen traffic, which is what would let a loop run without production access.",
+      "text": "Replay only covers what was recorded. vLLM's maintainers say they cannot yet simulate unseen traffic. One provider has published an engine simulator; nobody has shown how well one predicts a real engine.",
       "claims": [
         "C4"
       ],
-      "checks": [],
+      "checks": [
+        "W20"
+      ],
       "signals": [
         "2026-11-inferact-autonomous-inference-system",
-        "2026-04-22-applied-compute-agentic-benchmark"
+        "2026-04-22-applied-compute-agentic-benchmark",
+        "2026-06-22-doubleword-adaptive-speculation"
       ]
     },
     {
       "head": "Tuning the levers together",
-      "text": "Each lever is tuned on its own, yet they are coupled through the cache and the model. One system sets speculation by load; nobody tunes routing, decoding and the engine jointly.",
+      "text": "Each lever is tuned alone, yet they are coupled through the cache and the model. Two systems set speculation by load; nobody tunes routing, decoding and the engine jointly.",
       "claims": [
         "C2"
       ],
       "checks": [],
       "signals": [
         "2026-07-06-dspark",
-        "2026-10-08-openrouter-cache-is-crucial"
+        "2026-10-08-openrouter-cache-is-crucial",
+        "2025-12-27-nightjar"
       ]
     },
     {

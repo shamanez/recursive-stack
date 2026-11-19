@@ -227,11 +227,72 @@
         "signal": "2025-12-31-speculative-decoding-performance-or-illusion"
       }
     ],
-    "caption": "Speed-up over plain decoding. Different models and drafters; read each row as a slope.",
+    "caption": "Speed-up over plain decoding. Different models and drafters; read each row as a slope. A cost model of mixture-of-experts models predicts the opposite slope, and nobody has measured it.",
     "claims": [
       "C2"
     ],
     "featured": true
+  },
+  {
+    "id": "adaptive-speculation-gain",
+    "type": "bars",
+    "title": "What making speculation adaptive adds",
+    "takeaway": "Over a fixed setting, adapting has bought 8 to 50% in practice. An oracle shows about 2x is there to find.",
+    "unit": "x",
+    "reference": 1,
+    "reference_label": "a fixed setting",
+    "groups": [
+      {
+        "id": "measured",
+        "name": "Measured on a real engine"
+      },
+      {
+        "id": "bound",
+        "name": "Upper bound or simulation"
+      }
+    ],
+    "rows": [
+      {
+        "label": "Oracle picking the method per token",
+        "value": 2.2,
+        "group": "bound",
+        "note": "UC Berkeley: an upper bound, against the best fixed method",
+        "signal": "2025-12-31-speculative-decoding-performance-or-illusion"
+      },
+      {
+        "label": "Load-aware scheduler with a new drafter",
+        "value": 1.51,
+        "group": "measured",
+        "note": "DSpark at DeepSeek, live traffic, against the previous production drafter",
+        "signal": "2026-07-06-dspark"
+      },
+      {
+        "label": "Drafter that keeps training on traffic",
+        "value": 1.25,
+        "group": "measured",
+        "note": "Together Aurora, against a well-trained static drafter",
+        "signal": "2026-03-31-together-aurora"
+      },
+      {
+        "label": "Draft length chosen by batch size, best case",
+        "value": 1.15,
+        "group": "measured",
+        "note": "Nightjar in vLLM, against a draft length fixed at 3; 1.08x on average",
+        "signal": "2025-12-27-nightjar"
+      },
+      {
+        "label": "Draft length priced each step, steady load",
+        "value": 1.0,
+        "group": "bound",
+        "note": "Doubleword simulation: ties the best fixed length chosen in hindsight",
+        "signal": "2026-06-22-doubleword-adaptive-speculation"
+      }
+    ],
+    "caption": "Each bar is a gain over that source's own fixed baseline, and the baselines differ. At a steady load an adaptive policy can only tie the best fixed setting; the gain comes when the load moves.",
+    "claims": [
+      "C2"
+    ],
+    "featured": false
   },
   {
     "id": "routing-savings",

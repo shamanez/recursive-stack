@@ -1,0 +1,55 @@
+{
+  "id": "2026-06-08-economics-of-speculative-decoding",
+  "title": "The economics of speculative decoding",
+  "url": "https://fergusfinn.com/blog/economics-of-speculative-decoding/",
+  "org": "Fergus Finn",
+  "authors": "Fergus Finn",
+  "published": "2026-06-08",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "Works out from model shapes what a guessed token costs to check on newer architectures. On a mixture-of-experts model a small batch shares almost no experts, so each guess pays nearly full price until about 43 tokens are in the batch. Compressed attention removes the spare capacity that made guesses free. The result is a range of small batches where the best draft length is zero.",
+  "changes": "Lever 4 depends on the model's architecture, and so on lever 1 and lever 6, in a second way. The measured tables show speculation fading as batches fill. This analysis says that on mixture-of-experts models it can start near zero and improve with load. A provider serving many models needs the slope per model.",
+  "caveats": "Computed from published model shapes and one chip's data sheet; nothing is measured. It assumes experts are used evenly and the model sits on one GPU. The author says the effect is overstated for large deployments that spread experts across machines, which swap it for a communication cost. One model family. A separate paper reports the same expert effect and up to 14% from working around it.",
+  "numbers": [
+    {
+      "metric": "Batch size at which every expert is already loaded",
+      "value": "about 43 tokens",
+      "baseline": "a dense layer shares its weights from the second token",
+      "verification": "self-reported",
+      "setup": "Computed for DeepSeek-V4-Flash, 6 of 256 experts per token; not measured"
+    },
+    {
+      "metric": "Guessed tokens that compressed attention can check for free",
+      "value": "none; the limit is 1.16 tokens per step",
+      "baseline": "ordinary attention has room for any practical draft length",
+      "verification": "self-reported",
+      "setup": "Computed for one B200; not measured"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Whether speculation pays, and at what batch size, is set by the model's architecture as well as by the traffic."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "Expert routing and compressed attention each overturned a tuning rule that held for dense models."
+    }
+  ],
+  "also": [
+    {
+      "label": "XShare, a paper on the same expert effect",
+      "url": "https://arxiv.org/abs/2602.07265"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

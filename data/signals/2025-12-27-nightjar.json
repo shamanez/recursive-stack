@@ -1,0 +1,44 @@
+{
+  "id": "2025-12-27-nightjar",
+  "title": "Nightjar: Dynamic Adaptive Speculative Decoding for Large Language Models Serving",
+  "url": "https://arxiv.org/abs/2512.22420",
+  "org": "Rui Li and co-authors",
+  "authors": "Rui Li, Zhaoning Zhang, Libo Zhang, Huaimin Wang, Xiang Fu, Zhiquan Lai",
+  "published": "2025-12-27",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "serving",
+    "model"
+  ],
+  "mechanism": "online",
+  "venue": "any",
+  "gist": "An extension to vLLM in which a planner learns by trial which draft length works at each batch size and turns speculation off when it stops paying. While it is off, the draft model can be moved out of GPU memory to make room for a larger cache and batch. First posted in December 2025; the fifth version is dated June 2026.",
+  "changes": "Adapting the draft length to batch size bought up to about 15% more throughput than fixed speculation, measured. That is far below the 2.2x an oracle reaches, and below the 51% a lab reported when it changed the drafter too. The plain version of this idea is worth tens of percent at most.",
+  "caveats": "The authors' own figures, on dense models of 7 to 32 billion parameters and single small GPUs, so nothing here speaks to mixture-of-experts models or provider-scale batches. The baseline is a draft length fixed at 3, not one tuned for each load. The abstract's latency figure could not be traced to a table. No code is linked.",
+  "numbers": [
+    {
+      "metric": "Throughput under changing request rates",
+      "value": "8% higher on average, up to 14.76%",
+      "baseline": "speculative decoding with the draft length fixed at 3",
+      "verification": "self-reported",
+      "setup": "vLLM; 7B and 13B models on one RTX 4090 or one A100"
+    },
+    {
+      "metric": "Fixed-length speculation as load rises",
+      "value": "15.5% faster at 15 requests a second, up to 30% slower at high load",
+      "baseline": "no speculation",
+      "verification": "self-reported",
+      "setup": "7B model on one RTX 4090, ShareGPT prompts"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The best draft length changes with batch size by enough that a fixed one gives up 8 to 15%, and loses to no speculation at high load."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

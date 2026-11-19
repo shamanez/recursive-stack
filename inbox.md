@@ -24,3 +24,4 @@ Entries are summarised, never quoted.
 - 2026-11-19: asked for the repeated steps as skills and for daily updates. Five skills added for both agents; cadence changed to daily with a weekly deep pass.
 - 2026-11-19: serves many model families. C6 added to the focus claims; a model bring-up step added to the build order; W19 opened.
 - 2026-11-19: would build the measuring rig first; the tracker is for building, positioning research and placing a bet. Recorded in data/course.json; open ground added to the big picture.
+- 2026-11-19: sent a provider's post on adaptive speculative decoding, asking whether the idea was covered, how much it helps and whether it is a new angle. It was partly covered (a production scheduler, a drafter that keeps training, an oracle bound). Added the post, its companion analysis and one measured paper. They changed lever 4, added a figure on what adaptivity adds, and opened T10 and W20.

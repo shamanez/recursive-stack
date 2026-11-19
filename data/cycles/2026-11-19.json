@@ -2,8 +2,45 @@
   "id": "2026-11-19",
   "n": 0,
   "agent": "Claude Code (Fable 5.2)",
-  "summary": "Founding sweep, steered six times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. 62 signals are active.",
+  "summary": "Founding sweep, steered seven times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. A link on adaptive speculative decoding added three signals, a figure and a tension late in the day; no confidence moved. 65 signals are active.",
   "changes": [
+    {
+      "type": "added",
+      "ref": "2026-06-22-doubleword-adaptive-speculation",
+      "text": "The reader sent a provider's simulation of a policy that re-chooses the draft length at every step. It ties the best fixed length at a steady load; the gain is in not being wrong when load moves. Its open simulator is a candidate for the cheap oracle C4 names."
+    },
+    {
+      "type": "added",
+      "ref": "2026-06-08-economics-of-speculative-decoding",
+      "text": "The companion analysis: on mixture-of-experts models a guessed token costs most at small batches, so the best draft length can be zero there. Lever 4 now says it depends on the model's architecture."
+    },
+    {
+      "type": "added",
+      "ref": "2025-12-27-nightjar",
+      "text": "A measured figure for adaptive over fixed speculation: 8% on average and up to 15% in vLLM, with fixed speculation up to 30% slower than none at high load."
+    },
+    {
+      "type": "added",
+      "text": "New figure on the Evidence tab: what making speculation adaptive adds, from 1.0x in a steady-load simulation to 1.5x live and a 2.2x oracle bound."
+    },
+    {
+      "type": "tension",
+      "ref": "T10",
+      "text": "Opened. Measured tables show speculation fading as batches fill; a cost model of mixture-of-experts models predicts the opposite. Nobody has measured it."
+    },
+    {
+      "type": "watch",
+      "ref": "W20",
+      "text": "Opened, due 2026-12-19: a mixture-of-experts model measured with and without speculation across load, or the simulator checked against a real engine."
+    },
+    {
+      "type": "revised",
+      "text": "Lever 4, the decoding build step and two open-ground items updated. A simulator joined the reusable parts, the Doubleword blog joined the feeds, and draft length joined the glossary."
+    },
+    {
+      "type": "revised",
+      "text": "Page: charts not marked featured now appear under More charts on the Evidence tab, and the bars in every chart share one scale. Rows had been sized separately, so bars in one chart could start and end at slightly different points."
+    },
     {
       "type": "course",
       "text": "The reader answered the two open questions: build the measuring rig first, and the tracker is for building, positioning research and placing a bet. Open ground (six things nobody has shown) added to the big picture. The repository and page were made public."
@@ -112,7 +149,8 @@
     "A second check for loop announcements missed: other providers, chip vendors, model labs and the public scoreboard",
     "Model choice: routers, open models inside frontier harnesses, gateway market data, counter-evidence",
     "Domain tuning and speculative decoding that adapts to the workload",
-    "Open-source building blocks for the evaluation rig and the adaptive serving pieces"
+    "Open-source building blocks for the evaluation rig and the adaptive serving pieces",
+    "Adaptive speculative decoding: a reader-supplied post, its companion, and a search for other work that sets draft length at run time"
   ],
   "rejected": [
     {
@@ -219,6 +257,21 @@
     {
       "title": "RoofLang, DynoSim, Vidur as cheap evaluators",
       "reason": "listed as parts in the build order; none reports accuracy against a measured system"
+    },
+    {
+      "title": "TurboSpec and SmartSpec: goodput-driven speculation control (arXiv 2406.14066)",
+      "url": "https://arxiv.org/abs/2406.14066",
+      "reason": "seen in search, not opened; 2024 work on the same idea, and Nightjar gives a newer measured figure"
+    },
+    {
+      "title": "XShare: in-batch expert sharing for mixture-of-experts inference (arXiv 2602.07265)",
+      "url": "https://arxiv.org/abs/2602.07265",
+      "reason": "abstract only, no engine or baseline named; kept as a link under the economics signal because it reports the same expert effect"
+    },
+    {
+      "title": "Speculative Decoding in Production: Free Tokens and Hidden Traps",
+      "url": "https://tianpan.co/blog/2026-04-17-speculative-decoding-production-hidden-traps",
+      "reason": "seen in search, not opened; a practitioner post with no controlled numbers"
     }
   ],
   "next_due": "2026-11-20",

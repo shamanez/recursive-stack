@@ -114,7 +114,8 @@ otherwise be lost, and never a paragraph that only repeats a figure.
   this list to be complete.
 - When two or more numbers on one scale tell a story, put them in
   `data/figures.json` (`pairs` for before and after, `bars` for a comparison).
-  Every row cites the signal its number came from. At most four are `featured`.
+  Every row cites the signal its number came from. At most four are `featured`;
+  the rest appear under "More charts" on the Evidence tab and under their claim.
 - Word caps are enforced as build warnings. They are listed as `CAPS` at the top
   of `scripts/build.py`.
 - Depth lives in the signal's detail sheet and behind its source link.

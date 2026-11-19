@@ -227,6 +227,19 @@
       ],
       "status": "open",
       "lens": true
+    },
+    {
+      "id": "W20",
+      "what": "A mixture-of-experts model measured in a real engine with and without speculation from 1 to 128 concurrent, or the Doubleword simulator compared with a real engine.",
+      "why": "Measured tables show speculation fading with load. A cost model says that on mixture-of-experts models it starts near zero and grows, and its author says most new models are of that kind. Which is right decides how a provider sets lever 4 for each model, and whether a simulator can stand in for part of the rig.",
+      "opened": "2026-11-19",
+      "due": "2026-12-19",
+      "claims": [
+        "C2",
+        "C4"
+      ],
+      "status": "open",
+      "lens": true
     }
   ],
   "feeds": [
@@ -329,6 +342,11 @@
       "name": "Vals legal-agent leaderboard",
       "url": "https://www.vals.ai/benchmarks/hlab",
       "why": "A running check on whether a tuned model stays ahead of general ones."
+    },
+    {
+      "name": "Doubleword blog",
+      "url": "https://blog.doubleword.ai",
+      "why": "A provider working out the economics of speculation per architecture, with an open simulator. A follow-up on building the adaptive policy is implied."
     }
   ]
 }

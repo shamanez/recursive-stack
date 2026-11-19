@@ -1,0 +1,70 @@
+{
+  "id": "2026-06-22-doubleword-adaptive-speculation",
+  "title": "Adaptive speculative decoding: picking draft lengths at runtime",
+  "url": "https://blog.doubleword.ai/adaptive-speculation",
+  "org": "Doubleword",
+  "authors": "Fergus Finn",
+  "published": "2026-06-22",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "serving",
+    "model"
+  ],
+  "mechanism": "online",
+  "venue": "any",
+  "gist": "A provider's simulation study. A policy re-chooses the draft length at every scheduler step from the live batch size, an estimate of how many guesses are accepted, and a cost model of the engine. Acceptance was measured on a real model; throughput and latency come from an open-source simulator of a vLLM-shaped engine. The policy matches the best fixed draft length chosen in hindsight at every load.",
+  "changes": "At a steady load, adaptive speculation only ties a well-chosen fixed setting; its value is never being badly wrong when the load moves. The simulator is a second kind of measuring rig, pricing an idea before it is built. C4 named that as what would weaken it. Nobody has checked it against a real engine.",
+  "caveats": "Only acceptance is measured. Engine and chip costs are modelled, and the simulator's notes call its figures upper bounds for a perfect engine. One model, one workload, decode only. No speed-up of adaptive over fixed is given. The author expects it to be hard to build. The remark that coding agents are poor at finding engine settings is asserted, not shown.",
+  "numbers": [
+    {
+      "metric": "Priced policy against the best fixed draft length",
+      "value": "matches it at every concurrency from 1 to 2,048",
+      "baseline": "the best fixed length for each concurrency, chosen in hindsight",
+      "verification": "self-reported",
+      "setup": "Simulated: Qwen3.6-35B-A3B on one B200, decode only"
+    },
+    {
+      "metric": "Cost of not speculating at batch 128",
+      "value": "per-token latency 4x or more worse at the same throughput",
+      "baseline": "the priced policy; at batch 4 not speculating is close to best",
+      "verification": "self-reported",
+      "setup": "Simulated, same model and chip"
+    },
+    {
+      "metric": "Tokens committed per round, block drafter against the model's own head",
+      "value": "about 3.4 against 3.0",
+      "baseline": "the same prompts at temperature 0.6",
+      "verification": "self-reported",
+      "setup": "Measured on rented GPUs, SPEED-Bench qualitative split, half a million rounds each"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The best draft length moves with the batch size, and which of two drafters is cheaper to run flips with it."
+    },
+    {
+      "claim": "C4",
+      "direction": "complicates",
+      "note": "A simulator is the cheap oracle this claim says would weaken it, but only acceptance is measured and it has not been compared with a real engine."
+    }
+  ],
+  "also": [
+    {
+      "label": "The simulator (MIT licence)",
+      "url": "https://github.com/doublewordai/inference-lab"
+    },
+    {
+      "label": "Simulator in the browser",
+      "url": "https://inference-lab.doubleword.ai/"
+    },
+    {
+      "label": "Acceptance data",
+      "url": "https://huggingface.co/datasets/Doubleword/qwen3.6-specdec-calibration"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

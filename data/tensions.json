@@ -238,5 +238,36 @@
       "C10"
     ],
     "status": "open"
+  },
+  {
+    "id": "T10",
+    "question": "Does speculation pay less as batches fill, or more?",
+    "sides": [
+      {
+        "held_by": "Measured tables: Inco AI, UC Berkeley, NVIDIA, Together, Nightjar",
+        "position": "Less. About 3x for one request falls to 1 to 1.5x at 32 concurrent, and a fixed draft length ran up to 30% slower than no speculation at high load.",
+        "signals": [
+          "2026-08-18-dflash-2",
+          "2025-12-31-speculative-decoding-performance-or-illusion",
+          "2026-03-19-speed-bench",
+          "2026-03-31-together-aurora",
+          "2025-12-27-nightjar"
+        ]
+      },
+      {
+        "held_by": "Doubleword's cost models",
+        "position": "More, on mixture-of-experts models. A small batch shares few experts, so a guess costs nearly full price; not speculating is close to best at batch 4 and four times worse at 128. Modelled, not measured.",
+        "signals": [
+          "2026-06-08-economics-of-speculative-decoding",
+          "2026-06-22-doubleword-adaptive-speculation"
+        ]
+      }
+    ],
+    "settles_when": "Someone measures a mixture-of-experts model in a real engine, with and without speculation, from 1 to 128 concurrent.",
+    "lean": "Probably both, by architecture. The measured tables that name their models used dense ones. If the slope belongs to the model, a provider serving many models has to measure it for each.",
+    "claims": [
+      "C2"
+    ],
+    "status": "open"
   }
 ]

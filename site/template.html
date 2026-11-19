@@ -267,8 +267,9 @@ details > summary:hover { color: var(--accent); }
 .fig h3 { font-size: 16px; }
 .fig .take { font-size: 14px; color: var(--ink-2); }
 .fig .legend { padding: 0 6px; }
-.frows { display: grid; gap: 0; }
-.frow { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(80px, 1.1fr) auto; gap: 12px; align-items: center; padding: 6px; border: 0; background: none; text-align: left; border-radius: 6px; cursor: pointer; width: 100%; }
+/* Rows share one set of columns, so every bar in a chart sits on the same scale. */
+.frows { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(80px, 1.1fr) auto; column-gap: 12px; row-gap: 0; }
+.frow { display: grid; grid-column: 1 / -1; grid-template-columns: minmax(0, 1.2fr) minmax(80px, 1.1fr) auto; grid-template-columns: subgrid; gap: 12px; align-items: center; padding: 6px; border: 0; background: none; text-align: left; border-radius: 6px; cursor: pointer; width: 100%; }
 .frow:hover { background: var(--inset); }
 .flabel { font-size: 13px; line-height: 1.3; }
 .ftrack { position: relative; height: 18px; }
@@ -475,7 +476,8 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   .changes li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .status { margin-left: 0; order: 3; flex-basis: 100%; }
   .top-in .ghost { margin-left: auto; }
-  .frow { grid-template-columns: minmax(0, 1fr) auto; }
+  .frows { grid-template-columns: minmax(0, 1fr) auto; }
+  .frow { grid-template-columns: minmax(0, 1fr) auto; grid-template-columns: subgrid; }
   .frow .ftrack { grid-column: 1 / 3; grid-row: 2; }
   .rrow { grid-template-columns: minmax(0, 1fr); gap: 6px; }
   .lflow { flex-direction: column; gap: 2px; }
@@ -1051,9 +1053,10 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       el('input', { type: 'search', id: 'led-q', placeholder: 'Filter: TTFT, Kimi, megakernel…', 'aria-label': 'Filter numbers', value: state.led.q, oninput: e => { state.led.q = e.target.value; draw(); } }),
       state.led.ver ? el('button', { class: 'ghost', type: 'button', onclick: () => pick(state.led.ver) }, `Showing ${VERIF[state.led.ver][2].toLowerCase()} · clear`) : null, count);
     draw();
-    const featured = D.figures.filter(f => f.featured);
+    const featured = D.figures.filter(f => f.featured), others = D.figures.filter(f => !f.featured);
     return [head('The numbers, and who checked them', 'Evidence', `The charts that carry the argument, then all ${rows.length} quantitative claims from the signals. A speed-up with no baseline is not recorded.`),
       featured.length ? el('div', { class: 'fig-grid' }, featured.map(figure)) : null,
+      others.length ? section('More charts', 'Narrower comparisons, each about one lever.', el('div', { class: 'fig-grid' }, others.map(figure))) : null,
       bar,
       el('div', { class: 'sec' }, controls, el('div', { class: 'scroll-x' }, el('table', { class: 'ledger' },
         el('colgroup', null, ['24%', '20%', '20%', '12%', '14%', '10%'].map(w => el('col', { style: `width:${w}` }))),
