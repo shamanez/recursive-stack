@@ -1,0 +1,46 @@
+{
+  "id": "2026-11-02-fireflash-agentic-rl-recipe",
+  "title": "Agentic RL recipe (FireFlash)",
+  "url": "https://agenteconomics.org/posts/agentic-rl-recipe",
+  "org": "agenteconomics.org",
+  "published": "2026-11-02",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "loop"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "An open recipe for reinforcement learning on a large open model for long terminal and coding tasks: separate trainer and rollout GPUs, a filter that keeps only tasks of middling difficulty, verification gates per task, and one harness for both training and evaluation. From the group behind InferenceForge, who say they will put this model into their optimisation loop.",
+  "changes": "Gives the price of the model lever when done fully: about 64 top-end GPUs for five days. And it links two levers: the model being trained is meant to become the agent that tunes its own serving.",
+  "caveats": "Self-reported in the authors' own harness, with no variance. The harness alone accounts for about half the gain. The cost per trial assumes the base model's list price. No code or weights are linked despite the word released.",
+  "numbers": [
+    {
+      "metric": "Terminal task benchmark, pass at first try",
+      "value": "35.8 to 46.2",
+      "baseline": "the base model; the harness alone gives 40.2",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Cost per trial",
+      "value": "$0.72 against $22.02",
+      "baseline": "a frontier model at maximum effort, at list prices",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A tuned open model at a thirtieth of a frontier model's cost per trial on the authors' benchmark."
+    },
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "The stated plan is to use this model as the agent in the inference loop. Still a plan."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

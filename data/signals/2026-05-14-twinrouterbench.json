@@ -1,0 +1,46 @@
+{
+  "id": "2026-05-14-twinrouterbench",
+  "title": "TwinRouterBench: fast static and live dynamic evaluation for realistic agentic LLM routing",
+  "url": "https://arxiv.org/abs/2605.18859",
+  "org": "Pei Yang and 17 others",
+  "published": "2026-05-14",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "A router benchmark that scores routing at each step of an agent's work against an always-top-tier baseline, with prompt caching priced in, and then validates live with real spend. The pool mixes closed and open models.",
+  "changes": "The one independent result where routing pays with caching counted, and it shows what kind: a trained step-level router halves cost at equal quality, while a rule-based one costs three times as much as not routing.",
+  "caveats": "The 100 live cases are not a random sample, and the models are a generation old. The result depends on a fixed pool and one price snapshot.",
+  "numbers": [
+    {
+      "metric": "API cost for a trained step-level router at equal tasks resolved",
+      "value": "$25.66 against $54.73 (53% lower)",
+      "baseline": "the top-tier model unrouted",
+      "verification": "third-party",
+      "setup": "100 live cases"
+    },
+    {
+      "metric": "API cost for a rule-based router",
+      "value": "$172.56, about three times higher",
+      "baseline": "the top-tier model unrouted",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "supports",
+      "note": "With caching priced in, a trained router still halved cost at equal quality."
+    },
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "A naive router was three times worse than no router. The gain is in the training, not the idea."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

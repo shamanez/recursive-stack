@@ -1,0 +1,34 @@
+{
+  "id": "2026-11-04-cognition-swe-2-flash",
+  "title": "Introducing SWE-2 Flash",
+  "url": "https://cognition.com/blog/swe-2-flash",
+  "org": "Cognition",
+  "published": "2026-11-04",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "A coding-agent company took an open-weight model, added a large mid-training stage and then reinforcement learning in its own harness, and ships the result as a fast cheap tier. Most of the gain is credited to better training tasks.",
+  "changes": "Counter-evidence from the tuner's own table: an off-the-shelf open model released around the same time scores about twice as high on the same benchmark as the tuned one.",
+  "caveats": "Self-reported; compute, task counts and prices are not disclosed and the weights are not public. The comparison models were run in different harnesses.",
+  "numbers": [
+    {
+      "metric": "Terminal task benchmark",
+      "value": "20.0 for the tuned model, 42.3 for an untuned general open model",
+      "baseline": "the tuned model's own base scored 0.9",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "challenges",
+      "note": "In the tuner's own table, a newer general open model beats the tuned one by a wide margin."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

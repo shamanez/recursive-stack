@@ -1,0 +1,40 @@
+{
+  "id": "2026-07-08-databricks-coding-agent-benchmark",
+  "title": "Benchmarking coding agents on Databricks' multi-million line codebase",
+  "url": "https://databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase",
+  "org": "Databricks",
+  "published": "2026-07-08",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "Tasks rebuilt from real merged pull requests in a large private codebase, graded by held-out tests with no LLM judge. The best open model sat in the same capability tier as the frontier at lower cost per task, and the choice of harness moved cost by more than twice at equal quality.",
+  "changes": "The strongest evidence that an open model is good enough for routine coding work, which is the premise of every router here. It also suggests most of the saving comes from the swap, not from clever routing.",
+  "caveats": "Internal tasks only, and most numbers are in figures. A second study on another company's tasks found the same direction but used an LLM judge and single runs.",
+  "numbers": [
+    {
+      "metric": "Cost per task at statistically tied quality",
+      "value": "$1.28 against $1.94",
+      "baseline": "a frontier closed model on the same tasks",
+      "verification": "self-reported",
+      "setup": "open model GLM 5.2"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "supports",
+      "note": "An open model tied a frontier one on real tasks at two-thirds the cost."
+    },
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "If a fixed open model already captures the saving, the router adds little."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

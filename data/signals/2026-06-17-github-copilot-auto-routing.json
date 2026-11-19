@@ -1,0 +1,45 @@
+{
+  "id": "2026-06-17-github-copilot-auto-routing",
+  "title": "Getting more from each token: how Copilot improves context handling and model routing",
+  "url": "https://github.blog/ai-and-ml/github-copilot/getting-more-from-each-token-how-copilot-improves-context-handling-and-model-routing/",
+  "org": "GitHub",
+  "published": "2026-06-17",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "Copilot's automatic mode combines live model health (availability, load, speed, error rate, cost) with task intent scored by a routing model. It filters to models that clear a quality bar, then picks the best fit. It routes only on the first turn and after the context is compacted, because switching mid-conversation breaks the cached prefix.",
+  "changes": "Routing here listens to the load on the models as well as to the task. And it names the safe switch points precisely: session start and compaction, where no cache is lost.",
+  "caveats": "Baselines for the savings are not stated and the pool is five unnamed models. Lower plans are being moved to automatic mode as the only choice, which makes routing a capacity tool as much as a quality one.",
+  "numbers": [
+    {
+      "metric": "Savings at above-baseline quality",
+      "value": "12.9%",
+      "baseline": "a fixed mid-tier model, baseline not fully stated",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Savings in the aggressive setting",
+      "value": "72.5%",
+      "baseline": "not stated",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "supports",
+      "note": "Another large harness routing between models by default, at cache boundaries only."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The route depends on live load on each model, not only on the request."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -1,0 +1,58 @@
+{
+  "id": "2026-08-18-dflash-2",
+  "title": "DFlash 2: keep drafting parallel",
+  "url": "https://inco.ai/blog/dflash2/",
+  "org": "Inco AI, with the original DFlash group",
+  "published": "2026-08-18",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "A block drafter that keeps several candidates per position and uses a tiny selector to pick one coherent path through them. Its published tables show speed-up against plain decoding at three load levels and five kinds of task.",
+  "changes": "The cleanest public numbers on what happens to speculation under load: a threefold gain for a single request falls to almost nothing at 32 concurrent, and rival drafters fall below break-even.",
+  "caveats": "Self-reported on one model and one GPU; training data is not disclosed and there is no paper. The comparison uses a community build of a rival drafter. The company offers to build drafters for customers' tuned models, which implies each tuned model needs its own.",
+  "numbers": [
+    {
+      "metric": "Speed-up, one request at a time",
+      "value": "2.67 to 3.43x",
+      "baseline": "plain decoding without speculation",
+      "verification": "self-reported",
+      "setup": "Qwen3.8-27B, one H200"
+    },
+    {
+      "metric": "Speed-up at 32 concurrent requests",
+      "value": "1.01 to 1.45x",
+      "baseline": "plain decoding without speculation",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Rival drafters at 32 concurrent",
+      "value": "0.74 to 1.13x, below break-even on four of five tasks",
+      "baseline": "plain decoding without speculation",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The same drafter is worth 3x or nothing depending on load and on the kind of text."
+    },
+    {
+      "claim": "C10",
+      "direction": "complicates",
+      "note": "A drafter is tied to one exact model. Tune the model and the drafter has to be rebuilt."
+    }
+  ],
+  "also": [
+    {
+      "label": "Model card with tables",
+      "url": "https://huggingface.co/z-lab/Qwen3.8-27B-DFlash2"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

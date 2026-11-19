@@ -1,0 +1,46 @@
+{
+  "id": "2026-08-11-thoughtworks-nemotron-test",
+  "title": "Putting NVIDIA Nemotron 3.5 Lightning to the test",
+  "url": "https://www.thoughtworks.com/insights/blog/generative-ai/putting-nvidia-nemotron-3-5-lightning-test",
+  "org": "Thoughtworks",
+  "published": "2026-08-11",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "frame",
+  "venue": "onprem",
+  "gist": "A consultancy with early access tested a small open model on its own hardware across two engines, two chips and three workloads. It trained a purpose-built draft head and legal and healthcare adapters, and compared them with what ships in the box.",
+  "changes": "Measured by someone other than the vendor. The custom-trained drafter only matched the one built into the model, while a domain adapter more than doubled accuracy on a legal task.",
+  "caveats": "No numeric head-to-head for the two draft heads, no test of whether the adapters hurt speculation, and no frontier comparison. An early-access partner, so not fully independent.",
+  "numbers": [
+    {
+      "metric": "Legal task accuracy with a domain adapter",
+      "value": "35% to 77%",
+      "baseline": "the same model without the adapter",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Built-in draft head",
+      "value": "1.46 to 1.96x",
+      "baseline": "decoding without speculation",
+      "verification": "third-party",
+      "setup": "2,091 measurements, concurrency 1 to 128"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A cheap adapter more than doubled accuracy on a domain task, measured by a third party."
+    },
+    {
+      "claim": "C3",
+      "direction": "challenges",
+      "note": "A drafter trained specially for the deployment did no better than the one shipped with the model."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

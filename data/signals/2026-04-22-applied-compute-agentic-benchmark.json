@@ -1,0 +1,41 @@
+{
+  "id": "2026-04-22-applied-compute-agentic-benchmark",
+  "title": "An inference benchmark for agentic workloads",
+  "url": "https://www.appliedcompute.com/research/inference-benchmark",
+  "org": "Applied Compute",
+  "published": "2026-04-22",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "loop",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "A small open harness that replays agent sessions described only by their shape: turns, prompt and output lengths, tool waits. A session holds a concurrency slot through its tool waits, as real agents do. On their traces the two main open engines performed about the same.",
+  "changes": "A second public replay harness besides AgentX, and a measured warning about shortcuts: replaying one averaged trace instead of the real spread overstates throughput.",
+  "caveats": "Prompts are random per trace, so prefixes shared across sessions are not modelled and cache hits read low. No capture tool and no recorded arrival times. The title here is descriptive; check the page for its own.",
+  "numbers": [
+    {
+      "metric": "Throughput overstated by replaying a mean trace",
+      "value": "10 to 20%",
+      "baseline": "replaying the real distribution of sessions",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Averaging the workload before replaying it gives an answer 10 to 20% too good."
+    }
+  ],
+  "also": [
+    {
+      "label": "trie, the harness",
+      "url": "https://github.com/Applied-Compute/trie"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

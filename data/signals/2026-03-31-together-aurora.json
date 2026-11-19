@@ -1,0 +1,54 @@
+{
+  "id": "2026-03-31-together-aurora",
+  "title": "Aurora",
+  "url": "https://www.together.ai/blog/aurora",
+  "org": "Together AI",
+  "published": "2026-03-31",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "loop"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "The serving engine streams accepted and rejected draft tokens to a buffer; a separate training server keeps updating a copy of the drafter and hot-swaps it into serving. The drafter follows the traffic and changes to the target model with no offline pipeline. Its production version is called ATLAS-2.",
+  "changes": "A lever that re-tunes itself from live traffic with no agent involved: classical online learning inside the decoding path. It also puts a number on drift, about ten thousand requests to recover after traffic changes abruptly.",
+  "caveats": "The traffic shift is simulated and the evaluation sets are small. The cost of running the training server is not given. The gain shrinks with batch size, as with every drafter.",
+  "numbers": [
+    {
+      "metric": "Speed-up from an online-trained drafter",
+      "value": "about 1.25x",
+      "baseline": "a well-trained static drafter",
+      "verification": "self-reported",
+      "setup": "simulated stream over five domains"
+    },
+    {
+      "metric": "Speed-up as batch size grows",
+      "value": "1.92x at batch 1 to 1.57x at batch 32",
+      "baseline": "no speculation",
+      "verification": "self-reported",
+      "setup": "Qwen3-Coder-Next"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "A drafter trained once goes stale as traffic moves; one that keeps learning stays about a quarter faster."
+    },
+    {
+      "claim": "C1",
+      "direction": "complicates",
+      "note": "This lever adapts by online learning, with no agent writing code."
+    }
+  ],
+  "also": [
+    {
+      "label": "ATLAS-2 announcement",
+      "url": "https://www.together.ai/blog/ai-native-conf-research-and-product-announcements"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

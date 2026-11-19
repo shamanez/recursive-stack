@@ -14,11 +14,11 @@
   "mechanism": "hand",
   "venue": "dedicated",
   "gist": "A stack tuned for one customer's coding-agent traffic: a draft model fine-tuned on the target model's own coding traces, an 8-bit KV cache, a CPU-memory cache tier, and session-affinity routing.",
-  "changes": "Contains the cleanest tuned-against-generic number available: training the draft model on the customer's traces was worth about 20%. The post also says the same principles carried over to other customers and models.",
-  "caveats": "The 2.8x and 5.6x headline figures are against an unoptimised replica that is not specified. Quality evaluation is described as still being built.",
+  "changes": "Contains a clean tuned-against-generic number: a draft model fine-tuned on coding traces from the target model was worth about 20%. The post also says the same principles carried over to other customers and models.",
+  "caveats": "Relayed, and one detail is unsettled: a later check found Modal's other drafter post used synthetic data, so whether this drafter saw the customer's own traffic is unconfirmed. The 2.8x and 5.6x headline figures are against an unspecified unoptimised replica.",
   "numbers": [
     {
-      "metric": "Speculative accept length after fine-tuning the draft on workload traces",
+      "metric": "Speculative accept length after fine-tuning the draft on coding traces for the target model",
       "value": "5.00 to 5.84 tokens per step, about 20% faster",
       "baseline": "a generic draft model",
       "verification": "self-reported"
@@ -35,7 +35,7 @@
     {
       "claim": "C3",
       "direction": "challenges",
-      "note": "Like for like, per-customer tuning was worth about 20%, and the recipe transferred to other customers."
+      "note": "Like for like, a drafter tuned for this workload was worth about 20%, and the recipe transferred to other customers. Whether it saw the customer's own traffic is unconfirmed."
     },
     {
       "claim": "C2",

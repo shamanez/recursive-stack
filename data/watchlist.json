@@ -168,6 +168,53 @@
       ],
       "status": "open",
       "lens": true
+    },
+    {
+      "id": "W15",
+      "what": "Read Modal's post first-hand: was its draft model trained on the customer's own traffic, or on synthetic and target-model traces?",
+      "why": "The 20% figure is the cleanest number behind the per-customer claim, and a second check found Modal's other drafter post used synthetic data.",
+      "opened": "2026-11-19",
+      "due": "2026-11-21",
+      "claims": [
+        "C3"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W16",
+      "what": "Any router published against the best fixed model in its own pool, on tasks someone else chose.",
+      "why": "Vendors report a third to three-fifths off; an outside test found no shipped router beating a cheap default. This is the comparison that would settle it.",
+      "opened": "2026-11-19",
+      "due": "2026-12-19",
+      "claims": [
+        "C9"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W17",
+      "what": "A tuned open model followed against the next general release on the same task.",
+      "why": "Tunes look good on the day and may be overtaken within weeks. Whether tuning is a lever or a treadmill turns on this.",
+      "opened": "2026-11-19",
+      "due": "2026-12-31",
+      "claims": [
+        "C10"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "W18",
+      "what": "Open two leads a sub-agent saw but could not date: Cerebras on its autoresearch loop cheating, and an LMSYS post on an internal system called Infer-forge. Add them to the roster if they describe a loop.",
+      "why": "The reader asked that no team building the loop be missed. A provider and an open-engine team may both be absent.",
+      "opened": "2026-11-19",
+      "due": "2026-11-21",
+      "claims": [
+        "C1"
+      ],
+      "status": "open",
+      "lens": true
     }
   ],
   "feeds": [
@@ -245,6 +292,31 @@
       "name": "Modular blog",
       "url": "https://modular.com/blog",
       "why": "Compiler work, now inside Qualcomm."
+    },
+    {
+      "name": "OpenRouter data newsletter and rankings",
+      "url": "https://openrouter.ai/data/newsletter",
+      "why": "Who serves what: open against closed share, cache rates, how fast traffic moves to new models."
+    },
+    {
+      "name": "Fireworks changelog",
+      "url": "https://docs.fireworks.ai/updates/changelog",
+      "why": "Which base models can still be tuned, and which features were paused. The churn shows here first."
+    },
+    {
+      "name": "Databricks Smart Routing docs",
+      "url": "https://docs.databricks.com/aws/en/ai-gateway/smart-routing",
+      "why": "Where the scope of a shipped router changes before the blog does."
+    },
+    {
+      "name": "llama.cpp speculative decoding docs",
+      "url": "https://github.com/ggml-org/llama.cpp/blob/master/docs/speculative.md",
+      "why": "Tracks every drafter type as it lands."
+    },
+    {
+      "name": "Vals legal-agent leaderboard",
+      "url": "https://www.vals.ai/benchmarks/hlab",
+      "why": "A running check on whether a tuned model stays ahead of general ones."
     }
   ]
 }

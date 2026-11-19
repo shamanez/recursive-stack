@@ -1,29 +1,222 @@
 [
-  {"term": "RSI", "aka": ["recursive self-improvement"], "def": "Recursive self-improvement: a system that improves the thing that does the improving, so gains compound. In this field the term is used loosely for any agent loop that optimises inference. The strict version needs the loop to get better at optimising, not just to keep optimising."},
-  {"term": "hillclimb", "aka": ["hillclimbing", "hillclimbs"], "def": "Inferact's word for a bounded optimisation run: agents repeatedly propose a change, measure it against a target, and keep it only if the number improves. Typically 24 to 30 hours on one metric."},
-  {"term": "megakernel", "aka": ["megakernels"], "def": "One long-running GPU program that executes a model's whole forward pass, instead of hundreds of small kernels launched one after another. Removes launch overhead, but is rigid: it bakes in one model shape and one chip."},
-  {"term": "kernel", "aka": ["kernels"], "def": "A single program that runs on the GPU, such as one attention step or one matrix multiply. A forward pass is a sequence of kernel launches."},
-  {"term": "TTFT", "aka": ["time to first token"], "def": "Time to first token: how long a user waits before any output appears. Dominated by prefill, so it grows with prompt length."},
-  {"term": "prefill", "def": "The first phase of serving a request: running the whole prompt through the model to build its KV cache. Compute-bound and bursty."},
-  {"term": "decode", "def": "The second phase: generating output tokens one at a time. Bound by memory bandwidth, and steady rather than bursty."},
-  {"term": "PD disaggregation", "aka": ["prefill-decode", "PD split", "prefill/decode split"], "def": "Running prefill and decode on separate groups of machines, because the two phases stress hardware differently. The split ratio is a tuning knob that goes stale when traffic changes."},
-  {"term": "KV cache", "aka": ["KV caches"], "def": "The stored attention keys and values for tokens already processed. Reusing it means a long conversation does not have to be re-read from the start on every turn. For agents, which re-send huge contexts constantly, it is most of the cost."},
-  {"term": "AgentX", "def": "The long-context, multi-turn workload inside SemiAnalysis's InferenceX benchmark. It imitates coding-agent traffic: a few very long contexts mixed with many short ones. It has become the shared scoreboard for the work tracked here."},
-  {"term": "InferenceX", "def": "SemiAnalysis's open benchmark of accelerators and serving engines. Every data point is a public GitHub Actions run, so results can be inspected rather than taken on trust."},
-  {"term": "SLA", "def": "Service-level agreement. Here, a floor on per-user speed (for example 30 tokens per second per user) that a configuration must hold while throughput is pushed up. Throughput without an SLA is a much easier number to inflate."},
-  {"term": "MoE", "def": "Mixture of experts: a model architecture in which each token is routed to a few of many sub-networks. Which experts fire depends on the input, so benchmarks on random tokens mislead."},
-  {"term": "PDL", "aka": ["Programmatic Dependent Launch"], "def": "Programmatic Dependent Launch: a CUDA feature that lets the next kernel begin setting up before the previous one finishes. Recovers much of what a megakernel gains, without the fusion."},
-  {"term": "CUDA Graphs", "def": "A way to record a fixed sequence of kernel launches once and replay it with far less per-launch overhead."},
-  {"term": "speculative decoding", "def": "A small, fast draft model guesses several tokens ahead and the large model checks them in one pass. Speeds up decode when the guesses are usually right, which depends heavily on the workload."},
-  {"term": "MTP", "def": "Multi-token prediction: extra output heads trained into a model so it can draft its own next few tokens, removing the need for a separate draft model in speculative decoding."},
-  {"term": "shadow traffic", "def": "Copying live production requests to a candidate system whose answers are discarded. Lets a change be judged on real workload before any user depends on it."},
-  {"term": "TPOT", "aka": ["time per output token"], "def": "Time per output token during decode. The p99 version (the slowest 1% of tokens) is what users feel as stutter."},
-  {"term": "FlashInfer", "def": "An open library of GPU kernels for LLM serving, used underneath SGLang and vLLM."},
-  {"term": "vLLM", "def": "The most widely used open-source LLM serving engine. Maintained largely by Inferact, the company founded by its creators."},
-  {"term": "SGLang", "def": "An open-source LLM serving engine, vLLM's main open rival. The base for both InferenceForge and Evolving Infra."},
-  {"term": "Dynamo", "def": "NVIDIA's production framework for distributed LLM serving. The baseline several of these papers compare against."},
-  {"term": "KernelBench", "def": "An academic benchmark that asks a model to rewrite PyTorch operators as faster GPU kernels and scores correctness and speed-up. Measures kernels in isolation, which is its main weakness."},
-  {"term": "NVFP4", "def": "NVIDIA's 4-bit floating-point weight format for Blackwell-generation chips. Cuts memory roughly fourfold against 16-bit weights."},
-  {"term": "continuous compilation", "aka": ["continual compilation", "Continuous Compilation"], "def": "Together AI's term for re-running its agent-driven optimiser as a deployment's traffic drifts, rather than compiling once at release."},
-  {"term": "autotuning", "aka": ["autotunes", "autotune"], "def": "Trying many settings of existing knobs (tile sizes, thread counts) on the target machine and keeping the fastest. No new code is written; contrast with agent search."}
+  {
+    "term": "RSI",
+    "aka": [
+      "recursive self-improvement"
+    ],
+    "def": "Recursive self-improvement: a system that improves the thing that does the improving, so gains compound. In this field the term is used loosely for any agent loop that optimises inference. The strict version needs the loop to get better at optimising, not just to keep optimising."
+  },
+  {
+    "term": "hillclimb",
+    "aka": [
+      "hillclimbing",
+      "hillclimbs"
+    ],
+    "def": "Inferact's word for a bounded optimisation run: agents repeatedly propose a change, measure it against a target, and keep it only if the number improves. Typically 24 to 30 hours on one metric."
+  },
+  {
+    "term": "megakernel",
+    "aka": [
+      "megakernels"
+    ],
+    "def": "One long-running GPU program that executes a model's whole forward pass, instead of hundreds of small kernels launched one after another. Removes launch overhead, but is rigid: it bakes in one model shape and one chip."
+  },
+  {
+    "term": "kernel",
+    "aka": [
+      "kernels"
+    ],
+    "def": "A single program that runs on the GPU, such as one attention step or one matrix multiply. A forward pass is a sequence of kernel launches."
+  },
+  {
+    "term": "TTFT",
+    "aka": [
+      "time to first token"
+    ],
+    "def": "Time to first token: how long a user waits before any output appears. Dominated by prefill, so it grows with prompt length."
+  },
+  {
+    "term": "prefill",
+    "def": "The first phase of serving a request: running the whole prompt through the model to build its KV cache. Compute-bound and bursty."
+  },
+  {
+    "term": "decode",
+    "def": "The second phase: generating output tokens one at a time. Bound by memory bandwidth, and steady rather than bursty."
+  },
+  {
+    "term": "PD disaggregation",
+    "aka": [
+      "prefill-decode",
+      "PD split",
+      "prefill/decode split"
+    ],
+    "def": "Running prefill and decode on separate groups of machines, because the two phases stress hardware differently. The split ratio is a tuning knob that goes stale when traffic changes."
+  },
+  {
+    "term": "KV cache",
+    "aka": [
+      "KV caches"
+    ],
+    "def": "The stored attention keys and values for tokens already processed. Reusing it means a long conversation does not have to be re-read from the start on every turn. For agents, which re-send huge contexts constantly, it is most of the cost."
+  },
+  {
+    "term": "AgentX",
+    "def": "The long-context, multi-turn workload inside SemiAnalysis's InferenceX benchmark. It imitates coding-agent traffic: a few very long contexts mixed with many short ones. It has become the shared scoreboard for the work tracked here."
+  },
+  {
+    "term": "InferenceX",
+    "def": "SemiAnalysis's open benchmark of accelerators and serving engines. Every data point is a public GitHub Actions run, so results can be inspected rather than taken on trust."
+  },
+  {
+    "term": "SLA",
+    "def": "Service-level agreement. Here, a floor on per-user speed (for example 30 tokens per second per user) that a configuration must hold while throughput is pushed up. Throughput without an SLA is a much easier number to inflate."
+  },
+  {
+    "term": "MoE",
+    "def": "Mixture of experts: a model architecture in which each token is routed to a few of many sub-networks. Which experts fire depends on the input, so benchmarks on random tokens mislead."
+  },
+  {
+    "term": "PDL",
+    "aka": [
+      "Programmatic Dependent Launch"
+    ],
+    "def": "Programmatic Dependent Launch: a CUDA feature that lets the next kernel begin setting up before the previous one finishes. Recovers much of what a megakernel gains, without the fusion."
+  },
+  {
+    "term": "CUDA Graphs",
+    "def": "A way to record a fixed sequence of kernel launches once and replay it with far less per-launch overhead."
+  },
+  {
+    "term": "speculative decoding",
+    "def": "A small, fast draft model guesses several tokens ahead and the large model checks them in one pass. Speeds up decode when the guesses are usually right, which depends heavily on the workload."
+  },
+  {
+    "term": "MTP",
+    "def": "Multi-token prediction: extra output heads trained into a model so it can draft its own next few tokens, removing the need for a separate draft model in speculative decoding."
+  },
+  {
+    "term": "shadow traffic",
+    "def": "Copying live production requests to a candidate system whose answers are discarded. Lets a change be judged on real workload before any user depends on it."
+  },
+  {
+    "term": "TPOT",
+    "aka": [
+      "time per output token"
+    ],
+    "def": "Time per output token during decode. The p99 version (the slowest 1% of tokens) is what users feel as stutter."
+  },
+  {
+    "term": "FlashInfer",
+    "def": "An open library of GPU kernels for LLM serving, used underneath SGLang and vLLM."
+  },
+  {
+    "term": "vLLM",
+    "def": "The most widely used open-source LLM serving engine. Maintained largely by Inferact, the company founded by its creators."
+  },
+  {
+    "term": "SGLang",
+    "def": "An open-source LLM serving engine, vLLM's main open rival. The base for both InferenceForge and Evolving Infra."
+  },
+  {
+    "term": "Dynamo",
+    "def": "NVIDIA's production framework for distributed LLM serving. The baseline several of these papers compare against."
+  },
+  {
+    "term": "KernelBench",
+    "def": "An academic benchmark that asks a model to rewrite PyTorch operators as faster GPU kernels and scores correctness and speed-up. Measures kernels in isolation, which is its main weakness."
+  },
+  {
+    "term": "NVFP4",
+    "def": "NVIDIA's 4-bit floating-point weight format for Blackwell-generation chips. Cuts memory roughly fourfold against 16-bit weights."
+  },
+  {
+    "term": "continuous compilation",
+    "aka": [
+      "continual compilation",
+      "Continuous Compilation"
+    ],
+    "def": "Together AI's term for re-running its agent-driven optimiser as a deployment's traffic drifts, rather than compiling once at release."
+  },
+  {
+    "term": "autotuning",
+    "aka": [
+      "autotunes",
+      "autotune"
+    ],
+    "def": "Trying many settings of existing knobs (tile sizes, thread counts) on the target machine and keeping the fastest. No new code is written; contrast with agent search."
+  },
+  {
+    "term": "prompt cache",
+    "aka": [
+      "prompt caching",
+      "prefix cache"
+    ],
+    "def": "Keeping the computed state of a prompt's opening so that a later request with the same opening does not pay to process it again. For agents, which re-send their whole history every turn, it is most of the bill. A cache belongs to one model on one machine."
+  },
+  {
+    "term": "harness",
+    "aka": [
+      "harnesses"
+    ],
+    "def": "The program around the model that makes it an agent: the loop that sends prompts, runs tools and feeds results back. Claude Code and Codex are harnesses. Whoever owns it decides which model is called."
+  },
+  {
+    "term": "router",
+    "aka": [
+      "routers"
+    ],
+    "def": "Software that chooses where something goes. Two different kinds appear here: one picks which model answers a session, the other picks which machine serves a request."
+  },
+  {
+    "term": "draft model",
+    "aka": [
+      "drafter",
+      "drafters",
+      "draft models",
+      "speculator",
+      "speculators"
+    ],
+    "def": "The small fast model in speculative decoding that guesses the next few tokens for the large model to check. It is built for one exact target model."
+  },
+  {
+    "term": "post-training",
+    "aka": [
+      "post-train",
+      "post-trained"
+    ],
+    "def": "Further training of an already-trained model on a specific domain or task, by fine-tuning on examples or by reinforcement learning against a grader."
+  },
+  {
+    "term": "LoRA",
+    "aka": [
+      "adapter",
+      "adapters"
+    ],
+    "def": "A small set of extra weights trained on top of a frozen model to specialise it. Many can be served from one copy of the base model, which is what makes a tuned model per customer affordable."
+  },
+  {
+    "term": "trace replay",
+    "aka": [
+      "replay",
+      "replays",
+      "replayed"
+    ],
+    "def": "Recording real sessions (their timing, lengths and shared openings, without the content) and playing them back against a candidate system, so it is judged on realistic load."
+  },
+  {
+    "term": "compaction",
+    "def": "When an agent's history gets too long and the harness summarises it and starts a fresh context. The prompt cache is lost at that moment anyway, so it is a free point to switch model."
+  },
+  {
+    "term": "sub-agent",
+    "aka": [
+      "sub-agents",
+      "subagents"
+    ],
+    "def": "A helper agent a main agent starts for a side task, with its own fresh context. Because it has no cache yet, it can be sent to a different model at no extra cost."
+  },
+  {
+    "term": "concurrency",
+    "def": "How many requests a server is handling at once. Most speed tricks look best at a concurrency of one and fade as it rises."
+  }
 ]

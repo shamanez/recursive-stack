@@ -1,0 +1,41 @@
+{
+  "id": "2026-07-26-fireworks-nexus",
+  "title": "Fireworks Nexus: drop-in open frontier intelligence for teams with budgets",
+  "url": "https://fireworks.ai/blog/fireworks-nexus-open-model-routing",
+  "org": "Fireworks AI",
+  "published": "2026-07-26",
+  "added": "2026-11-19",
+  "kind": "product",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "An installer points existing coding harnesses at Fireworks-served open models. A trained difficulty scorer sends routine work to an open model and passes hard work through to the customer's own key at a frontier lab. It scores each turn and weighs cache hits.",
+  "changes": "A second provider shipping the same split, open for routine and frontier for hard, from the open-model side. The provider owns the routing decision while the customer keeps the harness.",
+  "caveats": "The router launched as a research preview and its evidence is thin: preliminary tests at two customers, and a typical 3 to 5x saving stated with no data. In Fireworks' own benchmark the open model matched the frontier one on score but used about ten times the tokens per task.",
+  "numbers": [
+    {
+      "metric": "Cost per merged pull request",
+      "value": "about a third lower",
+      "baseline": "the customers' previous all-frontier setup, preliminary",
+      "verification": "self-reported",
+      "setup": "two named customers"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "supports",
+      "note": "Open for routine work, frontier behind the customer's own key for hard work, in one harness."
+    }
+  ],
+  "also": [
+    {
+      "label": "November update",
+      "url": "https://fireworks.ai/blog/fireworks-unveils-new-products-at-forge-to-help-companies-build-specialized-intelligence"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

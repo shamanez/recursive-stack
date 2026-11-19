@@ -1,0 +1,53 @@
+{
+  "id": "2026-10-08-openrouter-cache-is-crucial",
+  "title": "Cache is crucial",
+  "url": "https://openrouter.ai/data/newsletter/cache-is-crucial",
+  "org": "OpenRouter",
+  "authors": "Peter Walker",
+  "published": "2026-10-08",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "routing",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "Gateway data on what agent traffic is made of. Almost all of it is context being re-read from cache, billed at a fraction of the input price, and generated output is about one percent of tokens. Cache hit rate therefore matters more to the bill than list price.",
+  "changes": "The single fact that ties the levers together. A cache belongs to one model on one machine, so it constrains which model answers, which machine takes the request and what gets evicted. Every router here is designed around it.",
+  "caveats": "One gateway, skewed to developers and price-sensitive traffic. It does not measure the cost of switching models directly.",
+  "numbers": [
+    {
+      "metric": "Cached prompt tokens as a share of agentic tokens",
+      "value": "just under 90%, up from about 60% in January",
+      "baseline": "the same gateway eight months earlier",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Price of a cache read",
+      "value": "a tenth to a twentieth of fresh input",
+      "baseline": "list input price on current frontier models",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Median provider cache hit rate",
+      "value": "44% to 85%",
+      "baseline": "the same gateway earlier in the year",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The shape of agent traffic, nine-tenths re-read context, is what every serving decision now turns on."
+    },
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "Switching model mid-session re-reads everything at full price, which caps how often a router can act."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

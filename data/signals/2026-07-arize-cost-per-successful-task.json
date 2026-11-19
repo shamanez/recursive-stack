@@ -1,0 +1,42 @@
+{
+  "id": "2026-07-arize-cost-per-successful-task",
+  "title": "Cost per successful task: benchmarking Kimi K3, GPT-5.5 and 8 more AI models",
+  "url": "https://arize.com/blog/cost-per-successful-task-ai-model-benchmark",
+  "org": "Arize AI with Fireworks",
+  "authors": "Laurie Voss",
+  "published": "2026-07",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "Argues token price is the wrong signal for choosing a model; cost per successful task, counting retries and runs that hit the budget, is the right one. It measures the gap between perfect routing, a simple escalation ladder and blind escalation.",
+  "changes": "Puts a ceiling and a floor on the model-choice lever. Perfect routing solves more tasks at a third of the cost of the best single model; careless escalation costs twice as much as any single model.",
+  "caveats": "A vendor-partnered study on 40 tasks chosen where models disagree, which flatters routing. The agent is a thin loop with no prompt-cache or long-context effects.",
+  "numbers": [
+    {
+      "metric": "Cost per success with hindsight-perfect routing",
+      "value": "$0.228, solving 34 of 40",
+      "baseline": "$0.636 and 25 of 40 for the best single model",
+      "verification": "third-party",
+      "setup": "40 tasks, 10 models, 6 trials"
+    },
+    {
+      "metric": "Cost per success with naive escalation through every model",
+      "value": "$1.319",
+      "baseline": "$0.636 for the best single model",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "The headroom is real and large, and a bad policy is worse than none."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

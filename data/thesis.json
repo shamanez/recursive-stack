@@ -1,8 +1,19 @@
 {
-  "headline": "Inference optimisation is turning from a craft into a *search*.",
-  "subhead": "Agents rewrite the serving stack against replayed real traffic: one model, one workload, one chip at a time.",
-  "intro": "Serving a large language model is its own engineering discipline: kernels that run on the chip, an engine that batches requests, a scheduler that decides which machine does what. Until recently people tuned all of it by hand, once per model. During 2026, teams began handing that work to coding agents that profile the stack, rewrite parts of it, measure the result on real traffic and keep what wins. This page tracks that change: who is doing it, what the evidence shows, where the claims outrun the evidence, and whether your own reading of it is holding up. An agent re-examines it every three days.",
+  "headline": "Inference is becoming *load-aware*: the stack now fits itself to the traffic.",
+  "subhead": "Six levers move with the load, from which model answers to which kernel runs. Coding agents are what make re-tuning them affordable.",
+  "intro": "Serving a large language model means a chain of decisions: which model answers, which machine takes the request, how a cluster is split between reading prompts and writing answers, how generation is sped up, and how it all runs on a particular chip. Each used to be set once, by hand. During 2026 they began to move with the load: with what is being asked, by whom, on what hardware. Coding agents made that affordable by taking over the tuning. This page maps the levers and how they connect, tracks who has each one working and what it has bought, and checks the claims against the evidence, including your own reading of it. An agent re-examines it every day.",
   "picture": [
+    {
+      "head": "Six levers now move with the load",
+      "text": "Which model answers, which machine takes it, how the cluster is split, how tokens are written, how the engine runs, and what the model is. Four are in production somewhere.",
+      "signals": [
+        "2026-08-13-databricks-smart-routing",
+        "2026-08-17-llmd-sticky-until-saturated",
+        "2026-07-06-dspark",
+        "2026-11-04-together-compiler"
+      ],
+      "more": "map"
+    },
     {
       "head": "Ten teams have announced the same loop since October",
       "text": "Agents that profile an engine, rewrite part of it, measure, and keep what wins. Providers, both open engines, academics and one customer. Fourteen more teams described versions earlier.",
@@ -15,20 +26,11 @@
       "more": "roster"
     },
     {
-      "head": "It fits the stack to what you have",
-      "text": "The best kernels and settings differ by model, traffic and chip. Agents now regenerate them per combination, on NVIDIA, AMD, in-house and phone chips alike.",
+      "head": "The prompt cache ties the levers together",
+      "text": "Nine-tenths of agent tokens are re-read context, cached per model and per machine. That is why routing is sticky and why the model is chosen once per session.",
       "signals": [
-        "2026-11-16-together-deleted-megakernels",
-        "2026-11-inferact-autonomous-inference-system",
-        "2026-11-03-modelblaster",
-        "2026-04-02-meta-kernelevolve"
-      ]
-    },
-    {
-      "head": "A public benchmark gave them a hill to climb",
-      "text": "AgentX replays real coding-agent sessions. Nearly every result is stated against it, and agent traffic rewards different optimisations than chat did.",
-      "signals": [
-        "2026-08-24-agentx-inferencex-v3",
+        "2026-10-08-openrouter-cache-is-crucial",
+        "2026-08-13-databricks-smart-routing",
         "2026-09-08-vllm-agentx"
       ]
     },
@@ -202,6 +204,42 @@
       "lower_if": "Local runtimes keep converging on vendor compilers and one-off autotuning, and cost analyses keep favouring shared capacity.",
       "status": "retired",
       "retired_why": "Retired the day it was opened. It tested whether the loop reaches on-device hardware, which is not what the reader meant by local. The part that matters, the stack fitting whatever chip it finds, now sits under C2."
+    },
+    {
+      "id": "C9",
+      "short": "Open and frontier models share the work",
+      "statement": "Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made.",
+      "plain": "Nobody picks one model any more. Something picks per session, and it cannot change its mind mid-session without paying to re-read everything.",
+      "why": "For a provider this sets what you serve. Open models carry most of the tokens and about a quarter of the money, and the routing decision is a product you can own or lose to the harness.",
+      "confidence": 0.7,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.7,
+          "why": "Opened when the reader widened the frame. Coexistence is measured on two gateways and shipped by five products. Held down because an independent test found routers do not beat a fixed cheap model, and a static swap may capture most of the saving."
+        }
+      ],
+      "raise_if": "An independent agentic benchmark, with caching priced in, shows a shipped router beating the best fixed model on cost at equal quality.",
+      "lower_if": "Open models stall or frontier prices fall so that one model is simply best, or more products drop automatic routing.",
+      "status": "active"
+    },
+    {
+      "id": "C10",
+      "short": "The model itself becomes a setting",
+      "statement": "Tuning an open model to one domain or harness (post-training, reinforcement learning, distillation) works as an inference optimisation: a smaller tuned model does a narrow job at lower cost and latency than a general one.",
+      "plain": "Instead of making a big model run faster, you make a small one good enough at your one job.",
+      "why": "For a provider this is the lever with the most lock-in and the shortest shelf life. A tuned model needs its own drafter and its own compiled engine, and it is tied to a base model that may be withdrawn within months.",
+      "confidence": 0.45,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.45,
+          "why": "Opened when the reader widened the frame. Named customers report real gains on narrow tasks, one measured by a third party. Against that: a tuner's own table shows a newer general model beating its tuned one, a frontier lab is withdrawing fine-tuning, and tunable bases churn within weeks."
+        }
+      ],
+      "raise_if": "A tuned open model shown head to head against a current frontier model on the customer's own task, with cost, and still ahead three months later.",
+      "lower_if": "More tuned models overtaken by the next general release within a quarter, or more providers withdrawing tuning products.",
+      "status": "active"
     }
   ]
 }

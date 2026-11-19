@@ -1,0 +1,56 @@
+{
+  "id": "2026-08-31-fireworks-training-api",
+  "title": "Training API now GA: custom RL and fine-tuning loops",
+  "url": "https://fireworks.ai/blog/training-api-general-availability",
+  "org": "Fireworks AI",
+  "published": "2026-08-31",
+  "added": "2026-11-19",
+  "kind": "product",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "dedicated",
+  "gist": "The customer writes the loss or reward, the data and the environment; Fireworks runs the distributed trainer and rollout deployment and serves the result. In November it added adapters served with no idle charge and a preview tool that builds evaluations from production traces. Its customer results are the fullest set published for this lever.",
+  "changes": "The most complete evidence that tuning an open model buys cost and latency on a narrow task. Its own changelog also shows the catch: tunable base models are added and withdrawn within weeks.",
+  "caveats": "All results are the vendor's or its customers'. No data volumes, compute or prices. The changelog shows managed reinforcement fine-tuning paused in October and one base model added to training and removed two months later.",
+  "numbers": [
+    {
+      "metric": "Real secrets caught at a 5% false-alarm budget",
+      "value": "about 70% against 59%",
+      "baseline": "a general frontier model",
+      "verification": "self-reported",
+      "setup": "two adapters on an open base, one customer"
+    },
+    {
+      "metric": "Latency after moving off closed models",
+      "value": "3.5x lower",
+      "baseline": "the customer's previous closed-model setup",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "Named customers report a tuned open model beating a general one on their own narrow task."
+    },
+    {
+      "claim": "C10",
+      "direction": "challenges",
+      "note": "The same provider paused one tuning method and cycled a base model in and out within two months."
+    }
+  ],
+  "also": [
+    {
+      "label": "Changelog",
+      "url": "https://docs.fireworks.ai/updates/changelog"
+    },
+    {
+      "label": "Harvey case study",
+      "url": "https://fireworks.ai/customers/harvey-tenet-kimi-k3-post-training"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

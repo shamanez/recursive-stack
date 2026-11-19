@@ -1,0 +1,32 @@
+{
+  "id": "2026-10-19-together-post-training",
+  "title": "Together Post-Training",
+  "url": "https://www.together.ai/blog/together-post-training",
+  "org": "Together AI",
+  "published": "2026-10-19",
+  "added": "2026-11-19",
+  "kind": "product",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "dedicated",
+  "gist": "A service for building custom models on open-weight bases by reinforcement learning or supervised fine-tuning. The customer writes the training loop and Together runs the trainer and the rollout fleet, which reuses its serving stack. Trained adapters can be swapped inside one deployment, and checkpoints are served on the numerics they were trained with.",
+  "changes": "Tuning the model is being sold as part of the serving stack by the same provider that sells the compiler and the router. Serving many adapters from one deployment is what keeps a tuned model per customer affordable.",
+  "caveats": "No benchmark or cost numbers: two customer statements and a promotional price. It does not say how training connects to the compiler or to speculative decoding.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A provider ships model tuning alongside its inference products, with one customer reporting a closed model's quality matched offline."
+    },
+    {
+      "claim": "C3",
+      "direction": "supports",
+      "note": "Many adapters sharing one deployment lowers the cost of a model per customer."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

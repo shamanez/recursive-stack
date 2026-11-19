@@ -166,10 +166,10 @@
         "signal": "2026-10-28-decagon-autoresearch"
       },
       {
-        "label": "Draft model tuned on customer traces",
+        "label": "Draft model tuned on workload traces",
         "value": 1.2,
         "group": "one",
-        "note": "Modal, against a generic draft model",
+        "note": "Modal, against a generic draft model; whether it used the customer's own traffic is unconfirmed",
         "signal": "2026-09-23-modal-trillion-tokens"
       },
       {
@@ -186,5 +186,117 @@
       "C2"
     ],
     "featured": true
+  },
+  {
+    "id": "speculation-under-load",
+    "type": "pairs",
+    "title": "Speculative decoding, alone and under load",
+    "takeaway": "The speed-up shrinks as batches fill, and some drafters fall below break-even.",
+    "unit": "x",
+    "from_label": "one request at a time",
+    "to_label": "32 or more at once",
+    "reference": 1,
+    "reference_label": "no gain",
+    "rows": [
+      {
+        "label": "Newest block drafter, best task",
+        "from": 3.43,
+        "to": 1.45,
+        "note": "DFlash 2, concurrency 1 then 32",
+        "signal": "2026-08-18-dflash-2"
+      },
+      {
+        "label": "Rival drafters, best task",
+        "from": 2.69,
+        "to": 1.13,
+        "note": "Built-in MTP head and a community DSpark build; below 1x on four of five tasks at 32",
+        "signal": "2026-08-18-dflash-2"
+      },
+      {
+        "label": "Online-trained drafter",
+        "from": 1.92,
+        "to": 1.57,
+        "note": "Together Aurora, batch 1 then 32",
+        "signal": "2026-03-31-together-aurora"
+      },
+      {
+        "label": "Older drafter, independent study",
+        "from": 1.73,
+        "to": 1.21,
+        "note": "EAGLE in vLLM, batch 1 then 128",
+        "signal": "2025-12-31-speculative-decoding-performance-or-illusion"
+      }
+    ],
+    "caption": "Speed-up over plain decoding. Different models and drafters; read each row as a slope.",
+    "claims": [
+      "C2"
+    ],
+    "featured": true
+  },
+  {
+    "id": "routing-savings",
+    "type": "bars",
+    "title": "What choosing the model saves, by who measured it",
+    "takeaway": "Vendors report a third to three-fifths off. Outside, a trained router halved cost; no shipped router beat a cheap default.",
+    "unit": "%",
+    "groups": [
+      {
+        "id": "vendor",
+        "name": "Measured by the vendor"
+      },
+      {
+        "id": "outside",
+        "name": "Measured by someone else"
+      }
+    ],
+    "rows": [
+      {
+        "label": "Cursor Router",
+        "value": 60,
+        "group": "vendor",
+        "note": "at near-frontier user satisfaction",
+        "signal": "2026-07-22-cursor-router"
+      },
+      {
+        "label": "Together Link",
+        "value": 50,
+        "group": "vendor",
+        "note": "over half, no baseline method given",
+        "signal": "2026-10-05-together-link"
+      },
+      {
+        "label": "Databricks Smart Routing",
+        "value": 35,
+        "group": "vendor",
+        "note": "internal workloads, against the best single model",
+        "signal": "2026-08-13-databricks-smart-routing"
+      },
+      {
+        "label": "Fireworks Nexus",
+        "value": 33,
+        "group": "vendor",
+        "note": "cost per merged pull request, preliminary",
+        "signal": "2026-07-26-fireworks-nexus"
+      },
+      {
+        "label": "Trained step-level router",
+        "value": 53,
+        "group": "outside",
+        "note": "TwinRouterBench, caching priced in, 100 live cases",
+        "signal": "2026-05-14-twinrouterbench"
+      },
+      {
+        "label": "Seven shipped routers",
+        "value": 0,
+        "group": "outside",
+        "note": "AutoBench: none beat always using a cheap strong model",
+        "signal": "2026-10-26-autobench-do-routers-route"
+      }
+    ],
+    "caption": "Cost reduction at claimed equal quality, each against its own baseline. The baselines differ.",
+    "claims": [
+      "C9"
+    ],
+    "featured": false
   }
 ]

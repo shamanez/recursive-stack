@@ -1,0 +1,41 @@
+{
+  "id": "2026-07-22-cursor-router",
+  "title": "Cursor Router",
+  "url": "https://cursor.com/blog/router",
+  "org": "Cursor",
+  "published": "2026-07-22",
+  "added": "2026-11-19",
+  "kind": "product",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "A classifier runs before each agent request and picks a model from the query, context, task complexity and domain. It was trained on more than 600,000 live requests with a user-satisfaction reward, and the cost of cache misses was included in training. Three modes set the trade-off between cost and capability.",
+  "changes": "The opposite bet on granularity: route every request and price the cache miss into the decision. It is also the largest disclosed training set for a router, built from the harness owner's own traffic.",
+  "caveats": "Satisfaction is an inferred proxy and nothing is independently checked. Staff confirmed that switching mid-conversation is intended and that it resets the prefix cache. The named pool has no open-weight models.",
+  "numbers": [
+    {
+      "metric": "Cost at near-frontier satisfaction",
+      "value": "about 60% lower",
+      "baseline": "always using the strongest model",
+      "verification": "self-reported",
+      "setup": "online A/B test"
+    },
+    {
+      "metric": "Cost per commit",
+      "value": "$4.63 routed, against $7.34 and $12.69",
+      "baseline": "two fixed frontier models",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "Routing between models is in production at scale, but here the pool is all closed models and the route changes per request."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -5,53 +5,76 @@ the single source of truth for how any agent works in this repository.
 
 ## What this repository is
 
-A living, opinionated read on one question: **now that coding agents can do
-performance engineering, what happens to the layer that serves the models?**
+A living, opinionated read on one question: **as inference becomes load-aware and
+adaptive, and coding agents take over the tuning, what happens to the layer that
+serves the models?**
 
-It is not a reading list. It holds a thesis made of claims that can lose, the
-evidence for and against each, the places credible sources disagree, dated checks
-written before the answer is known, and a running verdict on whether the human
-reader's own framing is holding up. An agent updates it every three days.
+It is not a reading list. It holds a big-picture map of the levers that adapt
+inference to the load and how they connect, a thesis made of claims that can lose,
+the evidence for and against each, the places credible sources disagree, dated
+checks written before the answer is known, a build order, and a running verdict on
+whether the human reader's own framing is holding up. An agent updates it every
+day, with a deeper pass once a week.
+
+## Who it is for
+
+One reader, who steers it. They read it as an inference **provider**, want to
+understand the whole area and how to build such a system, and asked for figures
+over paragraphs. What they have said so far is listed at the top of
+`playbooks/steer.md`. Read it before any judgement call.
 
 ## Layout
 
 ```
 data/                 the source of truth; everything else is generated from it
-  thesis.json         headline, intro paragraph, the five points, and the claims with confidence history
-  course.json         the reader's framing judged part by part, their position (provider), and what the evidence implies for it
+  thesis.json         headline, intro paragraph, the five points, the claims with confidence history
+  map.json            the big picture: six levers, how each connects, the loop, and the build order
+  course.json         the reader's framing judged part by part, their position, what the evidence implies for it
   signals/*.json      one file per source that moved something
+  roster.json         every team that has described the loop, one line each
   figures.json        charts drawn from numbers in the signals
   tensions.json       where sources do opposite things, and what would settle it
   watchlist.json      dated checks, and the feeds every sweep looks at
-  model.json          vocabulary: stack layers, means, places, timescales, the loop, the then/now flow
+  model.json          vocabulary: stack layers, means, places, timescales, loop stages, the then/now flow
   glossary.json       plain definitions; auto-linked on the page
-  roster.json         every team that has described the loop, one line each
   cycles/*.json       one record per sweep: what changed, what was left out
   meta.json           title, cadence, repo URL
 site/template.html    the page: all CSS, JS and figure code. Data is injected at build
 scripts/build.py      validates data/ and writes index.html and BRIEF.md (stdlib only)
+scripts/serve.py      serves the page over HTTP for checking it
 scripts/sweep.sh      runs one sweep headlessly with claude or codex
-playbooks/sweep.md    the update procedure. Read it before changing data/
+playbooks/            the procedures, as plain markdown (see below)
+.claude/skills/       the same procedures as Claude Code skills
+.agents/skills/       the same procedures as Codex skills
 inbox.md              where the human drops links and notes for the next sweep
 index.html            GENERATED. The interactive dashboard. Never edit by hand
 BRIEF.md              GENERATED. The same state as plain markdown. Read this first
 ```
+
+## The procedures
+
+Each is a file in `playbooks/` and a skill of the same name for both agents. The
+skill files are thin pointers; the playbook is the content. Edit the playbook.
+
+| Skill | Playbook | Use it when |
+|---|---|---|
+| `sweep` | `playbooks/sweep.md` | running the daily update, or asked to update or refresh |
+| `add-signal` | `playbooks/add-signal.md` | a source is to be added or weighed against the thesis |
+| `steer` | `playbooks/steer.md` | the reader says what they mean, changes the scope, or leaves something in the inbox |
+| `roster-check` | `playbooks/roster-check.md` | checking whether any team building the loop is missing |
+| `check-page` | `playbooks/check-page.md` | the template, a figure, a lever or the roster changed |
 
 ## Commands
 
 ```
 python3 scripts/build.py           # validate, then write index.html and BRIEF.md
 python3 scripts/build.py --check   # validate only
+python3 scripts/serve.py           # serve the page at http://127.0.0.1:8765
 scripts/sweep.sh claude            # one headless sweep with Claude Code
 scripts/sweep.sh codex             # one headless sweep with Codex
 ```
 
-There are no dependencies to install. Open `index.html` in a browser to view it.
-
-## The one recurring job
-
-When asked to sweep, update, refresh or run a cycle: follow `playbooks/sweep.md`
-exactly. In Claude Code, `/sweep` does this.
+There are no dependencies to install.
 
 ## Rules for the data
 
@@ -59,46 +82,42 @@ exactly. In Claude Code, `/sweep` does this.
   passes with zero errors, the shape is right. Read its warnings: they are the
   discipline checks (a claim with no counter-evidence, an overdue check, prose over
   its word cap).
-- Use only ids defined in `data/model.json` for layers, means and places.
-- A signal exists because it moves a claim, a tension or a check. Otherwise it goes
-  in the cycle record's `rejected` list with a reason.
+- Use only ids defined in `data/model.json` for layers, means, places and clocks.
+- A signal exists because it moves a claim, a lever, a tension or a check.
+  Otherwise it goes in the cycle record's `rejected` list with a reason.
 - Dates come from the page. Numbers come with a baseline. Verification is stated
   honestly. Paraphrase; never paste source text.
 - Rewrite, do not append. `picture` holds five points at most. Signals that stop
   mattering are retired.
-- Confidence is a judgement. It moves only with a written reason, and never by
-  more than 0.15 per sweep unless a condition the claim named in advance has
-  occurred.
+- On a daily cadence, leave alone what is still true. A quiet day is a small diff.
+- Confidence is a judgement. It moves only with a written reason: no more than
+  0.1 in a day and 0.15 in a week, unless a condition the claim named in advance
+  has occurred.
 
 ## The page is figure-first, with text where it explains
 
-The human reads this to get oriented fast. They asked for figures and flow charts
-over paragraphs, with links for anyone who wants depth. They also said text is
-fine when it is needed to explain. So: a figure for anything that can be drawn,
-a short paragraph where a newcomer would otherwise be lost, and never a paragraph
-that only repeats a figure.
-
-- `intro` in `data/thesis.json` is the landing paragraph (120 words). It says what
-  the inference layer is, what changed, and what this page does about it. Keep it
-  true as the thesis moves.
-- `data/roster.json` lists every team found that has described the loop, with a
-  one-line `gist` (28 words) saying what that team actually did, not what it calls
-  itself. The human asked for this list to be complete. Each sweep looks for teams
-  missing from it. An entry points to a signal if it has been weighed against the
-  thesis, otherwise to a url.
+The reader asked for figures and flow charts over paragraphs, with links for
+anyone who wants depth, and said text is fine when it is needed to explain. So: a
+figure for anything that can be drawn, a short paragraph where a newcomer would
+otherwise be lost, and never a paragraph that only repeats a figure.
 
 - Before writing a sentence, ask whether a figure already on the page should
-  change instead: a loop stage's `status`, a claim's confidence, a row in
-  `figures.json`, a step in the then/now flow.
+  change instead: a lever's `status` or what it has `bought`, a loop stage, a
+  claim's confidence, a row in `figures.json`.
+- `data/map.json` is the organising picture. Every lever says what it listens to
+  in the load, how often it changes, what it has bought with a baseline, and how
+  it depends on its neighbours. The build order follows from it.
+- `intro` in `data/thesis.json` is the landing paragraph (120 words). Keep it true
+  as the thesis moves.
+- `data/roster.json` lists every team found that has described the loop, with a
+  one-line `gist` (28 words) of what that team actually did. The reader asked for
+  this list to be complete.
 - When two or more numbers on one scale tell a story, put them in
   `data/figures.json` (`pairs` for before and after, `bars` for a comparison).
-  Every row cites the signal its number came from. At most four figures are
-  `featured` on the front page.
-- Word caps are enforced as build warnings: a point's `head` 9 words and `text`
-  34; a verdict's `short` 18; a figure's `takeaway` 22; a signal's `gist` 85,
-  `changes` 55, `caveats` 70.
-- Depth lives in the signal's detail sheet and behind its source link, not on the
-  front page.
+  Every row cites the signal its number came from. At most four are `featured`.
+- Word caps are enforced as build warnings. They are listed as `CAPS` at the top
+  of `scripts/build.py`.
+- Depth lives in the signal's detail sheet and behind its source link.
 
 ## Writing style for every prose field
 
@@ -122,8 +141,7 @@ view code. Keep it dependency-free so `index.html` opens from disk. Colour carri
 meaning in three families that never share a chart: means (violet, aqua, orange,
 with a shape each), polarity (blue for, red against, grey mixed) and status
 (verdict pills). If you add a colour, validate it for colour-blind separation in
-both themes. Rebuild and look at the page in a browser, light and dark, before
-committing.
+both themes. After any change, follow `playbooks/check-page.md`.
 
 ## Guardrails
 
@@ -136,5 +154,6 @@ committing.
 ## Done means
 
 `python3 scripts/build.py` exits with zero errors, warnings are cleared or
-explained in the cycle summary, the change is committed with a message naming the
-cycle and the one thing that changed most, and it is pushed.
+explained in the cycle summary, the page was checked if anything visible changed,
+the change is committed with a message naming the cycle and the one thing that
+changed most, and it is pushed.

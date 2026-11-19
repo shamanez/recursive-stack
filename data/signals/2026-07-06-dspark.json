@@ -1,0 +1,53 @@
+{
+  "id": "2026-07-06-dspark",
+  "title": "DSpark: confidence-scheduled speculative decoding with semi-autoregressive generation",
+  "url": "https://arxiv.org/abs/2607.05147",
+  "org": "DSpark authors (deployed at DeepSeek)",
+  "published": "2026-07-06",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "model",
+    "serving"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "A drafter that proposes a block of tokens at once, with a confidence head predicting how many will survive checking. A scheduler then admits draft tokens per request until a profiled throughput curve stops improving, so the amount of speculation grows at moderate load and shrinks as concurrency rises.",
+  "changes": "Speculative decoding that listens to the load, in production at a model lab. It is the clearest case of two levers being tuned together: how far to speculate is set by how full the batches are.",
+  "caveats": "Self-reported; offline numbers were measured with the scheduler switched off, and the paper warns its strict-latency figures are not typical. An open-engine reproduction confirmed the trend, not the numbers. Drafting cost is wasted on requests where little is accepted.",
+  "numbers": [
+    {
+      "metric": "Aggregate throughput at moderate latency targets, live traffic",
+      "value": "about 51 to 52% higher",
+      "baseline": "the previous production drafter (one-token MTP)",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Accepted length by domain",
+      "value": "5.57 maths, 5.12 code, 3.49 chat",
+      "baseline": "the same drafter across domains",
+      "verification": "self-reported",
+      "setup": "Qwen3-4B, offline"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Acceptance differs by domain and the best amount of speculation changes with load, so the setting cannot be fixed."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "The adaptation is per request and per load level, done by one scheduler for everyone, not built per customer."
+    }
+  ],
+  "also": [
+    {
+      "label": "SGLang reproduction",
+      "url": "https://www.lmsys.org/blog/2026-07-06-dspark-sglang/"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

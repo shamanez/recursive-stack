@@ -1,0 +1,48 @@
+{
+  "id": "2026-10-14-vllm-byog-evals-rfc",
+  "title": "RFC: bring-your-own-GPU evaluations for model-optimisation changes",
+  "url": "https://github.com/vllm-project/vllm/issues/61698",
+  "org": "vLLM maintainers",
+  "authors": "Lucas Wilkinson",
+  "published": "2026-10-14",
+  "added": "2026-11-19",
+  "kind": "repo",
+  "layers": [
+    "loop",
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "A proposal that vLLM's CI build a signed evaluation image per commit which anyone can run on their own GPUs, with results going to a public database. It states that greedy decoding is not bit-reproducible once batch composition changes, so correctness has to be judged by calibrated task-level tolerances plus a check on token probabilities.",
+  "changes": "Shows how weak the usual correctness gate is. In the discussion, a standard task benchmark caught one of seven known numerical bugs when they were replayed, and passed a run in which the engine had crashed.",
+  "caveats": "A proposal, still open; results would be informational, not blocking. The figures come from a comment in the thread, not a study.",
+  "numbers": [
+    {
+      "metric": "Known numerical bugs caught by a standard task-score gate",
+      "value": "1 of 7",
+      "baseline": "seven historical bugs replayed",
+      "verification": "third-party",
+      "setup": "reported in the RFC discussion"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "The gate most teams use misses six of seven real numerical bugs."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "The open engine is building shared evaluation infrastructure in public."
+    }
+  ],
+  "also": [
+    {
+      "label": "Fast-track RFC: the evidence bar",
+      "url": "https://github.com/vllm-project/vllm/issues/59665"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

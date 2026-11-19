@@ -1,0 +1,45 @@
+{
+  "id": "2026-08-26-harvey-tenet",
+  "title": "Harvey Tenet: post-training Kimi K3 for legal work",
+  "url": "https://fireworks.ai/customers/harvey-tenet-kimi-k3-post-training",
+  "org": "Fireworks AI and Harvey",
+  "published": "2026-08-26",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "dedicated",
+  "gist": "A legal AI company post-trained an open model with reinforcement learning on tens of thousands of long agent runs per checkpoint, each over 50 turns. The trained model nearly doubled its pass rate on a legal agent benchmark at about the same cost per task, and the gain carried to two held-out legal benchmarks.",
+  "changes": "The strongest single result for tuning as an inference lever: nearly twice the quality for the same serving cost, on the customer's own kind of work.",
+  "caveats": "No comparison with a frontier model, and no training data or compute disclosed. A public leaderboard checked eight weeks later showed several cheaper general models at or above its score, though the runs are not strictly comparable.",
+  "numbers": [
+    {
+      "metric": "Pass rate on a legal agent benchmark",
+      "value": "19.7% against 10.8%",
+      "baseline": "the same open model before tuning, at about the same cost per task",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Held-out corporate law benchmark",
+      "value": "58.8% to 74.0%",
+      "baseline": "the same open model before tuning",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "Tuning nearly doubled quality on the customer's domain at flat cost."
+    },
+    {
+      "claim": "C10",
+      "direction": "complicates",
+      "note": "Within two months general models appear to have caught up on the same leaderboard."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

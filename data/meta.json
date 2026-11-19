@@ -1,7 +1,7 @@
 {
   "title": "The Recursive Stack",
-  "tagline": "A living read on one question: now that coding agents can do performance engineering, what happens to the layer that serves the models? Updated every three days by an agent that has to change its mind in public.",
+  "tagline": "A living read on one question: as inference becomes load-aware, and coding agents take over the tuning, what happens to the layer that serves the models? Updated daily by an agent that has to change its mind in public.",
   "started": "2026-11-19",
-  "cadence_days": 3,
+  "cadence_days": 1,
   "repo": "https://github.com/shamanez/recursive-stack"
 }

@@ -1,0 +1,59 @@
+{
+  "id": "2026-09-22-openrouter-token-state-of-play",
+  "title": "The token state of play",
+  "url": "https://openrouter.ai/data/newsletter/the-token-state-of-play",
+  "org": "OpenRouter",
+  "authors": "Peter Walker",
+  "published": "2026-09-22",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "Gateway data on who serves what. Open-weight models have carried most tokens since April while closed models still take most of the money, and a new premium closed model pulls spend back within weeks. A second gateway reports the same pattern.",
+  "changes": "Coexistence, measured: volume goes to open models and money to closed ones. For a provider of open models this is the market, most of the tokens and a quarter of the spend.",
+  "caveats": "One gateway's developer-heavy traffic, with token and spend figures from different weeks. The second gateway's index corroborates the direction, not the exact shares.",
+  "numbers": [
+    {
+      "metric": "Open-weight share of tokens",
+      "value": "above 62% since April, peaking at 79%",
+      "baseline": "under half at the start of the year",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Closed-weight share of spend",
+      "value": "73%, down from 89% in January",
+      "baseline": "the same gateway",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Open-weight share on a second gateway",
+      "value": "71.5% of tokens for 22.6% of spend",
+      "baseline": "7.0% of tokens the previous December",
+      "verification": "self-reported",
+      "setup": "Vercel AI Gateway index"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "supports",
+      "note": "Both kinds of model carry real traffic at once, split by volume and by money."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "The average start-up on the gateway uses 12 models and more than half changed their top model in a month."
+    }
+  ],
+  "also": [
+    {
+      "label": "Vercel AI Gateway production index",
+      "url": "https://vercel.com/blog/ai-gateway-production-index-october-2026"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -30,10 +30,12 @@ VERDICTS = {"holding", "sharpen", "unsupported", "wrong"}
 CHANGE_TYPES = {"added", "revised", "retired", "confidence", "tension", "watch", "course", "model"}
 LOOP_STATUS = {"working", "bottleneck", "unproven"}
 FIGURE_TYPES = {"pairs", "bars"}
+LEVER_STATUS = {"working", "early", "planned"}
 ROSTER_STAGES = {"production", "upstream", "research", "claimed", "retracted"}
 
 # Word caps. The page is figure-first; prose that outgrows these belongs behind a link.
-CAPS = {"intro": 120, "roster.gist": 28, "picture.head": 9, "picture.text": 34, "verdict.short": 18, "figure.takeaway": 22,
+CAPS = {"intro": 120, "roster.gist": 28, "map.umbrella": 60, "lever.question": 24, "lever.adapts": 34, "lever.listens": 34,
+        "lever.bought": 44, "lever.connects": 50, "step.do": 44, "step.bought": 48, "step.watch": 36, "picture.head": 9, "picture.text": 34, "verdict.short": 18, "figure.takeaway": 22,
         "signal.gist": 85, "signal.changes": 55, "signal.caveats": 70}
 
 errors, warnings = [], []
@@ -105,6 +107,7 @@ def main():
     glossary = load(DATA / "glossary.json") or []
     figures = load(DATA / "figures.json") or []
     roster = load(DATA / "roster.json") or {}
+    bigmap = load(DATA / "map.json") or {}
 
     signals = []
     for path in sorted((DATA / "signals").glob("*.json")):
@@ -188,8 +191,8 @@ def main():
                 err(f"{where}: names unknown signal '{sid}'")
 
     active_signals = [s for s in signals if s.get("status") == "active"]
-    if len(active_signals) > 60:
-        warn(f"{len(active_signals)} active signals. Retire or merge until the set is something a person can hold in their head.")
+    if len(active_signals) > 80:
+        warn(f"{len(active_signals)} active signals. Six levers and a loop need about ten each; past eighty, retire or merge.")
 
     # ---- model
     for stage in model.get("loop", []):
@@ -244,6 +247,43 @@ def main():
                 warn(f"claim {cid}: only supporting evidence is logged. Go and look for the counter-case.")
             if not sum(ev.values()):
                 warn(f"claim {cid}: no evidence attached at all.")
+
+    # ---- map: the levers, how they connect, and the build order
+    need(bigmap, ["umbrella", "levers", "loop", "build"], "map.json")
+    cap(bigmap.get("umbrella"), "map.umbrella", "map.json umbrella")
+    clock_ids = {x["id"] for x in model.get("timescales", [])}
+    lever_ids = set()
+    for lever in bigmap.get("levers") or []:
+        lid = lever.get("id", "?")
+        where = f"map.json lever '{lid}'"
+        if lid in lever_ids:
+            err(f"{where}: duplicate id")
+        lever_ids.add(lid)
+        need(lever, ["id", "n", "name", "question", "adapts", "listens", "clock", "status", "bought", "connects", "signals"], where)
+        if lever.get("clock") not in clock_ids:
+            err(f"{where}: clock must be one of {sorted(clock_ids)} (see timescales in model.json)")
+        if lever.get("status") not in LEVER_STATUS:
+            err(f"{where}: status must be one of {sorted(LEVER_STATUS)}")
+        for field in ("question", "adapts", "listens", "bought", "connects"):
+            cap(lever.get(field), f"lever.{field}", f"{where} {field}")
+        known_signals(lever.get("signals"), where)
+        for cid in lever.get("claims") or []:
+            if cid not in claim_ids:
+                err(f"{where}: names unknown claim '{cid}'")
+    need(bigmap.get("loop") or {}, ["name", "hint", "text", "connects"], "map.json loop")
+    known_signals((bigmap.get("loop") or {}).get("signals"), "map.json loop")
+    for i, step in enumerate(bigmap.get("build") or []):
+        where = f"map.json build[{i}]"
+        need(step, ["name", "do", "bought", "signals", "levers"], where)
+        for field in ("do", "bought", "watch"):
+            cap(step.get(field), f"step.{field}", f"{where} {field}")
+        known_signals(step.get("signals"), where)
+        for lid in step.get("levers") or []:
+            if lid not in lever_ids:
+                err(f"{where}: names unknown lever '{lid}'")
+        for part in step.get("parts") or []:
+            if not part.get("label") or not str(part.get("url", "")).startswith("http"):
+                err(f"{where}: each part needs a label and an absolute url")
 
     # ---- roster
     need(roster, ["recent_from", "entries"], "roster.json")
@@ -376,7 +416,9 @@ def main():
     # ---- cycles
     for cyc in cycles:
         where = f"cycles/{cyc['_file']}.json"
-        need(cyc, ["id", "n", "agent", "summary", "changes", "next_due"], where)
+        need(cyc, ["id", "agent", "summary", "next_due"], where)
+        if not isinstance(cyc.get("n"), int) or not isinstance(cyc.get("changes"), list):
+            err(f"{where}: needs an integer 'n' and a 'changes' list (empty on a quiet day)")
         if cyc.get("id") != cyc["_file"] or not is_date(cyc.get("id")):
             err(f"{where}: id must be the YYYY-MM-DD file name")
         for change in cyc.get("changes") or []:
@@ -415,6 +457,7 @@ def main():
         "signals": signals,
         "figures": figures,
         "roster": roster,
+        "map": bigmap,
         "tensions": tensions,
         "watch": watch,
         "course": course,
@@ -457,6 +500,24 @@ def brief(b, evidence):
     for point in thesis["picture"]:
         add(f"- **{point['head']}.** {point['text']} ({', '.join(link(s) for s in point['signals'])})")
     add("")
+    levers = b["map"].get("levers") or []
+    if levers:
+        add("## The big picture: six levers and a loop")
+        add("")
+        add(b["map"]["umbrella"])
+        add("")
+        add("| Lever | The question it answers | Listens to | Stage | Has bought |")
+        add("|---|---|---|---|---|")
+        for lv in levers:
+            add(f"| {lv['n']}. {lv['name']} | {lv['question']} | {lv['listens']} | {lv['status']} | {lv['bought']} |")
+        add("")
+        add(f"**{b['map']['loop']['name']}.** {b['map']['loop']['text']}")
+        add("")
+        add("## A build order")
+        add("")
+        for i, step in enumerate(b["map"].get("build") or [], 1):
+            add(f"{i}. **{step['name']}.** {step['do']} _What it has bought others:_ {step['bought']}")
+        add("")
     entries = sorted(b["roster"].get("entries", []), key=lambda e: e.get("updated") or e["when"], reverse=True)
     if entries:
         add("## Who is building the loop")

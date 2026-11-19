@@ -1,0 +1,33 @@
+{
+  "id": "2026-10-05-together-link",
+  "title": "Together Link: frontier-quality open models in the harness you already use",
+  "url": "https://www.together.ai/blog/together-link-frontier-quality-open-models-in-the-harness-you-already-use",
+  "org": "Together AI",
+  "authors": "Will Van Eaton, Hassan El Mghari",
+  "published": "2026-10-05",
+  "added": "2026-11-19",
+  "kind": "product",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "A one-command setup that points an existing coding agent (Claude Code, Codex and others) at open models hosted by Together. In auto mode a router reads the first task of each session and picks a model once. With the user's own Anthropic key it chooses between a closed frontier model and an open one; without it, between a strong open model and a fast one.",
+  "changes": "Open and frontier models sharing one harness, with the choice made by the serving side. Routing once per session is a design forced by the layer below: switching mid-session would throw away the prompt cache.",
+  "caveats": "No quality, latency or price benchmarks. The over-50% saving is against an all-frontier counterfactual with no method given. A session that gets harder stays on the model it started with.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "supports",
+      "note": "A shipped product that splits sessions between an open model and a frontier one inside the same harness."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "How often the model can be chosen is set by the prompt cache, a property of the traffic, not of the router."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

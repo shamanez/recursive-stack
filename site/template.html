@@ -149,6 +149,48 @@ details > summary:hover { color: var(--accent); }
 .loopback::before { content: ""; width: 26px; height: 12px; border: 2px solid var(--accent); border-top: 0; border-radius: 0 0 8px 8px; }
 .loopback::after { content: ""; flex: 1; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
 
+/* ---------- figure: the lever map (a request's path, the model under it, the loop around it) */
+.lmap { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px 18px; display: grid; gap: 6px; }
+.lends { display: flex; justify-content: space-between; font: 500 11px/1 var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); padding-bottom: 2px; }
+.lflow { display: flex; gap: 3px; }
+.lstep, .lbase, .lloop { border: 0; cursor: pointer; text-align: left; font: inherit; color: var(--ink); }
+.lstep { flex: 1; min-width: 0; min-height: 66px; padding: 9px 18px 9px 26px; background: var(--inset); display: grid; gap: 4px; align-content: center;
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%, 13px 50%); }
+.lstep:first-child { padding-left: 16px; clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%); border-radius: 8px 0 0 8px; }
+.lname { font: 600 13.5px/1.2 var(--font-display); }
+.lmeta { display: flex; align-items: center; gap: 6px; font: 400 10.5px/1 var(--font-data); color: var(--ink-3); }
+.lmeta i { width: 7px; height: 7px; border-radius: 50%; background: var(--tone, var(--ink-3)); flex: none; }
+.lbase { background: var(--inset); border-radius: 8px; padding: 10px 16px; display: flex; gap: 8px 14px; align-items: center; flex-wrap: wrap; }
+.lbase .lhint, .lloop .lhint { font-size: 12.5px; color: var(--ink-2); }
+.lloop { background: var(--accent-soft); border-radius: 8px; padding: 10px 16px; display: flex; gap: 8px 14px; align-items: center; flex-wrap: wrap; }
+.lloop .lname { color: var(--accent); }
+.lstep:hover, .lbase:hover { background: var(--line); }
+.lstep[aria-pressed="true"], .lbase[aria-pressed="true"], .lloop[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+[aria-pressed="true"] > .lname, [aria-pressed="true"] .lmeta, [aria-pressed="true"] .lhint { color: var(--on-accent); }
+.lstep:focus-visible { outline: none; text-decoration: underline; }
+.lever-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px 32px; padding: 14px 4px 0; }
+.lever-detail h3 { font-size: 19px; }
+.lever-detail .kv p { font-size: 14px; color: var(--ink-2); }
+.lq { display: grid; gap: 10px; align-content: start; }
+.levers { min-width: 860px; }
+.levers td { font-size: 13.5px; }
+.levers th[scope="row"] { font: 600 14px/1.25 var(--font-display); width: 170px; }
+
+/* ---------- figure: the build path */
+.steps { display: grid; gap: 0; counter-reset: s; }
+.step { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 0 14px; position: relative; padding-bottom: 16px; counter-increment: s; }
+.step::before { content: counter(s); width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: var(--on-accent); font: 600 14px/34px var(--font-data); text-align: center; z-index: 1; }
+.step::after { content: ""; position: absolute; left: 16px; top: 34px; bottom: 0; width: 2px; background: var(--line-2); }
+.step:last-child::after { display: none; }
+.sbody { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 12px; }
+.sbody h3 { font-size: 17px; }
+.sbody > p { color: var(--ink-2); font-size: 14px; max-width: 78ch; }
+.sgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 28px; }
+.sgrid .kv { align-content: start; }
+.sgrid .kv p { font-size: 13.5px; }
+.chips { align-items: flex-start; }
+.watch-out { font-size: 13px; color: var(--ink-2); background: color-mix(in srgb, var(--warn) 12%, var(--surface)); border-radius: 8px; padding: 8px 10px; }
+
 /* ---------- figure: five points */
 .points { display: grid; gap: 0; }
 .point { display: grid; gap: 6px; padding: 14px 0; border-top: 1px solid var(--line); }
@@ -436,6 +478,10 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   .frow { grid-template-columns: minmax(0, 1fr) auto; }
   .frow .ftrack { grid-column: 1 / 3; grid-row: 2; }
   .rrow { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .lflow { flex-direction: column; gap: 2px; }
+  .lstep, .lstep:first-child { min-height: 0; padding: 12px 16px 16px; border-radius: 0; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px)); }
+  .lstep + .lstep { padding-top: 18px; clip-path: polygon(0 0, 50% 8px, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px)); }
+  .lever-detail, .sgrid { grid-template-columns: minmax(0, 1fr); }
   .rstage { justify-self: start; }
 }
 @media (max-width: 480px) { .tiles { grid-template-columns: minmax(0, 1fr); } }
@@ -528,7 +574,9 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   const pill = ([tone, icon, label]) => el('span', { class: `pill t-${tone}` }, el('span', { class: 'pill-i', 'aria-hidden': 'true' }, icon), label);
   const mech = id => el('i', { class: `mg m-${id}`, 'aria-hidden': 'true' });
   const sigLink = (s, label) => el('button', { class: 'link', type: 'button', onclick: () => openSignal(s.id) }, label || s.title);
-  const srcChips = ids => el('div', { class: 'chips' }, [...new Set(ids)].filter(id => sigById[id]).map(id => el('button', { class: 'chip', type: 'button', 'data-tip': sigById[id].title, onclick: () => openSignal(id) }, orgShort(sigById[id]))));
+  // One chip per source, labelled by publisher; when a publisher appears twice, add the start of the title to tell them apart.
+  const srcChips = ids => { const list = [...new Set(ids)].filter(id => sigById[id]); const seen = {}; list.forEach(id => { const o = orgShort(sigById[id]); seen[o] = (seen[o] || 0) + 1; });
+    return el('div', { class: 'chips' }, list.map(id => { const s = sigById[id], o = orgShort(s); return el('button', { class: 'chip', type: 'button', 'data-tip': s.title, onclick: () => openSignal(id) }, seen[o] > 1 ? `${o} · ${s.title.split(/[\s:,]+/).slice(0, 2).join(' ')}` : o); })); };
   const claimChip = (id, direction) => el('button', { class: 'chip', type: 'button', 'data-tip': claimById[id] ? claimById[id].statement : id, onclick: () => { closeSheet(); state.focusClaim = id; go('thesis'); } },
     direction ? el('span', { class: `dir dir-${direction}` }) : null, id, direction ? ` ${direction}` : null);
   const refLabel = ref => !ref ? '' : ` · ${sigById[ref] ? orgShort(sigById[ref]) : ref}`;
@@ -536,7 +584,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   const section = (title, note, ...body) => el('section', { class: 'sec' }, el('h2', null, title), note ? el('p', { class: 'sec-note', 'data-prose': true }, note) : null, body);
   const mechLegend = () => el('div', { class: 'legend' }, M.mechanisms.map(m => el('span', { 'data-tip': m.desc, tabindex: '0' }, mech(m.id), m.name)));
 
-  const state = { mapMode: 'mechanism', loopSel: null, roster: 'recent', sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
+  const state = { mapMode: 'mechanism', loopSel: null, roster: 'recent', lever: null, sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
 
   // =====================================================================
   // FIGURES
@@ -659,6 +707,74 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     return el('figure', { class: 'chart' },
       el('div', { class: 'vhead' }, el('strong', null, 'When the tracked signals were published'), el('span', { class: 'stamp' }, 'count per month')),
       g, el('p', { class: 'small muted' }, `${recent} of ${dated.length} dated signals landed in the last 30 days.` + (clipped ? ' Older months are cut off.' : '')));
+  }
+
+  // The big picture: a request passes five levers, the model sits under them, the loop re-tunes them all.
+  const MAP = D.map || {};
+  const LV = MAP.levers || [];
+  const LVSTAT = { working: ['good', '✓', 'Working today'], early: ['warn', '◐', 'Early'], planned: ['serious', '?', 'Announced, not shown'] };
+  const clockOf = id => M.timescales.find(t => t.id === id) || { name: id, span: '' };
+  const leverChip = id => { const l = LV.find(x => x.id === id); return l ? el('button', { class: 'chip', type: 'button', 'data-tip': l.question, onclick: () => { state.lever = id; go('map'); } }, `${l.n} · ${l.name}`) : null; };
+  function figMap() {
+    if (!LV.length) return null;
+    const path = LV.filter(l => !l.base), base = LV.filter(l => l.base);
+    if (!state.lever) state.lever = path[0].id;
+    const detail = el('div', { class: 'lever-detail', 'aria-live': 'polite' });
+    const btns = {};
+    const mk = (l, cls, hint) => { const tone = `var(--${{ good: 'good', warn: 'warn', serious: 'serious' }[LVSTAT[l.status][0]]})`; const b = el('button', { class: cls, type: 'button', onclick: () => { state.lever = l.id; paint(); } },
+      el('span', { class: 'lname' }, `${l.n} · ${l.name}`), el('span', { class: 'lmeta', style: `--tone:${tone}` }, el('i'), LVSTAT[l.status][2].toLowerCase()), hint ? el('span', { class: 'lhint' }, hint) : null); btns[l.id] = b; return b; };
+    const loopBtn = MAP.loop ? el('button', { class: 'lloop', type: 'button', onclick: () => { state.lever = 'loop'; paint(); } }, el('span', { class: 'lname' }, `↻ ${MAP.loop.name}`), el('span', { class: 'lhint' }, MAP.loop.hint)) : null;
+    if (loopBtn) btns.loop = loopBtn;
+    const stepBtns = path.map(l => mk(l, 'lstep')), baseBtns = base.map(l => mk(l, 'lbase', l.hint));
+    function paint() {
+      Object.entries(btns).forEach(([id, b]) => b.setAttribute('aria-pressed', String(id === state.lever)));
+      if (state.lever === 'loop' && MAP.loop) {
+        detail.replaceChildren(el('div', { class: 'lq' }, el('h3', null, MAP.loop.name), el('p', { style: 'color:var(--ink-2)', 'data-prose': true }, MAP.loop.text)),
+          el('div', { class: 'lq' }, el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'How it connects'), el('p', { 'data-prose': true }, MAP.loop.connects)), srcChips(MAP.loop.signals || []), el('a', { href: '#map', class: 'small' }, 'The loop, stage by stage')));
+      } else {
+        const l = LV.find(x => x.id === state.lever) || LV[0], ck = clockOf(l.clock);
+        detail.replaceChildren(
+          el('div', { class: 'lq' }, el('div', { class: 'vhead' }, el('span', { class: 'tag' }, `Lever ${l.n} · ${ck.name.toLowerCase()} · ${ck.span}`), pill(LVSTAT[l.status])), el('h3', null, l.question),
+            el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What adapts'), el('p', { 'data-prose': true }, l.adapts)),
+            el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What it listens to in the load'), el('p', { 'data-prose': true }, l.listens))),
+          el('div', { class: 'lq' },
+            el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What it has bought'), el('p', { 'data-prose': true }, l.bought)),
+            el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'How it connects to the rest'), el('p', { 'data-prose': true }, l.connects)),
+            srcChips(l.signals || []), (l.claims || []).length ? el('div', { class: 'chips' }, l.claims.map(c => claimChip(c))) : null));
+      }
+      annotate(detail);
+    }
+    paint();
+    return el('div', { class: 'lmap' },
+      el('div', { class: 'lends' }, el('span', null, 'a request comes in →'), el('span', null, '→ tokens go out')),
+      el('div', { class: 'lflow' }, stepBtns), baseBtns, loopBtn, detail);
+  }
+  function viewMap() {
+    return [head('How the parts connect', 'The big picture', MAP.umbrella),
+      section('Before and after', null, figShift()),
+      section('Six levers and a loop', 'A request passes five levers on its way through. The model itself sits under them, and the loop re-tunes all of it. Select any part.', figMap()),
+      section('The levers side by side', null, el('div', { class: 'scroll-x' }, el('table', { class: 'levers' },
+        el('thead', null, el('tr', null, ['Lever', 'Listens to', 'Changes every', 'Stage', 'Has bought'].map(t => el('th', { scope: 'col' }, t)))),
+        el('tbody', null, LV.map(l => el('tr', null, el('th', { scope: 'row' }, `${l.n} · ${l.name}`), el('td', { 'data-prose': true }, l.listens), el('td', { class: 'num' }, clockOf(l.clock).span), el('td', null, pill(LVSTAT[l.status])), el('td', { 'data-prose': true }, l.bought))))))),
+      section('The loop, stage by stage', 'Every team on the Who tab is building some version of this. The shaded stage is where they all say the difficulty is.', figLoop()),
+      section('Four clocks', 'Adaptive covers four very different speeds. Most confusion here comes from mixing them.',
+        el('div', { class: 'clocks' }, M.timescales.map(t => el('div', { class: 'clock' }, el('h3', null, t.name), el('span', { class: 'num' }, t.span), el('p', { 'data-prose': true }, t.desc)))))];
+  }
+  function viewBuild() {
+    const steps = MAP.build || [];
+    const pos = D.course.position;
+    return [head(pos ? `A build order for a ${pos.label.toLowerCase()}` : 'A build order', 'How to build one', MAP.build_intro),
+      el('div', { class: 'steps' }, steps.map(st => el('div', { class: 'step' }, el('article', { class: 'sbody' },
+        el('h3', null, st.name), el('p', { 'data-prose': true }, st.do),
+        el('div', { class: 'sgrid' },
+          el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What it has bought others'), el('p', { 'data-prose': true }, st.bought), srcChips(st.signals || [])),
+          el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Parts you can reuse'), (st.parts || []).length ? el('div', { class: 'chips' }, st.parts.map(p => el('a', { class: 'chip', href: p.url, target: '_blank', rel: 'noopener', 'data-tip': p.note || null, style: 'text-decoration:none' }, p.label + ' ↗'))) : el('p', null, 'Nothing public found. This part is written in-house.'))),
+        st.watch ? el('p', { class: 'watch-out', 'data-prose': true }, el('strong', { style: 'color:var(--ink)' }, 'Watch out: '), st.watch) : null,
+        (st.levers || []).length ? el('div', { class: 'chips' }, st.levers.map(leverChip)) : null)))),
+      MAP.build_note ? el('p', { class: 'sec-note' }, MAP.build_note) : null];
+  }
+  function viewWho() {
+    return [head('Everyone found so far', 'Who is building the loop', 'Each team that has described an optimisation loop for inference, with what it actually did. Filled marks are in production or merged upstream.'), figRoster()];
   }
 
   // Who has described the loop: a timeline of first announcements, then one line on each.
@@ -795,7 +911,8 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
 
     const points = el('section', { class: 'sec' }, el('h2', null, `${D.thesis.picture.length} things to know right now`),
       el('div', { class: 'points' }, D.thesis.picture.map(p => el('div', { class: 'point' }, el('h3', null, p.head), el('p', { 'data-prose': true }, p.text), srcChips(p.signals),
-        p.more === 'roster' && ROSTER.length ? el('button', { class: 'more-link', type: 'button', onclick: () => { const r = document.getElementById('roster'); if (r) r.scrollIntoView({ block: 'start' }); } }, `All ${ROSTER.length} teams and what each one did ↓`) : null))));
+        p.more === 'roster' && ROSTER.length ? el('button', { class: 'more-link', type: 'button', onclick: () => go('who') }, `All ${ROSTER.length} teams and what each one did →`) : null,
+        p.more === 'map' && LV.length ? el('button', { class: 'more-link', type: 'button', onclick: () => go('map') }, 'How the levers connect →') : null))));
 
     const course = D.course;
     const coursePanel = el('section', { class: 'panel' },
@@ -809,7 +926,6 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       (course.questions || []).length ? el('details', null, el('summary', null, `${plural(course.questions.length, 'question')} only you can answer`), el('ul', { class: 'plain-list' }, course.questions.map(q => el('li', null, q)))) : null,
       (course.ignore || []).length ? el('details', null, el('summary', null, 'Safe to ignore for now'), el('ul', { class: 'plain-list' }, course.ignore.map(q => el('li', null, q)))) : null);
 
-    const featured = D.figures.filter(f => f.featured);
     const changes = latest.changes ? el('section', { class: 'sec' }, el('h2', null, `Changed in cycle ${latest.n}`),
       el('ul', { class: 'changes' }, latest.changes.slice(0, 5).map(c => el('li', null, el('span', { class: 'tag' }, c.type, refLabel(c.ref)), el('span', { 'data-prose': true }, c.text)))),
       el('a', { href: '#log', class: 'small' }, 'Full cycle log')) : null;
@@ -817,13 +933,10 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       el('ol', { class: 'reads' }, course.read_next.map(r => { const s = sigById[r.signal]; return el('li', null, el('div', null, sigLink(s), el('p', null, r.why))); }))) : null;
 
     return [banner, hero,
-      section('The shift, in one picture', null, figShift()),
+      LV.length ? section('The big picture: six levers and a loop', MAP.umbrella, figMap(), el('a', { href: '#map', class: 'small' }, 'Before and after, the levers side by side, and the loop stage by stage')) : section('The shift, in one picture', null, figShift()),
       el('div', { class: 'cols' }, points, coursePanel),
       implications(),
-      ROSTER.length ? section('Who is building the loop', 'Every team found so far that has described it, with what each one actually did.', figRoster()) : null,
       section('How sure, claim by claim', 'Bar length is confidence. The counts are signals for, mixed and against. Select a claim for its evidence.', figClaims()),
-      section('The loop everyone is building', null, figLoop()),
-      featured.length ? section('The numbers that carry the argument', null, el('div', { class: 'fig-grid' }, featured.map(figure))) : null,
       el('div', { class: 'cols' }, changes, reads)];
   }
 
@@ -905,9 +1018,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     };
     draw();
     return [head('Where, how, and on whose hardware', 'Stack map', 'Every signal placed by stack layer, by what produces the optimisation, and by where it runs. Select a mark to open it.'),
-      holder,
-      section('Four clocks', 'Adaptive covers four very different speeds. Most confusion here comes from mixing them.',
-        el('div', { class: 'clocks' }, M.timescales.map(t => el('div', { class: 'clock' }, el('h3', null, t.name), el('span', { class: 'num' }, t.span), el('p', { 'data-prose': true }, t.desc)))))];
+      holder];
   }
 
   // =====================================================================
@@ -937,7 +1048,9 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       el('input', { type: 'search', id: 'led-q', placeholder: 'Filter: TTFT, Kimi, megakernel…', 'aria-label': 'Filter numbers', value: state.led.q, oninput: e => { state.led.q = e.target.value; draw(); } }),
       state.led.ver ? el('button', { class: 'ghost', type: 'button', onclick: () => pick(state.led.ver) }, `Showing ${VERIF[state.led.ver][2].toLowerCase()} · clear`) : null, count);
     draw();
-    return [head('Every number, with its baseline', 'Evidence ledger', `${rows.length} quantitative claims from the signals. A speed-up with no baseline is not recorded.`),
+    const featured = D.figures.filter(f => f.featured);
+    return [head('The numbers, and who checked them', 'Evidence', `The charts that carry the argument, then all ${rows.length} quantitative claims from the signals. A speed-up with no baseline is not recorded.`),
+      featured.length ? el('div', { class: 'fig-grid' }, featured.map(figure)) : null,
       bar,
       el('div', { class: 'sec' }, controls, el('div', { class: 'scroll-x' }, el('table', { class: 'ledger' },
         el('colgroup', null, ['24%', '20%', '20%', '12%', '14%', '10%'].map(w => el('col', { style: `width:${w}` }))),
@@ -1016,13 +1129,18 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   // LOG, GLOSSARY
   // =====================================================================
   function viewLog() {
-    return [head('What each sweep did', 'Cycle log', `One sweep every ${D.meta.cadence_days} days. Each records what it changed, and what it looked at and left out.`),
-      el('div', { class: 'cards' }, D.cycles.map(c => el('article', { class: 'card' },
-        el('p', { class: 'metaline' }, el('span', null, `Cycle ${c.n}`), el('span', null, fmt(c.id)), el('span', null, c.agent), el('span', null, `next due ${fmt(c.next_due)}`)),
+    const every = D.meta.cadence_days === 1 ? 'One sweep a day' : `One sweep every ${D.meta.cadence_days} days`;
+    const card = c => el('article', { class: 'card' },
+        el('p', { class: 'metaline' }, el('span', null, `Cycle ${c.n}`), el('span', null, fmt(c.id)), el('span', null, c.agent), c.deep ? el('span', null, 'deep pass') : null, el('span', null, `next due ${fmt(c.next_due)}`)),
+        (c.changes || []).length ? null : el('span', { class: 'tag' }, 'quiet day'),
         el('p', { style: 'color:var(--ink);font-size:15px', 'data-prose': true }, c.summary),
         el('ul', { class: 'changes' }, c.changes.map(ch => el('li', null, el('span', { class: 'tag' }, ch.type, refLabel(ch.ref)), el('span', null, ch.text)))),
         (c.rejected || []).length ? el('details', null, el('summary', null, `Looked at and left out (${c.rejected.length})`),
-          el('ul', { class: 'plain-list' }, c.rejected.map(r => el('li', null, r.url ? el('a', { href: r.url, target: '_blank', rel: 'noopener' }, r.title) : r.title, ` · ${r.reason}`)))) : null)))];
+          el('ul', { class: 'plain-list' }, c.rejected.map(r => el('li', null, r.url ? el('a', { href: r.url, target: '_blank', rel: 'noopener' }, r.title) : r.title, ` · ${r.reason}`)))) : null);
+    const recent = D.cycles.slice(0, 14), older = D.cycles.slice(14);
+    return [head('What each sweep did', 'Cycle log', `${every}, and a deeper pass once a week. Each records what it changed, and what it looked at and left out.`),
+      el('div', { class: 'cards' }, recent.map(card)),
+      older.length ? el('details', null, el('summary', null, `Older cycles (${older.length})`), el('div', { class: 'cards', style: 'margin-top:10px' }, older.map(card))) : null];
   }
   function viewGlossary() {
     return [head('Words this field assumes you know', 'Glossary', 'Anywhere on the site, a dotted underline means the definition shows when you point at it.'),
@@ -1105,8 +1223,8 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   // =====================================================================
   // SHELL
   // =====================================================================
-  const VIEWS = { now: viewNow, thesis: viewThesis, stack: viewStack, ledger: viewLedger, tensions: viewTensions, watch: viewWatch, signals: viewSignals, log: viewLog, glossary: viewGlossary };
-  const TABS = [['now', 'Now'], ['thesis', 'Thesis'], ['stack', 'Stack map'], ['ledger', 'Ledger'], ['tensions', 'Tensions'], ['watch', 'Watch'], ['signals', 'Signals'], ['log', 'Cycle log'], ['glossary', 'Glossary']];
+  const VIEWS = { now: viewNow, map: viewMap, build: viewBuild, who: viewWho, thesis: viewThesis, stack: viewStack, ledger: viewLedger, tensions: viewTensions, watch: viewWatch, signals: viewSignals, log: viewLog, glossary: viewGlossary };
+  const TABS = [['now', 'Now'], ['map', 'Big picture'], ['build', 'Build'], ['who', 'Who'], ['thesis', 'Thesis'], ['stack', 'Stack map'], ['ledger', 'Evidence'], ['tensions', 'Tensions'], ['watch', 'Watch'], ['signals', 'Signals'], ['log', 'Cycle log'], ['glossary', 'Glossary']];
   const dueSoon = openChecks.filter(c => dayDiff(c.due) <= D.meta.cadence_days).length;
   const tabs = document.getElementById('tabs');
   tabs.append(...TABS.map(([id, label]) => el('a', { href: `#${id}`, 'data-tab': id }, label, id === 'watch' && dueSoon ? el('span', { class: 'count', title: 'Checks due by the next sweep' }, dueSoon) : null)));

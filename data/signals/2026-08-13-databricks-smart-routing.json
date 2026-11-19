@@ -1,0 +1,51 @@
+{
+  "id": "2026-08-13-databricks-smart-routing",
+  "title": "Smart Routing in Unity AI Gateway: match frontier quality at 30%+ lower cost per task",
+  "url": "https://databricks.com/blog/smart-routing-unity-ai-gateway-match-frontier-quality-30-lower-cost-task",
+  "org": "Databricks",
+  "published": "2026-08-13",
+  "added": "2026-11-19",
+  "kind": "product",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "A small classifier reads only the task description and start-of-session metadata, then one policy starts at a mid-size model and moves up or down. The model is fixed for the session because switching between turns breaks the prompt cache, which the post calls the main cost driver. Sub-agent launches are routed separately.",
+  "changes": "The clearest statement of why routing is done per session: the team tried per-request routing and rejected it on cache cost. Sub-agent launches turn out to be the natural switch point, since they have no cache to lose.",
+  "caveats": "Self-reported with no task counts or pool list. The documentation is narrower than the blog: only sub-agents are routed, the main session keeps its default model, routing for one harness is paused, and the feature is still beta.",
+  "numbers": [
+    {
+      "metric": "Cost per task on internal workloads",
+      "value": "65% of the frontier model's",
+      "baseline": "the best single model, at equal or better quality",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Cost on public coding benchmarks",
+      "value": "56% lower",
+      "baseline": "the frontier model alone, at matched quality",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "supports",
+      "note": "Mixed pools of models behind one gateway, with a classifier choosing per session."
+    },
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "The shipped scope shrank to sub-agents only, and the same team says simply using cheaper models saves over half."
+    }
+  ],
+  "also": [
+    {
+      "label": "Docs, where the scope is narrower",
+      "url": "https://docs.databricks.com/aws/en/ai-gateway/smart-routing"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

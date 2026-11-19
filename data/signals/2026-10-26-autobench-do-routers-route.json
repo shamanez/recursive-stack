@@ -1,0 +1,46 @@
+{
+  "id": "2026-10-26-autobench-do-routers-route",
+  "title": "Do LLM routers actually route? Quick answer: not much",
+  "url": "https://huggingface.co/blog/PeterKruger/router-benchmark-2026-10",
+  "org": "AutoBench",
+  "authors": "Peter Kruger",
+  "published": "2026-10-26",
+  "added": "2026-11-19",
+  "kind": "critique",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "Seven commercial and open routers in 17 settings, tested on 252 open-ended prompts against a pool of 20 models. None beat simply always calling a cheap strong model on quality and cost together, and several collapsed to sending nearly everything to one model.",
+  "changes": "The counter-case for the model-choice lever. If a router cannot beat the cheap strong default, the lever reduces to picking that default well and revisiting it when models change.",
+  "caveats": "Single-turn prompts with an LLM judge; agentic work is left for later. Several routers could reach only part of the pool. The author sells router benchmarking.",
+  "numbers": [
+    {
+      "metric": "Routers beating the cheap strong model on cost and quality together",
+      "value": "0 of 17 settings",
+      "baseline": "always calling one cheap strong model",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Settings where one model received at least 90% of decisions",
+      "value": "5 of 17",
+      "baseline": "all settings tested",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "challenges",
+      "note": "Independent test: routing did not beat a fixed cheap model."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Vendors report 30 to 60% savings; an outside test finds none. Same lever, different rig."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

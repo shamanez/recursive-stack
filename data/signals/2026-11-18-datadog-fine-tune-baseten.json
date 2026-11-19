@@ -1,0 +1,46 @@
+{
+  "id": "2026-11-18-datadog-fine-tune-baseten",
+  "title": "How we fine-tuned a faster model for Patterns on Baseten",
+  "url": "https://www.datadoghq.com/blog/fine-tuning-patterns-baseten/",
+  "org": "Datadog",
+  "published": "2026-11-18",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "loop"
+  ],
+  "mechanism": "agent",
+  "venue": "dedicated",
+  "gist": "Summarisation was most of the cost and half the latency of one product feature. The team distilled a month of a frontier model's production summaries into an adapter on a small open model. A coding agent ran the workflow, with a person approving each paid step.",
+  "changes": "A workload owner replacing a frontier model with a small tuned one for a single job, using its own production outputs as the teacher. It is also an agent working on the model lever, not the engine.",
+  "caveats": "Small evaluation, no head-to-head with the frontier teacher and no dollar figures. The authors say the untuned model mostly failed by running out of tokens; on answers it finished, both passed at the same rate. The base model had already been dropped from another provider's training list.",
+  "numbers": [
+    {
+      "metric": "Average generation time",
+      "value": "0.89 s against 44.7 s",
+      "baseline": "the same small open model untuned",
+      "verification": "self-reported",
+      "setup": "150 held-out cases"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A narrow job moved from a frontier model to a small tuned one, trained on the frontier model's own outputs."
+    },
+    {
+      "claim": "C10",
+      "direction": "complicates",
+      "note": "Most of the measured gain was fixing truncation, not better answers."
+    },
+    {
+      "claim": "C3",
+      "direction": "supports",
+      "note": "One company, one feature, its own traffic as training data."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

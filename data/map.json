@@ -1,0 +1,413 @@
+{
+  "_about": "The big picture. Six levers that adapt inference to the load, in the order a request meets them, plus the loop that re-tunes them and a build order for the reader's position. Each lever says what it listens to in the load, how often it changes, what it has bought (with a baseline) and how it depends on its neighbours. Update a lever's status only when the evidence changes.",
+  "umbrella": "Inference is becoming load-aware. Six parts of the stack that used to be set once now move with the traffic, each listening to a different signal on a different clock. They are tied together by the prompt cache and by the model, so changing one means redoing others. Agent loops are what make that redoing affordable.",
+  "levers": [
+    {
+      "id": "model",
+      "n": 1,
+      "name": "Which model answers",
+      "question": "Does this session need a frontier model, or will a cheaper open one do?",
+      "adapts": "The model a session is sent to: a small fast open model, a strong open model, or a closed frontier one. Sub-agents can be routed separately.",
+      "listens": "How hard the first task of the session looks, live load and price on each model, and whether a cache would be lost by switching.",
+      "clock": "request",
+      "status": "working",
+      "bought": "Vendors report 33 to 60% lower cost at equal quality. Outside tests split: a trained router halved cost with caching priced in; seven shipped routers failed to beat a cheap default.",
+      "connects": "Nine-tenths of agent tokens are cached re-reads, and a cache belongs to one model. So the route is fixed per session, or changed only at compaction and sub-agent launch. Every model you route to needs its own drafter and tuned engine.",
+      "signals": [
+        "2026-08-13-databricks-smart-routing",
+        "2026-10-05-together-link",
+        "2026-07-22-cursor-router",
+        "2026-10-08-openrouter-cache-is-crucial",
+        "2026-09-22-openrouter-token-state-of-play",
+        "2026-10-26-autobench-do-routers-route",
+        "2026-05-14-twinrouterbench"
+      ],
+      "claims": [
+        "C9"
+      ]
+    },
+    {
+      "id": "worker",
+      "n": 2,
+      "name": "Which machine takes it",
+      "question": "Which server already holds this session's context?",
+      "adapts": "The server each request lands on, and when a session is allowed to move.",
+      "listens": "Where the session's cached context lives, and how many uncached tokens or active streams each server has in flight.",
+      "clock": "request",
+      "status": "working",
+      "bought": "2.9x input throughput on code generation against round-robin, and nothing on a decode-bound workload. The saturation threshold has to be recalibrated per model and chip.",
+      "connects": "Sticky routing is what makes the prompt cache pay, and the cache is most of an agent workload's cost. It needs the cache map kept by lever 3, and it can take hints from the agent harness about priority and expected length.",
+      "signals": [
+        "2026-08-17-llmd-sticky-until-saturated",
+        "2026-03-13-llmd-predicted-latency",
+        "nvidia-dynamo-agentic-inference",
+        "2026-09-08-vllm-agentx",
+        "2026-10-08-openrouter-cache-is-crucial"
+      ],
+      "claims": [
+        "C2"
+      ]
+    },
+    {
+      "id": "split",
+      "n": 3,
+      "name": "How the cluster is divided",
+      "question": "How much of the cluster should read prompts, and how much should write answers?",
+      "adapts": "The share of machines doing prefill against decode, the size of batches, and which cached contexts are kept or evicted.",
+      "listens": "The mix of long prompts and steady generation, and which contexts agents are still waiting to reuse.",
+      "clock": "minutes",
+      "status": "early",
+      "bought": "1.28x over the best fixed split once traffic shifts, in a research system. In vLLM, a cap on long prefills raised tokens per GPU-second by up to 93%, at the cost of first-token time.",
+      "connects": "It decides how full batches are, which sets how much speculation (lever 4) is worth and which shapes the kernels (lever 5) see. Evicting the wrong context undoes lever 2.",
+      "signals": [
+        "2026-11-09-evolving-infra",
+        "2026-09-08-vllm-agentx",
+        "2026-08-24-agentx-inferencex-v3"
+      ],
+      "claims": [
+        "C2"
+      ]
+    },
+    {
+      "id": "decode",
+      "n": 4,
+      "name": "How tokens get written",
+      "question": "How far ahead can a cheap draft guess before the big model has to check?",
+      "adapts": "The draft model, how many tokens it guesses ahead for this request, and whether to speculate at all at the current load. The drafter itself can keep training on live traffic.",
+      "listens": "How predictable the output is in this domain (code and maths speculate well, chat does not) and how full the batches are right now.",
+      "clock": "request",
+      "status": "working",
+      "bought": "About 3x for one request at a time, falling to between 1x and 1.5x at 32 concurrent. A load-aware scheduler raised a lab's live throughput by about half. A drafter that keeps learning adds about 1.25x.",
+      "connects": "A drafter is tied to one exact model and quantisation: tune or swap the model (levers 1 and 6) and it must be rebuilt. Verification competes with real requests for batch room, so it is tuned together with lever 3.",
+      "signals": [
+        "2026-07-06-dspark",
+        "2026-08-18-dflash-2",
+        "2026-03-31-together-aurora",
+        "2026-03-19-speed-bench",
+        "2025-12-31-speculative-decoding-performance-or-illusion",
+        "2026-09-23-modal-trillion-tokens",
+        "2025-10-10-together-atlas"
+      ],
+      "claims": [
+        "C2",
+        "C3"
+      ]
+    },
+    {
+      "id": "engine",
+      "n": 5,
+      "name": "How the engine runs it",
+      "question": "What are the fastest kernels and settings for this model, on this chip, under this traffic?",
+      "adapts": "The kernels, how operations are fused, the parallelism layout and the engine's settings.",
+      "listens": "Batch sizes, sequence lengths, cache-hit rates, and which parts of the model real inputs actually exercise.",
+      "clock": "days",
+      "status": "working",
+      "bought": "43% more throughput under a per-user speed floor against the best published run. Merged agent-written kernels: 1.3 to 1.9x on decode. Kernel gains measured alone mostly vanish end to end.",
+      "connects": "This is where agent loops do most of their work today. Every lever above changes the shapes this one sees, so re-tuning any of them can undo it. It is redone for each new model and each new chip.",
+      "signals": [
+        "2026-11-09-inferenceforge",
+        "2026-10-16-vllm-kimi-k3-megakernel",
+        "2026-11-04-together-compiler",
+        "2026-05-22-fastkernels"
+      ],
+      "claims": [
+        "C1",
+        "C2",
+        "C6"
+      ]
+    },
+    {
+      "id": "weights",
+      "n": 6,
+      "name": "What the model is",
+      "base": true,
+      "hint": "under every step above: the weights themselves, tuned to a domain",
+      "question": "Could a smaller model, trained on this domain, do the job a bigger general one does now?",
+      "adapts": "The weights: reinforcement learning or fine-tuning on a customer's tasks and tool formats, distilling a frontier model's outputs into a small one, and how hard they are quantised.",
+      "listens": "The domain's tasks and tool-calling format, logged production outputs to learn from, and where the general model fails or is slower than it needs to be.",
+      "clock": "release",
+      "status": "early",
+      "bought": "On narrow jobs: nearly double the pass rate at flat cost for a legal agent, and 0.9 s against 45 s for one summarisation task. On general coding, a newer untuned model beat a tuned one.",
+      "connects": "A tuned model lets lever 1 send more sessions down the cheap path. It needs its own drafter (lever 4) and compiled engine (lever 5), and it dies when its base model is withdrawn. Adapters sharing one deployment keep it affordable.",
+      "signals": [
+        "2026-08-26-harvey-tenet",
+        "2026-11-18-datadog-fine-tune-baseten",
+        "2026-08-31-fireworks-training-api",
+        "2026-10-19-together-post-training",
+        "2026-11-02-fireflash-agentic-rl-recipe",
+        "2026-11-04-cognition-swe-2-flash",
+        "2026-05-07-openai-fine-tuning-wind-down"
+      ],
+      "claims": [
+        "C10"
+      ]
+    }
+  ],
+  "loop": {
+    "name": "The loop",
+    "hint": "agents and a measuring rig re-tune every lever as the load changes",
+    "text": "None of the six levers is new. What changed in 2026 is the cost of re-tuning them. Coding agents, pointed at a rig that replays real traffic and measures end to end, now do in a day what took a performance engineer a month, and can do it again when the model, the chip or the traffic changes.",
+    "connects": "Today the loop works mostly on lever 5, a little on levers 3 and 4, and has only begun on 1 and 6 (one company had an agent run its fine-tuning). Its limit is not the agent but the rig: knowing whether a change is real.",
+    "signals": [
+      "2026-11-inferact-autonomous-inference-system",
+      "2026-11-04-together-compiler",
+      "2026-10-28-decagon-autoresearch"
+    ]
+  },
+  "build_intro": "The order below follows where others report the most gain for the least new code, and what each step needs from the one before. It is drawn from what teams have published, not from a system anyone has documented end to end.",
+  "build": [
+    {
+      "name": "Record your traffic and learn to replay it",
+      "levers": [
+        "worker",
+        "split",
+        "engine"
+      ],
+      "do": "Capture real sessions at your gateway with their timing, context lengths and cache behaviour, strip the content, and replay them against a candidate stack at real concurrency. Replayers exist; the capture and redaction side you write yourself.",
+      "bought": "Nothing by itself. It is what let an academic group with no customers top the public board, and what one company replays to drive its own loop.",
+      "watch": "A mean trace overstates throughput by 10 to 20%, random tokens by about a quarter. Repeated runs reuse the cache and flatter the result.",
+      "signals": [
+        "2026-08-24-agentx-inferencex-v3",
+        "2026-04-22-applied-compute-agentic-benchmark",
+        "2026-10-28-decagon-autoresearch",
+        "2026-03-19-speed-bench"
+      ],
+      "parts": [
+        {
+          "label": "AIPerf trace replay",
+          "url": "https://github.com/ai-dynamo/aiperf",
+          "note": "NVIDIA. Replays recorded agent sessions with their timing and shared prefixes against any OpenAI-compatible endpoint."
+        },
+        {
+          "label": "AgentX harness",
+          "url": "https://github.com/SemiAnalysisAI/agentx-harness",
+          "note": "The public benchmark's own replayer, a fork of AIPerf, with 393 coding-agent traces."
+        },
+        {
+          "label": "TraceLab",
+          "url": "https://github.com/uw-syfi/TraceLab",
+          "note": "University of Washington. Collects and sanitises agent session logs: sizes and timing, no content."
+        },
+        {
+          "label": "trie",
+          "url": "https://github.com/Applied-Compute/trie",
+          "note": "Applied Compute. Under 1,000 lines; replays sessions by shape and reports cache-hit rates."
+        },
+        {
+          "label": "TensorRT-LLM trace replay",
+          "url": "https://nvidia.github.io/TensorRT-LLM/blogs/tech_blog/blog27_Evaluating_Agentic_Serving_with_Trace_Replay_and_Job_Level_Metrics.html",
+          "note": "Adds jobs per hour, and computes the best achievable cache-hit rate without a GPU."
+        }
+      ]
+    },
+    {
+      "name": "Add gates that catch a fake win",
+      "levers": [
+        "engine"
+      ],
+      "do": "Measure every change end to end inside the full engine, never a kernel alone. Check outputs in three layers: kernel tests across shapes, a token-probability comparison, and task evals that exercise the changed path. Fail on request errors.",
+      "bought": "Protection. Kernel speed-ups of 1.6 to 6.6x shrank to about 1x end to end, and one in sixteen agent runs in an independent benchmark gamed the measurement.",
+      "watch": "A standard task-score gate caught 1 of 7 known numerical bugs and passed a run in which the engine had crashed. Agents have been caught changing the benchmark.",
+      "signals": [
+        "2026-05-22-fastkernels",
+        "2026-10-14-vllm-byog-evals-rfc",
+        "2026-05-20-inferencebench",
+        "2026-10-03-seis-self-evolving-inference"
+      ],
+      "parts": [
+        {
+          "label": "vLLM fast-track RFC",
+          "url": "https://github.com/vllm-project/vllm/issues/59665",
+          "note": "The evidence an agent-written optimisation must carry: isolation, end-to-end evals, kernel tests, no regression above 1%."
+        },
+        {
+          "label": "vLLM bring-your-own-GPU evals RFC",
+          "url": "https://github.com/vllm-project/vllm/issues/61698",
+          "note": "Task tolerances calibrated from repeated runs, plus a token-probability check."
+        },
+        {
+          "label": "SGLang agent skills",
+          "url": "https://github.com/sgl-project/sglang/tree/main/.agents/skills",
+          "note": "Includes a test comparing each token's probability on the prefill and decode paths."
+        },
+        {
+          "label": "klgate",
+          "url": "https://github.com/sansblues/klgate",
+          "note": "A prototype of the probability check with a permutation test in place of a fixed threshold."
+        }
+      ]
+    },
+    {
+      "name": "Tune what needs no new code",
+      "levers": [
+        "worker",
+        "split"
+      ],
+      "do": "Search the settings you already have against the rig: cache-aware and sticky routing, the prefill and decode split, caps on long prefills, cache retention. Use plain search here, not agents.",
+      "bought": "The largest reported gains for the least risk: 2.9x from cache-aware routing on code generation, up to 93% from a prefill cap. One default flag explained 78% of a gap between two engines.",
+      "watch": "Plain parameter search beat every coding agent at this in an independent test. Gains on prefill-bound work do not appear on decode-bound work.",
+      "signals": [
+        "2026-08-17-llmd-sticky-until-saturated",
+        "2026-09-08-vllm-agentx",
+        "2026-11-04-vllm-sglang-controlled-evaluation",
+        "2026-05-20-inferencebench"
+      ],
+      "parts": [
+        {
+          "label": "llm-d",
+          "url": "https://github.com/llm-d/llm-d",
+          "note": "Cache-aware and load-aware routing on Kubernetes over vLLM and SGLang, with a latency predictor that retrains on live traffic."
+        },
+        {
+          "label": "NVIDIA Dynamo",
+          "url": "https://github.com/ai-dynamo/dynamo",
+          "note": "Routing by cached-prefix overlap, hints from the agent harness, and a planner that forecasts load."
+        },
+        {
+          "label": "DynoSim",
+          "url": "https://docs.nvidia.com/dynamo/knowledge-base/concepts/simulation/overview.md",
+          "note": "Simulates scheduling and caching without GPUs to shortlist settings. Confirm the shortlist on real hardware."
+        }
+      ]
+    },
+    {
+      "name": "Fit the decoding to the traffic",
+      "levers": [
+        "decode"
+      ],
+      "do": "Measure how well your traffic speculates, by domain and by load, before building anything. Train a draft model for each target model, and let the amount of speculation follow the load.",
+      "bought": "About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler: about half more live throughput. Tuning the drafter to the workload: 20 to 45%.",
+      "watch": "Under load some drafters fall below break-even. A purpose-trained drafter only matched the one shipped with the model in one outside test. It must be rebuilt whenever the model changes.",
+      "signals": [
+        "2026-08-18-dflash-2",
+        "2026-07-06-dspark",
+        "2026-03-19-speed-bench",
+        "2026-08-11-thoughtworks-nemotron-test",
+        "2026-09-23-modal-trillion-tokens"
+      ],
+      "parts": [
+        {
+          "label": "Speculators",
+          "url": "https://developers.redhat.com/articles/2026/06/04/speculators-v050-dflash-support-and-online-training",
+          "note": "vLLM project and Red Hat. Trains draft models from a running server's hidden states and serves them directly."
+        },
+        {
+          "label": "SPEED-Bench",
+          "url": "https://huggingface.co/blog/nvidia/speed-bench",
+          "note": "Measures acceptance across 11 kinds of content, and throughput under load, inside production engines."
+        },
+        {
+          "label": "Aurora",
+          "url": "https://www.together.ai/blog/aurora",
+          "note": "Together's open-source drafter that keeps training on live traffic."
+        }
+      ]
+    },
+    {
+      "name": "Point agents at the engine",
+      "levers": [
+        "engine"
+      ],
+      "do": "Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Let them rewrite kernels and engine paths for one model on one chip. People review the evidence and approve what ships.",
+      "bought": "43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours.",
+      "watch": "Curated knowledge and expert playbooks made one team's agents worse. Review is the queue: patches arrive faster than people can read them.",
+      "signals": [
+        "2026-11-09-inferenceforge",
+        "2026-10-16-vllm-kimi-k3-megakernel",
+        "2026-10-02-baseten-agentic-engine",
+        "2026-11-16-together-deleted-megakernels"
+      ],
+      "parts": [
+        {
+          "label": "SGLang agent skills",
+          "url": "https://github.com/sgl-project/sglang/tree/main/.agents/skills",
+          "note": "32 published skills: profiling, CUDA debugging, incident replay, consistency tests."
+        },
+        {
+          "label": "Kernel Design Agents",
+          "url": "https://github.com/NVlabs/kda",
+          "note": "NVIDIA Research and MIT. A contract, plan and verify workflow for kernel work."
+        },
+        {
+          "label": "MetaInfer",
+          "url": "https://github.com/HuangPuStar/MetaInfer",
+          "note": "A skills-only toolkit with a correctness gate that runs before profiling. One provider built a custom engine with it."
+        }
+      ]
+    },
+    {
+      "name": "Choose between models, and tune one where the job is narrow",
+      "levers": [
+        "model",
+        "weights"
+      ],
+      "do": "Send each session to the cheapest model that can do it, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader.",
+      "bought": "Routing: 33 to 60% lower cost by vendors' accounts, disputed outside. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.",
+      "watch": "No shipped router beat a cheap default in one outside test. A tuned model needs its own drafter and engine, and dies when its base model is withdrawn, sometimes within weeks.",
+      "signals": [
+        "2026-08-13-databricks-smart-routing",
+        "2026-10-26-autobench-do-routers-route",
+        "2026-08-26-harvey-tenet",
+        "2026-11-18-datadog-fine-tune-baseten",
+        "2026-11-04-cognition-swe-2-flash"
+      ],
+      "parts": [
+        {
+          "label": "TwinRouterBench",
+          "url": "https://arxiv.org/abs/2605.18859",
+          "note": "Scores a router step by step with prompt caching priced in. Use it before trusting a router."
+        },
+        {
+          "label": "Agentic RL recipe",
+          "url": "https://agenteconomics.org/posts/agentic-rl-recipe",
+          "note": "An open recipe for reinforcement learning on a large open model: about 64 GPUs for five days."
+        },
+        {
+          "label": "Together Post-Training",
+          "url": "https://www.together.ai/blog/together-post-training",
+          "note": "A hosted trainer where you write the loop. Adapters share one deployment."
+        },
+        {
+          "label": "Fireworks Training API",
+          "url": "https://fireworks.ai/blog/training-api-general-availability",
+          "note": "The same shape from another provider. Check its changelog for which base models are still tunable."
+        }
+      ]
+    },
+    {
+      "name": "Close the loop",
+      "levers": [
+        "worker",
+        "split",
+        "decode",
+        "engine"
+      ],
+      "do": "Detect when traffic has drifted, re-run the earlier steps, promote winners through shadow traffic, and send upstream whatever is not specific to you.",
+      "bought": "One provider shadowed all live traffic onto a new build before cutover. Prompt lengths have been seen to rise about 80% within two weeks of a model release.",
+      "watch": "No provider has published how it detects drift, and nothing public compares a shadow's outputs with the live side. Nobody can yet simulate traffic they have not seen.",
+      "signals": [
+        "2026-11-inferact-autonomous-inference-system",
+        "2026-11-04-together-compiler",
+        "2026-11-09-evolving-infra"
+      ],
+      "parts": [
+        {
+          "label": "Gateway API request mirroring",
+          "url": "https://www.alibabacloud.com/help/en/ack/ack-managed-and-ack-dedicated/user-guide/use-ack-gateway-with-inference-extension-to-implement-traffic-mirroring-for-inference-service",
+          "note": "Copies live requests to a shadow service and discards its replies. Comparing the two sides is left to you."
+        },
+        {
+          "label": "Dynamo planner",
+          "url": "https://docs.nvidia.com/dynamo/v1.0.0/design-docs/component-design/planner-design",
+          "note": "Forecasts load and tracks how far observed latency has drifted from the profile."
+        },
+        {
+          "label": "TIDE",
+          "url": "https://arxiv.org/abs/2602.05145",
+          "note": "Research: keeps a drafter aligned with live traffic and turns speculation off when it stops paying."
+        }
+      ]
+    }
+  ],
+  "build_note": "Written in-house because nothing public exists: capture and redaction at your gateway, comparing a shadow's outputs and latency with the live side, an engine that reloads candidate code in seconds, and the detector that decides when to re-tune. The cost of the whole thing is also missing from every public account; one figure exists for one step."
+}

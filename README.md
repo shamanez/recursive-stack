@@ -1,15 +1,15 @@
 # The Recursive Stack
 
-**What is happening to the inference layer now that coding agents can do
-performance engineering?**
+**Inference is becoming load-aware: the stack now fits itself to the traffic. What
+does that do to the layer that serves the models, and how do you build for it?**
 
-A living, opinionated tracker. It holds a thesis made of claims that can lose,
-weighs every new source against them, and tells you where your own framing is
-holding and where it is not. An agent re-runs it every three days.
+A living, opinionated tracker. It maps the levers that adapt inference to the load
+and how they connect, holds a thesis made of claims that can lose, weighs every
+new source against them, lays out a build order, and tells you where your own
+framing is holding and where it is not. An agent re-runs it every day.
 
-> Inference optimisation is turning from a craft into a search. Agents rewrite the
-> serving stack against replayed real traffic: one model, one workload, one chip
-> at a time.
+> Six levers move with the load, from which model answers to which kernel runs.
+> Coding agents are what make re-tuning them affordable.
 
 ## Look at it
 
@@ -19,12 +19,15 @@ holding and where it is not. An agent re-runs it every three days.
 
 What is on the dashboard:
 
-| View | What it shows |
+| Tab | What it shows |
 |---|---|
-| Now | The shift as a flow diagram, five things to know, a verdict on your framing, confidence per claim, the optimisation loop, and the charts that carry the argument |
+| Now | The lever map, five things to know, a verdict on your framing, what it means for a provider, confidence per claim |
+| Big picture | Before and after, the six levers side by side, how they connect, the optimisation loop stage by stage |
+| Build | A build order for a provider: what each step has bought others, what to watch out for, and open-source parts to reuse |
+| Who | Every team found that has described the loop, on a timeline, with what each one actually did |
 | Thesis | Each claim with its confidence, the evidence for and against, and what would move it |
 | Stack map | Every source placed by stack layer, by what produces the optimisation, and by where it runs |
-| Ledger | Every number with its baseline and who checked it |
+| Evidence | The charts that carry the argument, then every number with its baseline and who checked it |
 | Tensions | Where credible sources do opposite things, and what would settle each |
 | Watch | Dated checks written before the answer is known |
 | Signals | The sources, searchable and filterable |
@@ -35,19 +38,20 @@ What is on the dashboard:
 - **It has a thesis that can be wrong.** Each claim has a confidence that moves
   only with a written reason and conditions named in advance. Claims get retired.
 - **It hunts for the counter-case.** Every sweep must search for evidence against
-  its strongest claim. Critiques and failed replications count as much as wins.
+  one of its claims. Critiques and failed replications count as much as wins.
 - **It keeps score on itself.** Dated checks are resolved as hit or miss before
   anything new is read.
 - **It rewrites instead of piling up.** The front page holds five points. Sources
   that stop mattering are retired.
-- **It checks your course.** Your own framing is recorded and judged part by part
-  each cycle.
+- **It checks your course.** Your own framing is recorded and judged part by part.
 
 ## How it updates
 
-Every three days an agent runs one **sweep**, the procedure in
+Every day an agent runs one **sweep**, the procedure in
 [`playbooks/sweep.md`](playbooks/sweep.md): settle due checks, hunt, triage,
-adjudicate, redraw the figures, rebuild, commit, push.
+adjudicate, redraw what changed, rebuild, commit, push. Most days little moves.
+Once a week it goes deeper: a full check for missing teams, first-hand reads of
+relayed sources, pruning.
 
 It works with either agent:
 
@@ -59,19 +63,32 @@ scripts/sweep.sh claude
 scripts/sweep.sh codex
 ```
 
-Inside Claude Code, `/sweep` does the same. Codex reads [`AGENTS.md`](AGENTS.md)
-directly; Claude Code reads it through [`CLAUDE.md`](CLAUDE.md).
+The repeated jobs are skills, available to both agents (`.claude/skills/` for
+Claude Code, `.agents/skills/` for Codex), each backed by a plain playbook:
+
+| Skill | What it does |
+|---|---|
+| `sweep` | The daily update, start to finish |
+| `add-signal` | Turn one source into a signal and carry it through to the map, roster and figures |
+| `steer` | Act on something you said: restate your framing, re-judge it, follow the change through |
+| `roster-check` | Look for teams building the loop that are missing from the Who tab |
+| `check-page` | Serve the page and check every tab, both themes and a phone width |
 
 ## Steering it
 
 Write in [`inbox.md`](inbox.md): links you want assessed, corrections to your
 framing, answers to the questions the dashboard asks you. The next sweep reads it
-first.
+first. What you have said so far is kept at the top of
+[`playbooks/steer.md`](playbooks/steer.md).
 
-## Rebuilding by hand
+## Rebuilding and checking by hand
 
 ```bash
 python3 scripts/build.py
+```
+
+```bash
+python3 scripts/serve.py
 ```
 
 Everything in `data/` is the source of truth. `index.html` and `BRIEF.md` are

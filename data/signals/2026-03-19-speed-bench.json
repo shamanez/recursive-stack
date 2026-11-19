@@ -1,0 +1,53 @@
+{
+  "id": "2026-03-19-speed-bench",
+  "title": "SPEED-Bench: a unified and diverse benchmark for speculative decoding",
+  "url": "https://huggingface.co/blog/nvidia/speed-bench",
+  "org": "NVIDIA",
+  "published": "2026-03-19",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "model",
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "880 prompts across 11 kinds of content measure how many draft tokens are accepted, and a separate split measures throughput at long inputs and high concurrency inside production engines. Its argument is that acceptance is a property of the workload, not of the drafter.",
+  "changes": "A way to measure the decoding lever on your own mix of domains before building anything. It also quantifies a rig error: load tests on random tokens overstate throughput by about a quarter.",
+  "caveats": "Published by a company that ships its own drafters. The blog gives figures, not tables, for speed-up against concurrency.",
+  "numbers": [
+    {
+      "metric": "Accepted length, coding against roleplay",
+      "value": "2.46 against 1.87",
+      "baseline": "the same drafter and model",
+      "verification": "third-party",
+      "setup": "batch 32, draft length 3"
+    },
+    {
+      "metric": "Mean speed-up at batch 32",
+      "value": "1.20 to 1.34x; 0.88x for n-gram drafting",
+      "baseline": "no speculation",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Throughput overstated by random-token load tests",
+      "value": "about 23%",
+      "baseline": "realistic prompts",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Acceptance follows the content: code and maths speculate well, chat and roleplay do not."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "A load test on random tokens is a quarter too optimistic."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

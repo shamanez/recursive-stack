@@ -1,0 +1,27 @@
+{
+  "id": "2026-05-07-openai-fine-tuning-wind-down",
+  "title": "OpenAI API deprecations: self-serve fine-tuning",
+  "url": "https://developers.openai.com/api/docs/deprecations",
+  "org": "OpenAI",
+  "published": "2026-05-07",
+  "added": "2026-11-19",
+  "kind": "product",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "OpenAI is closing self-serve fine-tuning in stages: to new organisations in May 2026, to inactive ones in July, and to everyone in January 2027. Tuned models keep serving only until their base model is retired.",
+  "changes": "The largest counter-signal for the model lever. A frontier lab is withdrawing tuning, reportedly because prompting has become cheaper and faster, and every tune there dies with its base model.",
+  "caveats": "This concerns tuning closed models, not open weights. The stated reason is second-hand, from a company that sells alternatives. Two cloud providers moved the other way and added reinforcement fine-tuning this year, without customer numbers. The date is that of the notice; the page itself is undated.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "challenges",
+      "note": "A frontier lab is ending self-serve tuning, and tuned models retire with their base."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -2,8 +2,39 @@
   "id": "2026-11-19",
   "n": 0,
   "agent": "Claude Code (Fable 5.2)",
-  "summary": "Founding sweep. It started from five sources the reader supplied, then ran three searches for what they left out. The same day the reader clarified that local means fitted to what you have, so the on-device claim was retired, and asked for a complete list of who is building the loop, which a second check extended. 37 signals are active.",
+  "summary": "Founding sweep, steered four times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. 62 signals are active.",
   "changes": [
+    {
+      "type": "course",
+      "text": "The reader widened the frame to inference becoming load-aware and adaptive, and asked how the parts connect and how to build one. Framing restated; all four parts re-judged."
+    },
+    {
+      "type": "added",
+      "text": "The big picture: six levers (which model, which machine, the cluster split, decoding, the engine, the model itself), what each listens to and has bought, how they connect through the prompt cache, and a seven-step build order with reusable parts."
+    },
+    {
+      "type": "added",
+      "ref": "C9",
+      "text": "Open and frontier models share the work, opened at 0.7. Coexistence is measured on two gateways; whether a router beats a cheap default is disputed."
+    },
+    {
+      "type": "added",
+      "ref": "C10",
+      "text": "The model itself becomes a setting, opened at 0.45. Real gains on narrow jobs; tunes go stale and a newer general model beat one."
+    },
+    {
+      "type": "added",
+      "text": "25 signals for the new levers and the rig, 3 read first-hand. Tensions T7 to T9 and checks W15 to W18 opened."
+    },
+    {
+      "type": "revised",
+      "ref": "2026-09-23-modal-trillion-tokens",
+      "text": "No longer described as trained on customer traffic. A second check found Modal's other drafter used synthetic data; W15 is to read the post first-hand."
+    },
+    {
+      "type": "model",
+      "text": "Cadence changed to daily with a weekly deep pass. The repeated procedures (add a signal, act on a steer, roster check, page check) are now playbooks and skills for both agents."
+    },
     {
       "type": "course",
       "text": "The reader is tracking this as a provider. Added what the evidence implies for a provider, flagged the three claims that position rests on (C4, C7, C3), and opened three provider-side checks (W12 to W14)."
@@ -70,7 +101,10 @@
     "Agent-driven and self-improving inference optimisation, February to November 2026, including critiques and failed replications",
     "Workload-aware and per-customer serving across providers, open engines and papers",
     "Local runtimes, ML compilers and kernel generation, plus essays for and against local inference",
-    "A second check for loop announcements missed: other providers, chip vendors, model labs and the public scoreboard"
+    "A second check for loop announcements missed: other providers, chip vendors, model labs and the public scoreboard",
+    "Model choice: routers, open models inside frontier harnesses, gateway market data, counter-evidence",
+    "Domain tuning and speculative decoding that adapts to the workload",
+    "Open-source building blocks for the evaluation rig and the adaptive serving pieces"
   ],
   "rejected": [
     {
@@ -154,7 +188,31 @@
     {
       "title": "ISO-Bench (arXiv 2602.19594) and TokenSpeed",
       "reason": "a benchmark of coding agents on inference workloads, and a community engine not described as agent-optimised; seen in search results only"
+    },
+    {
+      "title": "OpenAI ends automatic switching between its fast and thinking models (secondary report)",
+      "url": "https://mixed-news.com/en/chatgpt-plus-pro-stop-switching-to-thinking-gpt-5-5-retires-october-14/",
+      "reason": "relevant counter-evidence for routing, but the primary source could not be opened"
+    },
+    {
+      "title": "AdaSpark and AdaFlash (arXiv 2610.05774, 2607.19223)",
+      "url": "https://arxiv.org/abs/2610.05774",
+      "reason": "abstracts only; results in a hobby engine say little about serving many users"
+    },
+    {
+      "title": "NVIDIA on DFlash (blog) and the DFlash paper",
+      "url": "https://developer.nvidia.com/blog/boost-inference-performance-up-to-15x-on-nvidia-blackwell-using-dflash-speculative-decoding/",
+      "reason": "covered by DFlash 2 and SPEED-Bench; its headline applies only at an extreme speed target"
+    },
+    {
+      "title": "Not Diamond, Ramp Router, Baseten Switch",
+      "reason": "more routers with unbaselined savings; the lever already has five"
+    },
+    {
+      "title": "RoofLang, DynoSim, Vidur as cheap evaluators",
+      "reason": "listed as parts in the build order; none reports accuracy against a measured system"
     }
   ],
-  "next_due": "2026-11-22"
+  "next_due": "2026-11-20",
+  "deep": true
 }
