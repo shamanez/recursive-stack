@@ -15,7 +15,7 @@
   "mechanism": "rules",
   "venue": "local",
   "gist": "A model and its decoding strategy are lowered ahead of time. On NVIDIA cards the export step compiles and autotunes kernels for the detected GPU architecture; on Apple silicon it targets MLX or custom Metal kernels. Speculative decoding is handled inside the exported artifact.",
-  "changes": "Autotuning at export, for the device in hand, is now in a mainstream local runtime. The artifact is tied to the chip it was exported on: the local version of the optimum being specific to the deployment.",
+  "changes": "Tuning at export for the device in hand is now in a mainstream runtime, and the result is tied to that chip: the optimum is specific to what you have.",
   "caveats": "No continuous batching or cache sharing across sessions yet. No comparison with llama.cpp or mlx-lm, and most results are charts only. The date shown is last-updated.",
   "numbers": [
     {
@@ -28,9 +28,9 @@
   ],
   "bears_on": [
     {
-      "claim": "C8",
-      "direction": "complicates",
-      "note": "Tuned to the device at export time by rules. Still nothing tuned to the user."
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Kernels are compiled and tuned for the GPU it detects, and the result is tied to that chip."
     }
   ],
   "read": "relayed",

@@ -46,11 +46,6 @@
       "claim": "C6",
       "direction": "supports",
       "note": "Three chip families, one of them in-house silicon with no outside ecosystem."
-    },
-    {
-      "claim": "C8",
-      "direction": "complicates",
-      "note": "The loop does run on hardware its user owns, when the owner is a hyperscaler."
     }
   ],
   "also": [

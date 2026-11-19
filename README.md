@@ -32,8 +32,8 @@ What is on the dashboard:
 
 ## Why this is not a literature review
 
-- **It has a thesis that can be wrong.** Eight claims, each with a confidence that
-  moves only with a written reason and conditions named in advance.
+- **It has a thesis that can be wrong.** Each claim has a confidence that moves
+  only with a written reason and conditions named in advance. Claims get retired.
 - **It hunts for the counter-case.** Every sweep must search for evidence against
   its strongest claim. Critiques and failed replications count as much as wins.
 - **It keeps score on itself.** Dated checks are resolved as hit or miss before

@@ -30,5 +30,6 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "retired",
+  "retired_why": "Out of scope. On 19 Nov the reader clarified that local means fitted to what you have (different devices), not on-device hardware, so the on-device question is no longer tracked."
 }

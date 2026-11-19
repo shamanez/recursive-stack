@@ -6,7 +6,10 @@
       "why": "Almost every number here is stated against this board, and the founding sweep's fetch of inferencex.semianalysis.com returned a page calling itself an unofficial deployment. Without a recorded baseline, later claims of a lead cannot be judged.",
       "opened": "2026-11-19",
       "due": "2026-11-22",
-      "claims": ["C7", "C4"],
+      "claims": [
+        "C7",
+        "C4"
+      ],
       "status": "open"
     },
     {
@@ -15,7 +18,10 @@
       "why": "They sit in a personal fork. Upstreaming would be the first independent check on an outsider's agent-found gain, and a data point on how fast the commons absorbs one.",
       "opened": "2026-11-19",
       "due": "2026-11-28",
-      "claims": ["C1", "C7"],
+      "claims": [
+        "C1",
+        "C7"
+      ],
       "status": "open"
     },
     {
@@ -24,7 +30,9 @@
       "why": "The project page says both open source and coming soon. A runnable release lets someone other than the authors test the 4x latency claim against Dynamo.",
       "opened": "2026-11-19",
       "due": "2026-12-01",
-      "claims": ["C2"],
+      "claims": [
+        "C2"
+      ],
       "status": "open"
     },
     {
@@ -33,8 +41,12 @@
       "why": "They were relayed with too little detail to enter as signals. If they hold, they are the most direct evidence that the agent loop does not transfer to owned hardware.",
       "opened": "2026-11-19",
       "due": "2026-12-03",
-      "claims": ["C8", "C1"],
-      "status": "open"
+      "claims": [
+        "C8",
+        "C1"
+      ],
+      "status": "dropped",
+      "resolution": "Out of scope. On 19 Nov the reader clarified that local means fitted to what you have (different devices), not on-device hardware, so the on-device question is no longer tracked."
     },
     {
       "id": "W5",
@@ -42,7 +54,10 @@
       "why": "A private lead that never appears on the public board cannot be told apart from a favourable baseline. If the open engines close it, the commons is keeping up.",
       "opened": "2026-11-19",
       "due": "2026-12-05",
-      "claims": ["C7", "C4"],
+      "claims": [
+        "C7",
+        "C4"
+      ],
       "status": "open"
     },
     {
@@ -51,7 +66,10 @@
       "why": "This is the cleanest independent gauge of whether agents are getting better at the experimenting, not just the knowing.",
       "opened": "2026-11-19",
       "due": "2026-12-10",
-      "claims": ["C1", "C5"],
+      "claims": [
+        "C1",
+        "C5"
+      ],
       "status": "open"
     },
     {
@@ -60,7 +78,9 @@
       "why": "Two camps shipped opposite bets in the same month. The next major model release is the natural test of whether fused paths can be regenerated fast enough.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
-      "claims": ["C6"],
+      "claims": [
+        "C6"
+      ],
       "status": "open"
     },
     {
@@ -69,7 +89,9 @@
       "why": "This is the named condition for raising the RSI claim. InferenceForge said it would put its own models in the loop; Kernel-Smith and Meta already train on search traces.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
-      "claims": ["C5"],
+      "claims": [
+        "C5"
+      ],
       "status": "open"
     },
     {
@@ -78,8 +100,11 @@
       "why": "The single result that would move the local claim most. Its continued absence is itself information.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
-      "claims": ["C8"],
-      "status": "open"
+      "claims": [
+        "C8"
+      ],
+      "status": "dropped",
+      "resolution": "Out of scope. On 19 Nov the reader clarified that local means fitted to what you have (different devices), not on-device hardware, so the on-device question is no longer tracked."
     },
     {
       "id": "W10",
@@ -87,27 +112,99 @@
       "why": "The only numbers so far are 20 to 45%. One clean result above about 1.5x would change who is expected to capture the value.",
       "opened": "2026-11-19",
       "due": "2026-12-31",
-      "claims": ["C3"],
+      "claims": [
+        "C3"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "W11",
+      "what": "One system publishing like-for-like results on two chip families for the same model and traffic, with different winning optimisations on each.",
+      "why": "C2 now covers the chip as well as the traffic, and most of the hardware evidence is each team's account of its own bring-up. A same-system, two-chip comparison on the public board would test it directly.",
+      "opened": "2026-11-19",
+      "due": "2026-12-12",
+      "claims": [
+        "C2",
+        "C6"
+      ],
       "status": "open"
     }
   ],
   "feeds": [
-    {"name": "vLLM blog", "url": "https://vllm.ai/blog", "why": "The fastest-moving primary source. Agent-assisted optimisation posts cluster around new model launches."},
-    {"name": "vLLM RFC issues", "url": "https://github.com/vllm-project/vllm/issues?q=is%3Aissue+label%3ARFC+sort%3Aupdated-desc", "why": "Where the rules for agent-written code get argued. Review process changes show up here first."},
-    {"name": "Inferact news", "url": "https://inferact.ai/news", "why": "Hillclimb results and the autonomous-system roadmap from the vLLM maintainers."},
-    {"name": "LMSYS / SGLang blog", "url": "https://www.lmsys.org/blog", "why": "The other open engine. The index is script-rendered; open individual posts."},
-    {"name": "Together AI blog", "url": "https://www.together.ai/blog", "why": "Compiler, speculation and routing posts; the most explicit commercial RSI claim."},
-    {"name": "AgentX optimisations (InferenceX)", "url": "https://inferencex.semianalysis.com/infx/agentx/optimizations", "why": "The scoreboard itself and the list of upstream fixes it has prompted."},
-    {"name": "SemiAnalysis newsletter", "url": "https://newsletter.semianalysis.com", "why": "Benchmark write-ups and hardware-generation results. Partly paywalled."},
-    {"name": "InferenceBench leaderboard", "url": "https://inferencebench.ai/", "why": "Independent agents-against-search numbers, updated roughly monthly."},
-    {"name": "llm-d blog", "url": "https://llm-d.ai/blog", "why": "Routing and scheduling work with unusually candid caveats."},
-    {"name": "Baseten blog", "url": "https://www.baseten.co/blog", "why": "Bespoke-engine experiments and per-deployment tuning from a provider."},
-    {"name": "arXiv: agents optimising inference", "url": "https://arxiv.org/search/?query=agent+LLM+inference+engine+kernel+optimization&searchtype=all&abstracts=hide&order=-announced_date_first&size=25", "why": "Narrow query; pair with the next two."},
-    {"name": "arXiv: KernelBench", "url": "https://arxiv.org/search/?query=KernelBench&searchtype=all&abstracts=show&order=-announced_date_first&size=25", "why": "Kernel-generation papers and the critiques of their benchmarks."},
-    {"name": "arXiv: agentic LLM serving", "url": "https://arxiv.org/search/?query=%22LLM+serving%22+agentic+workload&searchtype=all&abstracts=show&order=-announced_date_first&size=50", "why": "Workload-aware serving systems."},
-    {"name": "llama.cpp releases", "url": "https://github.com/ggml-org/llama.cpp/releases", "why": "The local side. Watch for anything that tunes to usage, not just to the device."},
-    {"name": "Ollama blog", "url": "https://ollama.com/blog", "why": "What the most-used local runner ships."},
-    {"name": "PyTorch blog", "url": "https://pytorch.org/blog/", "why": "ExecuTorch, Helion and Triton posts: the compiler route to per-device specialisation."},
-    {"name": "Modular blog", "url": "https://modular.com/blog", "why": "Compiler work, now inside Qualcomm."}
+    {
+      "name": "vLLM blog",
+      "url": "https://vllm.ai/blog",
+      "why": "The fastest-moving primary source. Agent-assisted optimisation posts cluster around new model launches."
+    },
+    {
+      "name": "vLLM RFC issues",
+      "url": "https://github.com/vllm-project/vllm/issues?q=is%3Aissue+label%3ARFC+sort%3Aupdated-desc",
+      "why": "Where the rules for agent-written code get argued. Review process changes show up here first."
+    },
+    {
+      "name": "Inferact news",
+      "url": "https://inferact.ai/news",
+      "why": "Hillclimb results and the autonomous-system roadmap from the vLLM maintainers."
+    },
+    {
+      "name": "LMSYS / SGLang blog",
+      "url": "https://www.lmsys.org/blog",
+      "why": "The other open engine. The index is script-rendered; open individual posts."
+    },
+    {
+      "name": "Together AI blog",
+      "url": "https://www.together.ai/blog",
+      "why": "Compiler, speculation and routing posts; the most explicit commercial RSI claim."
+    },
+    {
+      "name": "AgentX optimisations (InferenceX)",
+      "url": "https://inferencex.semianalysis.com/infx/agentx/optimizations",
+      "why": "The scoreboard itself and the list of upstream fixes it has prompted."
+    },
+    {
+      "name": "SemiAnalysis newsletter",
+      "url": "https://newsletter.semianalysis.com",
+      "why": "Benchmark write-ups and hardware-generation results. Partly paywalled."
+    },
+    {
+      "name": "InferenceBench leaderboard",
+      "url": "https://inferencebench.ai/",
+      "why": "Independent agents-against-search numbers, updated roughly monthly."
+    },
+    {
+      "name": "llm-d blog",
+      "url": "https://llm-d.ai/blog",
+      "why": "Routing and scheduling work with unusually candid caveats."
+    },
+    {
+      "name": "Baseten blog",
+      "url": "https://www.baseten.co/blog",
+      "why": "Bespoke-engine experiments and per-deployment tuning from a provider."
+    },
+    {
+      "name": "arXiv: agents optimising inference",
+      "url": "https://arxiv.org/search/?query=agent+LLM+inference+engine+kernel+optimization&searchtype=all&abstracts=hide&order=-announced_date_first&size=25",
+      "why": "Narrow query; pair with the next two."
+    },
+    {
+      "name": "arXiv: KernelBench",
+      "url": "https://arxiv.org/search/?query=KernelBench&searchtype=all&abstracts=show&order=-announced_date_first&size=25",
+      "why": "Kernel-generation papers and the critiques of their benchmarks."
+    },
+    {
+      "name": "arXiv: agentic LLM serving",
+      "url": "https://arxiv.org/search/?query=%22LLM+serving%22+agentic+workload&searchtype=all&abstracts=show&order=-announced_date_first&size=50",
+      "why": "Workload-aware serving systems."
+    },
+    {
+      "name": "PyTorch blog",
+      "url": "https://pytorch.org/blog/",
+      "why": "ExecuTorch, Helion and Triton posts: the compiler route to per-device specialisation."
+    },
+    {
+      "name": "Modular blog",
+      "url": "https://modular.com/blog",
+      "why": "Compiler work, now inside Qualcomm."
+    }
   ]
 }

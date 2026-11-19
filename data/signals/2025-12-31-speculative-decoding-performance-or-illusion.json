@@ -35,11 +35,6 @@
       "claim": "C2",
       "direction": "supports",
       "note": "The winning method changes with the dataset, the request and even the token position."
-    },
-    {
-      "claim": "C8",
-      "direction": "complicates",
-      "note": "Speculation helps most at batch size 1, which is the single-user local case."
     }
   ],
   "read": "relayed",

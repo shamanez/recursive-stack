@@ -1,25 +1,25 @@
 {
   "_about": "The steering note for the human reader. reader_framing is their own working view in close to their own words; only they change it (via inbox.md). Every sweep re-judges each verdict against the current evidence and rewrites the rest.",
   "as_of": "2026-11-19",
-  "reader_framing": "Inference optimisation is moving toward a more local, user-workload-aware inference stack, and it is happening because LLMs are getting good at things like recursive self-improvement.",
+  "reader_framing": "Inference optimisation is moving toward a stack that fits itself to what you have (your workload, your models, your devices), and it is happening because LLMs are getting good at things like recursive self-improvement.",
   "verdicts": [
     {
-      "part": "Workload-aware",
+      "part": "Fits your workload",
       "verdict": "holding",
       "short": "Strong evidence. So far the workload is a class, not a person.",
       "note": "The strongest part of your framing. Replaying real agent sessions changed which optimisations matter, and static settings lose double digits when the traffic mix shifts. One precision: the workload that matters so far is a class (coding agents) shared by everyone, measured on one public trace set."
     },
     {
-      "part": "Aware of each user",
+      "part": "Fits each user",
       "verdict": "sharpen",
       "short": "Worth 20 to 45% so far. Most gains are class-level and shared.",
       "note": "Like for like, tuning to a single customer has been worth 20 to 45%, and at least one provider reports its recipe carried straight over to other customers. Most of the gain is at the level of the workload class and lands in the shared open engines. Per-customer is a live bet, not an observed shift."
     },
     {
-      "part": "Local",
-      "verdict": "unsupported",
-      "short": "Every agent-loop result is in a datacenter. Local stacks tune to the chip, not to you.",
-      "note": "If local means on hardware the user owns: every agent-loop result is on datacenter GPUs. Local runtimes do specialise, but to the device, once, by trying existing settings. If local means specific to one deployment (this model, this traffic, this chip), then it holds and is the same thing as workload-aware. The word is doing two jobs; pick one."
+      "part": "Fits what you have",
+      "verdict": "holding",
+      "short": "The best kernels and settings change with the model and the chip in hand.",
+      "note": "This is what you meant by local, and the sources agree. One megakernel could not span two chips. Agents have written winning kernels for NVIDIA, AMD, in-house and phone chips, and SGLang reports porting to a new accelerator in under a week. Platforms now specialise a model to the exact device on first load. One caution: a new hardware generation can move cost per token by more than any tuning does."
     },
     {
       "part": "Driven by RSI",
@@ -28,16 +28,16 @@
       "note": "Driven by coding agents running bounded hillclimbs inside harnesses that people built, with people setting the goal and approving what ships. The recursive part is true only weakly: a model serves the agents that tune its serving. Nobody has shown gains compounding, and the label already sits on a system with no self-improvement in it."
     }
   ],
-  "reframe": "Inference optimisation is turning from hand-craft into search. Agents rewrite kernels and engine paths against replayed real traffic, so the thing being optimised shrinks from a model to one model, one traffic shape, one chip, this month. It is happening in datacenters and in the open engines, not on personal devices, and the scarce asset is not the agent but the rig that tells you whether a change is real.",
+  "reframe": "Inference optimisation is turning from hand-craft into search. Agents rewrite kernels and engine paths against replayed real traffic, so the thing being optimised shrinks from a model to what you actually have: this model, this traffic shape, this chip, this month. The scarce asset is not the agent but the rig that tells you whether a change is real.",
   "questions": [
-    "When you say local, do you mean on the user's own hardware, or specific to one deployment? The evidence treats these very differently.",
     "Are you on the provider's side of this (who runs the loop for others) or the workload owner's side (running the loop on your own traffic, as Decagon does)?",
     "Is this for building something, positioning research, or placing a bet? Write the answer in inbox.md and the next sweep will weight the watchlist to match."
   ],
   "ignore": [
     "KernelBench scores quoted without the verified protocol. The baseline was too easy.",
     "Single-stream, batch-size-1 tokens-per-second records. Real, but they say little about serving many users.",
-    "Arguments over which engine is faster at default settings. One flag explained most of the largest gap."
+    "Arguments over which engine is faster at default settings. One flag explained most of the largest gap.",
+    "Laptops against datacenters. You said hardware is not the point, so those arguments are retired."
   ],
   "read_next": [
     {

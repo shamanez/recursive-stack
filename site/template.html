@@ -758,7 +758,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       const empties = cols.filter(c => !counts[c.id]).map(c => c.name);
       const agentAt = v => active.filter(s => s.mechanism === 'agent' && s.venue === v).length;
       const reading = cross
-        ? `Agent search on a local device: ${agentAt('local')}. On private hardware: ${agentAt('onprem')}. Everywhere else: ${agentAt('cluster') + agentAt('dedicated') + agentAt('any')}. This table is the evidence behind the verdict on local.`
+        ? `Agent search on a local device: ${agentAt('local')}. On private hardware: ${agentAt('onprem')}. Everywhere else: ${agentAt('cluster') + agentAt('dedicated') + agentAt('any')}. So far the agent loop lives in the datacenter; other places are fitted by compilers and one-off tuning.`
         : `${counts[top.id]} of ${active.length} signals sit under “${top.name}”.` + (empties.length ? ` Nothing under ${empties.map(e => `“${e}”`).join(', ')}.` : '') + ' Hatched cells are empty: open ground, or a place this does not work.';
       const table = el('table', { class: 'map' },
         el('thead', null, el('tr', null, el('th', null, cross ? 'Means' : 'Layer'), cols.map(c => el('th', { scope: 'col', 'data-tip': c.desc, tabindex: '0' }, mode === 'mechanism' ? [mech(c.id), ' '] : null, `${c.name} · ${counts[c.id]}`)))),

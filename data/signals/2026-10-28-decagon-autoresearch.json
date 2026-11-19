@@ -50,11 +50,6 @@
       "note": "Sub-agents must state a falsifiable prediction before a change is accepted."
     },
     {
-      "claim": "C8",
-      "direction": "complicates",
-      "note": "The user owns the workload and the loop, but not the hardware."
-    },
-    {
       "claim": "C4",
       "direction": "supports",
       "note": "Replayed production traffic is the evaluation rig."

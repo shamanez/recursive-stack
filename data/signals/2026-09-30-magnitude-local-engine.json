@@ -14,7 +14,7 @@
   "mechanism": "rules",
   "venue": "local",
   "gist": "An open-source local engine that spends up to a minute at model download trying thread-group sizes, chunk sizes and prefetch distances on the actual chip, keeping the fastest combination that leaves outputs unchanged. Ships hand-written kernels for popular model families and a bundled draft model.",
-  "changes": "The nearest thing on a user's own machine to the loop in the datacenter, and it shows the difference. It searches existing knobs once, per device. It writes no code and does not look at what the user actually runs.",
+  "changes": "Shows the optimum is specific to the chip in hand: it searches existing settings once, on the actual device. It writes no code and does not look at what the user runs.",
   "caveats": "Measured by the authors against a competitor at default settings, median of two requests. The gain cannot be split between autotuning, speculation and the hand-written kernels. Some wins are against a draft model that was barely drafting, and a few cases regress. The date is the launch post's; the repository is undated.",
   "numbers": [
     {
@@ -32,9 +32,9 @@
   ],
   "bears_on": [
     {
-      "claim": "C8",
-      "direction": "complicates",
-      "note": "Per-device tuning has arrived locally. It is a one-off knob search at install, not a loop on the user's workload."
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The fastest settings differ enough per chip that it measures them on the actual device at install."
     }
   ],
   "also": [

@@ -32,11 +32,6 @@
   ],
   "bears_on": [
     {
-      "claim": "C8",
-      "direction": "supports",
-      "note": "Agent-generated kernels on a phone GPU and a RISC-V chip, beating the vendor's own stack."
-    },
-    {
       "claim": "C5",
       "direction": "supports",
       "note": "The agent's policy is a knowledge base that updates as it works."
@@ -45,6 +40,11 @@
       "claim": "C6",
       "direction": "supports",
       "note": "One agent, three unlike backends."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The same agent produced different winning kernels for a datacenter GPU, a phone GPU and a RISC-V chip."
     }
   ],
   "read": "relayed",

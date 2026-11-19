@@ -79,6 +79,11 @@
       "claim": "C3",
       "direction": "complicates",
       "note": "Promises to tailor the engine to each workload, but gives no per-customer mechanism or number."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Tunes per workload target and per chip: separate day-zero builds for NVIDIA and AMD, and a search space counted in models times chip architectures."
     }
   ],
   "also": [
