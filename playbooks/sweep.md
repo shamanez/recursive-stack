@@ -124,6 +124,13 @@ Then the words, all of them capped (the build warns when a cap is exceeded):
   should have the current state. Replace a point; never add a sixth.
 - `headline` and `subhead`: change them only if the thesis itself has changed.
   Wrap one word of the headline in asterisks to colour it.
+- `data/course.json` also records the reader's `position` (they said: provider).
+  `implications` holds four at most: what the evidence implies for someone in
+  that position, each naming the `claims` it rests on and the `signals` behind
+  it. Re-derive them every sweep; when a claim under one moves, the implication
+  moves. `focus_claims` are the claims that position depends on most; give them
+  the red-team search first. In the watchlist, `lens: true` marks checks that
+  matter to that position.
 - `data/course.json`: re-judge every verdict against `reader_framing` and set
   `as_of` to today. Each verdict has a `short` (18 words, shown on the tile) and a
   `note` (the reasoning, shown on hover). Be direct. If the human's framing is

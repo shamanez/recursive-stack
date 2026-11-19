@@ -18,3 +18,4 @@ you can answer"). The answers change what the sweeps look for.
 ## Processed
 
 - 2026-11-19 (said in chat): "we no need to get too much into hardware, but it was more like as these posts say, different devices, what you have etc". Done: local now reads as fitted to what you have. That part of the framing holds; the on-device claim (C8), its tension and its two checks were retired, and per-device evidence moved under C2.
+- 2026-11-19 (answered on the dashboard's question): "Provider". Done: position recorded in data/course.json; four implications for a provider added, each resting on named claims; W5 and W10 flagged and W12 to W14 opened as provider-side checks.

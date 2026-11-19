@@ -351,6 +351,23 @@ def main():
         cap(ver.get("short"), "verdict.short", f"course.json verdict '{ver.get('part')}' short")
         if ver.get("verdict") not in VERDICTS:
             err(f"course.json: verdict must be one of {sorted(VERDICTS)}")
+    for cid in course.get("focus_claims") or []:
+        if cid not in claim_ids:
+            err(f"course.json: focus_claims names unknown claim '{cid}'")
+    implications = course.get("implications") or []
+    if len(implications) > 4:
+        err("course.json: at most 4 implications. Keep the ones that would change what the reader does.")
+    if implications and not (course.get("position") or {}).get("label"):
+        err("course.json: implications need a 'position' saying whose position they are for")
+    for i, imp in enumerate(implications):
+        where = f"course.json implications[{i}]"
+        need(imp, ["head", "text", "claims", "signals"], where)
+        cap(imp.get("head"), "picture.head", f"{where} head")
+        cap(imp.get("text"), "picture.text", f"{where} text")
+        known_signals(imp.get("signals"), where)
+        for cid in imp.get("claims") or []:
+            if cid not in claim_ids:
+                err(f"{where}: names unknown claim '{cid}'")
     read_next = course.get("read_next") or []
     if len(read_next) > 3:
         err("course.json: read_next is capped at 3. Choosing is the point.")
@@ -461,6 +478,14 @@ def brief(b, evidence):
     add("")
     add(f"**Sharper version:** {course['reframe']}")
     add("")
+    if course.get("implications"):
+        conf = {c["id"]: c["confidence"] for c in thesis["claims"]}
+        add(f"**What the evidence implies for a {course['position']['label'].lower()}:**")
+        add("")
+        for imp in course["implications"]:
+            rests = ", ".join(f"{cid} at {round(conf[cid] * 100)}%" for cid in imp["claims"])
+            add(f"- **{imp['head']}.** {imp['text']} _(rests on {rests})_")
+        add("")
     if course.get("read_next"):
         add("**Read next:**")
         add("")

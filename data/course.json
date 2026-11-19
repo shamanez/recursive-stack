@@ -30,7 +30,6 @@
   ],
   "reframe": "Inference optimisation is turning from hand-craft into search. Agents rewrite kernels and engine paths against replayed real traffic, so the thing being optimised shrinks from a model to what you actually have: this model, this traffic shape, this chip, this month. The scarce asset is not the agent but the rig that tells you whether a change is real.",
   "questions": [
-    "Are you on the provider's side of this (who runs the loop for others) or the workload owner's side (running the loop on your own traffic, as Decagon does)?",
     "Is this for building something, positioning research, or placing a bet? Write the answer in inbox.md and the next sweep will weight the watchlist to match."
   ],
   "ignore": [
@@ -51,6 +50,67 @@
     {
       "signal": "2026-11-inferact-autonomous-inference-system",
       "why": "The whole loop laid out by the people who maintain vLLM, including the parts they say they cannot do yet."
+    }
+  ],
+  "position": {
+    "label": "Provider",
+    "text": "You run inference for other people's workloads."
+  },
+  "focus_claims": [
+    "C4",
+    "C7",
+    "C3"
+  ],
+  "implications": [
+    {
+      "head": "The rig is the asset, not the agent",
+      "text": "Everyone building this says evaluation is the hard part: replayed traffic, an engine that hot-reloads candidates, gates that catch fake wins. Off-the-shelf agents do the proposing.",
+      "claims": [
+        "C4"
+      ],
+      "signals": [
+        "2026-11-04-together-compiler",
+        "2026-05-22-fastkernels",
+        "2026-11-inferact-autonomous-inference-system"
+      ]
+    },
+    {
+      "head": "A kernel lead lasts weeks",
+      "text": "Both open engines run the loop themselves and absorb fixes fast. A general engine came within 6% of a bespoke one. Two private leads of about 2x remain unchecked.",
+      "claims": [
+        "C7"
+      ],
+      "signals": [
+        "2026-10-23-vllm-matches-deepinfer",
+        "2026-07-02-sglang-agent-assisted-development",
+        "2026-11-04-together-compiler",
+        "2026-10-02-baseten-agentic-engine"
+      ]
+    },
+    {
+      "head": "Per-customer tuning is a feature, so far",
+      "text": "Like for like it has bought 20 to 45%, and one provider found its recipe transferred across customers. It becomes a business only if a per-customer run gets cheap.",
+      "claims": [
+        "C3"
+      ],
+      "signals": [
+        "2026-09-23-modal-trillion-tokens",
+        "2025-10-10-together-atlas",
+        "2026-10-02-baseten-agentic-engine"
+      ]
+    },
+    {
+      "head": "Your traffic is an edge with a leak",
+      "text": "You see real traffic and outsiders do not. But a public trace set let an academic group top the board, and one customer already runs the loop on its own endpoints.",
+      "claims": [
+        "C4",
+        "C3"
+      ],
+      "signals": [
+        "2026-11-09-inferenceforge",
+        "2026-08-24-agentx-inferencex-v3",
+        "2026-10-28-decagon-autoresearch"
+      ]
     }
   ]
 }

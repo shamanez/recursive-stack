@@ -6,6 +6,10 @@
   "changes": [
     {
       "type": "course",
+      "text": "The reader is tracking this as a provider. Added what the evidence implies for a provider, flagged the three claims that position rests on (C4, C7, C3), and opened three provider-side checks (W12 to W14)."
+    },
+    {
+      "type": "course",
       "text": "The reader clarified that local means fitted to what you have (different devices), not on-device hardware. The framing is restated in those terms and that part now holds."
     },
     {

@@ -58,6 +58,13 @@ Serving a large language model is its own engineering discipline: kernels that r
 
 **Sharper version:** Inference optimisation is turning from hand-craft into search. Agents rewrite kernels and engine paths against replayed real traffic, so the thing being optimised shrinks from a model to what you actually have: this model, this traffic shape, this chip, this month. The scarce asset is not the agent but the rig that tells you whether a change is real.
 
+**What the evidence implies for a provider:**
+
+- **The rig is the asset, not the agent.** Everyone building this says evaluation is the hard part: replayed traffic, an engine that hot-reloads candidates, gates that catch fake wins. Off-the-shelf agents do the proposing. _(rests on C4 at 80%)_
+- **A kernel lead lasts weeks.** Both open engines run the loop themselves and absorb fixes fast. A general engine came within 6% of a bespoke one. Two private leads of about 2x remain unchecked. _(rests on C7 at 55%)_
+- **Per-customer tuning is a feature, so far.** Like for like it has bought 20 to 45%, and one provider found its recipe transferred across customers. It becomes a business only if a per-customer run gets cheap. _(rests on C3 at 35%)_
+- **Your traffic is an edge with a leak.** You see real traffic and outsiders do not. But a public trace set let an academic group top the board, and one customer already runs the loop on its own endpoints. _(rests on C4 at 80%, C3 at 35%)_
+
 **Read next:**
 
 - [Last year we built megakernels. This year we deleted them](https://www.together.ai/blog/road-to-together-compiler): The best single explanation of why measuring is harder than optimising. Read the sections on benchmarks lying and on their own ablations.
@@ -108,6 +115,7 @@ Serving a large language model is its own engineering discipline: kernels that r
 
 Founding sweep. It started from five sources the reader supplied, then ran three searches for what they left out. The same day the reader clarified that local means fitted to what you have, so the on-device claim was retired, and asked for a complete list of who is building the loop, which a second check extended. 37 signals are active.
 
+- **course**: The reader is tracking this as a provider. Added what the evidence implies for a provider, flagged the three claims that position rests on (C4, C7, C3), and opened three provider-side checks (W12 to W14).
 - **course**: The reader clarified that local means fitted to what you have (different devices), not on-device hardware. The framing is restated in those terms and that part now holds.
 - **added**: A roster of every team found that has described the loop: 25 entries with a one-line gist each. A second check found five not seen before (RoofLang, an NPU kernel loop, KDA, FlashVector, Astra); five the first sweep saw and left out are now listed too. Two became signals.
 - **revised** `C2`: Widened from the workload to what you have: traffic, model and chip together. Confidence unchanged at 0.8.
@@ -140,8 +148,11 @@ Founding sweep. It started from five sources the reader supplied, then ran three
 | 2026-12-05 | Does any public AgentX run, by Together or anyone else, match the up-to-2.6x lead Together claims for its compiler? |
 | 2026-12-10 | Has InferenceBench run a matched-budget search beside its newest agent entries, and has the gap (12.08x agent against 14.30x search) closed? |
 | 2026-12-12 | One system publishing like-for-like results on two chip families for the same model and traffic, with different winning optimisations on each. |
+| 2026-12-12 | A provider with no announced loop (Fireworks, Modal, Groq, Cerebras, a hyperscaler) describing one, or giving a credible reason not to. |
 | 2026-12-19 | Megakernels: any head-to-head on one model and chip, or any of vLLM, SGLang or Together changing course. |
 | 2026-12-19 | Any published evidence of compounding: gain per cycle rising, or a model trained on optimisation traces beating its teacher on a production task. |
+| 2026-12-19 | Any provider publishing what its loop costs per deployment (GPU-hours, tokens) next to the gain it bought. |
+| 2026-12-19 | A second workload owner, not a provider, describing its own loop on its own traffic. |
 | 2026-12-31 | A provider publishing per-customer against class-level tuning on the same endpoints. |
 
 Open `index.html` for the interactive version: flow diagrams, stack map, evidence ledger, every signal.

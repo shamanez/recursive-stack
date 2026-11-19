@@ -58,7 +58,8 @@
         "C7",
         "C4"
       ],
-      "status": "open"
+      "status": "open",
+      "lens": true
     },
     {
       "id": "W6",
@@ -115,7 +116,8 @@
       "claims": [
         "C3"
       ],
-      "status": "open"
+      "status": "open",
+      "lens": true
     },
     {
       "id": "W11",
@@ -128,6 +130,44 @@
         "C6"
       ],
       "status": "open"
+    },
+    {
+      "id": "W12",
+      "what": "Any provider publishing what its loop costs per deployment (GPU-hours, tokens) next to the gain it bought.",
+      "why": "One figure exists: about 200 GPU-hours and 1.7B tokens for a bespoke engine. Whether per-customer tuning is a business turns on this number falling.",
+      "opened": "2026-11-19",
+      "due": "2026-12-19",
+      "claims": [
+        "C3"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W13",
+      "what": "A second workload owner, not a provider, describing its own loop on its own traffic.",
+      "why": "Decagon is the only one so far. If customers can do this themselves on rented GPUs, the provider's role shifts toward supplying the rig.",
+      "opened": "2026-11-19",
+      "due": "2026-12-19",
+      "claims": [
+        "C3",
+        "C4"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W14",
+      "what": "A provider with no announced loop (Fireworks, Modal, Groq, Cerebras, a hyperscaler) describing one, or giving a credible reason not to.",
+      "why": "Three providers have described a loop. Silence from the rest is either catching up in private or a judgement that it does not pay.",
+      "opened": "2026-11-19",
+      "due": "2026-12-12",
+      "claims": [
+        "C1",
+        "C7"
+      ],
+      "status": "open",
+      "lens": true
     }
   ],
   "feeds": [

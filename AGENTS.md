@@ -18,7 +18,7 @@ reader's own framing is holding up. An agent updates it every three days.
 ```
 data/                 the source of truth; everything else is generated from it
   thesis.json         headline, intro paragraph, the five points, and the claims with confidence history
-  course.json         the reader's framing, judged part by part
+  course.json         the reader's framing judged part by part, their position (provider), and what the evidence implies for it
   signals/*.json      one file per source that moved something
   figures.json        charts drawn from numbers in the signals
   tensions.json       where sources do opposite things, and what would settle it

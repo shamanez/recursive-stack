@@ -167,11 +167,24 @@ details > summary:hover { color: var(--accent); }
 .tile p { font-size: 13px; line-height: 1.4; color: var(--ink); }
 .reframe { font: 500 15px/1.45 var(--font-display); }
 
+/* ---------- figure: what it implies for the reader's position */
+.impl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+.icard { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; grid-template-rows: auto 1fr auto; }
+.icard h3 { font-size: 16px; }
+.icard p { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+.rests { display: grid; gap: 6px; }
+.rest { display: grid; grid-template-columns: auto minmax(40px, 1fr) auto; gap: 8px; align-items: center; border: 0; background: none; padding: 0; cursor: pointer; font: 500 12px/1 var(--font-data); color: var(--ink-2); text-align: left; }
+.rest:hover { color: var(--accent); }
+.rest .cbar { height: 8px; }
+.for-you { font: 500 10px/1 var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); border-radius: 4px; padding: 3px 5px; margin-right: 6px; vertical-align: 1px; white-space: nowrap; }
+
 /* ---------- figure: claims bars */
 .cfig { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px; display: grid; gap: 0; }
-.crow { display: grid; grid-template-columns: 30px minmax(0, 1.25fr) minmax(110px, 1fr) 46px 132px; gap: 12px; align-items: center; padding: 9px 10px; border: 0; background: none; text-align: left; cursor: pointer; border-radius: 8px; width: 100%; }
+.crow { display: grid; grid-template-columns: 44px minmax(0, 1.25fr) minmax(110px, 1fr) 46px 132px; gap: 12px; align-items: center; padding: 9px 10px; border: 0; background: none; text-align: left; cursor: pointer; border-radius: 8px; width: 100%; }
 .crow:hover { background: var(--inset); }
-.crow .cid { font: 500 12px/1 var(--font-data); color: var(--ink-3); }
+.crow .cid { font: 500 12px/1 var(--font-data); color: var(--ink-3); white-space: nowrap; }
+.crow .cid.is-focus { color: var(--accent); font-weight: 600; }
+.crow .cid.is-focus::before, .focus-key { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 4px; vertical-align: 2px; }
 .crow .cname { font-weight: 500; font-size: 14px; line-height: 1.3; }
 .cbar { position: relative; height: 12px; background: var(--inset); border-radius: 0 4px 4px 0; }
 .cbar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 0 4px 4px 0; }
@@ -180,7 +193,7 @@ details > summary:hover { color: var(--accent); }
 .crow .cval { font: 500 14px/1 var(--font-data); text-align: right; }
 .cev { display: flex; gap: 8px; font: 400 12px/1 var(--font-data); color: var(--ink-2); justify-content: flex-end; }
 .cev span { display: inline-flex; align-items: center; gap: 4px; }
-.caxis { display: grid; grid-template-columns: 30px minmax(0, 1.25fr) minmax(110px, 1fr) 46px 132px; gap: 12px; padding: 2px 10px 6px; font: 400 10.5px/1 var(--font-data); color: var(--ink-3); }
+.caxis { display: grid; grid-template-columns: 44px minmax(0, 1.25fr) minmax(110px, 1fr) 46px 132px; gap: 12px; padding: 2px 10px 6px; font: 400 10.5px/1 var(--font-data); color: var(--ink-3); }
 .caxis div { display: flex; justify-content: space-between; grid-column: 3; }
 
 /* ---------- figure: loop ring */
@@ -409,7 +422,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   .flow li + li { padding-top: 18px; clip-path: polygon(0 0, 50% 8px, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px)); }
   .loopback { margin-left: 0; }
   .ring { margin: 0 auto; }
-  .crow { grid-template-columns: 30px minmax(0, 1fr) 46px; }
+  .crow { grid-template-columns: 44px minmax(0, 1fr) 46px; }
   .crow .cbar { grid-column: 2 / 4; grid-row: 2; }
   .crow .cev { grid-column: 2 / 4; grid-row: 3; justify-content: flex-start; }
   .caxis { display: none; }
@@ -523,7 +536,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   const section = (title, note, ...body) => el('section', { class: 'sec' }, el('h2', null, title), note ? el('p', { class: 'sec-note', 'data-prose': true }, note) : null, body);
   const mechLegend = () => el('div', { class: 'legend' }, M.mechanisms.map(m => el('span', { 'data-tip': m.desc, tabindex: '0' }, mech(m.id), m.name)));
 
-  const state = { mapMode: 'mechanism', loopSel: null, rosterAll: false, sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
+  const state = { mapMode: 'mechanism', loopSel: null, roster: 'recent', sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
 
   // =====================================================================
   // FIGURES
@@ -539,18 +552,20 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
 
   function figClaims() {
     const cols = 'supports complicates challenges'.split(' ');
+    const focus = D.course.focus_claims || [];
     return el('div', { class: 'cfig' },
       claims.map(c => {
         const ev = evidence(c.id), n = d => ev.filter(e => e.direction === d).length;
         const prev = c.history.length > 1 ? c.history[c.history.length - 2].confidence : null;
         return el('button', { class: 'crow', type: 'button', 'data-tip': c.statement, onclick: () => { state.focusClaim = c.id; go('thesis'); } },
-          el('span', { class: 'cid' }, c.id), el('span', { class: 'cname' }, c.short),
+          el('span', { class: 'cid' + (focus.includes(c.id) ? ' is-focus' : '') }, c.id), el('span', { class: 'cname' }, c.short),
           el('span', { class: 'cbar' }, el('i', { style: `width:${c.confidence * 100}%` }), el('b'), prev != null && prev !== c.confidence ? el('u', { style: `left:${prev * 100}%` }) : null),
           el('span', { class: 'cval' }, pct(c.confidence)),
           el('span', { class: 'cev' }, cols.map(d => el('span', null, el('i', { class: `dir dir-${d}` }), n(d)))));
       }),
       el('div', { class: 'caxis' }, el('div', null, el('span', null, '0'), el('span', null, 'coin flip'), el('span', null, 'certain'))),
-      el('div', { class: 'legend', style: 'padding:4px 10px 8px' }, el('span', null, el('i', { class: 'sw', style: 'background:var(--accent)' }), 'confidence'), DIRS.map(([d, w]) => el('span', null, el('i', { class: `dir dir-${d}` }), `signals ${w}`))));
+      el('div', { class: 'legend', style: 'padding:4px 10px 8px' }, el('span', null, el('i', { class: 'sw', style: 'background:var(--accent)' }), 'confidence'), DIRS.map(([d, w]) => el('span', null, el('i', { class: `dir dir-${d}` }), `signals ${w}`)),
+        focus.length && D.course.position ? el('span', null, el('i', { class: 'focus-key' }), `matters most to a ${D.course.position.label.toLowerCase()}`) : null));
   }
 
   function figLoop() {
@@ -691,6 +706,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     if (!ROSTER.length) return null;
     const all = ROSTER.slice().sort((a, b) => rLatest(b).localeCompare(rLatest(a)));
     const recent = all.filter(e => rLatest(e) >= D.roster.recent_from);
+    const providers = all.filter(e => /provider/i.test(e.kind));
     const holder = el('div', { class: 'sec', id: 'roster' });
     const row = e => {
       const inner = [el('span', { class: 'rdate' }, fmt(e.when), e.updated ? el('span', { style: 'display:block' }, `upd. ${fmt(e.updated).replace(/ \d{4}$/, '')}`) : null),
@@ -701,11 +717,11 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       return e.signal ? el('button', { class: 'rrow', id, type: 'button', onclick: () => rOpen(e) }, inner) : el('a', { class: 'rrow', id, href: e.url, target: '_blank', rel: 'noopener' }, inner);
     };
     const draw = () => {
-      const list = state.rosterAll ? all : recent;
+      const list = state.roster === 'all' ? all : state.roster === 'providers' ? providers : recent;
+      const seg = (id, label) => el('button', { type: 'button', 'aria-pressed': String(state.roster === id), onclick: () => { state.roster = id; draw(); } }, label);
       holder.replaceChildren(rosterStrip(all),
         el('div', { class: 'controls' }, el('div', { class: 'seg', role: 'group', 'aria-label': 'Which teams to list' },
-          el('button', { type: 'button', 'aria-pressed': String(!state.rosterAll), onclick: () => { state.rosterAll = false; draw(); } }, `Since ${fmt(D.roster.recent_from).replace(/^1 /, '')} · ${recent.length}`),
-          el('button', { type: 'button', 'aria-pressed': String(!!state.rosterAll), onclick: () => { state.rosterAll = true; draw(); } }, `All · ${all.length}`)),
+          seg('recent', `Since ${fmt(D.roster.recent_from).replace(/^1 /, '')} · ${recent.length}`), seg('all', `All · ${all.length}`), providers.length ? seg('providers', `Providers · ${providers.length}`) : null),
           el('span', { class: 'small muted' }, 'Select a row for the detail and the source.')),
         el('div', { class: 'roster' }, list.map(row)));
       annotate(holder);
@@ -745,6 +761,18 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     return el('figure', { class: 'chart' }, el('div', { class: 'vhead' }, el('strong', null, 'When each check falls due'), el('span', { class: 'stamp' }, 'hover a marker')), g);
   }
 
+  // What the evidence implies for the reader's own position. Each card shows how firm the claims under it are.
+  function implications() {
+    const list = D.course.implications || [];
+    if (!list.length || !D.course.position) return null;
+    return section(`What this means for a ${D.course.position.label.toLowerCase()}`, 'Each card rests on the claims shown under it, so it is only as firm as they are. Select a claim for its evidence.',
+      el('div', { class: 'impl' }, list.map(imp => el('article', { class: 'icard' },
+        el('h3', null, imp.head), el('p', { 'data-prose': true }, imp.text),
+        el('div', { class: 'rests' }, imp.claims.map(id => { const c = claimById[id]; return el('button', { class: 'rest', type: 'button', 'data-tip': c.statement, onclick: () => { state.focusClaim = id; go('thesis'); } },
+          el('span', null, `rests on ${id}`), el('span', { class: 'cbar' }, el('i', { style: `width:${c.confidence * 100}%` }), el('b')), el('span', null, pct(c.confidence))); }),
+          srcChips(imp.signals))))));
+  }
+
   // =====================================================================
   // NOW
   // =====================================================================
@@ -772,6 +800,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     const course = D.course;
     const coursePanel = el('section', { class: 'panel' },
       el('div', { class: 'vhead' }, el('h2', { style: 'font-size:20px' }, 'Is your framing right?'), el('span', { class: 'stamp' }, `Judged ${fmt(course.as_of)}`)),
+      course.position ? el('p', { class: 'small', style: 'color:var(--ink-2)' }, el('span', { class: 'for-you' }, `Read as a ${course.position.label.toLowerCase()}`), course.position.text) : null,
       el('p', { class: 'quote' }, `“${course.reader_framing}”`),
       el('div', { class: 'tiles' }, course.verdicts.map(v => { const [tone, icon, label] = VERDICT[v.verdict]; return el('div', { class: `tile t-${tone}`, 'data-tip': v.note, tabindex: '0' },
         el('div', { class: `tile-top t-${tone}` }, el('span', { class: 'vicon', 'aria-hidden': 'true' }, icon), el('strong', null, v.part)),
@@ -790,6 +819,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     return [banner, hero,
       section('The shift, in one picture', null, figShift()),
       el('div', { class: 'cols' }, points, coursePanel),
+      implications(),
       ROSTER.length ? section('Who is building the loop', 'Every team found so far that has described it, with what each one actually did.', figRoster()) : null,
       section('How sure, claim by claim', 'Bar length is confidence. The counts are signals for, mixed and against. Select a claim for its evidence.', figClaims()),
       section('The loop everyone is building', null, figLoop()),
@@ -935,7 +965,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     const closed = checks.filter(c => c.status !== 'open');
     const row = c => { const late = c.status === 'open' && dayDiff(c.due) < 0; return el('tr', { id: `check-${c.id}` },
       el('td', { class: 'due num' + (late ? ' is-late' : '') }, el('strong', null, c.id), ' ', fmt(c.due), el('small', null, c.status === 'open' ? (late ? `overdue, ${rel(c.due)}` : rel(c.due)) : '')),
-      el('td', null, el('span', { 'data-prose': true }, c.what), el('details', null, el('summary', null, c.status === 'open' ? 'Why it matters' : 'How it resolved'), el('p', { class: 'small', style: 'color:var(--ink-2);margin-top:4px' }, c.status === 'open' ? c.why : c.resolution))),
+      el('td', null, c.lens && D.course.position ? el('span', { class: 'for-you' }, `for a ${D.course.position.label.toLowerCase()}`) : null, el('span', { 'data-prose': true }, c.what), el('details', null, el('summary', null, c.status === 'open' ? 'Why it matters' : 'How it resolved'), el('p', { class: 'small', style: 'color:var(--ink-2);margin-top:4px' }, c.status === 'open' ? c.why : c.resolution))),
       el('td', null, el('div', { class: 'chips' }, (c.claims || []).map(id => claimChip(id)))),
       el('td', null, pill(WSTAT[c.status]))); };
     const table = list => el('div', { class: 'scroll-x' }, el('table', { class: 'watch' },
