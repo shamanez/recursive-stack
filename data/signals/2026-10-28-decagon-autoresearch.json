@@ -1,0 +1,65 @@
+{
+  "id": "2026-10-28-decagon-autoresearch",
+  "title": "Building an inference stack that improves itself",
+  "url": "https://x.com/DecagonAI/status/2115511110120120437",
+  "org": "Decagon",
+  "authors": "Pavi Dhiman, Cyrus Asgari",
+  "published": "2026-10-28",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "serving",
+    "model",
+    "engine"
+  ],
+  "mechanism": "agent",
+  "venue": "dedicated",
+  "gist": "Not an inference provider but a customer-service AI company tuning its own endpoints. An orchestrator replays redacted production traffic, profiles, and spawns sub-agents that must each return an explanation, an intervention, a prediction and a test that could falsify it. Confirmed gains become the new baseline.",
+  "changes": "The first case here of the loop being run by the workload's owner on its own traffic, not by a provider. It is the closest thing to a user-workload-aware stack, and it lives on rented cloud GPUs.",
+  "caveats": "Unverifiable. Each row uses a different baseline, so the gains do not add. The largest come from known levers (quantisation, n-gram speculation), not new engine work. People start the loop and approve deployment.",
+  "numbers": [
+    {
+      "metric": "Requests/s per GPU within the latency SLA, 8-bit weights plus n-gram speculation",
+      "value": "2.50x",
+      "baseline": "that endpoint's starting configuration",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Combined engine patches",
+      "value": "1.99x",
+      "baseline": "that endpoint's starting configuration",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Draft model adapted to own traffic",
+      "value": "1.34x",
+      "baseline": "the production draft model",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C3",
+      "direction": "supports",
+      "note": "One company, its own traffic, its own loop. The like-for-like part (the adapted drafter) is 1.34x."
+    },
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Sub-agents must state a falsifiable prediction before a change is accepted."
+    },
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "The user owns the workload and the loop, but not the hardware."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Replayed production traffic is the evaluation rig."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

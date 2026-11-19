@@ -1,0 +1,47 @@
+{
+  "id": "2025-10-10-together-atlas",
+  "title": "ATLAS: adaptive-learning speculator system",
+  "url": "https://www.together.ai/blog/adaptive-learning-speculator-system-atlas",
+  "org": "Together AI",
+  "published": "2025-10-10",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "loop"
+  ],
+  "mechanism": "online",
+  "venue": "dedicated",
+  "gist": "A speculative decoding setup that learns at runtime: a fixed draft model gives a floor, a lightweight one learns from live traffic, and a controller chooses between them and sets how far to look ahead.",
+  "changes": "The origin of the learn-from-live-traffic line in production serving, a year before the agent announcements. Its predecessor post gives one of the few like-for-like figures for customer-specific tuning.",
+  "caveats": "Batch size 1 on narrow traffic is the best case. Does not say whether learning is isolated per customer. No outside check.",
+  "numbers": [
+    {
+      "metric": "Decode, fully adapted",
+      "value": "about 500 vs 105 tok/s",
+      "baseline": "8-bit baseline without speculation",
+      "verification": "self-reported",
+      "setup": "DeepSeek-V3.1, 4x B200, batch 1"
+    },
+    {
+      "metric": "A customer-trained speculator (May 2025 post)",
+      "value": "1.23 to 1.45x",
+      "baseline": "Together's generic speculator",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C3",
+      "direction": "supports",
+      "note": "Like for like, customer-specific tuning was worth 23 to 45% here."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "A draft model goes stale as traffic drifts; this was built to fix that."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -1,0 +1,48 @@
+{
+  "id": "2026-09-30-magnitude-local-engine",
+  "title": "Magnitude (open-source local inference engine)",
+  "url": "https://github.com/magnitudedev/magnitude",
+  "org": "Magnitude",
+  "published": "2026-09-30",
+  "added": "2026-11-19",
+  "kind": "repo",
+  "layers": [
+    "kernels",
+    "engine",
+    "model"
+  ],
+  "mechanism": "rules",
+  "venue": "local",
+  "gist": "An open-source local engine that spends up to a minute at model download trying thread-group sizes, chunk sizes and prefetch distances on the actual chip, keeping the fastest combination that leaves outputs unchanged. Ships hand-written kernels for popular model families and a bundled draft model.",
+  "changes": "The nearest thing on a user's own machine to the loop in the datacenter, and it shows the difference. It searches existing knobs once, per device. It writes no code and does not look at what the user actually runs.",
+  "caveats": "Measured by the authors against a competitor at default settings, median of two requests. The gain cannot be split between autotuning, speculation and the hand-written kernels. Some wins are against a draft model that was barely drafting, and a few cases regress. The date is the launch post's; the repository is undated.",
+  "numbers": [
+    {
+      "metric": "Decode, average of 11 models on a Mac mini M4 Pro",
+      "value": "2.19x",
+      "baseline": "Ollama v0.35.1 at defaults",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Decode, same models on a DGX Spark",
+      "value": "2.17x",
+      "baseline": "Ollama v0.35.1 at defaults",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "Per-device tuning has arrived locally. It is a one-off knob search at install, not a loop on the user's workload."
+    }
+  ],
+  "also": [
+    {
+      "label": "Benchmarks",
+      "url": "https://magnitude.dev/benchmarks"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

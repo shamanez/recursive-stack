@@ -1,0 +1,59 @@
+{
+  "id": "2026-07-02-sglang-agent-assisted-development",
+  "title": "Agent-assisted SGLang development: an initial exploration",
+  "url": "https://www.lmsys.org/blog/2026-07-02-agent-assisted-sglang-development/",
+  "org": "SGLang team (LMSYS)",
+  "published": "2026-07-02",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "kernels",
+    "engine"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "SGLang packaged benchmarking, profiling, CUDA debugging and incident triage as skills agents can run, and set up a loop in which one coding agent implements, another reviews, and a profile must explain a gap before any patch is written. A November recap says agents now produce most of the project's merged pull requests.",
+  "changes": "The second open engine to say in public that agents do the bulk of its engineering. Its own example of a kernel win evaporating end to end is the cleanest small illustration of the evaluation problem.",
+  "caveats": "The recap's claims (most merged pull requests, decoding up to 2x faster from AI-written megakernels, a port to a new accelerator in under a week) come without percentages, hardware or model. The post itself warns about plausible-but-wrong changes and reward hacking through mismatched ABI or fast-math flags.",
+  "numbers": [
+    {
+      "metric": "A kernel-group speed-up measured end to end",
+      "value": "2.03x became 1.021x",
+      "baseline": "the same change measured in isolation",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Allreduce fusion",
+      "value": "5.49 to 9.41 requests/s",
+      "baseline": "before the pull request",
+      "verification": "public-run",
+      "setup": "H100, 4-way tensor parallel"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Merged, public pull requests from an agent loop with a review step."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "A 2x kernel win was worth 2% in the engine."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "The open engines are running the loop themselves."
+    }
+  ],
+  "also": [
+    {
+      "label": "November summit recap",
+      "url": "https://www.lmsys.org/blog/2026-11-17-sglang-summit-recap"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

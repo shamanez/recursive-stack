@@ -1,0 +1,190 @@
+[
+  {
+    "id": "kernel-dilution",
+    "type": "pairs",
+    "title": "A kernel speed-up, before and after honest measurement",
+    "takeaway": "Gains of several times shrink to about nothing.",
+    "unit": "x",
+    "from_label": "as first measured",
+    "to_label": "measured properly",
+    "reference": 1,
+    "reference_label": "no gain",
+    "rows": [
+      {
+        "label": "Best agent on FastKernels",
+        "from": 6.6,
+        "to": 1.25,
+        "note": "Kernel alone, then swapped into the full model",
+        "signal": "2026-05-22-fastkernels"
+      },
+      {
+        "label": "Kernel-Smith kernel in SGLang",
+        "from": 4.78,
+        "to": 1.02,
+        "note": "Kernel alone, then end to end (upper figure)",
+        "signal": "2026-03-30-kernel-smith"
+      },
+      {
+        "label": "SGLang kernel group",
+        "from": 2.03,
+        "to": 1.02,
+        "note": "Kernel group alone, then end to end",
+        "signal": "2026-07-02-sglang-agent-assisted-development"
+      },
+      {
+        "label": "Best model on KernelBench",
+        "from": 1.43,
+        "to": 0.88,
+        "note": "Against an easy baseline, then a fair one",
+        "signal": "2026-06-26-kernelbench-verified"
+      }
+    ],
+    "caption": "Speed-up over the existing kernel. Four separate sources.",
+    "claims": [
+      "C4",
+      "C1"
+    ],
+    "featured": true
+  },
+  {
+    "id": "agents-vs-search",
+    "type": "bars",
+    "title": "Agents against plain search at tuning a server",
+    "takeaway": "With the same two hours, a simple parameter search still wins.",
+    "unit": "x",
+    "groups": [
+      {
+        "id": "agent",
+        "name": "Coding agent"
+      },
+      {
+        "id": "search",
+        "name": "Plain search"
+      },
+      {
+        "id": "base",
+        "name": "Untuned engine"
+      }
+    ],
+    "rows": [
+      {
+        "label": "Default vLLM",
+        "value": 4.05,
+        "group": "base",
+        "signal": "2026-05-20-inferencebench"
+      },
+      {
+        "label": "Best agent, May paper",
+        "value": 8.08,
+        "group": "agent",
+        "signal": "2026-05-20-inferencebench"
+      },
+      {
+        "label": "Matched search, May paper",
+        "value": 11.53,
+        "group": "search",
+        "signal": "2026-05-20-inferencebench"
+      },
+      {
+        "label": "Best agent, November board",
+        "value": 12.08,
+        "group": "agent",
+        "signal": "2026-05-20-inferencebench"
+      },
+      {
+        "label": "Best search composite, November",
+        "value": 14.3,
+        "group": "search",
+        "signal": "2026-05-20-inferencebench"
+      }
+    ],
+    "caption": "Speed-up over naive PyTorch. One H100, a 7B model, two hours. InferenceBench.",
+    "claims": [
+      "C1"
+    ],
+    "featured": true
+  },
+  {
+    "id": "class-vs-customer",
+    "type": "bars",
+    "title": "What specialising buys, by how narrow it is",
+    "takeaway": "Tuning to a workload class buys multiples. Tuning to one customer has bought tens of percent.",
+    "unit": "x",
+    "reference": 1,
+    "reference_label": "no gain",
+    "groups": [
+      {
+        "id": "class",
+        "name": "For a workload class"
+      },
+      {
+        "id": "one",
+        "name": "For one customer or model"
+      }
+    ],
+    "rows": [
+      {
+        "label": "Cache-aware routing, code generation",
+        "value": 2.9,
+        "group": "class",
+        "note": "llm-d, against round-robin",
+        "signal": "2026-08-17-llmd-sticky-until-saturated"
+      },
+      {
+        "label": "Decode scheduling for agent traffic",
+        "value": 2.41,
+        "group": "class",
+        "note": "An AgentX-driven fix; first-token time got worse",
+        "signal": "2026-08-24-agentx-inferencex-v3"
+      },
+      {
+        "label": "Cap on long prefills in vLLM",
+        "value": 1.93,
+        "group": "class",
+        "note": "Upper end",
+        "signal": "2026-09-08-vllm-agentx"
+      },
+      {
+        "label": "Re-splitting as traffic shifts",
+        "value": 1.28,
+        "group": "class",
+        "note": "Evolving Infra, against the best static split",
+        "signal": "2026-11-09-evolving-infra"
+      },
+      {
+        "label": "Customer-trained speculator",
+        "value": 1.45,
+        "group": "one",
+        "note": "Together, upper end, against its generic speculator",
+        "signal": "2025-10-10-together-atlas"
+      },
+      {
+        "label": "Drafter adapted to own traffic",
+        "value": 1.34,
+        "group": "one",
+        "note": "Decagon, against its production drafter",
+        "signal": "2026-10-28-decagon-autoresearch"
+      },
+      {
+        "label": "Draft model tuned on customer traces",
+        "value": 1.2,
+        "group": "one",
+        "note": "Modal, against a generic draft model",
+        "signal": "2026-09-23-modal-trillion-tokens"
+      },
+      {
+        "label": "Bespoke single-model engine",
+        "value": 1.06,
+        "group": "one",
+        "note": "DeepSeek's own engine over upstream vLLM, at most",
+        "signal": "2026-10-23-vllm-matches-deepinfer"
+      }
+    ],
+    "caption": "Each bar is a gain over that source's own baseline, and the baselines differ. Read the order of magnitude, not the decimals.",
+    "claims": [
+      "C3",
+      "C2"
+    ],
+    "featured": true
+  }
+]

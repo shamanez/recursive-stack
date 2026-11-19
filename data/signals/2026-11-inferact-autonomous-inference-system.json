@@ -1,0 +1,92 @@
+{
+  "id": "2026-11-inferact-autonomous-inference-system",
+  "title": "Building an autonomous inference system",
+  "url": "https://inferact.ai/news/building-autonomous-inference-system",
+  "org": "Inferact",
+  "authors": "Simon Mo",
+  "published": "2026-11",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "kernels",
+    "engine"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "The company behind vLLM sets out its north star: a system that watches production workloads, has agents write candidate kernels and engine paths, tests them alone and then end to end against shadow traffic, promotes winners to production and upstream, and revises its own process. Its internal agent system, Agent V, already runs bounded hillclimbs of 24 to 30 hours on single metrics. The author says plainly that the full loop is not built.",
+  "changes": "The clearest statement of the whole loop, from the people who maintain the most-used open engine, with production numbers on current models. It also shows the recursion in its weak form: Agent V runs mostly on a model Inferact serves itself.",
+  "caveats": "Every number is Inferact's own. The self-revising part is an illustrative day in the life, not a result. They state they cannot yet simulate traffic they have not seen, which is the step that would let the loop run without production access.",
+  "numbers": [
+    {
+      "metric": "TTFT at 800k context, Kimi K3.1 on GB300",
+      "value": "2.78x faster",
+      "baseline": "own engine before a 24-hour hillclimb",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "p99 time per output token, Kimi K3.1",
+      "value": "35% lower",
+      "baseline": "own engine before a 30-hour hillclimb",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Throughput per GPU, Kimi K3 on GB300",
+      "value": "0.77M to 1.4M tokens/min (about 1.8x)",
+      "baseline": "own production, mid-September to end of October",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Agent V sessions running on self-hosted Kimi K3",
+      "value": "79% of sessions, 53% of tokens",
+      "baseline": "remainder on other models",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "TTFT from expert-parallel prefill, MiniMax M3.1",
+      "value": "60 to 70% lower",
+      "baseline": "own engine before the patches",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Production hillclimbs on current models, with before-and-after numbers."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Isolated wins often fail end to end, so every candidate must pass full serving benchmarks and shadow traffic. They cannot yet simulate unseen traffic."
+    },
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "Agent V runs mostly on a model Inferact serves. Agents rewriting their own process is described as a goal, not shown."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "Day-zero images for a new model on two chip vendors; the search space is framed as thousands of models times a thousand chip architectures."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "Upstream-first by policy: every engine optimisation goes back to vLLM."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "Promises to tailor the engine to each workload, but gives no per-customer mechanism or number."
+    }
+  ],
+  "also": [
+    {
+      "label": "Pipeline parallelism write-up",
+      "url": "https://inferact.ai/news/pipeline-parallelism-in-agentic-era"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

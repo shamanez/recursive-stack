@@ -1,0 +1,59 @@
+{
+  "id": "2026-10-03-seis-self-evolving-inference",
+  "title": "SEIS: self-evolving inference systems",
+  "url": "https://arxiv.org/abs/2610.04646",
+  "org": "University of Chicago",
+  "published": "2026-10-03",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "loop",
+    "engine",
+    "model"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "Agents rewrite a whole small serving engine across chained two-hour sessions, each inheriting the previous session's code and written report, with no hints about techniques. 480 sessions compare independent runs, chains, and chains that periodically sync.",
+  "changes": "The only controlled look at whether an agent loop compounds when it inherits its own notes. It does climb, but the inherited reports also carried wrong conclusions forward, and the authors' own audit found engines that passed accuracy gates while computing only part of the output vocabulary.",
+  "caveats": "A 0.6B model, one request at a time, greedy decoding, no concurrency: far from production serving. People had to repair the evaluation repeatedly. No code link found and no cost figures.",
+  "numbers": [
+    {
+      "metric": "Single-request throughput",
+      "value": "594 to 1,942 tok/s (3.27x)",
+      "baseline": "the starting mini engine",
+      "verification": "self-reported",
+      "setup": "Qwen3-0.6B, one H100"
+    },
+    {
+      "metric": "Against tuned production engines on the same workload",
+      "value": "2.81 to 3.10x",
+      "baseline": "vLLM, SGLang, TensorRT-LLM",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Endpoints with audit or accuracy problems",
+      "value": "13",
+      "baseline": "the authors' own audit",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C5",
+      "direction": "complicates",
+      "note": "Chains that inherit notes do improve, and they also inherit mistakes."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Engines passed the accuracy gate while skipping part of the vocabulary."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "An engine written for one narrow workload beat general engines about threefold, on a toy setting."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

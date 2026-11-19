@@ -1,0 +1,47 @@
+{
+  "id": "2026-09-22-swe-serve",
+  "title": "SWE-Serve: benchmarking agentic engineering for production inference serving",
+  "url": "https://arxiv.org/abs/2609.26777",
+  "org": "NVIDIA, UC Berkeley",
+  "published": "2026-09-22",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "loop",
+    "engine",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "53 tasks rebuilt from real merged SGLang pull requests, graded with hidden tests, end-to-end serving tests and performance gates.",
+  "changes": "Quantifies the gap between a patch that passes unit tests and one that survives real serving: about a third of otherwise-passing patches fail once end-to-end checks are added.",
+  "caveats": "Only three tasks have performance gates and their pass rates are not reported, so it says little about optimisation as such. One engine, no multi-GPU.",
+  "numbers": [
+    {
+      "metric": "Best agents, mean first-try pass rate",
+      "value": "75%",
+      "baseline": "53 tasks from merged pull requests",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Pass rate on tasks with end-to-end tests",
+      "value": "45.9%, against 69.4% without those tests",
+      "baseline": "the same patches",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "A third of patches that look done fail real serving."
+    },
+    {
+      "claim": "C1",
+      "direction": "complicates",
+      "note": "Agents handle most real serving-engine tasks, and fewer once tested properly."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "2026-08-11-goedecke-local-models-will-not-win",
+  "title": "No, local models will not win",
+  "url": "https://www.seangoedecke.com/local-models-will-not-win",
+  "org": "Sean Goedecke",
+  "published": "2026-08-11",
+  "added": "2026-11-19",
+  "kind": "essay",
+  "layers": [
+    "hardware",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "local",
+  "gist": "Argues datacenter inference is cheaper for structural reasons, not subsidy: batching serves many users for about the cost of one, a single local user has nothing to batch, and datacenter chips do more per watt. Users also choose the strongest model they can get.",
+  "changes": "The cleanest statement of why the loop's home is the datacenter. Every agent-loop result tracked here leans on batching and cache reuse across many sessions, which one user does not have.",
+  "caveats": "The 30x figure is a back-of-envelope product of the author's own estimates. It ignores speculation, several local agents sharing a batch, and privacy. He concedes a hybrid (local for fast, cloud for hard) is likely.",
+  "numbers": [
+    {
+      "metric": "Resources per unit of inference, local against datacenter",
+      "value": "about 30x",
+      "baseline": "the author's estimate from chip specifications and batching",
+      "verification": "unverified"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "challenges",
+      "note": "The economics that make the datacenter loop pay (batching, shared caches) are absent for one user."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

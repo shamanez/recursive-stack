@@ -1,0 +1,47 @@
+{
+  "id": "2026-08-17-llmd-sticky-until-saturated",
+  "title": "Sticky until saturated: token-aware routing",
+  "url": "https://llm-d.ai/blog/sticky-until-saturated-token-aware-routing",
+  "org": "llm-d (Google authors)",
+  "published": "2026-08-17",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "routing",
+    "serving"
+  ],
+  "mechanism": "rules",
+  "venue": "any",
+  "gist": "The open Kubernetes inference router replaced a four-signal blend with one cache-affinity filter plus one load signal chosen to match the workload's bottleneck: uncached tokens in flight when prefill-bound, active streams when decode-bound. Stickiness lets go at a saturation limit calibrated per deployment.",
+  "changes": "An unusually candid like-for-like measurement of workload-aware routing: large where prefill dominates, nothing where decode does. The calibration does not transfer between models, chips or engines, a small concrete case of the optimum being specific to the deployment.",
+  "caveats": "Each point was run once. The baseline is round-robin, a weak one. The authors say a hand-tuned weight set can still beat their default on the workload it was tuned for.",
+  "numbers": [
+    {
+      "metric": "Code-generation input throughput",
+      "value": "46k vs 16k tok/s (2.9x)",
+      "baseline": "Kubernetes round-robin",
+      "verification": "self-reported",
+      "setup": "Qwen3-32B, H100"
+    },
+    {
+      "metric": "Decode-bound reasoning workload",
+      "value": "7.0k vs 6.8k tok/s (parity)",
+      "baseline": "Kubernetes round-robin",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The right load signal depends on whether the workload is prefill-bound or decode-bound."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "The per-deployment part is one calibrated threshold, not a bespoke stack."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

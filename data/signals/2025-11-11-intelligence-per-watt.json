@@ -1,0 +1,47 @@
+{
+  "id": "2025-11-11-intelligence-per-watt",
+  "title": "Intelligence per watt: measuring intelligence efficiency of local AI",
+  "url": "https://arxiv.org/abs/2511.07885",
+  "org": "Saad-Falcon, Hennessy, Mirhoseini, Ré et al.",
+  "published": "2025-11-11",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "hardware",
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "local",
+  "gist": "Measures task accuracy per unit of power for more than 20 local models on 8 accelerators over a million real single-turn queries, and argues a large and rising share of everyday queries can be answered locally, which favours hybrid routing.",
+  "changes": "The quantitative case for local: most queries do not need the frontier. Its own data also show local accelerators doing less per watt than cloud ones on the same model.",
+  "caveats": "Single-turn chat and reasoning only. It says nothing about agent workloads with long contexts, which are what the rest of this site is about.",
+  "numbers": [
+    {
+      "metric": "Share of queries local models answer correctly",
+      "value": "88.7%",
+      "baseline": "1M real single-turn queries",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Locally serviceable share over 2023 to 2025",
+      "value": "23.2% to 71.3%",
+      "baseline": "the same measure two years earlier",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Efficiency of local accelerators on identical models",
+      "value": "at least 1.4x worse",
+      "baseline": "cloud accelerators",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "Local is good enough for most single-turn queries and less efficient per watt. Agent workloads are untested."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "2026-05-17-offline-llm-energy-use",
+  "title": "Offline LLM energy use",
+  "url": "https://williamangel.net/blog/2026/05/17/offline-llm-energy-use.html",
+  "org": "William Angel",
+  "published": "2026-05-17",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "hardware"
+  ],
+  "mechanism": "frame",
+  "venue": "local",
+  "gist": "A measured cost-per-token analysis of running a model on a high-end laptop against buying the same model through an API aggregator.",
+  "changes": "Puts local at parity in the best case and about ten times dearer in the worst, with the hardware's depreciation, not electricity, as the dominant cost.",
+  "caveats": "One machine and one author's assumptions about depreciation and utilisation. The title is taken from the URL; check the page for its exact wording.",
+  "numbers": [
+    {
+      "metric": "Cost per million tokens on an M5 Max",
+      "value": "$0.40 to $4.79",
+      "baseline": "$0.38 to $0.50 for the same model via OpenRouter",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "challenges",
+      "note": "Owned hardware is at best cost-neutral per token before any loop is run on it."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

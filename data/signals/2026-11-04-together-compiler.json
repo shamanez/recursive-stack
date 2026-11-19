@@ -1,0 +1,71 @@
+{
+  "id": "2026-11-04-together-compiler",
+  "title": "Together Compiler: continual compilation for AI inference",
+  "url": "https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference",
+  "org": "Together AI",
+  "authors": "Reyna Abhyankar, Dylan Lim, Simran Arora",
+  "published": "2026-11-04",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "compiler",
+    "kernels",
+    "engine"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "The technical description. Inputs are a traffic shape, a model and a chip. Parallel agents propose changes to the engine's forward pass and share findings on a message board. The enabling trick is infrastructure: an engine that stays up and hot-reloads candidates, in a fast tier with a few layers and a slow tier with the full model on real data, plus a cost model that prunes parallelism layouts.",
+  "changes": "Shows that the investment is in the evaluation rig, not the agent. Cutting engine start-up from minutes to seconds is what makes hundreds of experiments affordable.",
+  "caveats": "Says nothing about how output correctness is checked, how drift is detected, or how often recompilation runs. The companion paper concedes one headline comparison sets their 8-way parallel run against a published 4-way one. Page metadata says 3.7x where the text says 2.6x.",
+  "numbers": [
+    {
+      "metric": "Throughput on four models",
+      "value": "up to 2.6x",
+      "baseline": "best published AgentX configurations of open engines",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Engine start-up per experiment",
+      "value": "467 s to 9 s",
+      "baseline": "restarting a standard engine",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Experiments per unit time",
+      "value": "252x",
+      "baseline": "other agentic performance-optimisation systems, unnamed",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Prompt length in one region's working hours",
+      "value": "about 1.4x longer (97k vs 70k tokens)",
+      "baseline": "other hours",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Agent search in production on serverless endpoints, by their account."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "A two-tier engine exists because timings on a few layers do not predict the full model on real data."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Prompt lengths rose about 80% in the two weeks after a model release. The target moves."
+    },
+    {
+      "claim": "C7",
+      "direction": "challenges",
+      "note": "Claims a private lead of up to 2.6x over the best public configurations."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

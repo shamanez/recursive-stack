@@ -1,0 +1,37 @@
+{
+  "id": "2026-11-19",
+  "n": 0,
+  "agent": "Claude Code (Fable 5.2)",
+  "summary": "Founding sweep. It started from five sources the reader supplied, all published within the previous fortnight, then ran three parallel searches for what they left out: agent-driven optimisation, workload-aware serving, and local stacks with compilers. 40 signals were kept. The thesis that came out is narrower than the framing that went in.",
+  "changes": [
+    {"type": "added", "text": "Eight claims opened, C1 to C8, each with a starting confidence and named conditions for moving it."},
+    {"type": "course", "text": "The reader's framing judged for the first time. Workload-aware holds. Local and RSI do not, in the senses those words usually carry."},
+    {"type": "added", "text": "40 signals: 7 read first-hand, 33 relayed by research sub-agents and marked as such. Relayed ones should be opened and confirmed over the next few sweeps, most load-bearing first."},
+    {"type": "tension", "text": "Six tensions opened. The megakernel split (T1) is the most concrete: two camps shipped opposite bets in the same month."},
+    {"type": "watch", "text": "Ten dated checks opened. The first due is confirming the canonical AgentX scoreboard and recording today's top results as a baseline."},
+    {"type": "model", "text": "Vocabulary fixed: eight stack layers, five ways an optimisation gets produced, five venues, four timescales, five loop stages."},
+    {"type": "revised", "ref": "2026-11-09-evolving-infra", "text": "inference-rsi.com resolved: it is the project page for Evolving Infra (MIT HAN Lab and others, arXiv 2611.12304). Despite the domain, neither page nor paper claims self-improvement."}
+  ],
+  "swept": [
+    "The five reader-supplied sources and the pages they cite",
+    "Agent-driven and self-improving inference optimisation, February to November 2026, including critiques and failed replications",
+    "Workload-aware and per-customer serving across providers, open engines and papers",
+    "Local runtimes, ML compilers and kernel generation, plus essays for and against local inference"
+  ],
+  "rejected": [
+    {"title": "AVO: agentic variation operators (arXiv 2603.24517)", "url": "https://arxiv.org/abs/2603.24517", "reason": "single-digit gains on one kernel family after a week of compute; no end-to-end measurement"},
+    {"title": "MLSys 2026 FlashInfer kernel generation contest", "url": "https://mlsys26.flashinfer.ai/", "reason": "placements only, no published speed-ups; FastKernels covers the same ground with numbers"},
+    {"title": "Ave: agentic GPU optimisation with data-flow invariants (arXiv 2604.18616)", "url": "https://arxiv.org/abs/2604.18616", "reason": "matches hand-tuned code without beating it; the point is already carried by FastKernels and Kernel-Smith"},
+    {"title": "Sakana walks back its AI CUDA engineer claims (2025)", "url": "https://techcrunch.com/2025/02/21/sakana-walks-back-claims-that-its-ai-can-dramatically-speed-up-model-training/", "reason": "the origin of the benchmark-gaming line; cited inside KernelBench-Verified instead of standing alone"},
+    {"title": "MorphServe: runtime quantised layer swapping (arXiv 2506.02006)", "url": "https://arxiv.org/abs/2506.02006", "reason": "no provider ships it, and the baseline is not a tuned quantised deployment"},
+    {"title": "llama.cpp multi-token-prediction speculative decoding (PR 22673)", "url": "https://github.com/ggml-org/llama.cpp/pull/22673", "reason": "good third-party numbers, but a hand-built feature that moves no claim"},
+    {"title": "LlamaWeb: WebGPU backend for llama.cpp", "url": "https://www.alphaxiv.org/abs/2605.20706.md", "reason": "portability engineering; moves no claim"},
+    {"title": "exo: DGX Spark plus Mac Studio clustering", "url": "https://blog.exolabs.net/nvidia-dgx-spark", "reason": "2025, one model and one prompt length; moves no claim"},
+    {"title": "Luminal raises funding for a search-based compiler", "url": "https://github.com/luminal-ai/luminal", "reason": "funding news with no performance baselines"},
+    {"title": "Baseten: inference engineering for DeepSeek V4 Pro", "url": "https://www.baseten.co/blog/inference-engineering-for-deepseek-v4-pro-0813", "reason": "states an intent to train per-deployment speculators; no numbers"},
+    {"title": "AlphaEvolve (arXiv 2506.13131)", "url": "https://arxiv.org/abs/2506.13131", "reason": "foundational, but not about inference and no 2026 inference-specific update found"},
+    {"title": "Asari AI, MetaInfer, Herschel, Applied Compute's agentic benchmark, SkyPilot's research-driven agents", "reason": "all verified by a sub-agent and below the cut: small or unverifiable gains, or abstracts only"},
+    {"title": "Agent-written kernels on a DGX Spark (arXiv 2607.24762) and from a local 7B model (arXiv 2611.12079)", "reason": "reported as counter-evidence for the local claim but relayed with too little detail; queued as watch item W4 to read first-hand"}
+  ],
+  "next_due": "2026-11-22"
+}

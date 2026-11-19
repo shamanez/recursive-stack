@@ -1,0 +1,47 @@
+{
+  "id": "2026-03-13-llmd-predicted-latency",
+  "title": "Predicted-latency based scheduling for LLMs",
+  "url": "https://llm-d.ai/blog/predicted-latency-based-scheduling-for-llms",
+  "org": "llm-d (Google authors)",
+  "published": "2026-03-13",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "routing",
+    "serving"
+  ],
+  "mechanism": "online",
+  "venue": "any",
+  "gist": "A small gradient-boosted model, retrained continuously on live traffic, predicts time to first token and per-token time for each candidate server and routes accordingly, replacing hand-set weights.",
+  "changes": "A working example of the stack learning its own deployment online with no LLM involved. Classical online learning already does workload-aware at the per-request timescale.",
+  "caveats": "The headline is against round-robin; against the best hand heuristic the gain is about a third. One of five scenarios showed no advantage. Assumes identical servers.",
+  "numbers": [
+    {
+      "metric": "Median end-to-end latency",
+      "value": "9.06 s vs 13.42 s",
+      "baseline": "the best hand-tuned heuristic (round-robin: 15.98 s)",
+      "verification": "self-reported",
+      "setup": "Qwen3-480B, H200"
+    },
+    {
+      "metric": "Median TTFT",
+      "value": "0.97 s vs 3.38 s",
+      "baseline": "the best hand-tuned heuristic",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "A model retrained on the deployment's own traffic beat fixed weights."
+    },
+    {
+      "claim": "C1",
+      "direction": "complicates",
+      "note": "A learned controller did this, not a coding agent."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

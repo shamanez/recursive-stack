@@ -1,0 +1,54 @@
+{
+  "id": "2026-05-22-fastkernels",
+  "title": "FastKernels: benchmarking GPU kernel generation in production",
+  "url": "https://arxiv.org/abs/2605.23215",
+  "org": "Snowflake AI Research, CMU, UCSD",
+  "published": "2026-05-22",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "kernels",
+    "engine",
+    "loop"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "384 kernel tasks taken from 47 real architectures, with baselines set to the kernels that production frameworks actually ship. Each candidate is scored alone and again after being swapped into the full model on the production path. Five agent systems were run for 6,900 agent-hours.",
+  "changes": "Puts a number on how much isolated kernel results overstate. This is the discount to apply to every kernel speed-up quoted elsewhere on this site.",
+  "caveats": "One GPU type. Equivalence was checked with a few forward passes, not task accuracy. No public leaderboard yet.",
+  "numbers": [
+    {
+      "metric": "Kernel-level speed-up once swapped into the full model",
+      "value": "1.6 to 6.6x shrinks to 0.96 to 1.25x",
+      "baseline": "kernels shipped by production frameworks",
+      "verification": "third-party",
+      "setup": "B200"
+    },
+    {
+      "metric": "Winning kernel sets that ran correctly unmodified",
+      "value": "22 of 110 (20%)",
+      "baseline": "all winning sets",
+      "verification": "third-party"
+    },
+    {
+      "metric": "LLM serving end to end",
+      "value": "within about 6% either way",
+      "baseline": "production kernels",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Isolated scores even mis-ranked the agents: the one that looked equal alone was three times better end to end."
+    },
+    {
+      "claim": "C1",
+      "direction": "challenges",
+      "note": "For LLM serving specifically, agents landed at parity with what already ships."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

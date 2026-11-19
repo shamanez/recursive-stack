@@ -1,0 +1,102 @@
+{
+  "id": "2026-11-16-together-deleted-megakernels",
+  "title": "Last year we built megakernels. This year we deleted them",
+  "url": "https://www.together.ai/blog/road-to-together-compiler",
+  "org": "Together AI",
+  "authors": "Dylan Lim, Reyna Abhyankar, Simran Arora",
+  "published": "2026-11-16",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "kernels",
+    "compiler",
+    "loop"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "A retrospective on why Together abandoned fusing a whole forward pass into one GPU kernel. Simpler primitives recover nearly all of the gain, megakernels break across chips and architectures, and the rule-based compiler they built in between was too rigid. They now let agents rewrite the forward pass from source and measure on real inputs. Includes unusually frank ablations of their own agent scaffolding.",
+  "changes": "The best single source on why measuring is the hard part, with concrete cases of benchmarks lying. Its ablations cut against the idea that agents improve by accumulating curated knowledge: a plain instruction beat expert-written strategies.",
+  "caveats": "A vendor post. Baselines are not always fully specified and the product is early access through sales. The ablations are on one layer of one model. Two other teams are shipping agent-written megakernels in the same month.",
+  "numbers": [
+    {
+      "metric": "Llama 1B decode with CUDA Graphs and fine-grained PDL",
+      "value": "975 tok/s, 98% of the megakernel",
+      "baseline": "megakernel 990; compiler default 669",
+      "verification": "self-reported",
+      "setup": "H100"
+    },
+    {
+      "metric": "Agent loop against hand-written megakernel",
+      "value": "2,118 vs 1,649 tok/s (+28%)",
+      "baseline": "the megakernel",
+      "verification": "self-reported",
+      "setup": "Llama 3.2 1B, B200"
+    },
+    {
+      "metric": "One top-k kernel on random against real inputs",
+      "value": "20 microseconds vs 62 milliseconds",
+      "baseline": "the same kernel",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Isolated compiler benchmark against live forward pass",
+      "value": "39 to 58% slower in isolation",
+      "baseline": "timing inside the live forward pass",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Speed-up with a curated knowledge base",
+      "value": "4.75x, against 5.85x without it",
+      "baseline": "the same agent system without the knowledge base",
+      "verification": "self-reported",
+      "setup": "MiniMax-M3 layer 3, B200"
+    },
+    {
+      "metric": "Six expert-written strategies against a plain instruction",
+      "value": "about 26% worse",
+      "baseline": "naive prompt",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "One compiler flag across batch sizes",
+      "value": "+10 to 26% at large batch, 49% slower at batch 1",
+      "baseline": "flag off",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Synthetic inputs misled agents; isolated benchmarks were off by half; the harness timed a no-op at 2.5 microseconds."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The same flag helps or hurts depending on batch size. A static kernel registry was tried and did not work."
+    },
+    {
+      "claim": "C5",
+      "direction": "challenges",
+      "note": "Curated knowledge and expert strategies made the agents worse. Accumulated know-how is not yet compounding."
+    },
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Agent loops beat the team's own hand-written megakernel within a day."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "One megakernel could not span two attention types on a new chip; forcing it cost 5 to 19%."
+    }
+  ],
+  "also": [
+    {
+      "label": "Megakernel origin post (Hazy Research, 2025)",
+      "url": "https://hazyresearch.stanford.edu/blog/2025-05-27-no-bubbles"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

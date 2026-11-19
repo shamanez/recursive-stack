@@ -1,0 +1,51 @@
+{
+  "id": "2026-03-30-kernel-smith",
+  "title": "Kernel-Smith: a unified recipe for evolutionary kernel optimization",
+  "url": "https://arxiv.org/abs/2603.28342",
+  "org": "Shanghai AI Laboratory, Fudan University, MetaX",
+  "published": "2026-03-30",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "kernels",
+    "loop"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "An evolutionary agent keeps a population of runnable kernel candidates with compile, correctness and speed feedback, and recycles its search trajectories into training data for a specialised model. Targets NVIDIA and a Chinese GPU vendor.",
+  "changes": "Its kernels were merged into production engines, and its own numbers show the dilution: a kernel 4.78x faster alone was worth about 1% end to end.",
+  "caveats": "The merged pull requests have not been checked. Evaluated on the benchmark protocol later shown to be inflated. Data on request only.",
+  "numbers": [
+    {
+      "metric": "A kernel merged into SGLang",
+      "value": "4.78x alone; -0.35% to +1.75% end to end",
+      "baseline": "the existing kernel",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "A kernel merged into LMDeploy",
+      "value": "1.36x alone; 1.85 to 3.0% throughput",
+      "baseline": "the existing kernel",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "The authors' own end-to-end numbers are two orders smaller than their kernel numbers."
+    },
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "Search trajectories become training data for the next model."
+    },
+    {
+      "claim": "C1",
+      "direction": "complicates",
+      "note": "The code landed in real engines. The effect was about one percent."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

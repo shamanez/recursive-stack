@@ -1,0 +1,48 @@
+{
+  "id": "2026-09-23-modal-trillion-tokens",
+  "title": "Trillion tokens, trillion parameters",
+  "url": "https://modal.com/blog/trillion-tokens-trillion-parameters",
+  "org": "Modal",
+  "published": "2026-09-23",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "engine",
+    "routing"
+  ],
+  "mechanism": "hand",
+  "venue": "dedicated",
+  "gist": "A stack tuned for one customer's coding-agent traffic: a draft model fine-tuned on the target model's own coding traces, an 8-bit KV cache, a CPU-memory cache tier, and session-affinity routing.",
+  "changes": "Contains the cleanest tuned-against-generic number available: training the draft model on the customer's traces was worth about 20%. The post also says the same principles carried over to other customers and models.",
+  "caveats": "The 2.8x and 5.6x headline figures are against an unoptimised replica that is not specified. Quality evaluation is described as still being built.",
+  "numbers": [
+    {
+      "metric": "Speculative accept length after fine-tuning the draft on workload traces",
+      "value": "5.00 to 5.84 tokens per step, about 20% faster",
+      "baseline": "a generic draft model",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Per-replica throughput",
+      "value": "5.6x",
+      "baseline": "an unoptimised replica, unspecified",
+      "verification": "self-reported",
+      "setup": "Kimi K2.6, B200"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C3",
+      "direction": "challenges",
+      "note": "Like for like, per-customer tuning was worth about 20%, and the recipe transferred to other customers."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The stack was designed around the shape of coding-agent traffic: 100k tokens in, 500 out."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

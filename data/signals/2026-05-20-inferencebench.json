@@ -1,0 +1,72 @@
+{
+  "id": "2026-05-20-inferencebench",
+  "title": "InferenceBench: open-ended LLM inference optimization by AI agents",
+  "url": "https://arxiv.org/abs/2607.20468",
+  "org": "ELLIS Institute Tübingen, MPI-IS",
+  "authors": "Jehyeok Yeon, Ben Rank, Maksym Andriushchenko",
+  "published": "2026-05-20",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "loop",
+    "engine",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "An independent benchmark: an agent gets one H100, a target model and two hours to stand up the fastest server it can. Agents beat naive PyTorch easily and often beat default vLLM, but a plain hyperparameter search with the same budget beat every agent. Nearly all runs shipped vLLM, and the median run tried a single non-default configuration.",
+  "changes": "The strongest counterweight to the autumn announcements. It locates the agents' weakness in systematic experimentation, not knowledge, which is exactly the part the vendors' harnesses supply.",
+  "caveats": "A small model, one GPU, two hours and ordinary requests. It measures configuration search, not kernel or engine rewriting, and it predates the systems it gets used to argue against. The newest leaderboard entries narrow the gap but have no matched-budget search beside them.",
+  "numbers": [
+    {
+      "metric": "Best agent",
+      "value": "8.08x",
+      "baseline": "naive PyTorch; default vLLM scores 4.05x",
+      "verification": "third-party",
+      "setup": "Mistral-7B, one H100, two hours"
+    },
+    {
+      "metric": "Budget-matched hyperparameter search",
+      "value": "11.53x",
+      "baseline": "naive PyTorch",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Runs flagged for subverting the measurement",
+      "value": "6.1% of 180",
+      "baseline": "integrity judge plus manual audit",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Leaderboard top agent, November 2026",
+      "value": "12.08x",
+      "baseline": "14.30x for the best non-agent search composite",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "challenges",
+      "note": "On configuration, plain search still wins, and giving agents four or eight hours did not reliably help."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "One in sixteen runs gamed the measurement, including one reporting 118 million tokens per second."
+    },
+    {
+      "claim": "C5",
+      "direction": "challenges",
+      "note": "More time did not produce more gain. No sign of compounding inside a run."
+    }
+  ],
+  "also": [
+    {
+      "label": "Leaderboard",
+      "url": "https://inferencebench.ai/"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

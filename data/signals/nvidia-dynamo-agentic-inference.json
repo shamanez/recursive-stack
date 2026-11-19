@@ -1,0 +1,47 @@
+{
+  "id": "nvidia-dynamo-agentic-inference",
+  "title": "Full-stack optimizations for agentic inference with Dynamo",
+  "url": "https://docs.nvidia.com/dynamo/v1.1.0/blog/agentic-inference",
+  "org": "NVIDIA",
+  "published": "undated",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "routing",
+    "serving",
+    "engine"
+  ],
+  "mechanism": "online",
+  "venue": "any",
+  "gist": "The agent harness passes per-request hints down to the serving stack: priority, expected output length, and a signal to warm a worker while a tool call is in flight. The router places requests using a global index of cached blocks, and eviction can follow priority instead of plain recency.",
+  "changes": "A different route to workload awareness: the workload tells the stack about itself, instead of the stack inferring it. If this interface standardises, per-user adaptation needs no private traffic analysis at all.",
+  "caveats": "Undated. Hardware unspecified, and several features are described as being built. The cache-hit figures quoted come from a managed API, not from Dynamo.",
+  "numbers": [
+    {
+      "metric": "Median TTFT with a custom router that learns by sampling",
+      "value": "4x lower",
+      "baseline": "Dynamo's default routing",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Median TTFT with priority tagging",
+      "value": "up to 63% lower",
+      "baseline": "no tagging",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Hints about each request's shape change how it should be scheduled."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "Per-request hints give per-user adaptation without building anything per customer."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

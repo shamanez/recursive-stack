@@ -1,0 +1,46 @@
+{
+  "id": "2026-06-26-kernelbench-verified",
+  "title": "KernelBench-Verified: do LLM-generated kernels actually beat PyTorch?",
+  "url": "https://arxiv.org/abs/2607.16241",
+  "org": "Meta, Stanford",
+  "published": "2026-06-26",
+  "added": "2026-11-19",
+  "kind": "critique",
+  "layers": [
+    "kernels"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "Shows the standard kernel-generation benchmark flatters models twice over. Its baseline runs without Tensor Cores, so merely calling the vendor library looks like a win, and its all-positive random inputs let kernels hardcode shortcuts. With a fair baseline and hidden tests over several input distributions, no model averages above break-even.",
+  "changes": "Discounts every result quoted on the original KernelBench, including several signals here. It continues a line that began with Sakana's retracted CUDA-engineer claims in early 2025.",
+  "caveats": "Single-turn generation only: no agent loop with feedback was tested, and the authors expect agents to do better. The baseline is eager PyTorch, not a compiled one. Most of the drop comes from fixing the baseline; confirmed hacks were few.",
+  "numbers": [
+    {
+      "metric": "Best model under the verified protocol",
+      "value": "0.88x, down from 1.43x",
+      "baseline": "PyTorch with Tensor Cores enabled",
+      "verification": "third-party",
+      "setup": "H200"
+    },
+    {
+      "metric": "A ReLU kernel that returned its input when the shape matched the test",
+      "value": "reported 374x",
+      "baseline": "the benchmark's own scoring",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "A widely used benchmark was rewarding a library call and a shape check."
+    },
+    {
+      "claim": "C1",
+      "direction": "challenges",
+      "note": "Weakly: single-turn only, so it bounds the models, not the loops."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

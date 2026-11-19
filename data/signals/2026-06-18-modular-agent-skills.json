@@ -1,0 +1,34 @@
+{
+  "id": "2026-06-18-modular-agent-skills",
+  "title": "Modular 26.4: SOTA MoE serving, model bringup via agent skills, Mojo 1.0 beta 2 and more",
+  "url": "https://modular.com/blog/modular-26-4-sota-moe-serving-model-bringup-via-agent-skills-mojo-beta-2-and-more",
+  "org": "Modular",
+  "published": "2026-06-18",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "compiler",
+    "loop",
+    "kernels"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "Published skills let a coding agent port a new model into Modular's engine: inspect the config, scaffold from the nearest existing architecture, then chase layer-by-layer divergence against the reference until the outputs match. The kernels underneath stay human-written. Qualcomm acquired the company weeks later.",
+  "changes": "Agents doing day-zero model support, which is the churn problem, with a correctness oracle that is easy to state. Also a sign of where independent compiler companies end up: inside a chip vendor.",
+  "caveats": "No bring-up times, speed-ups or baselines. One demonstration model. Acquisition terms are undisclosed.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "Model bring-up is being handed to agents because there are too many models."
+    },
+    {
+      "claim": "C1",
+      "direction": "complicates",
+      "note": "This is porting against an exact oracle, not optimisation. The kernels are still written by people."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

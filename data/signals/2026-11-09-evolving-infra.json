@@ -1,0 +1,79 @@
+{
+  "id": "2026-11-09-evolving-infra",
+  "title": "Evolving Infra: agent-adaptive LLM serving at scale",
+  "url": "https://inference-rsi.com",
+  "org": "MIT HAN Lab with Georgia Tech, UIUC, UC Berkeley, NVIDIA, OpenAI",
+  "authors": "Hao Kang, Weili Xu, Ziyang Li, Zheng Du, Hanchen Li, Tian Xia, Song Bian, Tushar Krishna, Huizi Mao, Ion Stoica, Song Han",
+  "published": "2026-11-09",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "serving",
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "A serving system for agent workloads in which every node can do prefill or decode and switch between them in seconds without restarting. A planner fits a timing model online and re-splits the cluster as traffic shifts. A cluster-wide directory keeps cached context that agents are waiting to reuse and evicts what they have abandoned.",
+  "changes": "The non-agent half of the story. Nothing here writes code: a controller moves knobs from live signals. It shows large gains from adapting to the workload at the timescale of minutes, and that adaptive and agent-driven are separate ideas being sold under one label.",
+  "caveats": "The project lives at a domain named for inference RSI, yet neither the page nor the paper claims self-improvement. The page says both that it is open source and that code is coming soon. The headline revenue figure is throughput multiplied by list prices, not money earned. The baseline is NVIDIA Dynamo as configured by the authors.",
+  "numbers": [
+    {
+      "metric": "Mean end-to-end latency, 126 coding agents on GLM-5.2",
+      "value": "54.4 s to 13.0 s (4.2x lower)",
+      "baseline": "Dynamo with SGLang",
+      "verification": "self-reported",
+      "setup": "36 GB300 GPUs, one run"
+    },
+    {
+      "metric": "P95 TTFT, same run",
+      "value": "228.4 s to 19.6 s (11.7x lower)",
+      "baseline": "Dynamo with SGLang",
+      "verification": "self-reported",
+      "setup": "36 GB300 GPUs"
+    },
+    {
+      "metric": "Throughput under a workload that shifts across three phases",
+      "value": "1.28x",
+      "baseline": "the best static prefill/decode split",
+      "verification": "self-reported",
+      "setup": "Kimi K2.6"
+    },
+    {
+      "metric": "Time to switch a node between prefill and decode",
+      "value": "6.2 s while still serving",
+      "baseline": "754 s out of service on Dynamo",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Cost of adapting online when traffic is steady",
+      "value": "0.3% of throughput",
+      "baseline": "no adaptation",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The best static split loses 28% as soon as the traffic mix moves."
+    },
+    {
+      "claim": "C5",
+      "direction": "challenges",
+      "note": "The RSI label is attached, as a domain name, to a system with no self-improvement in it. The word is running ahead of the work."
+    },
+    {
+      "claim": "C1",
+      "direction": "complicates",
+      "note": "Gains this large came from a classical online controller. Not every adaptive win needs an agent."
+    }
+  ],
+  "also": [
+    {
+      "label": "arXiv 2611.12304",
+      "url": "https://arxiv.org/abs/2611.12304"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

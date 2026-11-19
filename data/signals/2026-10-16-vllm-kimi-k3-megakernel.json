@@ -1,0 +1,60 @@
+{
+  "id": "2026-10-16-vllm-kimi-k3-megakernel",
+  "title": "Hyper optimizing Kimi K3 in vLLM: moving fast and responsibly",
+  "url": "https://vllm.ai/blog/2026-10-16-kimi-k3-megakernel",
+  "org": "vLLM project (NVIDIA, Inferact, Red Hat)",
+  "authors": "Benjamin Chislett",
+  "published": "2026-10-16",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "kernels",
+    "engine",
+    "loop"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "Coding agents helped write a fused decode path for one model on one chip, merged into vLLM. The post's real subject is process: agent-written optimisations now arrive faster than maintainers can read them, so it proposes isolating them in per-model directories and having reviewers judge evidence (full-model evaluations plus kernel tests) instead of every line.",
+  "changes": "Public, merged proof that agent-written kernel work is in the main open engine, and an admission that human review is now the queue. Also the opposite bet to Together's on megakernels, in the same month.",
+  "caveats": "Agent-assisted, not autonomous; the loop is not described. Headline numbers exclude prefill and use synthetic acceptance. One approving reviewer said they had not read all the kernel code. Standalone kernel tests missed a compiler reordering bug and numerical issues.",
+  "numbers": [
+    {
+      "metric": "Per-layer decode, Kimi K3 on GB300",
+      "value": "about 130 microseconds and 23 kernels, down to 69 and 13",
+      "baseline": "stock vLLM",
+      "verification": "public-run",
+      "setup": "merged pull request"
+    },
+    {
+      "metric": "Aggregate decode throughput",
+      "value": "1.31x to 1.92x",
+      "baseline": "stock vLLM, batch 1 to 64",
+      "verification": "public-run"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Agent-written kernel code, merged upstream, with model-level evaluations attached."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Review capacity is the stated limit, and the existing test gates missed real bugs."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "The work landed in the commons the day it was announced."
+    }
+  ],
+  "also": [
+    {
+      "label": "RFC: fast-track for agent-written optimisations",
+      "url": "https://github.com/vllm-project/vllm/issues/59665"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

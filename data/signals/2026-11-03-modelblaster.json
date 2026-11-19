@@ -1,0 +1,52 @@
+{
+  "id": "2026-11-03-modelblaster",
+  "title": "ModelBlaster: learning-augmented agents across models, kernels and hardware backends",
+  "url": "https://arxiv.org/abs/2611.04104",
+  "org": "Shengjun Kris Dong, Christos Kozyrakis et al.",
+  "published": "2026-11-03",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "kernels",
+    "compiler",
+    "loop"
+  ],
+  "mechanism": "agent",
+  "venue": "local",
+  "gist": "An agent whose policy is a persistent knowledge base, updated from textual feedback as it works instead of by retraining. Knowledge learned optimising single kernels is reused for whole-model decisions, across a datacenter GPU, a phone GPU and a RISC-V vector chip.",
+  "changes": "The only result so far of agent-written kernels on edge-class chips, where it beats the vendor's own SDK. It also bets the opposite way from Together on whether accumulated knowledge helps.",
+  "caveats": "Two weeks old. The abstract does not name the edge devices or the benchmark suite. Its datacenter results are on the benchmark shown to overstate.",
+  "numbers": [
+    {
+      "metric": "Phone GPU (Qualcomm Adreno, OpenCL)",
+      "value": "5.8x over the vendor SDK; 1.7x over Apache TVM",
+      "baseline": "vendor SDK and TVM",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "RISC-V vector chip",
+      "value": "2.7x",
+      "baseline": "ExecuTorch with XNNPACK",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "supports",
+      "note": "Agent-generated kernels on a phone GPU and a RISC-V chip, beating the vendor's own stack."
+    },
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "The agent's policy is a knowledge base that updates as it works."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "One agent, three unlike backends."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

@@ -1,0 +1,92 @@
+{
+  "id": "2026-11-09-inferenceforge",
+  "title": "InferenceForge: agents optimizing agentic serving",
+  "url": "https://agenteconomics.org/posts/inference-forge",
+  "org": "agenteconomics.org",
+  "authors": "Jesse Cai, Huimin Zeng, Yuxuan Lu, Dakuo Wang, Kai-Wei Chang",
+  "published": "2026-11-09",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "kernels",
+    "engine"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "An off-the-shelf coding agent, placed in a custom environment with a harness and an evaluation suite, tuned SGLang for Kimi K3 under a floor on per-user speed. In nine iterations over three days it found three kernel-level fixes specific to agent traffic, where a few very long contexts share a batch with many short ones, and landed them as pull requests in a fork.",
+  "changes": "The first public case of outsiders with no production traffic topping the shared scoreboard using a general-purpose agent. The fixes are new code, not configuration, and each targets a traffic shape that uniform benchmarks never produce.",
+  "caveats": "Measured by the authors on one node. The comparison is against runs published by other teams on other dates, not a same-day rerun. The fixes sit in a personal fork, not upstream. The cost of the agent runs is not given.",
+  "numbers": [
+    {
+      "metric": "Kimi K3 throughput at 30 tok/s per user",
+      "value": "12.8k tok/s per GPU (+43%)",
+      "baseline": "8.9k, best published AgentX reference",
+      "verification": "self-reported",
+      "setup": "8x B300, one node"
+    },
+    {
+      "metric": "Kimi K3 peak throughput",
+      "value": "16.2k tok/s per GPU (+29%)",
+      "baseline": "best published AgentX run (vLLM, 16 Aug)",
+      "verification": "self-reported",
+      "setup": "8x B300"
+    },
+    {
+      "metric": "Decode step with one 900K-token request among 40",
+      "value": "522 to 126 microseconds",
+      "baseline": "before splitting long attention reads",
+      "verification": "self-reported",
+      "setup": "microbenchmark, B300"
+    },
+    {
+      "metric": "Linear-attention recurrence per 32K chunk",
+      "value": "1,199 to 426 microseconds (2.8x)",
+      "baseline": "sequential scan",
+      "verification": "self-reported",
+      "setup": "B300"
+    },
+    {
+      "metric": "Kimi K3.1 at 56 tok/s per user",
+      "value": "23.7k tok/s per GPU (+5%)",
+      "baseline": "22.6k at 53, best published SGLang run (5 Nov)",
+      "verification": "self-reported",
+      "setup": "8x B300"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "A general coding agent found and validated three kernel fixes, bit-exact where claimed."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "All three fixes exist only because agent traffic mixes very long and short contexts in one batch."
+    },
+    {
+      "claim": "C4",
+      "direction": "complicates",
+      "note": "A public replayable workload stood in for private traffic. Outsiders could play, which weakens the idea that only traffic owners can evaluate."
+    },
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "States a plan to put the authors' own models, post-trained for optimisation, into the loop. A plan, not a result."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "On the newest model the lead over the best public run is 5%. The public frontier is close behind."
+    }
+  ],
+  "also": [
+    {
+      "label": "SGLang fork",
+      "url": "https://github.com/jcaip/sglang-fork"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

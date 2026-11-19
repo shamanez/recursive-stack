@@ -1,0 +1,54 @@
+{
+  "id": "2026-09-08-vllm-agentx",
+  "title": "vLLM x AgentX: optimizing for real-world agentic serving",
+  "url": "https://vllm.ai/blog/2026-09-08-vllm-agentx",
+  "org": "vLLM team and Inferact",
+  "published": "2026-09-08",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "engine",
+    "serving",
+    "routing",
+    "kernels"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "The general-purpose open engine reworked for agent traffic: a shared KV block pool, cache retention aware of sessions, a cap on long prefills in the scheduler, and per-model parallelism choices. On this workload, simply keeping a session on the same server beat every load-balancing signal.",
+  "changes": "The workload class changed the engine's design, not only its settings. And because it happened in the commons, everyone got it.",
+  "caveats": "No before-optimisation baseline for the headline throughput. The prefill cap buys throughput by making long requests wait longer for a first token. Hints from the agent harness are future work.",
+  "numbers": [
+    {
+      "metric": "Total tokens per GPU-second from a 512-token cap on long prefills",
+      "value": "up to 93% higher",
+      "baseline": "the same engine without the cap",
+      "verification": "public-run",
+      "setup": "DeepSeek V4 Pro, B300"
+    },
+    {
+      "metric": "Prefill with context parallelism on a 32K prompt",
+      "value": "2.65x",
+      "baseline": "8-way tensor parallelism",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Agent sessions (median 43 turns, 142K input tokens, 96% prefix hits) needed different scheduling and caching from chat."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "Class-level specialisation landed upstream."
+    },
+    {
+      "claim": "C3",
+      "direction": "challenges",
+      "note": "Changes for the whole class, in the shared engine, delivered the bulk of the gain with no per-customer work."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

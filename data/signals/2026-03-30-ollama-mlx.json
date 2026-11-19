@@ -1,0 +1,44 @@
+{
+  "id": "2026-03-30-ollama-mlx",
+  "title": "Ollama is now powered by MLX on Apple silicon",
+  "url": "https://ollama.com/blog/mlx",
+  "org": "Ollama",
+  "published": "2026-03-30",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "engine",
+    "kernels",
+    "model",
+    "serving"
+  ],
+  "mechanism": "hand",
+  "venue": "local",
+  "gist": "The most-used local runner swapped its Apple-silicon backend to MLX, added a 4-bit weight format from NVIDIA, and reworked its prompt cache to be reused across conversations and to keep shared prefixes. A June follow-up fuses operations into single Metal kernels and moves sampling to the GPU.",
+  "changes": "Local stacks are getting the same class of work as datacenter engines (kernel fusion, cache retention policy), about a year behind and done by hand.",
+  "caveats": "The comparison changes engine and quantisation at once and does not name the chip. Needs more than 32 GB of memory. A competitor found its draft model barely drafting on some models.",
+  "numbers": [
+    {
+      "metric": "Decode",
+      "value": "58 to 112 tok/s",
+      "baseline": "Ollama 0.18 with a different quantisation",
+      "verification": "self-reported",
+      "setup": "Qwen3.5-35B, chip not named"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "Serious optimisation is reaching local runtimes. People are doing it, by hand, for everyone at once."
+    }
+  ],
+  "also": [
+    {
+      "label": "June follow-up",
+      "url": "https://ollama.com/blog/mlx-performance"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

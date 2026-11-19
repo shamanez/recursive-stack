@@ -1,0 +1,65 @@
+{
+  "id": "2026-08-24-agentx-inferencex-v3",
+  "title": "AgentX 1.0 / InferenceX v3: does the CUDA moat hold up in agentic inferencing?",
+  "url": "https://newsletter.semianalysis.com/p/agentx-inferencexv3-does-cuda-moat",
+  "org": "SemiAnalysis",
+  "published": "2026-08-24",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "loop",
+    "serving",
+    "routing",
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "An open benchmark that replays 393 anonymised coding-agent sessions: many turns, contexts up to a million tokens, heavy prefix reuse, bursts of sub-agents. Every data point is a public CI run with its configuration committed. It replaced fixed-length request benchmarks as the number serving teams compete on.",
+  "changes": "This is the hill everyone is climbing. Almost every result tracked here is stated against it. A shared, replayable workload is what made agent-driven optimisation possible outside the companies that own traffic. It is also a single target the whole field can overfit.",
+  "caveats": "One organisation's coding traces now define good serving. The post counts upstream fixes inconsistently (50+ and 70+) and many were still open. Part of the article is paywalled.",
+  "numbers": [
+    {
+      "metric": "Throughput from one scheduler change (decode interval after prefill)",
+      "value": "+141%, with median TTFT rising from 36.5 s to 59 s",
+      "baseline": "the same engine before the patch",
+      "verification": "public-run"
+    },
+    {
+      "metric": "Keeping KV on CPU memory in vLLM",
+      "value": "+81.7% throughput",
+      "baseline": "recomputing the context",
+      "verification": "public-run"
+    },
+    {
+      "metric": "Prefix-cache hit rate after a checkpoint-retention fix on AMD",
+      "value": "5.6% to 96.45%",
+      "baseline": "before the fix",
+      "verification": "public-run"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Replaying real agent sessions instead of fixed-length requests changed which optimisations matter."
+    },
+    {
+      "claim": "C4",
+      "direction": "complicates",
+      "note": "A public replayable workload lowers the traffic moat, and at the same time points everyone at one trace set."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "Fifty or more fixes it prompted went upstream into vLLM and SGLang."
+    }
+  ],
+  "also": [
+    {
+      "label": "Live scoreboard",
+      "url": "https://inferencex.semianalysis.com"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

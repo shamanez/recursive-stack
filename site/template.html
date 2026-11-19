@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--__GENERATED__-->
+<title>The Recursive Stack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: a sticky instrument bar over one working column; views swap in place like panes in a profiler.
+   Figure-first: every view opens on a diagram or chart, prose is capped, depth sits behind a link.
+   Colour carries meaning in three separate families that never share a chart:
+   means (how an optimisation is produced), polarity (evidence for or against), status (verdicts). */
+:root {
+  --bg: #f3f4f9; --surface: #fcfcfe; --inset: #eceef6;
+  --ink: #14151f; --ink-2: #464a5e; --ink-3: #666b80;
+  --line: #dee1ec; --line-2: #c2c6d8;
+  --accent: #5a48d0; --accent-soft: #e9e6fb; --on-accent: #ffffff;
+  --m-agent: #6250d6; --m-online: #1baf7a; --m-rules: #eb6834; --m-hand: #464a5e; --m-frame: #8a8fa3;
+  --supports: #2a78d6; --challenges: #e34948; --mixed: #8a8fa3;
+  --good: #0ca30c; --warn: #fab219; --serious: #ec835a; --crit: #d03b3b;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-text: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0c13; --surface: #141621; --inset: #1c1f2e;
+    --ink: #ecedf6; --ink-2: #b5b8cc; --ink-3: #8a8ea6;
+    --line: #252839; --line-2: #3a3e55;
+    --accent: #9d93f0; --accent-soft: #231f40; --on-accent: #0b0c13;
+    --m-agent: #9085e9; --m-online: #199e70; --m-rules: #d95926; --m-hand: #b5b8cc; --m-frame: #6f748c;
+    --supports: #3987e5; --challenges: #e66767; --mixed: #7f849b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0c13; --surface: #141621; --inset: #1c1f2e;
+  --ink: #ecedf6; --ink-2: #b5b8cc; --ink-3: #8a8ea6;
+  --line: #252839; --line-2: #3a3e55;
+  --accent: #9d93f0; --accent-soft: #231f40; --on-accent: #0b0c13;
+  --m-agent: #9085e9; --m-online: #199e70; --m-rules: #d95926; --m-hand: #b5b8cc; --m-frame: #6f748c;
+  --supports: #3987e5; --challenges: #e66767; --mixed: #7f849b;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--font-text); }
+[hidden] { display: none !important; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.2; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p, figure { margin: 0; }
+a { color: inherit; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--accent); }
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-3); }
+.small { font-size: 13px; }
+
+/* ---------- instrument bar */
+.top { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); }
+.top-in { display: flex; align-items: center; gap: 16px; padding-block: 10px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 17px/1 var(--font-display); text-decoration: none; letter-spacing: -0.01em; }
+.brand svg { width: 22px; height: 22px; flex: none; color: var(--accent); }
+.status { margin-left: auto; display: flex; gap: 6px 14px; flex-wrap: wrap; font: 400 12px/1.4 var(--font-data); color: var(--ink-2); }
+.status b { font-weight: 500; color: var(--ink); }
+.ghost { background: none; border: 1px solid var(--line-2); border-radius: 6px; padding: 5px 10px; font-size: 13px; cursor: pointer; }
+.ghost:hover { background: var(--inset); }
+.tabs-scroll { overflow-x: auto; scrollbar-width: none; }
+.tabs-scroll::-webkit-scrollbar { display: none; }
+.tabs { display: flex; gap: 2px; min-width: max-content; }
+.tabs a { padding: 9px 12px; font-size: 14px; font-weight: 500; color: var(--ink-2); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; }
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
+.tabs .count { font: 500 11px/1 var(--font-data); background: var(--accent-soft); color: var(--accent); border-radius: 9px; padding: 3px 6px; margin-left: 6px; }
+
+/* ---------- page furniture */
+main { padding-block: 32px 56px; display: grid; gap: 40px; }
+main > * { min-width: 0; }
+.eyebrow { font: 500 12px/1.4 var(--font-data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.view-head { display: grid; gap: 8px; max-width: 720px; }
+.view-head h1 { font-size: clamp(26px, 4vw, 34px); }
+.view-head p { color: var(--ink-2); }
+.hero { display: grid; gap: 12px; max-width: 880px; }
+.hero h1 { font-size: clamp(30px, 5vw, 48px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.08; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .sub { font-size: 18px; color: var(--ink-2); max-width: 60ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 20px; font: 400 13px/1.5 var(--font-data); color: var(--ink-2); }
+.facts b { color: var(--ink); font-weight: 500; }
+.sec { display: grid; gap: 14px; }
+.sec > h2 { font-size: 20px; }
+.sec-note { color: var(--ink-2); max-width: 70ch; font-size: 14px; }
+.cols { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.stamp { font: 400 12px/1.4 var(--font-data); color: var(--ink-3); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 14px; align-content: start; }
+.banner { background: var(--accent-soft); border-radius: 10px; padding: 10px 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: space-between; font-size: 14px; }
+.link { background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; font-weight: 500; }
+.link:hover { text-decoration-color: var(--accent); }
+.gloss { border-bottom: 1px dotted var(--ink-3); cursor: help; }
+.tag { font: 500 11px/1.2 var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.vhead { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+details > summary { cursor: pointer; font-size: 13px; font-weight: 500; color: var(--ink-2); }
+details > summary:hover { color: var(--accent); }
+.plain-list { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px; color: var(--ink-2); font-size: 13.5px; }
+.foot { border-top: 1px solid var(--line); padding-block: 20px 40px; color: var(--ink-3); font-size: 13px; display: flex; gap: 8px 20px; flex-wrap: wrap; justify-content: space-between; }
+
+/* ---------- pills, chips, glyphs */
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--font-text); padding: 5px 9px 5px 6px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--surface); white-space: nowrap; }
+.pill-i, .vicon { width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; color: #fff; background: var(--ink-3); flex: none; }
+.t-good { --tone: var(--good); } .t-warn { --tone: var(--warn); } .t-serious { --tone: var(--serious); } .t-crit { --tone: var(--crit); }
+.pill[class*="t-"] { border-color: color-mix(in srgb, var(--tone) 60%, var(--line)); background: color-mix(in srgb, var(--tone) 12%, var(--surface)); }
+[class*="t-"] > .pill-i, [class*="t-"] > .vicon { background: var(--tone); }
+.t-warn > .pill-i, .t-serious > .pill-i, .t-warn > .vicon, .t-serious > .vicon { color: #0b0b0b; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--font-data); padding: 5px 8px; border-radius: 6px; background: var(--inset); border: 0; cursor: pointer; color: var(--ink-2); }
+.chip:hover { background: var(--accent-soft); color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dir { width: 9px; height: 9px; border-radius: 2px; flex: none; background: var(--mixed); display: inline-block; }
+.dir-supports { background: var(--supports); }
+.dir-challenges { background: var(--challenges); }
+/* means: colour plus shape, so identity never rests on hue alone */
+.mg { display: inline-block; width: 11px; height: 11px; flex: none; background: var(--m-agent); border-radius: 50%; }
+.mg.m-online { background: var(--m-online); border-radius: 1px; transform: rotate(45deg) scale(0.82); }
+.mg.m-rules { background: var(--m-rules); border-radius: 2px; }
+.mg.m-hand { background: var(--m-hand); border-radius: 0; clip-path: polygon(50% 2%, 100% 98%, 0 98%); }
+.mg.m-frame { background: transparent; border: 2px solid var(--m-frame); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex: none; }
+
+/* ---------- figure: then / now flow */
+.shift { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px 14px; }
+.lane { display: grid; grid-template-columns: 158px minmax(0, 1fr); gap: 16px; align-items: center; }
+.lane-tag { display: grid; gap: 2px; }
+.lane-tag strong { font: 600 15px/1.2 var(--font-display); }
+.lane-tag span { font-size: 12px; color: var(--ink-3); }
+.flow { display: flex; list-style: none; margin: 0; padding: 0; gap: 3px; }
+.flow li { flex: 1; min-width: 0; min-height: 52px; padding: 8px 20px 8px 26px; font-size: 13.5px; font-weight: 500; line-height: 1.25; display: flex; align-items: center; background: var(--inset); color: var(--ink-2);
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%, 13px 50%); }
+.flow li:first-child { padding-left: 16px; clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%); border-radius: 8px 0 0 8px; }
+.lane-now .flow li { background: var(--accent); color: var(--on-accent); }
+.lane-now .lane-tag strong { color: var(--accent); }
+.loopback { margin-left: 174px; display: flex; align-items: center; gap: 10px; font: 500 12px/1.2 var(--font-data); color: var(--accent); }
+.loopback::before { content: ""; width: 26px; height: 12px; border: 2px solid var(--accent); border-top: 0; border-radius: 0 0 8px 8px; }
+.loopback::after { content: ""; flex: 1; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
+
+/* ---------- figure: five points */
+.points { display: grid; gap: 0; }
+.point { display: grid; gap: 6px; padding: 14px 0; border-top: 1px solid var(--line); }
+.point:first-child { border-top: 0; padding-top: 0; }
+.point h3 { font-size: 16px; }
+.point p { color: var(--ink-2); font-size: 14px; max-width: 62ch; }
+
+/* ---------- figure: course check tiles */
+.quote { color: var(--ink-2); font-size: 14px; font-style: italic; }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.tile { border-radius: 10px; padding: 12px; display: grid; gap: 6px; align-content: start; background: color-mix(in srgb, var(--tone) 11%, var(--surface)); border: 1px solid color-mix(in srgb, var(--tone) 40%, var(--line)); }
+.tile-top { display: flex; align-items: center; gap: 8px; }
+.tile .vicon { width: 20px; height: 20px; font-size: 12px; }
+.tile strong { font: 600 14px/1.2 var(--font-display); }
+.tile .verdict { font: 500 11px/1 var(--font-data); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-2); }
+.tile p { font-size: 13px; line-height: 1.4; color: var(--ink); }
+.reframe { font: 500 15px/1.45 var(--font-display); }
+
+/* ---------- figure: claims bars */
+.cfig { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px; display: grid; gap: 0; }
+.crow { display: grid; grid-template-columns: 30px minmax(0, 1.25fr) minmax(110px, 1fr) 46px 132px; gap: 12px; align-items: center; padding: 9px 10px; border: 0; background: none; text-align: left; cursor: pointer; border-radius: 8px; width: 100%; }
+.crow:hover { background: var(--inset); }
+.crow .cid { font: 500 12px/1 var(--font-data); color: var(--ink-3); }
+.crow .cname { font-weight: 500; font-size: 14px; line-height: 1.3; }
+.cbar { position: relative; height: 12px; background: var(--inset); border-radius: 0 4px 4px 0; }
+.cbar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 0 4px 4px 0; }
+.cbar b { position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1px; background: var(--ink-3); }
+.cbar u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); }
+.crow .cval { font: 500 14px/1 var(--font-data); text-align: right; }
+.cev { display: flex; gap: 8px; font: 400 12px/1 var(--font-data); color: var(--ink-2); justify-content: flex-end; }
+.cev span { display: inline-flex; align-items: center; gap: 4px; }
+.caxis { display: grid; grid-template-columns: 30px minmax(0, 1.25fr) minmax(110px, 1fr) 46px 132px; gap: 12px; padding: 2px 10px 6px; font: 400 10.5px/1 var(--font-data); color: var(--ink-3); }
+.caxis div { display: flex; justify-content: space-between; grid-column: 3; }
+
+/* ---------- figure: loop ring */
+.loop-fig { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 28px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; }
+.ring { width: 100%; height: auto; display: block; max-width: 340px; }
+.ring-arrow { fill: none; stroke: var(--line-2); stroke-width: 2.5; }
+.ring-arrow.is-dashed { stroke-dasharray: 4 5; }
+.ring-ah { fill: var(--line-2); }
+.ring-node { cursor: pointer; }
+.ring-node circle { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+.ring-node text { font: 600 13px var(--font-display); fill: var(--ink); pointer-events: none; }
+.ring-node.is-bottleneck circle { fill: color-mix(in srgb, var(--warn) 30%, var(--surface)); stroke: var(--warn); }
+.ring-node.is-unproven circle { stroke: var(--ink-3); stroke-dasharray: 4 4; }
+.ring-node.is-on circle { stroke-width: 4.5; }
+.ring-node:focus-visible { outline: none; }
+.ring-node:focus-visible circle { stroke-width: 5; }
+.ring-c1 { font: 600 13px var(--font-display); fill: var(--ink-2); }
+.ring-c2 { font: 400 11px var(--font-data); fill: var(--ink-3); }
+.loop-detail { display: grid; gap: 10px; align-content: start; }
+.loop-detail h3 { font-size: 20px; }
+.loop-detail p { color: var(--ink-2); font-size: 14px; max-width: 54ch; }
+.loop-detail .hard { color: var(--ink); }
+
+/* ---------- figure: data charts (pairs, bars) */
+.fig-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 16px; }
+.fig-grid > .fig:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.fig { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 16px 14px; display: grid; gap: 10px; align-content: start; }
+.fig-head { display: grid; gap: 4px; padding: 0 6px; }
+.fig h3 { font-size: 16px; }
+.fig .take { font-size: 14px; color: var(--ink-2); }
+.fig .legend { padding: 0 6px; }
+.frows { display: grid; gap: 0; }
+.frow { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(80px, 1.1fr) auto; gap: 12px; align-items: center; padding: 6px; border: 0; background: none; text-align: left; border-radius: 6px; cursor: pointer; width: 100%; }
+.frow:hover { background: var(--inset); }
+.flabel { font-size: 13px; line-height: 1.3; }
+.ftrack { position: relative; height: 18px; }
+.fref { position: absolute; top: -6px; bottom: -6px; width: 1px; background: var(--ink-3); opacity: 0.6; }
+.fbar { position: absolute; left: 0; top: 3px; height: 12px; border-radius: 0 4px 4px 0; background: var(--m-agent); }
+.fbar.g1 { background: var(--m-rules); }
+.fbar.g2 { background: var(--m-frame); }
+.fline { position: absolute; top: 8px; height: 2px; background: var(--line-2); }
+.fdot { position: absolute; top: 3px; width: 12px; height: 12px; border-radius: 50%; margin-left: -6px; }
+.fdot.is-from { background: var(--surface); border: 2px solid var(--ink-3); }
+.fdot.is-to { background: var(--accent); box-shadow: 0 0 0 2px var(--surface); }
+.fval { font-size: 12.5px; white-space: nowrap; text-align: right; }
+.fig .cap { font-size: 12px; color: var(--ink-3); padding: 0 6px; }
+.sw.g0 { background: var(--m-agent); } .sw.g1 { background: var(--m-rules); } .sw.g2 { background: var(--m-frame); }
+.key-from { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink-3); display: inline-block; }
+.key-to { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: inline-block; }
+.key-ref { width: 1px; height: 12px; background: var(--ink-3); display: inline-block; }
+
+/* ---------- lists */
+.changes { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+.changes li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.changes .tag { padding-top: 3px; color: var(--accent); }
+.reads { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: r; }
+.reads li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; counter-increment: r; }
+.reads li::before { content: counter(r); width: 24px; height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 600 12px/24px var(--font-data); text-align: center; }
+.reads p { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+
+/* ---------- claims */
+.claims { display: grid; gap: 12px; }
+.claim { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.claim-top { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 24px; padding: 18px 20px; }
+.claim-id { font: 500 12px/1 var(--font-data); color: var(--accent); }
+.claim h3 { font-size: 18px; margin-top: 6px; }
+.claim .statement { margin-top: 8px; color: var(--ink-2); max-width: 64ch; font-size: 14px; }
+.conf { display: grid; gap: 8px; align-content: start; }
+.conf-n { font: 500 26px/1 var(--font-data); }
+.conf-n small { font-size: 12px; color: var(--ink-3); font-weight: 400; margin-left: 6px; }
+.meter { position: relative; height: 10px; border-radius: 0 4px 4px 0; background: var(--inset); }
+.meter i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; background: var(--accent); }
+.meter b { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--ink-3); }
+.meter u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); }
+.balance { display: flex; height: 10px; gap: 2px; }
+.balance span { border-radius: 2px; min-width: 4px; }
+.balance-key { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--ink-2); }
+.balance-key span { display: inline-flex; align-items: center; gap: 5px; }
+.claim-more { border-top: 1px solid var(--line); }
+.claim-more > summary { padding: 10px 20px; list-style: none; display: flex; align-items: center; gap: 8px; }
+.claim-more > summary::-webkit-details-marker { display: none; }
+.claim-more > summary::before { content: "+"; font-family: var(--font-data); width: 12px; }
+.claim-more[open] > summary::before { content: "−"; }
+.claim-body { padding: 4px 20px 20px; display: grid; gap: 18px; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.kv { display: grid; gap: 4px; }
+.kv p { font-size: 14px; color: var(--ink-2); }
+.ev { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ev li { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 10px; font-size: 14px; }
+.ev .dir { margin-top: 6px; }
+.ev p { color: var(--ink-2); font-size: 13.5px; }
+.hist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13px; }
+.hist li { display: grid; grid-template-columns: 96px 44px minmax(0, 1fr); gap: 10px; color: var(--ink-2); }
+.spark { width: 110px; height: 28px; }
+.spark polyline { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.spark circle { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+
+/* ---------- stack map */
+.seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; }
+.seg button { background: none; border: 0; padding: 7px 12px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--ink-2); }
+.seg button + button { border-left: 1px solid var(--line-2); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.scroll-x { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+thead th { font: 500 12px/1.3 var(--font-data); color: var(--ink-2); white-space: nowrap; }
+tbody tr:last-child > * { border-bottom: 0; }
+.map { min-width: 760px; }
+.map th[scope="row"] { width: 190px; font: 600 14px/1.25 var(--font-display); }
+.map td { border-left: 1px solid var(--line); }
+.map td.empty { background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--line) 60%, transparent) 6px 7px); }
+.dots { display: flex; flex-wrap: wrap; gap: 2px; }
+.dot { width: 22px; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; border-radius: 6px; }
+.dot .mg { width: 13px; height: 13px; }
+.dot:hover, .dot:focus-visible { background: var(--inset); }
+.clocks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 8px 14px; }
+.clock { position: relative; padding: 22px 12px 0; display: grid; gap: 4px; align-content: start; }
+.clock::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 2px; background: var(--line-2); }
+.clock::after { content: ""; position: absolute; left: 12px; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--surface); }
+.clock h3 { font-size: 15px; }
+.clock .num { font-size: 12px; color: var(--accent); }
+.clock p { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+
+/* ---------- controls, ledger */
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.controls input[type="search"], .controls select { background: var(--surface); border: 1px solid var(--line-2); border-radius: 7px; padding: 7px 10px; font-size: 13px; min-width: 0; }
+.controls input[type="search"] { flex: 1 1 200px; max-width: 320px; }
+.controls label.check { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
+.result-n { font: 400 12px/1 var(--font-data); color: var(--ink-3); margin-left: auto; }
+.vbar { display: flex; gap: 2px; height: 34px; }
+.vseg { display: grid; place-items: center; min-width: 26px; font: 600 13px/1 var(--font-data); color: #fff; border-radius: 4px; }
+.v-third-party { background: var(--good); } .v-public-run { background: var(--supports); } .v-self-reported { background: var(--warn); color: #0b0b0b; } .v-unverified { background: var(--mixed); }
+.ledger { min-width: 900px; table-layout: fixed; }
+.ledger td { font-size: 13.5px; overflow-wrap: anywhere; }
+.ledger td.num { font-size: 13px; }
+.ledger .pill { white-space: normal; }
+
+/* ---------- cards */
+.cards { display: grid; gap: 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; display: grid; gap: 7px; }
+.card h3 { font-size: 16px; }
+.metaline { font: 400 12px/1.5 var(--font-data); color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 2px 12px; align-items: center; }
+.metaline span { display: inline-flex; align-items: center; gap: 6px; }
+.card p { color: var(--ink-2); font-size: 14px; max-width: 84ch; }
+.card.is-off { opacity: 0.6; }
+.badge-new { font: 500 10px/1 var(--font-data); letter-spacing: 0.08em; text-transform: uppercase; background: var(--accent); color: var(--on-accent); border-radius: 4px; padding: 3px 5px; margin-left: 8px; vertical-align: 2px; }
+.versus { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.side { background: var(--inset); border-radius: 10px; padding: 12px 14px; display: grid; gap: 8px; align-content: start; border-top: 3px solid var(--m-agent); }
+.side:nth-child(2) { border-top-color: var(--m-rules); }
+.side:nth-child(3) { border-top-color: var(--m-online); }
+.side strong { font: 600 14px/1.2 var(--font-display); }
+.side p { font-size: 13.5px; color: var(--ink); }
+.chart { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; }
+.chart svg { width: 100%; height: auto; display: block; }
+.chart text { font: 400 11px var(--font-data); fill: var(--ink-3); }
+.chart .lbl { fill: var(--ink); }
+.chart .bar { fill: var(--accent); }
+.chart .hit { fill: transparent; }
+.chart .axis { stroke: var(--line-2); stroke-width: 1; }
+.chart .today { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.chart .today-l { fill: var(--accent); }
+.chart .stem { stroke: var(--line-2); stroke-width: 1; }
+.wmark circle { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+.wmark text { fill: var(--ink); font: 500 9.5px var(--font-data); pointer-events: none; }
+.wmark.is-late circle { fill: var(--crit); stroke: var(--crit); }
+.wmark.is-late text { fill: #fff; }
+.wmark.is-done circle { stroke: var(--ink-3); stroke-dasharray: 3 2; }
+.wmark { cursor: pointer; }
+
+/* ---------- watch, glossary */
+.watch { min-width: 640px; }
+.due { white-space: nowrap; }
+.due small { display: block; color: var(--ink-3); font: 400 11px/1.4 var(--font-data); }
+.due.is-late small { color: var(--crit); font-weight: 500; }
+.gl { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 32px; margin: 0; }
+.gl div { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.gl dt { font: 600 15px/1.3 var(--font-display); }
+.gl dd { margin: 4px 0 0; color: var(--ink-2); font-size: 14px; }
+
+/* ---------- dialog and tooltip */
+dialog { border: 1px solid var(--line-2); border-radius: 14px; background: var(--surface); color: var(--ink); padding: 0; width: min(720px, calc(100vw - 32px)); max-height: min(86vh, 900px); }
+dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
+.sheet { padding: 22px 24px 26px; display: grid; gap: 16px; }
+.sheet-head { display: flex; gap: 12px; justify-content: space-between; align-items: start; }
+.sheet h2 { font-size: 21px; }
+.sheet h4 { font: 500 11px/1 var(--font-data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.sheet p { color: var(--ink-2); }
+.sheet table { font-size: 13px; }
+.sheet .scroll-x { background: none; }
+.cta { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: var(--on-accent); border-radius: 8px; padding: 7px 12px; font-size: 13px; font-weight: 600; text-decoration: none; }
+#tip { position: fixed; z-index: 50; max-width: 300px; background: var(--ink); color: var(--surface); font-size: 12.5px; line-height: 1.45; padding: 8px 10px; border-radius: 7px; pointer-events: none; }
+
+@media (max-width: 860px) {
+  .cols, .claim-top, .two, .loop-fig { grid-template-columns: minmax(0, 1fr); }
+  .lane { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .flow { flex-direction: column; gap: 2px; }
+  .flow li, .flow li:first-child { min-height: 0; padding: 12px 16px 16px; border-radius: 0; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px)); }
+  .flow li + li { padding-top: 18px; clip-path: polygon(0 0, 50% 8px, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px)); }
+  .loopback { margin-left: 0; }
+  .ring { margin: 0 auto; }
+  .crow { grid-template-columns: 30px minmax(0, 1fr) 46px; }
+  .crow .cbar { grid-column: 2 / 4; grid-row: 2; }
+  .crow .cev { grid-column: 2 / 4; grid-row: 3; justify-content: flex-start; }
+  .caxis { display: none; }
+  .clocks { grid-template-columns: minmax(0, 1fr); padding: 14px 8px; }
+  .clock { padding: 0 12px 14px 34px; }
+  .clock::before { left: 18px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
+  .clock::after { left: 12px; top: 2px; }
+  .changes li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .status { margin-left: 0; order: 3; flex-basis: 100%; }
+  .top-in .ghost { margin-left: auto; }
+  .frow { grid-template-columns: minmax(0, 1fr) auto; }
+  .frow .ftrack { grid-column: 1 / 3; grid-row: 2; }
+}
+@media (max-width: 480px) { .tiles { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#now">
+      <svg viewBox="0 0 22 22" aria-hidden="true"><rect x="2" y="3" width="18" height="4" rx="1.2" fill="currentColor"/><rect x="2" y="9" width="13" height="4" rx="1.2" fill="currentColor"/><rect x="2" y="15" width="8" height="4" rx="1.2" fill="currentColor"/><path d="M19 10.2v3.6a4.2 4.2 0 0 1-4.2 4.2h-1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M14.9 16l-2 2 2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="brand-name">The Recursive Stack</span>
+    </a>
+    <div class="status" id="status"></div>
+    <button class="ghost" id="theme" type="button">Dark</button>
+  </div>
+  <div class="wrap tabs-scroll"><nav class="tabs" id="tabs" aria-label="Sections"></nav></div>
+</header>
+<main class="wrap" id="app"><noscript>This page needs JavaScript. The same content is in BRIEF.md.</noscript></main>
+<footer class="wrap foot" id="foot"></footer>
+<dialog id="sheet" aria-labelledby="sheet-title"></dialog>
+<div id="tip" role="tooltip" hidden></div>
+
+<script>window.DATA = /*__DATA__*/null;</script>
+<script>
+(function () {
+  'use strict';
+  const D = window.DATA;
+  const app = document.getElementById('app');
+  if (!D) { app.textContent = 'No data in this file. Run: python3 scripts/build.py'; return; }
+
+  // ---------- tiny DOM helpers (data is only ever inserted as text)
+  function el(tag, attrs, ...kids) {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v == null || v === false) continue;
+      if (k === 'class') n.className = v;
+      else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+      else n.setAttribute(k, v === true ? '' : v);
+    }
+    for (const kid of kids.flat(Infinity)) {
+      if (kid == null || kid === false) continue;
+      n.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+    }
+    return n;
+  }
+  function svg(tag, attrs, ...kids) {
+    const n = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const [k, v] of Object.entries(attrs || {})) if (v != null) n.setAttribute(k, v);
+    for (const kid of kids.flat()) if (kid != null) n.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+    return n;
+  }
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode: carry on */ } }
+  };
+
+  // ---------- dates
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const fmt = iso => { if (!iso || iso === 'undated') return 'undated'; const [y, m, d] = iso.split('-').map(Number); return d ? `${d} ${MON[m - 1]} ${y}` : `${MON[m - 1]} ${y}`; };
+  const utc = iso => { const [y, m, d = 1] = iso.split('-').map(Number); return Date.UTC(y, m - 1, d); };
+  const todayUtc = () => { const t = new Date(); return Date.UTC(t.getFullYear(), t.getMonth(), t.getDate()); };
+  const dayDiff = iso => Math.round((utc(iso) - todayUtc()) / 864e5);
+  const rel = iso => { const n = dayDiff(iso); if (n === 0) return 'today'; if (n === 1) return 'tomorrow'; if (n === -1) return 'yesterday'; return n > 0 ? `in ${n} days` : `${-n} days ago`; };
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : (many || one + 's')}`;
+  const pct = v => Math.round(v * 100) + '%';
+
+  // ---------- indexes
+  const M = D.model;
+  const allClaims = D.thesis.claims;
+  const claims = allClaims.filter(c => c.status === 'active');
+  const claimById = Object.fromEntries(allClaims.map(c => [c.id, c]));
+  const sigById = Object.fromEntries(D.signals.map(s => [s.id, s]));
+  const active = D.signals.filter(s => s.status === 'active');
+  const latest = D.cycles[0] || {};
+  const nameOf = (list, id) => (list.find(x => x.id === id) || { name: id }).name;
+  const evidence = id => active.flatMap(s => (s.bears_on || []).filter(b => b.claim === id).map(b => ({ s, direction: b.direction, note: b.note })));
+  const DIRS = [['supports', 'for'], ['complicates', 'mixed'], ['challenges', 'against']];
+  const checks = (D.watch.checks || []);
+  const openChecks = checks.filter(c => c.status === 'open').sort((a, b) => a.due.localeCompare(b.due));
+  const seenKey = 'recursive-stack.seen';
+  const seen = store.get(seenKey);
+  const isNew = s => seen && s.added > seen;
+  const orgShort = s => s.org.split(/[,(]/)[0].trim();
+
+  const VERDICT = { holding: ['good', '✓', 'Holding'], sharpen: ['warn', '◐', 'Sharpen it'], unsupported: ['serious', '?', 'Unsupported so far'], wrong: ['crit', '✕', 'Contradicted'] };
+  const VERIF = { 'third-party': ['good', '✓', 'Third-party'], 'public-run': ['good', '✓', 'Public run'], 'self-reported': ['warn', '!', 'Self-reported'], 'unverified': ['serious', '?', 'Unverified'] };
+  const TSTAT = { open: ['serious', '?', 'Open'], leaning: ['warn', '◐', 'Leaning'], settled: ['good', '✓', 'Settled'] };
+  const WSTAT = { open: ['warn', '◐', 'Open'], hit: ['good', '✓', 'Happened'], miss: ['crit', '✕', 'Did not happen'], dropped: ['serious', '–', 'Dropped'] };
+  const LSTAT = { working: ['good', '✓', 'Works today'], bottleneck: ['warn', '!', 'Binding constraint'], unproven: ['serious', '?', 'Not yet shown'] };
+  const pill = ([tone, icon, label]) => el('span', { class: `pill t-${tone}` }, el('span', { class: 'pill-i', 'aria-hidden': 'true' }, icon), label);
+  const mech = id => el('i', { class: `mg m-${id}`, 'aria-hidden': 'true' });
+  const sigLink = (s, label) => el('button', { class: 'link', type: 'button', onclick: () => openSignal(s.id) }, label || s.title);
+  const srcChips = ids => el('div', { class: 'chips' }, [...new Set(ids)].filter(id => sigById[id]).map(id => el('button', { class: 'chip', type: 'button', 'data-tip': sigById[id].title, onclick: () => openSignal(id) }, orgShort(sigById[id]))));
+  const claimChip = (id, direction) => el('button', { class: 'chip', type: 'button', 'data-tip': claimById[id] ? claimById[id].statement : id, onclick: () => { closeSheet(); state.focusClaim = id; go('thesis'); } },
+    direction ? el('span', { class: `dir dir-${direction}` }) : null, id, direction ? ` ${direction}` : null);
+  const refLabel = ref => !ref ? '' : ` · ${sigById[ref] ? orgShort(sigById[ref]) : ref}`;
+  const head = (eyebrow, title, sub) => el('div', { class: 'view-head' }, el('p', { class: 'eyebrow' }, eyebrow), el('h1', null, title), sub ? el('p', { 'data-prose': true }, sub) : null);
+  const section = (title, note, ...body) => el('section', { class: 'sec' }, el('h2', null, title), note ? el('p', { class: 'sec-note', 'data-prose': true }, note) : null, body);
+  const mechLegend = () => el('div', { class: 'legend' }, M.mechanisms.map(m => el('span', { 'data-tip': m.desc, tabindex: '0' }, mech(m.id), m.name)));
+
+  const state = { mapMode: 'mechanism', loopSel: null, sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
+
+  // =====================================================================
+  // FIGURES
+  // =====================================================================
+  function figShift() {
+    const sh = M.shift;
+    const lane = (k, cls) => el('div', { class: `lane ${cls}` },
+      el('div', { class: 'lane-tag' }, el('strong', null, sh[k].label), sh[k].note ? el('span', null, sh[k].note) : null),
+      el('ol', { class: 'flow' }, sh[k].steps.map(s => el('li', null, s))));
+    return el('figure', { class: 'shift', 'aria-label': 'How inference optimisation worked before, and how it works now' },
+      lane('then', 'lane-then'), lane('now', 'lane-now'), sh.now.loop ? el('div', { class: 'loopback' }, sh.now.loop) : null);
+  }
+
+  function figClaims() {
+    const cols = 'supports complicates challenges'.split(' ');
+    return el('div', { class: 'cfig' },
+      claims.map(c => {
+        const ev = evidence(c.id), n = d => ev.filter(e => e.direction === d).length;
+        const prev = c.history.length > 1 ? c.history[c.history.length - 2].confidence : null;
+        return el('button', { class: 'crow', type: 'button', 'data-tip': c.statement, onclick: () => { state.focusClaim = c.id; go('thesis'); } },
+          el('span', { class: 'cid' }, c.id), el('span', { class: 'cname' }, c.short),
+          el('span', { class: 'cbar' }, el('i', { style: `width:${c.confidence * 100}%` }), el('b'), prev != null && prev !== c.confidence ? el('u', { style: `left:${prev * 100}%` }) : null),
+          el('span', { class: 'cval' }, pct(c.confidence)),
+          el('span', { class: 'cev' }, cols.map(d => el('span', null, el('i', { class: `dir dir-${d}` }), n(d)))));
+      }),
+      el('div', { class: 'caxis' }, el('div', null, el('span', null, '0'), el('span', null, 'coin flip'), el('span', null, 'certain'))),
+      el('div', { class: 'legend', style: 'padding:4px 10px 8px' }, el('span', null, el('i', { class: 'sw', style: 'background:var(--accent)' }), 'confidence'), DIRS.map(([d, w]) => el('span', null, el('i', { class: `dir dir-${d}` }), `signals ${w}`))));
+  }
+
+  function figLoop() {
+    const st = M.loop, N = st.length, S = 340, c = S / 2, R = 112, r = 40;
+    if (!state.loopSel) state.loopSel = (st.find(x => x.status === 'bottleneck') || st[0]).id;
+    const detail = el('div', { class: 'loop-detail', 'aria-live': 'polite' });
+    const g = svg('svg', { class: 'ring', viewBox: `0 0 ${S} ${S}`, role: 'group', 'aria-label': 'The optimisation loop. Select a stage.' });
+    g.append(svg('defs', null, svg('marker', { id: 'ah', viewBox: '0 0 10 10', refX: '7', refY: '5', markerWidth: '6', markerHeight: '6', orient: 'auto' }, svg('path', { class: 'ring-ah', d: 'M0,0L10,5L0,10z' }))));
+    const ang = i => (-90 + i * 360 / N) * Math.PI / 180;
+    const pt = (a, rad) => [c + rad * Math.cos(a), c + rad * Math.sin(a)];
+    const pad = (r + 8) / R;
+    st.forEach((s, i) => {
+      const [x0, y0] = pt(ang(i) + pad, R), [x1, y1] = pt(ang(i + 1) - pad - 0.04, R);
+      const dashed = s.status === 'unproven' || st[(i + 1) % N].status === 'unproven';
+      g.append(svg('path', { class: 'ring-arrow' + (dashed ? ' is-dashed' : ''), d: `M${x0.toFixed(1)},${y0.toFixed(1)}A${R},${R} 0 0 1 ${x1.toFixed(1)},${y1.toFixed(1)}`, 'marker-end': 'url(#ah)' }));
+    });
+    g.append(svg('text', { class: 'ring-c1', x: c, y: c - 2, 'text-anchor': 'middle' }, 'one turn'), svg('text', { class: 'ring-c2', x: c, y: c + 15, 'text-anchor': 'middle' }, 'hours to days'));
+    const nodes = st.map((s, i) => {
+      const [x, y] = pt(ang(i), R);
+      const n = svg('g', { class: `ring-node is-${s.status}`, tabindex: '0', role: 'button', 'aria-label': `${s.name}. ${LSTAT[s.status][2]}.` },
+        svg('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r }), svg('text', { x: x.toFixed(1), y: (y + 4.5).toFixed(1), 'text-anchor': 'middle' }, s.name));
+      const pick = () => { state.loopSel = s.id; paint(); };
+      n.addEventListener('click', pick);
+      n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+      g.append(n);
+      return n;
+    });
+    function paint() {
+      const s = st.find(x => x.id === state.loopSel) || st[0];
+      nodes.forEach((n, i) => { n.classList.toggle('is-on', st[i].id === s.id); n.setAttribute('aria-pressed', String(st[i].id === s.id)); });
+      detail.replaceChildren(el('div', { class: 'vhead' }, el('h3', null, s.name), pill(LSTAT[s.status])),
+        el('p', { 'data-prose': true }, s.does), el('p', { class: 'hard', 'data-prose': true }, s.hard),
+        (s.signals || []).length ? el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Evidence'), srcChips(s.signals)) : null,
+        el('p', { class: 'stamp' }, 'Select any stage in the ring.'));
+      annotate(detail);
+    }
+    paint();
+    return el('div', { class: 'loop-fig' }, g, detail);
+  }
+
+  function figure(f) {
+    const pairs = f.type === 'pairs';
+    const max = Math.max(...f.rows.flatMap(r => pairs ? [r.from, r.to] : [r.value]), f.reference || 0) * 1.06;
+    const x = v => (v / max * 100).toFixed(2) + '%';
+    const unit = v => `${+(+v).toFixed(2)}${f.unit || ''}`;
+    const groups = f.groups || [];
+    const gi = id => Math.max(0, groups.findIndex(g => g.id === id));
+    const rows = f.rows.map(r => el('button', { class: 'frow', type: 'button', 'data-tip': r.note || (sigById[r.signal] ? sigById[r.signal].title : null), onclick: () => openSignal(r.signal) },
+      el('span', { class: 'flabel' }, r.label),
+      el('span', { class: 'ftrack' }, f.reference != null ? el('i', { class: 'fref', style: `left:${x(f.reference)}` }) : null,
+        pairs ? [el('i', { class: 'fline', style: `left:${x(Math.min(r.from, r.to))};width:${x(Math.abs(r.from - r.to))}` }), el('i', { class: 'fdot is-from', style: `left:${x(r.from)}` }), el('i', { class: 'fdot is-to', style: `left:${x(r.to)}` })]
+          : el('i', { class: `fbar g${gi(r.group)}`, style: `width:${x(r.value)}` })),
+      el('span', { class: 'fval num' }, pairs ? [el('span', { class: 'muted' }, unit(r.from) + ' → '), el('strong', null, unit(r.to))] : el('strong', null, unit(r.value)))));
+    const legend = el('div', { class: 'legend' },
+      pairs ? [el('span', null, el('i', { class: 'key-from' }), f.from_label || 'before'), el('span', null, el('i', { class: 'key-to' }), f.to_label || 'after')] : (groups.length > 1 ? groups.map((g, i) => el('span', null, el('i', { class: `sw g${i}` }), g.name)) : null),
+      f.reference != null ? el('span', null, el('i', { class: 'key-ref' }), `${unit(f.reference)} = ${f.reference_label || 'reference'}`) : null);
+    return el('figure', { class: 'fig', id: `fig-${f.id}` },
+      el('div', { class: 'fig-head' }, el('h3', null, f.title), el('p', { class: 'take', 'data-prose': true }, f.takeaway)),
+      legend, el('div', { class: 'frows' }, rows), el('p', { class: 'cap' }, f.caption, ' Select a row for its source.'));
+  }
+
+  function histogram(list) {
+    const dated = list.filter(s => s.published !== 'undated');
+    if (dated.length < 2) return null;
+    const groups = {};
+    dated.forEach(s => { const k = s.published.slice(0, 7); (groups[k] = groups[k] || []).push(s); });
+    const keys = Object.keys(groups).sort();
+    let [y, m] = keys[0].split('-').map(Number);
+    const [y1, m1] = keys[keys.length - 1].split('-').map(Number);
+    let months = [];
+    while (y < y1 || (y === y1 && m <= m1)) { months.push(`${y}-${String(m).padStart(2, '0')}`); m++; if (m > 12) { m = 1; y++; } }
+    const clipped = months.length > 30;
+    if (clipped) months = months.slice(-30);
+    const W = 640, H = 124, L = 8, R = 8, T = 20, B = 22;
+    const slot = (W - L - R) / months.length, bw = Math.max(4, Math.min(34, slot - 2));
+    const max = Math.max(...months.map(k => (groups[k] || []).length));
+    const yv = n => T + (H - T - B) * (1 - n / max);
+    const base = H - B;
+    const g = svg('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Signals by month of publication' });
+    g.append(svg('line', { class: 'axis', x1: L, x2: W - R, y1: base, y2: base }));
+    months.forEach((k, i) => {
+      const n = (groups[k] || []).length, cx = L + slot * i + slot / 2, x = cx - bw / 2, top = yv(n), r = Math.min(4, bw / 2, (base - top) / 2);
+      const [yy, mm] = k.split('-').map(Number);
+      const label = `${MON[mm - 1]} ${yy}: ${plural(n, 'signal')}`;
+      if (n) g.append(svg('path', { class: 'bar', d: `M${x},${base}V${top + r}Q${x},${top} ${x + r},${top}H${x + bw - r}Q${x + bw},${top} ${x + bw},${top + r}V${base}Z` }));
+      g.append(svg('rect', { class: 'hit', x: L + slot * i, y: T - 6, width: slot, height: H - T - B + 6, 'data-tip': label, tabindex: n ? '0' : null, 'aria-label': label }));
+      if (n && (n === max || i === months.length - 1)) g.append(svg('text', { class: 'lbl', x: cx, y: top - 6, 'text-anchor': 'middle' }, n));
+      if (i === 0 || i === months.length - 1 || mm === 1) g.append(svg('text', { x: cx, y: H - 6, 'text-anchor': i === 0 ? 'start' : i === months.length - 1 ? 'end' : 'middle' }, mm === 1 || i === 0 ? `${MON[mm - 1]} ${yy}` : MON[mm - 1]));
+    });
+    const recent = dated.filter(s => dayDiff(s.published) >= -30).length;
+    return el('figure', { class: 'chart' },
+      el('div', { class: 'vhead' }, el('strong', null, 'When the tracked signals were published'), el('span', { class: 'stamp' }, 'count per month')),
+      g, el('p', { class: 'small muted' }, `${recent} of ${dated.length} dated signals landed in the last 30 days.` + (clipped ? ' Older months are cut off.' : '')));
+  }
+
+  function figWatch() {
+    const list = checks.slice().sort((a, b) => a.due.localeCompare(b.due));
+    if (!list.length) return null;
+    const now = todayUtc();
+    const lo = Math.min(now, ...list.map(c => utc(c.opened))), hi = Math.max(now, ...list.map(c => utc(c.due)));
+    const span = Math.max(hi - lo, 7 * 864e5);
+    const W = 720, H = 124, L = 28, R = 28, base = H - 26;
+    const x = t => L + (t - lo) / span * (W - L - R);
+    const short = t => { const d = new Date(t); return `${d.getUTCDate()} ${MON[d.getUTCMonth()]}`; };
+    const g = svg('svg', { viewBox: `0 0 ${W} ${H}`, role: 'group', 'aria-label': 'Watchlist checks by due date' });
+    g.append(svg('line', { class: 'axis', x1: L, x2: W - R, y1: base, y2: base }));
+    g.append(svg('text', { x: L, y: H - 6, 'text-anchor': 'start' }, short(lo)), svg('text', { x: W - R, y: H - 6, 'text-anchor': 'end' }, short(hi)));
+    const tx = x(now);
+    g.append(svg('line', { class: 'today', x1: tx, x2: tx, y1: 10, y2: base }));
+    if (tx - L > 60 && W - R - tx > 60) g.append(svg('text', { class: 'today-l', x: tx, y: H - 6, 'text-anchor': 'middle' }, 'today'));
+    const placed = [];
+    list.forEach(c => {
+      const cx = x(utc(c.due));
+      const level = placed.filter(p => Math.abs(p - cx) < 25).length;
+      placed.push(cx);
+      const cy = base - 18 - level * 26;
+      const late = c.status === 'open' && dayDiff(c.due) < 0;
+      const tip = `${c.id} · ${fmt(c.due)} · ${c.what}`;
+      const node = svg('g', { class: 'wmark' + (late ? ' is-late' : '') + (c.status !== 'open' ? ' is-done' : ''), tabindex: '0', role: 'button', 'aria-label': tip, 'data-tip': tip },
+        svg('line', { class: 'stem', x1: cx, x2: cx, y1: cy + 11, y2: base }), svg('circle', { cx, cy, r: 11 }), svg('text', { x: cx, y: cy + 3.5, 'text-anchor': 'middle' }, c.id));
+      node.addEventListener('click', () => { const row = document.getElementById(`check-${c.id}`); if (row) row.scrollIntoView({ block: 'center' }); });
+      g.append(node);
+    });
+    return el('figure', { class: 'chart' }, el('div', { class: 'vhead' }, el('strong', null, 'When each check falls due'), el('span', { class: 'stamp' }, 'hover a marker')), g);
+  }
+
+  // =====================================================================
+  // NOW
+  // =====================================================================
+  function viewNow() {
+    const fresh = D.signals.filter(isNew);
+    const moved = seen ? claims.filter(c => c.history.length > 1 && c.history[c.history.length - 1].cycle > seen) : [];
+    const banner = (fresh.length || moved.length) ? el('div', { class: 'banner' },
+      el('span', null, `Since you last looked (${fmt(seen)}): ${plural(fresh.length, 'new signal')}, ${plural(moved.length, 'claim')} moved.`),
+      el('button', { class: 'ghost', type: 'button', onclick: () => { store.set(seenKey, latest.id); location.reload(); } }, 'Mark as seen')) : null;
+    if (!seen && latest.id) store.set(seenKey, latest.id);
+
+    const hero = el('section', { class: 'hero' },
+      el('p', { class: 'eyebrow' }, 'What is happening to the inference layer'),
+      el('h1', null, D.thesis.headline.split('*').map((part, i) => i % 2 ? el('em', null, part) : part)),
+      el('p', { class: 'sub', 'data-prose': true }, D.thesis.subhead),
+      el('p', { class: 'facts' },
+        el('span', null, el('b', null, active.length), ' signals'), el('span', null, el('b', null, claims.length), ' claims under test'),
+        el('span', null, el('b', null, D.tensions.filter(t => t.status !== 'settled').length), ' open tensions'), el('span', null, el('b', null, openChecks.length), ' checks pending')));
+
+    const points = el('section', { class: 'sec' }, el('h2', null, `${D.thesis.picture.length} things to know right now`),
+      el('div', { class: 'points' }, D.thesis.picture.map(p => el('div', { class: 'point' }, el('h3', null, p.head), el('p', { 'data-prose': true }, p.text), srcChips(p.signals)))));
+
+    const course = D.course;
+    const coursePanel = el('section', { class: 'panel' },
+      el('div', { class: 'vhead' }, el('h2', { style: 'font-size:20px' }, 'Is your framing right?'), el('span', { class: 'stamp' }, `Judged ${fmt(course.as_of)}`)),
+      el('p', { class: 'quote' }, `“${course.reader_framing}”`),
+      el('div', { class: 'tiles' }, course.verdicts.map(v => { const [tone, icon, label] = VERDICT[v.verdict]; return el('div', { class: `tile t-${tone}`, 'data-tip': v.note, tabindex: '0' },
+        el('div', { class: `tile-top t-${tone}` }, el('span', { class: 'vicon', 'aria-hidden': 'true' }, icon), el('strong', null, v.part)),
+        el('span', { class: 'verdict' }, label), el('p', null, v.short)); })),
+      el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Sharper version'), el('p', { class: 'reframe', 'data-prose': true }, course.reframe)),
+      (course.questions || []).length ? el('details', null, el('summary', null, `${plural(course.questions.length, 'question')} only you can answer`), el('ul', { class: 'plain-list' }, course.questions.map(q => el('li', null, q)))) : null,
+      (course.ignore || []).length ? el('details', null, el('summary', null, 'Safe to ignore for now'), el('ul', { class: 'plain-list' }, course.ignore.map(q => el('li', null, q)))) : null);
+
+    const featured = D.figures.filter(f => f.featured);
+    const changes = latest.changes ? el('section', { class: 'sec' }, el('h2', null, `Changed in cycle ${latest.n}`),
+      el('ul', { class: 'changes' }, latest.changes.slice(0, 5).map(c => el('li', null, el('span', { class: 'tag' }, c.type, refLabel(c.ref)), el('span', { 'data-prose': true }, c.text)))),
+      el('a', { href: '#log', class: 'small' }, 'Full cycle log')) : null;
+    const reads = (course.read_next || []).length ? el('section', { class: 'sec' }, el('h2', null, 'Twenty minutes? Read these'),
+      el('ol', { class: 'reads' }, course.read_next.map(r => { const s = sigById[r.signal]; return el('li', null, el('div', null, sigLink(s), el('p', null, r.why))); }))) : null;
+
+    return [banner, hero,
+      section('The shift, in one picture', null, figShift()),
+      el('div', { class: 'cols' }, points, coursePanel),
+      section('How sure, claim by claim', 'Bar length is confidence. The counts are signals for, mixed and against. Select a claim for its evidence.', figClaims()),
+      section('The loop everyone is building', null, figLoop()),
+      featured.length ? section('The numbers that carry the argument', null, el('div', { class: 'fig-grid' }, featured.map(figure))) : null,
+      el('div', { class: 'cols' }, changes, reads)];
+  }
+
+  // =====================================================================
+  // THESIS
+  // =====================================================================
+  function spark(history) {
+    if (history.length < 2) return null;
+    const W = 110, H = 28, pad = 4;
+    const x = i => pad + i * (W - pad * 2) / (history.length - 1);
+    const y = v => H - pad - v * (H - pad * 2);
+    return svg('svg', { class: 'spark', viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Confidence by cycle: ' + history.map(p => pct(p.confidence)).join(', ') },
+      svg('polyline', { points: history.map((p, i) => `${x(i).toFixed(1)},${y(p.confidence).toFixed(1)}`).join(' ') }), svg('circle', { cx: x(history.length - 1), cy: y(history[history.length - 1].confidence), r: 3.5 }));
+  }
+  function claimCard(c) {
+    const ev = evidence(c.id);
+    const n = d => ev.filter(e => e.direction === d).length;
+    const prev = c.history.length > 1 ? c.history[c.history.length - 2].confidence : null;
+    const figs = D.figures.filter(f => (f.claims || []).includes(c.id));
+    const more = el('details', { class: 'claim-more', open: state.focusClaim === c.id },
+      el('summary', null, `Evidence and what would move it (${plural(ev.length, 'signal')}${figs.length ? ', ' + plural(figs.length, 'figure') : ''})`),
+      el('div', { class: 'claim-body' },
+        el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'In plain words'), el('p', { 'data-prose': true }, c.plain, c.why ? ' ' + c.why : '')),
+        el('div', { class: 'two' },
+          el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Would raise it'), el('p', { 'data-prose': true }, c.raise_if)),
+          el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Would lower it'), el('p', { 'data-prose': true }, c.lower_if))),
+        figs.length ? el('div', { class: 'fig-grid' }, figs.map(figure)) : null,
+        el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Evidence'),
+          ev.length ? el('ul', { class: 'ev' }, DIRS.flatMap(([d]) => ev.filter(e => e.direction === d)).map(e => el('li', null,
+            el('span', { class: `dir dir-${e.direction}`, title: e.direction }), el('div', null, sigLink(e.s, `${orgShort(e.s)}: ${e.s.title}`), el('p', { 'data-prose': true }, e.note))))) : el('p', null, 'Nothing attached yet.')),
+        el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Confidence history'),
+          el('ul', { class: 'hist' }, c.history.slice().reverse().map(p => el('li', null, el('span', { class: 'num' }, fmt(p.cycle)), el('span', { class: 'num' }, pct(p.confidence)), el('span', null, p.why)))))));
+    return el('article', { class: 'claim', id: `claim-${c.id}` },
+      el('div', { class: 'claim-top' },
+        el('div', null, el('span', { class: 'claim-id' }, c.id), el('h3', null, c.short), el('p', { class: 'statement', 'data-prose': true }, c.statement)),
+        el('div', { class: 'conf' },
+          el('div', { style: 'display:flex;justify-content:space-between;align-items:end;gap:8px' },
+            el('span', { class: 'conf-n' }, pct(c.confidence), el('small', null, prev == null ? 'confidence' : `was ${pct(prev)}`)), spark(c.history)),
+          el('div', { class: 'meter', role: 'img', 'aria-label': `Confidence ${pct(c.confidence)}` }, el('i', { style: `width:${c.confidence * 100}%` }), el('b'), prev == null || prev === c.confidence ? null : el('u', { style: `left:${prev * 100}%`, title: 'Previous cycle' })),
+          el('div', { class: 'balance', role: 'img', 'aria-label': DIRS.map(([d, w]) => `${n(d)} ${w}`).join(', ') }, DIRS.map(([d]) => n(d) ? el('span', { style: `flex:${n(d)};background:var(--${d === 'complicates' ? 'mixed' : d})` }) : null)),
+          el('div', { class: 'balance-key' }, DIRS.map(([d, w]) => el('span', null, el('i', { class: `dir dir-${d}` }), `${n(d)} ${w}`))))),
+      more);
+  }
+  function viewThesis() {
+    const retired = allClaims.filter(c => c.status !== 'active');
+    return [head('Claims that can lose', 'The thesis', 'Each claim has a confidence that moves only with evidence, and says in advance what would move it.'),
+      el('div', { class: 'claims' }, claims.map(claimCard)),
+      retired.length ? section('Retired or merged', null, el('div', { class: 'cards' }, retired.map(c => el('div', { class: 'card is-off' }, el('h3', null, `${c.id} · ${c.short}`), el('p', null, c.retired_why || c.statement))))) : null];
+  }
+
+  // =====================================================================
+  // STACK MAP
+  // =====================================================================
+  function viewStack() {
+    const holder = el('div', { class: 'sec' });
+    const draw = () => {
+      const mode = state.mapMode, cross = mode === 'cross';
+      const cols = mode === 'mechanism' ? M.mechanisms : M.venues;
+      const key = mode === 'mechanism' ? 'mechanism' : 'venue';
+      const rows = cross ? M.mechanisms : M.layers;
+      const inRow = (s, r) => cross ? s.mechanism === r.id : s.layers.includes(r.id);
+      const counts = Object.fromEntries(cols.map(c => [c.id, active.filter(s => s[key] === c.id).length]));
+      const top = cols.slice().sort((a, b) => counts[b.id] - counts[a.id])[0];
+      const empties = cols.filter(c => !counts[c.id]).map(c => c.name);
+      const agentAt = v => active.filter(s => s.mechanism === 'agent' && s.venue === v).length;
+      const reading = cross
+        ? `Agent search on a local device: ${agentAt('local')}. On private hardware: ${agentAt('onprem')}. Everywhere else: ${agentAt('cluster') + agentAt('dedicated') + agentAt('any')}. This table is the evidence behind the verdict on local.`
+        : `${counts[top.id]} of ${active.length} signals sit under “${top.name}”.` + (empties.length ? ` Nothing under ${empties.map(e => `“${e}”`).join(', ')}.` : '') + ' Hatched cells are empty: open ground, or a place this does not work.';
+      const table = el('table', { class: 'map' },
+        el('thead', null, el('tr', null, el('th', null, cross ? 'Means' : 'Layer'), cols.map(c => el('th', { scope: 'col', 'data-tip': c.desc, tabindex: '0' }, mode === 'mechanism' ? [mech(c.id), ' '] : null, `${c.name} · ${counts[c.id]}`)))),
+        el('tbody', null, rows.map(l => el('tr', null,
+          el('th', { scope: 'row', 'data-tip': l.desc, tabindex: '0' }, cross ? [mech(l.id), ' '] : null, l.name),
+          cols.map(c => { const hits = active.filter(s => s[key] === c.id && inRow(s, l)); return el('td', { class: hits.length ? '' : 'empty' },
+            hits.length ? el('div', { class: 'dots' }, hits.map(s => el('button', { class: 'dot', type: 'button', 'aria-label': `${s.title}, ${nameOf(M.mechanisms, s.mechanism)}`, 'data-tip': `${orgShort(s)}: ${s.title}`, onclick: () => openSignal(s.id) }, mech(s.mechanism)))) : null); })))));
+      const seg = (id, label) => el('button', { type: 'button', 'aria-pressed': String(mode === id), onclick: () => { state.mapMode = id; draw(); } }, label);
+      holder.replaceChildren(
+        el('div', { class: 'controls' }, el('div', { class: 'seg', role: 'group', 'aria-label': 'What the map compares' }, seg('mechanism', 'Layer × means'), seg('venue', 'Layer × place'), seg('cross', 'Means × place')), mechLegend()),
+        el('div', { class: 'scroll-x' }, table), el('p', { class: 'sec-note' }, reading));
+    };
+    draw();
+    return [head('Where, how, and on whose hardware', 'Stack map', 'Every signal placed by stack layer, by what produces the optimisation, and by where it runs. Select a mark to open it.'),
+      holder,
+      section('Four clocks', 'Adaptive covers four very different speeds. Most confusion here comes from mixing them.',
+        el('div', { class: 'clocks' }, M.timescales.map(t => el('div', { class: 'clock' }, el('h3', null, t.name), el('span', { class: 'num' }, t.span), el('p', { 'data-prose': true }, t.desc)))))];
+  }
+
+  // =====================================================================
+  // LEDGER
+  // =====================================================================
+  function viewLedger() {
+    const rows = active.flatMap(s => (s.numbers || []).map(n => ({ s, ...n })));
+    const tally = v => rows.filter(r => r.verification === v).length;
+    const order = ['third-party', 'public-run', 'self-reported', 'unverified'];
+    const body = el('tbody');
+    const count = el('span', { class: 'result-n' });
+    const draw = () => {
+      const q = state.led.q.toLowerCase();
+      const hits = rows.filter(r => (!state.led.ver || r.verification === state.led.ver) && (!q || [r.metric, r.value, r.baseline, r.setup, r.s.title, r.s.org].join(' ').toLowerCase().includes(q)));
+      count.textContent = `${hits.length} of ${rows.length}`;
+      body.replaceChildren(...(hits.length ? hits.map(r => el('tr', null,
+        el('td', null, r.metric), el('td', { class: 'num' }, el('strong', null, r.value)), el('td', null, r.baseline), el('td', { class: 'muted' }, r.setup || ''),
+        el('td', null, pill(VERIF[r.verification])), el('td', null, sigLink(r.s, orgShort(r.s))))) : [el('tr', null, el('td', { colspan: '6', class: 'muted' }, 'No numbers match. Clear the filters.'))]));
+    };
+    const pick = v => { state.led.ver = state.led.ver === v ? '' : v; render(); };
+    const bar = el('figure', { class: 'chart' },
+      el('div', { class: 'vhead' }, el('strong', null, 'Who checked these numbers'), el('span', { class: 'stamp' }, 'select a segment to filter')),
+      el('div', { class: 'vbar' }, order.map(v => tally(v) ? el('button', { class: `vseg v-${v}`, type: 'button', style: `flex:${tally(v)};border:0;cursor:pointer`, 'aria-pressed': String(state.led.ver === v), 'data-tip': `${VERIF[v][2]}: ${tally(v)}`, onclick: () => pick(v) }, tally(v)) : null)),
+      el('div', { class: 'legend' }, order.map(v => el('span', null, el('i', { class: `sw v-${v}` }), `${VERIF[v][2]} ${tally(v)}`))),
+      el('p', { class: 'small muted' }, 'Third-party means measured by someone other than the system’s author. None is an independent reproduction of a vendor’s claim.'));
+    const controls = el('div', { class: 'controls' },
+      el('input', { type: 'search', id: 'led-q', placeholder: 'Filter: TTFT, Kimi, megakernel…', 'aria-label': 'Filter numbers', value: state.led.q, oninput: e => { state.led.q = e.target.value; draw(); } }),
+      state.led.ver ? el('button', { class: 'ghost', type: 'button', onclick: () => pick(state.led.ver) }, `Showing ${VERIF[state.led.ver][2].toLowerCase()} · clear`) : null, count);
+    draw();
+    return [head('Every number, with its baseline', 'Evidence ledger', `${rows.length} quantitative claims from the signals. A speed-up with no baseline is not recorded.`),
+      bar,
+      el('div', { class: 'sec' }, controls, el('div', { class: 'scroll-x' }, el('table', { class: 'ledger' },
+        el('colgroup', null, ['24%', '20%', '20%', '12%', '14%', '10%'].map(w => el('col', { style: `width:${w}` }))),
+        el('thead', null, el('tr', null, ['Measure', 'Result', 'Against', 'Setup', 'Who checked', 'Source'].map(t => el('th', { scope: 'col' }, t)))), body)))];
+  }
+
+  // =====================================================================
+  // TENSIONS
+  // =====================================================================
+  function viewTensions() {
+    return [head('Where credible people do opposite things', 'Tensions', 'Each one names its sides and what would settle it.'),
+      el('div', { class: 'cards' }, D.tensions.map(t => el('article', { class: 'card', style: 'gap:12px' },
+        el('div', { class: 'vhead' }, el('span', { class: 'tag' }, t.id), pill(TSTAT[t.status])),
+        el('h3', { style: 'font-size:18px' }, t.question),
+        el('div', { class: 'versus' }, t.sides.map(sd => el('div', { class: 'side' }, el('strong', null, sd.held_by), el('p', { 'data-prose': true }, sd.position), srcChips(sd.signals || [])))),
+        el('p', { 'data-prose': true }, el('strong', { style: 'color:var(--ink)' }, 'Settles when: '), t.settles_when),
+        t.lean ? el('details', null, el('summary', null, 'Current lean'), el('p', { style: 'margin-top:6px', 'data-prose': true }, t.lean)) : null,
+        (t.claims || []).length ? el('div', { class: 'chips' }, t.claims.map(c => claimChip(c))) : null)))];
+  }
+
+  // =====================================================================
+  // WATCH
+  // =====================================================================
+  function viewWatch() {
+    const closed = checks.filter(c => c.status !== 'open');
+    const row = c => { const late = c.status === 'open' && dayDiff(c.due) < 0; return el('tr', { id: `check-${c.id}` },
+      el('td', { class: 'due num' + (late ? ' is-late' : '') }, el('strong', null, c.id), ' ', fmt(c.due), el('small', null, c.status === 'open' ? (late ? `overdue, ${rel(c.due)}` : rel(c.due)) : '')),
+      el('td', null, el('span', { 'data-prose': true }, c.what), el('details', null, el('summary', null, c.status === 'open' ? 'Why it matters' : 'How it resolved'), el('p', { class: 'small', style: 'color:var(--ink-2);margin-top:4px' }, c.status === 'open' ? c.why : c.resolution))),
+      el('td', null, el('div', { class: 'chips' }, (c.claims || []).map(id => claimChip(id)))),
+      el('td', null, pill(WSTAT[c.status]))); };
+    const table = list => el('div', { class: 'scroll-x' }, el('table', { class: 'watch' },
+      el('thead', null, el('tr', null, ['Check by', 'What to look for', 'Bears on', 'Status'].map(t => el('th', { scope: 'col' }, t)))), el('tbody', null, list.map(row))));
+    return [head('Written before the answer is known', 'Watchlist', 'Dated checks. Each sweep resolves the ones that are due before it reads anything new.'),
+      figWatch(),
+      section('Pending', null, openChecks.length ? table(openChecks) : el('p', { class: 'muted' }, 'Nothing pending.')),
+      closed.length ? section('Resolved', null, table(closed)) : null,
+      section('Where each sweep looks', 'The standing sources. Hover one for why it is on the list.',
+        el('div', { class: 'chips' }, (D.watch.feeds || []).map(f => el('a', { class: 'chip', href: f.url, target: '_blank', rel: 'noopener', 'data-tip': f.why, style: 'text-decoration:none' }, f.name))))];
+  }
+
+  // =====================================================================
+  // SIGNALS
+  // =====================================================================
+  function signalCard(s) {
+    return el('article', { class: 'card' + (s.status === 'active' ? '' : ' is-off') },
+      el('p', { class: 'metaline' }, el('span', null, mech(s.mechanism), nameOf(M.mechanisms, s.mechanism)), el('span', null, orgShort(s)), el('span', null, fmt(s.published)), el('span', null, nameOf(M.venues, s.venue)),
+        s.status === 'active' ? null : el('span', null, s.status), s.read === 'relayed' ? el('span', { 'data-tip': 'Reported by a research sub-agent. The sweep agent has not yet read the page itself.', tabindex: '0' }, 'relayed') : null),
+      el('h3', null, sigLink(s), isNew(s) ? el('span', { class: 'badge-new' }, 'new') : null),
+      el('p', { 'data-prose': true }, s.changes),
+      (s.bears_on || []).length ? el('div', { class: 'chips' }, s.bears_on.map(b => claimChip(b.claim, b.direction))) : null);
+  }
+  function viewSignals() {
+    const st = state.sig;
+    const listEl = el('div', { class: 'cards' });
+    const count = el('span', { class: 'result-n' });
+    const draw = () => {
+      const q = st.q.toLowerCase();
+      const hits = D.signals.filter(s => (st.off || s.status === 'active') && (!st.layer || s.layers.includes(st.layer)) && (!st.mechanism || s.mechanism === st.mechanism) && (!st.venue || s.venue === st.venue) && (!st.kind || s.kind === st.kind) && (!st.claim || (s.bears_on || []).some(b => b.claim === st.claim)) && (!q || [s.title, s.org, s.gist, s.changes, s.caveats, s.authors].join(' ').toLowerCase().includes(q)));
+      count.textContent = `${hits.length} of ${D.signals.length}`;
+      listEl.replaceChildren(...(hits.length ? hits.map(signalCard) : [el('p', { class: 'muted' }, 'Nothing matches. Clear a filter.')]));
+      annotate(listEl);
+    };
+    const sel = (key, label, opts) => el('select', { id: `sig-${key}`, 'aria-label': label, onchange: e => { st[key] = e.target.value; draw(); } }, el('option', { value: '' }, label), opts.map(([v, t]) => el('option', { value: v, selected: st[key] === v }, t)));
+    const kinds = [...new Set(D.signals.map(s => s.kind))].sort();
+    const controls = el('div', { class: 'controls' },
+      el('input', { type: 'search', id: 'sig-q', placeholder: 'Search signals', 'aria-label': 'Search signals', value: st.q, oninput: e => { st.q = e.target.value; draw(); } }),
+      sel('claim', 'Any claim', claims.map(c => [c.id, `${c.id} · ${c.short}`])), sel('mechanism', 'Any means', M.mechanisms.map(l => [l.id, l.name])),
+      sel('venue', 'Any place', M.venues.map(l => [l.id, l.name])), sel('layer', 'Any layer', M.layers.map(l => [l.id, l.name])), sel('kind', 'Any kind', kinds.map(k => [k, k])),
+      el('label', { class: 'check' }, el('input', { type: 'checkbox', id: 'sig-off', checked: st.off, onchange: e => { st.off = e.target.checked; draw(); } }), 'Show retired'), count);
+    draw();
+    return [head('The raw material', 'Signals', 'Each card says what the source changes. Select a title for the detail and the link.'),
+      histogram(active), el('div', { class: 'sec' }, controls, listEl)];
+  }
+
+  // =====================================================================
+  // LOG, GLOSSARY
+  // =====================================================================
+  function viewLog() {
+    return [head('What each sweep did', 'Cycle log', `One sweep every ${D.meta.cadence_days} days. Each records what it changed, and what it looked at and left out.`),
+      el('div', { class: 'cards' }, D.cycles.map(c => el('article', { class: 'card' },
+        el('p', { class: 'metaline' }, el('span', null, `Cycle ${c.n}`), el('span', null, fmt(c.id)), el('span', null, c.agent), el('span', null, `next due ${fmt(c.next_due)}`)),
+        el('p', { style: 'color:var(--ink);font-size:15px', 'data-prose': true }, c.summary),
+        el('ul', { class: 'changes' }, c.changes.map(ch => el('li', null, el('span', { class: 'tag' }, ch.type, refLabel(ch.ref)), el('span', null, ch.text)))),
+        (c.rejected || []).length ? el('details', null, el('summary', null, `Looked at and left out (${c.rejected.length})`),
+          el('ul', { class: 'plain-list' }, c.rejected.map(r => el('li', null, r.url ? el('a', { href: r.url, target: '_blank', rel: 'noopener' }, r.title) : r.title, ` · ${r.reason}`)))) : null)))];
+  }
+  function viewGlossary() {
+    return [head('Words this field assumes you know', 'Glossary', 'Anywhere on the site, a dotted underline means the definition shows when you point at it.'),
+      el('dl', { class: 'gl' }, D.glossary.map(g => el('div', null, el('dt', null, g.term), el('dd', null, g.def))))];
+  }
+
+  // =====================================================================
+  // SIGNAL SHEET (the place for depth; everything else links here)
+  // =====================================================================
+  const sheet = document.getElementById('sheet');
+  function closeSheet() { if (sheet.open) sheet.close(); }
+  function openSignal(id) {
+    const s = sigById[id];
+    if (!s) return;
+    const nums = s.numbers || [];
+    sheet.replaceChildren(el('div', { class: 'sheet' },
+      el('div', { class: 'sheet-head' },
+        el('div', null, el('p', { class: 'stamp' }, [s.org, fmt(s.published), s.kind, s.status !== 'active' ? s.status : null].filter(Boolean).join(' · ')), el('h2', { id: 'sheet-title', style: 'margin-top:6px' }, s.title), s.authors ? el('p', { class: 'small', style: 'margin-top:4px' }, s.authors) : null),
+        el('button', { class: 'ghost', type: 'button', onclick: closeSheet }, 'Close')),
+      el('div', { class: 'chips', style: 'align-items:center' }, el('a', { class: 'cta', href: s.url, target: '_blank', rel: 'noopener' }, 'Read the source ↗'),
+        (s.also || []).map(a => el('a', { class: 'chip', href: a.url, target: '_blank', rel: 'noopener', style: 'text-decoration:none' }, a.label + ' ↗')),
+        s.read === 'relayed' ? el('span', { class: 'muted small' }, 'relayed, not yet read first-hand') : null),
+      el('div', null, el('h4', null, 'What it changes'), el('p', { 'data-prose': true }, s.changes)),
+      el('div', null, el('h4', null, 'What it is'), el('p', { 'data-prose': true }, s.gist)),
+      el('div', null, el('h4', null, 'What to doubt'), el('p', { 'data-prose': true }, s.caveats)),
+      el('div', null, el('h4', null, 'Where it sits'), el('p', { class: 'metaline', style: 'font-size:13px' }, el('span', null, mech(s.mechanism), nameOf(M.mechanisms, s.mechanism)), el('span', null, nameOf(M.venues, s.venue)), el('span', null, s.layers.map(l => nameOf(M.layers, l)).join(', ')))),
+      (s.bears_on || []).length ? el('div', null, el('h4', null, 'Bears on'), el('ul', { class: 'ev' }, s.bears_on.map(b => el('li', null, el('span', { class: `dir dir-${b.direction}` }), el('div', null, claimChip(b.claim, b.direction), el('p', { style: 'margin-top:4px' }, b.note)))))) : null,
+      nums.length ? el('div', null, el('h4', null, 'Numbers'), el('div', { class: 'scroll-x' }, el('table', null, el('tbody', null, nums.map(n => el('tr', null, el('td', null, n.metric), el('td', { class: 'num' }, el('strong', null, n.value)), el('td', null, n.baseline), el('td', null, pill(VERIF[n.verification])))))))) : null,
+      s.superseded_by && sigById[s.superseded_by] ? el('p', null, 'Superseded by ', sigLink(sigById[s.superseded_by])) : null));
+    annotate(sheet);
+    if (!sheet.open) sheet.showModal();
+    sheet.scrollTop = 0;
+  }
+  sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
+
+  // =====================================================================
+  // GLOSSARY ANNOTATION + TOOLTIP
+  // =====================================================================
+  const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const TERMS = D.glossary.flatMap(g => [g.term].concat(g.aka || []).map(t => ({ t, def: g.def, key: g.term }))).sort((a, b) => b.t.length - a.t.length)
+    .map(x => ({ ...x, re: new RegExp('(^|[^A-Za-z0-9])(' + esc(x.t) + ')(?![A-Za-z0-9])', 'i') }));
+  function annotate(root) {
+    const used = new Set();
+    root.querySelectorAll('[data-prose]').forEach(box => {
+      const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(node => {
+        if (!node.parentElement || node.parentElement.closest('.gloss, button, a')) return;
+        for (const term of TERMS) {
+          if (used.has(term.key)) continue;
+          const hit = term.re.exec(node.nodeValue);
+          if (!hit) continue;
+          const mid = node.splitText(hit.index + hit[1].length);
+          mid.splitText(hit[2].length);
+          mid.replaceWith(el('span', { class: 'gloss', tabindex: '0', 'data-tip': term.def }, mid.nodeValue));
+          used.add(term.key);
+          break;
+        }
+      });
+    });
+  }
+  const tip = document.getElementById('tip');
+  function showTip(target) {
+    tip.textContent = target.getAttribute('data-tip');
+    tip.hidden = false;
+    const r = target.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    const left = Math.max(8, Math.min(window.innerWidth - t.width - 8, r.left + r.width / 2 - t.width / 2));
+    const below = r.bottom + 8 + t.height < window.innerHeight;
+    tip.style.left = left + 'px';
+    tip.style.top = (below ? r.bottom + 8 : Math.max(8, r.top - t.height - 8)) + 'px';
+  }
+  const tipTarget = e => e.target.closest && e.target.closest('[data-tip]');
+  document.addEventListener('mouseover', e => { const t = tipTarget(e); if (t) showTip(t); });
+  document.addEventListener('mouseout', e => { if (tipTarget(e)) tip.hidden = true; });
+  document.addEventListener('focusin', e => { const t = tipTarget(e); if (t) showTip(t); });
+  document.addEventListener('focusout', () => { tip.hidden = true; });
+  window.addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
+
+  // =====================================================================
+  // SHELL
+  // =====================================================================
+  const VIEWS = { now: viewNow, thesis: viewThesis, stack: viewStack, ledger: viewLedger, tensions: viewTensions, watch: viewWatch, signals: viewSignals, log: viewLog, glossary: viewGlossary };
+  const TABS = [['now', 'Now'], ['thesis', 'Thesis'], ['stack', 'Stack map'], ['ledger', 'Ledger'], ['tensions', 'Tensions'], ['watch', 'Watch'], ['signals', 'Signals'], ['log', 'Cycle log'], ['glossary', 'Glossary']];
+  const dueSoon = openChecks.filter(c => dayDiff(c.due) <= D.meta.cadence_days).length;
+  const tabs = document.getElementById('tabs');
+  tabs.append(...TABS.map(([id, label]) => el('a', { href: `#${id}`, 'data-tab': id }, label, id === 'watch' && dueSoon ? el('span', { class: 'count', title: 'Checks due by the next sweep' }, dueSoon) : null)));
+  function go(id) { if (location.hash === `#${id}`) render(); else location.hash = id; }
+  function render() {
+    const id = VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : 'now';
+    tabs.querySelectorAll('a').forEach(a => { if (a.dataset.tab === id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    app.replaceChildren(...[].concat(VIEWS[id]()).filter(Boolean));
+    annotate(app);
+    tip.hidden = true;
+    const focus = id === 'thesis' && state.focusClaim ? document.getElementById(`claim-${state.focusClaim}`) : null;
+    state.focusClaim = null;
+    if (focus) focus.scrollIntoView({ block: 'start' }); else window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', render);
+
+  document.title = D.meta.title;
+  document.getElementById('brand-name').textContent = D.meta.title;
+  const status = document.getElementById('status');
+  if (latest.id) status.append(el('span', null, 'Cycle ', el('b', null, latest.n)), el('span', null, 'swept ', el('b', null, fmt(latest.id))),
+    el('span', null, 'next sweep ', el('b', null, dayDiff(latest.next_due) < 0 ? `overdue (${rel(latest.next_due)})` : rel(latest.next_due))));
+  document.getElementById('foot').append(el('span', null, D.meta.tagline), el('span', null, el('a', { href: D.meta.repo, target: '_blank', rel: 'noopener' }, 'Repository'), ' · generated from data/ · ', el('a', { href: '#glossary' }, 'Glossary')));
+
+  const themeBtn = document.getElementById('theme');
+  const isDark = () => (document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+  const paintTheme = () => { themeBtn.textContent = isDark() ? 'Light' : 'Dark'; themeBtn.setAttribute('aria-label', `Switch to ${isDark() ? 'light' : 'dark'} theme`); };
+  const savedTheme = store.get('recursive-stack.theme');
+  if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+  themeBtn.addEventListener('click', () => { const next = isDark() ? 'light' : 'dark'; document.documentElement.dataset.theme = next; store.set('recursive-stack.theme', next); paintTheme(); });
+  paintTheme();
+  render();
+})();
+</script>
+</body>
+</html>

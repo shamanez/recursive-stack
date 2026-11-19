@@ -1,0 +1,196 @@
+{
+  "headline": "Inference optimisation is turning from a craft into a *search*.",
+  "subhead": "Agents rewrite the serving stack against replayed real traffic: one model, one workload, one chip at a time.",
+  "picture": [
+    {
+      "head": "Everyone announced the same loop at once",
+      "text": "Within three weeks Inferact, Together, two academic groups and both open engines described agents that profile an engine, write kernels, measure, and keep what wins.",
+      "signals": [
+        "2026-11-inferact-autonomous-inference-system",
+        "2026-11-04-together-compiler",
+        "2026-11-09-inferenceforge",
+        "2026-10-16-vllm-kimi-k3-megakernel"
+      ]
+    },
+    {
+      "head": "A public benchmark gave them a hill to climb",
+      "text": "AgentX replays real coding-agent sessions. Nearly every result is stated against it, and agent traffic rewards different optimisations than chat did.",
+      "signals": [
+        "2026-08-24-agentx-inferencex-v3",
+        "2026-09-08-vllm-agentx"
+      ]
+    },
+    {
+      "head": "Measuring is now harder than optimising",
+      "text": "Kernel speed-ups of several times shrink to almost nothing inside a full engine. Some agent runs game the benchmark. Patches arrive faster than people can review them.",
+      "signals": [
+        "2026-05-22-fastkernels",
+        "2026-05-20-inferencebench",
+        "2026-11-16-together-deleted-megakernels"
+      ]
+    },
+    {
+      "head": "It is not local, and not yet recursive",
+      "text": "Every agent-loop result runs on datacenter GPUs. The loops are bounded hillclimbs with goals set by people. Nobody has shown gains compounding.",
+      "signals": [
+        "2026-08-11-goedecke-local-models-will-not-win",
+        "2026-11-09-evolving-infra",
+        "2026-09-17-zai-glm-built-its-inference"
+      ]
+    },
+    {
+      "head": "The open engines are keeping up",
+      "text": "Specialised wins have reached vLLM and SGLang within weeks. Like for like, tuning to one customer has bought tens of percent, not multiples.",
+      "signals": [
+        "2026-10-23-vllm-matches-deepinfer",
+        "2026-09-23-modal-trillion-tokens"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "short": "Agents do real performance engineering",
+      "statement": "Given a harness built by people, coding agents now find and land inference optimisations that survive end-to-end measurement in production engines.",
+      "plain": "This is not autocomplete for CUDA. Agents are finding bottlenecks a senior engineer would be pleased to find, and the patches are being merged.",
+      "why": "If true, the supply of performance engineering stops being limited by the few hundred people who can do it. If false, everything else here is marketing.",
+      "confidence": 0.7,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.7,
+          "why": "Founding estimate. Merged public pull requests in vLLM and SGLang carry it; independent benchmarks showing parity at best on isolated kernels, and search beating agents on configuration, hold it down."
+        }
+      ],
+      "raise_if": "An independent group reproduces a vendor's agent-found gain, or a benchmark with end-to-end scoring shows agents beating shipped kernels in LLM serving by a clear margin.",
+      "lower_if": "Merged agent-written optimisations get reverted for correctness, or matched-budget search keeps beating agents as budgets and models grow.",
+      "status": "active"
+    },
+    {
+      "id": "C2",
+      "short": "The workload sets the optimum",
+      "statement": "The best serving configuration depends on the shape of the traffic. Settings and kernels tuned for one shape leave double-digit gains unclaimed on another, and the shape drifts.",
+      "plain": "There is no best way to serve a model, only a best way to serve this traffic. Coding agents changed the traffic, so the old best stopped being best.",
+      "why": "This is the part of the reader's framing that everything else rests on. If one good general recipe existed, there would be nothing for a loop to chase.",
+      "confidence": 0.8,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.8,
+          "why": "Founding estimate. Supported from many directions, including independent measurement. Held below 0.9 because nearly all of it comes from one workload class and one public trace set."
+        }
+      ],
+      "raise_if": "A second public workload that is not coding agents shows a different set of winning optimisations.",
+      "lower_if": "Engines tuned on AgentX turn out to be near-optimal on other real workloads too, meaning one good general recipe exists after all.",
+      "status": "active"
+    },
+    {
+      "id": "C3",
+      "short": "Specialisation reaches the single customer",
+      "statement": "Tuning the stack to one customer's own traffic is worth enough over a well-tuned class-level stack to justify doing it per customer, continuously.",
+      "plain": "Your workload gets its own engine build. This is the part of user-workload-aware that is still a bet.",
+      "why": "It decides whether the value sits with whoever holds each customer's traffic, or in shared engines that everyone gets for free.",
+      "confidence": 0.35,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.35,
+          "why": "Founding estimate. The like-for-like numbers that exist are 20 to 45%, recipes are reported to transfer between customers, and a general engine came within 6% of a bespoke one. The case for is that a bespoke engine now costs a couple of hundred GPU-hours."
+        }
+      ],
+      "raise_if": "A provider publishes same-endpoint numbers showing per-customer tuning beating its own class-level stack by more than about 1.5x, or the cost of a bespoke engine keeps falling.",
+      "lower_if": "More reports that recipes transfer between customers, or upstream engines closing announced private leads within a quarter.",
+      "status": "active"
+    },
+    {
+      "id": "C4",
+      "short": "Evaluation is the scarce part",
+      "statement": "Proposing optimisations has become cheap. Knowing whether one is real (on realistic inputs, end to end, with outputs intact) is the binding constraint, together with the human review that still gates what ships.",
+      "plain": "The agent is not the hard part. The rig that catches a fake speed-up is.",
+      "why": "Whoever owns the best evaluation rig, or the traffic to build one, owns the loop. It also tells you which published numbers to discount.",
+      "confidence": 0.8,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.8,
+          "why": "Founding estimate. The vendors building the loops and the independent benchmarks criticising them say the same thing, with numbers. The one complication is that a public benchmark let outsiders compete without private traffic."
+        }
+      ],
+      "raise_if": "More merged regressions traced to weak gates, or providers competing on evaluation infrastructure instead of on agents.",
+      "lower_if": "A cheap, general oracle appears (for example simulated traffic that predicts production), or isolated kernel results start transferring end to end.",
+      "status": "active"
+    },
+    {
+      "id": "C5",
+      "short": "The loop closes on itself",
+      "statement": "The optimisation loop is becoming recursive: the models being served power the agents that optimise their serving, the agents improve their own process, and gains compound from one cycle to the next.",
+      "plain": "This is the RSI claim. Today the first part is true, the second is mostly aspiration, and the third has not been shown by anyone.",
+      "why": "Compounding is the difference between a useful tool and a runaway advantage for whoever starts first.",
+      "confidence": 0.3,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.3,
+          "why": "Founding estimate. Models do serve their own optimisers, and two groups recycle search traces into training. Against that: curated knowledge made one production system worse, more time did not help agents in a benchmark, and the label is being attached to systems with no self-improvement in them."
+        }
+      ],
+      "raise_if": "A published curve where gain per cycle rises, or a model trained on optimisation traces that out-optimises its teacher on a production task.",
+      "lower_if": "Loops plateau after the first few rounds on each new model, or inherited agent memory keeps hurting in ablations.",
+      "status": "active"
+    },
+    {
+      "id": "C6",
+      "short": "Churn forces automation",
+      "statement": "New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary.",
+      "plain": "By the time a person has tuned the kernels, traffic has moved to the next model. Something has to do day-zero support, and it will not be a person.",
+      "why": "It explains the timing. Agents could write kernels a year ago; what changed is that nothing stays still long enough to be worth tuning by hand.",
+      "confidence": 0.7,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.7,
+          "why": "Founding estimate. Several independent accounts of the same pressure, including on chips with no kernel ecosystem. The main statistic behind it is one vendor's citation, and one new model reached near-parity by hand integration."
+        }
+      ],
+      "raise_if": "Time from a model's release to a tuned public result keeps shrinking and is credited to agents, or more non-NVIDIA chips reach parity through agent-written kernels.",
+      "lower_if": "Architectures converge again, or one vendor library covers new models well enough at release.",
+      "status": "active"
+    },
+    {
+      "id": "C7",
+      "short": "The commons keeps up",
+      "statement": "Open engines absorb specialised wins within weeks, so a private performance lead over upstream vLLM or SGLang is short-lived.",
+      "plain": "If you can wait a month, you get most of it for free.",
+      "why": "This is the question of who keeps the gains: providers as margin, or everyone as cheaper tokens.",
+      "confidence": 0.55,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.55,
+          "why": "Founding estimate. Both open engines run agent loops themselves and take fixes upstream fast. Two providers claim private leads of roughly 2x that nobody outside has checked."
+        }
+      ],
+      "raise_if": "Announced private leads are matched by public runs within a quarter.",
+      "lower_if": "Those leads persist or widen, or key optimisations stop going upstream.",
+      "status": "active"
+    },
+    {
+      "id": "C8",
+      "short": "The loop reaches hardware you own",
+      "statement": "The same self-tuning loop will run on stacks the user owns (a workstation, an on-prem box, a laptop), tuned to that user's own usage, not only in provider clusters.",
+      "plain": "This is the local in your framing. Today local stacks tune themselves to the device, once, by trying existing settings. Nothing tunes itself to you.",
+      "why": "It is the part of the reader's framing with the least support, so it is either the open ground or the mistake.",
+      "confidence": 0.2,
+      "history": [
+        {
+          "cycle": "2026-11-19",
+          "confidence": 0.2,
+          "why": "Founding estimate. One paper shows agent-written kernels on edge chips; everything else local is one-off autotuning or hand work. Cost analyses run against it, and the loop's economics lean on batching that a single user lacks."
+        }
+      ],
+      "raise_if": "An agent-driven loop on owned hardware shows a like-for-like gain from the owner's own traffic, or private fleets that are not hyperscalers publish such results.",
+      "lower_if": "Local runtimes keep converging on vendor compilers and one-off autotuning, and cost analyses keep favouring shared capacity.",
+      "status": "active"
+    }
+  ]
+}

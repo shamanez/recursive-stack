@@ -1,0 +1,210 @@
+{
+  "_about": "Controlled vocabulary and the mental model the dashboard draws. Signals must use these ids. Change this file only when the picture itself changes (a new layer, a new way of producing optimisations) and say so in the cycle record.",
+  "layers": [
+    {
+      "id": "loop",
+      "name": "Optimisation loop",
+      "desc": "The agents, harnesses and scoreboards that produce optimisations. Nothing here serves a token; it decides what the layers below become."
+    },
+    {
+      "id": "routing",
+      "name": "Routing & orchestration",
+      "desc": "Which model, worker or deployment configuration a request is sent to."
+    },
+    {
+      "id": "serving",
+      "name": "Serving & scheduling",
+      "desc": "Batching, the prefill/decode split, KV-cache placement, eviction and transfer across a cluster."
+    },
+    {
+      "id": "model",
+      "name": "Model-level",
+      "desc": "Changes to the weights or the decoding procedure: quantisation, distillation, speculative decoding, post-training."
+    },
+    {
+      "id": "engine",
+      "name": "Engine & runtime",
+      "desc": "The forward-pass executor and its configuration: vLLM, SGLang, TensorRT-LLM, llama.cpp, MLX."
+    },
+    {
+      "id": "compiler",
+      "name": "Compiler",
+      "desc": "Graph capture, fusion decisions and code generation between the model definition and the kernels."
+    },
+    {
+      "id": "kernels",
+      "name": "Kernels",
+      "desc": "The GPU programs themselves: attention, MoE dispatch, GEMM, sampling, cache packing, on one specific chip."
+    },
+    {
+      "id": "hardware",
+      "name": "Hardware",
+      "desc": "Accelerators and their memory and network topology."
+    }
+  ],
+  "mechanisms": [
+    {
+      "id": "hand",
+      "name": "Hand-tuned",
+      "desc": "A human performance engineer writes or configures it."
+    },
+    {
+      "id": "rules",
+      "name": "Compiler rules",
+      "desc": "Fixed heuristics or cost models generate it. Deterministic, no learning from the deployment."
+    },
+    {
+      "id": "online",
+      "name": "Online adaptive",
+      "desc": "The running system adjusts itself from live signals. No new code is written; a planner or controller moves knobs."
+    },
+    {
+      "id": "agent",
+      "name": "Agent search",
+      "desc": "LLM agents propose code or configuration, a harness measures it, winners are kept. New code is written."
+    },
+    {
+      "id": "frame",
+      "name": "Scoreboard / analysis",
+      "desc": "Benchmarks, critiques and essays. They optimise nothing, but they set what counts as winning."
+    }
+  ],
+  "venues": [
+    {
+      "id": "cluster",
+      "name": "Shared cloud",
+      "desc": "Multi-tenant serverless clusters run by an inference provider."
+    },
+    {
+      "id": "dedicated",
+      "name": "Dedicated endpoint",
+      "desc": "Single-tenant cloud capacity tuned for one customer."
+    },
+    {
+      "id": "onprem",
+      "name": "On-prem / private",
+      "desc": "Hardware the operator owns, in their own rack."
+    },
+    {
+      "id": "local",
+      "name": "Local device",
+      "desc": "A laptop, workstation, phone or small box owned by the user."
+    },
+    {
+      "id": "any",
+      "name": "Venue-neutral",
+      "desc": "Applies wherever the stack runs."
+    }
+  ],
+  "timescales": [
+    {
+      "id": "request",
+      "name": "Per request",
+      "span": "milliseconds",
+      "desc": "Routing a request to the worker that already holds its cache; choosing how far to speculate for this token."
+    },
+    {
+      "id": "minutes",
+      "name": "Per traffic shift",
+      "span": "seconds to minutes",
+      "desc": "Re-splitting a cluster between prefill and decode; deciding which cached context to evict."
+    },
+    {
+      "id": "days",
+      "name": "Per hillclimb",
+      "span": "hours to days",
+      "desc": "Agents rewriting kernels and engine paths against recorded traffic, then promoting the winners."
+    },
+    {
+      "id": "release",
+      "name": "Per model or chip",
+      "span": "weeks",
+      "desc": "Bringing up a new architecture or accelerator on day zero."
+    }
+  ],
+  "loop": [
+    {
+      "id": "observe",
+      "name": "Observe",
+      "does": "Record what real traffic looks like: context lengths, cache hits, time per kernel.",
+      "hard": "Only whoever serves the traffic sees it, unless a public trace set stands in.",
+      "status": "working",
+      "signals": [
+        "2026-08-24-agentx-inferencex-v3",
+        "2026-10-28-decagon-autoresearch",
+        "2026-11-04-together-compiler"
+      ]
+    },
+    {
+      "id": "propose",
+      "name": "Propose",
+      "does": "Agents write candidate kernels, engine patches or settings.",
+      "hard": "Cheap, and getting cheaper. A plain instruction has beaten expert-written playbooks.",
+      "status": "working",
+      "signals": [
+        "2026-11-16-together-deleted-megakernels",
+        "2026-10-02-baseten-agentic-engine",
+        "2026-11-09-inferenceforge"
+      ]
+    },
+    {
+      "id": "evaluate",
+      "name": "Evaluate",
+      "does": "Measure each candidate on realistic inputs, end to end, and check outputs still match.",
+      "hard": "Synthetic inputs and isolated benchmarks give wrong answers. Nobody can yet simulate traffic they have not seen.",
+      "status": "bottleneck",
+      "signals": [
+        "2026-05-22-fastkernels",
+        "2026-11-16-together-deleted-megakernels",
+        "2026-09-22-swe-serve",
+        "2026-05-20-inferencebench"
+      ]
+    },
+    {
+      "id": "promote",
+      "name": "Promote",
+      "does": "Ship winners to production and, often, upstream to the open engine.",
+      "hard": "People still review what ships, and patches now arrive faster than they can read them.",
+      "status": "working",
+      "signals": [
+        "2026-10-16-vllm-kimi-k3-megakernel",
+        "2026-11-inferact-autonomous-inference-system"
+      ]
+    },
+    {
+      "id": "reflect",
+      "name": "Reflect",
+      "does": "Revise the agents' own process from what failed.",
+      "hard": "Everyone names it as the goal. Almost no one has shown it. This step is what would make the loop recursive.",
+      "status": "unproven",
+      "signals": [
+        "2026-10-03-seis-self-evolving-inference",
+        "2026-03-30-kernel-smith",
+        "2026-09-17-zai-glm-built-its-inference"
+      ]
+    }
+  ],
+  "shift": {
+    "then": {
+      "label": "Before: a craft",
+      "note": "Retuned when someone has time",
+      "steps": [
+        "One model",
+        "An engineer hand-tunes kernels",
+        "One configuration",
+        "Served to all traffic"
+      ]
+    },
+    "now": {
+      "label": "Now: a search",
+      "note": "Runs continuously",
+      "steps": [
+        "Real traffic, replayed",
+        "Agents write candidate code",
+        "A rig measures end to end",
+        "Winners ship and go upstream"
+      ],
+      "loop": "repeats per model, per workload, per chip"
+    }
+  }
+}

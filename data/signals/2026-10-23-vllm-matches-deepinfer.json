@@ -1,0 +1,47 @@
+{
+  "id": "2026-10-23-vllm-matches-deepinfer",
+  "title": "Serving DeepSeek-V4.1-Flash at scale: vLLM matches DeepInfer",
+  "url": "https://vllm.ai/blog/2026-10-23-deepseek-v41-flash-pd-wide-ep",
+  "org": "Inferact and the vLLM team",
+  "published": "2026-10-23",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "kernels",
+    "engine",
+    "serving"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "With the model vendor's kernels integrated, upstream vLLM came close to the vendor's own bespoke engine on decode, then scaled out with prefill/decode disaggregation and wide expert parallelism.",
+  "changes": "The best evidence that the commons keeps pace: the general engine landed within a few percent of one built by the model's own authors for that single model.",
+  "caveats": "The vendor's figures were read off charts and its hardware is unstated. Prefill setups differ. The vendor's engine was itself originally built on vLLM.",
+  "numbers": [
+    {
+      "metric": "Decode against the model vendor's own engine",
+      "value": "within 6% across batch 8 to 256",
+      "baseline": "DeepInfer's published curve",
+      "verification": "self-reported",
+      "setup": "GB200"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "A general open engine within 6% of a single-model bespoke one."
+    },
+    {
+      "claim": "C3",
+      "direction": "challenges",
+      "note": "If a bespoke engine for one model buys 6%, per-customer builds have little room."
+    },
+    {
+      "claim": "C6",
+      "direction": "complicates",
+      "note": "This parity came from people integrating the vendor's kernels by hand, quickly. Churn was absorbed without an agent loop."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

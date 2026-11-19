@@ -1,0 +1,73 @@
+[
+  {
+    "id": "T1",
+    "question": "Megakernels: fuse the whole forward pass, or delete the idea?",
+    "sides": [
+      {"held_by": "Together AI", "position": "Deleted theirs. CUDA Graphs plus PDL recover 98% of the gain, and a megakernel bakes in one model shape and one chip, which breaks as soon as either changes.", "signals": ["2026-11-16-together-deleted-megakernels"]},
+      {"held_by": "vLLM, SGLang, Inferact", "position": "Shipping agent-written fused decode paths now, with merged pull requests and gains of 1.3 to 2x over the stock engine.", "signals": ["2026-10-16-vllm-kimi-k3-megakernel", "2026-07-02-sglang-agent-assisted-development", "2026-11-inferact-autonomous-inference-system"]}
+    ],
+    "settles_when": "Someone runs the same model on the same chip on AgentX with a fused path against a CUDA Graphs plus PDL path, or either camp changes course.",
+    "lean": "Possibly both are right. A megakernel's cost was that people had to maintain it. If agents regenerate it per model in a day, the rigidity matters less. Watch whether the fused paths survive the next model release.",
+    "claims": ["C6", "C1"],
+    "status": "open"
+  },
+  {
+    "id": "T2",
+    "question": "Does accumulated knowledge make the optimising agents better, or worse?",
+    "sides": [
+      {"held_by": "Together AI", "position": "Worse. A curated knowledge base cut the final speed-up by about 19%, and expert-written strategies lost to a one-line instruction by about 26%.", "signals": ["2026-11-16-together-deleted-megakernels"]},
+      {"held_by": "ModelBlaster, VibeServe, Z.ai, Meta", "position": "Better. A persistent knowledge base is the agent's policy; a skills library raised the ceiling in ablation; search traces train the next model.", "signals": ["2026-11-03-modelblaster", "2026-05-07-vibeserve", "2026-09-17-zai-glm-built-its-inference", "2026-04-02-meta-kernelevolve"]},
+      {"held_by": "SEIS", "position": "Both. Chains that inherit their own reports climb further, and also carry wrong conclusions forward.", "signals": ["2026-10-03-seis-self-evolving-inference"]}
+    ],
+    "settles_when": "A second team publishes an ablation of machine-accumulated (not hand-curated) memory on a production-scale task.",
+    "lean": "The split may be between knowledge people wrote down, which hurts, and knowledge the loop accumulated and can re-test, which helps until it carries an error. That distinction is the whole of the RSI question in miniature.",
+    "claims": ["C5"],
+    "status": "open"
+  },
+  {
+    "id": "T3",
+    "question": "Is this a job for agents, or for plain search?",
+    "sides": [
+      {"held_by": "InferenceBench", "position": "With the same budget, a simple hyperparameter search beat every agent. Agents know the techniques but explore one configuration and stop.", "signals": ["2026-05-20-inferencebench"]},
+      {"held_by": "InferenceForge, Together, vLLM", "position": "The gains came from new code (kernel fixes, fused paths) that no search over existing knobs could reach.", "signals": ["2026-11-09-inferenceforge", "2026-11-04-together-compiler", "2026-10-16-vllm-kimi-k3-megakernel"]}
+    ],
+    "settles_when": "A benchmark separates gains from configuration and gains from new code on the same task, or InferenceBench runs a matched-budget search next to the newest agents.",
+    "lean": "Both, at different layers. Knobs belong to search; kernels and engine paths belong to agents. The strongest systems already combine them: Together prunes parallelism layouts with a cost model before any agent runs.",
+    "claims": ["C1"],
+    "status": "leaning"
+  },
+  {
+    "id": "T4",
+    "question": "Is the moat the traffic, or just the harness?",
+    "sides": [
+      {"held_by": "Inferact, Together, Decagon", "position": "You need real traffic. Synthetic inputs mislead the agents, and nobody can yet simulate traffic they have not seen.", "signals": ["2026-11-inferact-autonomous-inference-system", "2026-11-16-together-deleted-megakernels", "2026-10-28-decagon-autoresearch"]},
+      {"held_by": "InferenceForge, AgentX", "position": "A public set of replayable traces was enough for an academic group with no customers to top the scoreboard.", "signals": ["2026-11-09-inferenceforge", "2026-08-24-agentx-inferencex-v3"]}
+    ],
+    "settles_when": "A stack tuned only on the public benchmark is deployed on real traffic and someone reports whether the gains hold.",
+    "claims": ["C4", "C7"],
+    "status": "open"
+  },
+  {
+    "id": "T5",
+    "question": "Does specialisation stop at the workload class, or go down to each customer?",
+    "sides": [
+      {"held_by": "Modal, vLLM", "position": "Class level is most of it. Per-customer tuning was worth about 20% like for like, the recipe transferred to other customers, and a general engine came within 6% of a bespoke one.", "signals": ["2026-09-23-modal-trillion-tokens", "2026-09-08-vllm-agentx", "2026-10-23-vllm-matches-deepinfer"]},
+      {"held_by": "Together, Baseten, Decagon", "position": "Per deployment, continuously. A bespoke engine now costs a couple of hundred GPU-hours, and one company running the loop on its own traffic reports gains at every layer.", "signals": ["2026-11-04-together-compiler", "2026-10-02-baseten-agentic-engine", "2026-10-28-decagon-autoresearch", "2025-10-10-together-atlas"]}
+    ],
+    "settles_when": "A provider publishes per-customer against class-level numbers on the same endpoints.",
+    "claims": ["C3"],
+    "status": "open"
+  },
+  {
+    "id": "T6",
+    "question": "Local hardware: where the loop goes next, or where it cannot go?",
+    "sides": [
+      {"held_by": "Goedecke, cost analyses", "position": "It cannot. The loop's gains come from batching and shared caches across many sessions, and one user has neither. Owned hardware is at best cost-neutral per token.", "signals": ["2026-08-11-goedecke-local-models-will-not-win", "2026-05-17-offline-llm-energy-use"]},
+      {"held_by": "ModelBlaster, Magnitude, Apple, Ronacher", "position": "It is arriving. Agent-written kernels beat a phone vendor's SDK; local engines and platform compilers already specialise per device; narrow agent-built engines per model are a plausible local form.", "signals": ["2026-11-03-modelblaster", "2026-09-30-magnitude-local-engine", "2026-06-apple-core-ai", "2026-05-08-ronacher-local-focus-and-polish"]}
+    ],
+    "settles_when": "An agent-driven loop tuned on one owner's actual usage shows a gain on owned hardware that survives a like-for-like baseline.",
+    "lean": "Toward the datacenter for now. The realistic middle is private fleets and workload owners running the loop on rented capacity, as Meta and Decagon already do. Device-level specialisation is real but it is tuning to the chip, not to the person.",
+    "claims": ["C8"],
+    "status": "leaning"
+  }
+]

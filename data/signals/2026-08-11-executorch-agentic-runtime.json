@@ -1,0 +1,38 @@
+{
+  "id": "2026-08-11-executorch-agentic-runtime",
+  "title": "Fast, on-device agentic AI with Muse Glimmer on ExecuTorch",
+  "url": "https://pytorch.org/blog/fast-ondevice-agentic-ai-with-executorch/",
+  "org": "PyTorch / Meta",
+  "published": "2026-08-11",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "compiler",
+    "kernels",
+    "engine",
+    "model"
+  ],
+  "mechanism": "rules",
+  "venue": "local",
+  "gist": "A model and its decoding strategy are lowered ahead of time. On NVIDIA cards the export step compiles and autotunes kernels for the detected GPU architecture; on Apple silicon it targets MLX or custom Metal kernels. Speculative decoding is handled inside the exported artifact.",
+  "changes": "Autotuning at export, for the device in hand, is now in a mainstream local runtime. The artifact is tied to the chip it was exported on: the local version of the optimum being specific to the deployment.",
+  "caveats": "No continuous batching or cache sharing across sessions yet. No comparison with llama.cpp or mlx-lm, and most results are charts only. The date shown is last-updated.",
+  "numbers": [
+    {
+      "metric": "Text plus image decode with speculative decoding",
+      "value": "21.6 to 33.0 tok/s (+52.8%)",
+      "baseline": "the same runtime without speculation",
+      "verification": "self-reported",
+      "setup": "M5 Pro, 64 GB"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "Tuned to the device at export time by rules. Still nothing tuned to the user."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

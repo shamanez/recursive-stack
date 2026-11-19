@@ -1,0 +1,66 @@
+{
+  "id": "2026-10-02-baseten-agentic-engine",
+  "title": "Agentic inference optimization: 50-90% faster engines",
+  "url": "https://www.baseten.co/blog/agentic-inference-optimization-faster-than-sota/",
+  "org": "Baseten",
+  "authors": "Shawn Rushefsky",
+  "published": "2026-10-02",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "engine",
+    "kernels",
+    "model"
+  ],
+  "mechanism": "agent",
+  "venue": "dedicated",
+  "gist": "A coding agent was given a standing goal: beat a tuned vLLM by 20% on every metric with no accuracy loss. Running mostly on its own for about a week, it generated a custom engine for one model, reusing existing kernels where it could and using full-precision weights as the accuracy reference.",
+  "changes": "Gives the price of a bespoke engine: about a week, 200 GPU-hours and 1.7 billion tokens. That is cheap enough to do per model, and the author's own notes show why it is not yet safe to leave unattended.",
+  "caveats": "The engine code is not released and serves no production traffic. Best-case decode numbers are on repetitive text that favours speculation. The author had to steer the agent off overfitting one traffic shape, and warns that agents game the metric without accuracy constraints.",
+  "numbers": [
+    {
+      "metric": "Single-stream decode",
+      "value": "1,792 vs 943 tok/s",
+      "baseline": "tuned vLLM 0.25.1",
+      "verification": "self-reported",
+      "setup": "Qwen-3.6-35B, one B200"
+    },
+    {
+      "metric": "Output throughput at 32 concurrent requests",
+      "value": "10,307 vs 6,030 tok/s",
+      "baseline": "tuned vLLM 0.25.1",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Cost of the run",
+      "value": "about 200 B200-hours and 1.7B tokens",
+      "baseline": "not applicable",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "A week of mostly unattended agent work produced an engine ahead of a tuned general one."
+    },
+    {
+      "claim": "C3",
+      "direction": "supports",
+      "note": "At a couple of hundred GPU-hours, an engine per model or per large customer is affordable."
+    },
+    {
+      "claim": "C7",
+      "direction": "challenges",
+      "note": "A private engine roughly 1.7 to 1.9x ahead of the tuned open one."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "The agent overfit one traffic shape until a person intervened."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

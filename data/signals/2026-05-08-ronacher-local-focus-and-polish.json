@@ -1,0 +1,33 @@
+{
+  "id": "2026-05-08-ronacher-local-focus-and-polish",
+  "title": "Pushing local models with focus and polish",
+  "url": "https://lucumr.pocoo.org/2026/5/8/local-models/",
+  "org": "Armin Ronacher",
+  "published": "2026-05-08",
+  "added": "2026-11-19",
+  "kind": "essay",
+  "layers": [
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "local",
+  "gist": "Argues the local gap is polish, not model quality: users must pick engine, quantisation, template and context size, and any choice can silently degrade the model. Proposes one model, one serving path and one harness on one hardware configuration, pointing to a narrow single-model engine built with heavy help from coding agents.",
+  "changes": "Specialisation as the local strategy: not a general runtime tuned per device, but a narrow engine per model. It is the same move the datacenter is making, arrived at from the usability side.",
+  "caveats": "Advocacy without measurements. He concedes the hardware it needs is expensive and scarce.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "supports",
+      "note": "Weakly: a narrow, agent-built engine per model is a plausible local form of the same idea. No numbers yet."
+    }
+  ],
+  "also": [
+    {
+      "label": "ds4, the single-model engine",
+      "url": "https://github.com/antirez/ds4"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

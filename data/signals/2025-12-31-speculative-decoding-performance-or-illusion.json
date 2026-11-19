@@ -1,0 +1,47 @@
+{
+  "id": "2025-12-31-speculative-decoding-performance-or-illusion",
+  "title": "Speculative decoding: performance or illusion?",
+  "url": "https://arxiv.org/abs/2601.11580",
+  "org": "UC Berkeley",
+  "published": "2025-12-31",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "model",
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "An independent study of speculative decoding variants inside a production engine, across workloads and batch sizes. Gains shrink as load rises and some variants fall below break-even; which method wins depends on the dataset.",
+  "changes": "Cuts both ways. Fixed speculation is fragile under real load, which undercuts single-stream headline numbers. But an oracle choosing the method per token position does far better than any fixed choice, which is measured headroom for adaptivity.",
+  "caveats": "The adaptive result assumes a perfect oracle. No practical predictor was built.",
+  "numbers": [
+    {
+      "metric": "One speculation method's speed-up as load rises",
+      "value": "1.73x at batch 1 falls to 1.21x at batch 128",
+      "baseline": "no speculation",
+      "verification": "third-party",
+      "setup": "Llama 3.1 8B in vLLM"
+    },
+    {
+      "metric": "An oracle choosing the method per position",
+      "value": "up to 2.2x",
+      "baseline": "the best fixed method",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The winning method changes with the dataset, the request and even the token position."
+    },
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "Speculation helps most at batch size 1, which is the single-user local case."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

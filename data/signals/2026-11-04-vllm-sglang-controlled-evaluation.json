@@ -1,0 +1,45 @@
+{
+  "id": "2026-11-04-vllm-sglang-controlled-evaluation",
+  "title": "A controlled experimental evaluation of configuration and cache architecture in LLM serving engines",
+  "url": "https://arxiv.org/abs/2611.05991",
+  "org": "Muhammad Faizan Anwar, Sina Keshvadi",
+  "published": "2026-11-04",
+  "added": "2026-11-19",
+  "kind": "critique",
+  "layers": [
+    "engine",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "Much of the reported gap between the two main open engines on a multi-agent workload comes from one default setting, not from architecture.",
+  "changes": "A warning about every engine-against-engine number here: a single flag explained most of the largest gap. Part of what gets called specialisation is noticing a bad default.",
+  "caveats": "Only the abstract has been read. A real tail-latency advantage survives at equal throughput, attributed to cache-aware request ordering.",
+  "numbers": [
+    {
+      "metric": "Share of the largest capacity gap removed by matching one setting",
+      "value": "78%",
+      "baseline": "both engines at defaults",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C3",
+      "direction": "challenges",
+      "note": "If one flag is most of the gap, much of the gain from tuning per deployment is available to anyone who reads the documentation."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Comparisons between engines hinge on defaults. Baselines are fragile."
+    },
+    {
+      "claim": "C2",
+      "direction": "complicates",
+      "note": "Some of what looks like workload-specific optimum is one setting that was wrong for everyone."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

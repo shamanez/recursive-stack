@@ -1,0 +1,48 @@
+{
+  "id": "2026-11-04-together-polymorphic-inference",
+  "title": "Polymorphic inference",
+  "url": "https://www.together.ai/blog/polymorphic-inference",
+  "org": "Together AI",
+  "authors": "Simran Arora, Dan Fu",
+  "published": "2026-11-04",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "compiler",
+    "routing",
+    "model"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "A positioning piece: inference should change form as models, traffic and chips change, instead of shipping one hand-tuned configuration. It names the Together Compiler as the first piece, with adaptive speculative decoding, workload-aware model routing and per-customer post-training to follow, and calls the compiler loop recursive self-improvement at production scale.",
+  "changes": "Supplies the churn argument in one statistic and the vocabulary, static against polymorphic, that others are picking up. It is also the most explicit commercial claim to the RSI label.",
+  "caveats": "No performance numbers of its own. The RSI claim is the company's characterisation; the companion technical post does not use the phrase or describe agents improving themselves. Most of the agenda is planned, not shipped, and per-customer compilation is a limited beta.",
+  "numbers": [
+    {
+      "metric": "Share of OpenRouter traffic on models released in the last three months",
+      "value": "80%",
+      "baseline": "market observation cited by Together, not independently checked",
+      "verification": "unverified"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "If four-fifths of traffic is on models under three months old, nothing hand-tuned stays relevant for long."
+    },
+    {
+      "claim": "C5",
+      "direction": "complicates",
+      "note": "Claims the label outright; the evidence for the recursive part is not shown."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "Per-customer continuous compilation exists, but only as a limited beta on request."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

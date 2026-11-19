@@ -1,0 +1,30 @@
+{
+  "id": "2026-06-apple-core-ai",
+  "title": "Dive into Core AI model authoring and optimization (WWDC26 session 325)",
+  "url": "https://developer.apple.com/videos/play/wwdc2026/325",
+  "org": "Apple",
+  "published": "2026-06",
+  "added": "2026-11-19",
+  "kind": "talk",
+  "layers": [
+    "compiler",
+    "kernels",
+    "engine",
+    "model"
+  ],
+  "mechanism": "rules",
+  "venue": "local",
+  "gist": "Apple's successor to Core ML. A model is converted to an asset that is specialised to the exact hardware and OS on first load, then cached. Developers can embed hand-written Metal kernels paired with reference functions, and Apple ships skills for coding assistants alongside.",
+  "changes": "Per-device specialisation becomes a platform default across Apple's installed base. The specialising is done by a vendor compiler; the kernels are still written by people.",
+  "caveats": "Apple silicon only and opaque. No LLM tokens-per-second figures and no comparison with MLX or llama.cpp. The date is the conference month; the session page itself is undated.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "Device-specific specialisation ships by default, produced by compiler rules, not by a loop that learns from use."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

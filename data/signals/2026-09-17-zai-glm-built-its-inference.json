@@ -1,0 +1,54 @@
+{
+  "id": "2026-09-17-zai-glm-built-its-inference",
+  "title": "Toward recursive self-improvement: how GLM built its own inference infrastructure",
+  "url": "https://z.ai/blog/glm-built-its-inference-infrastructure",
+  "org": "Z.ai (Zhipu)",
+  "published": "2026-09-17",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "kernels",
+    "engine",
+    "serving",
+    "hardware"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "An agent powered by GLM-5.3 did much of the work of bringing a GLM-5.3 variant from first run to production on a large cluster of Chinese-made accelerators. The stated key is dense feedback: correctness comparisons, microbenchmarks, traces and end-to-end metrics packaged as repeatable workflows the agent can call.",
+  "changes": "The most literal instance of the recursive framing: a model optimising the serving of its own family, on chips where no mature kernel library exists. It also says outright that this is not yet RSI.",
+  "caveats": "Self-reported and mostly unverifiable. The 3x is against the team's own first port. Engineers set objectives, built the feedback environment and reviewed anything touching architecture, concurrency or production risk; the human share is not quantified.",
+  "numbers": [
+    {
+      "metric": "End-to-end throughput",
+      "value": "about 3x in under two weeks",
+      "baseline": "the team's own initial port",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "One decode kernel",
+      "value": "1.71x",
+      "baseline": "before removing redundant per-tile computation",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "A model family building its own serving stack. The authors themselves say they are not there yet."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "New accelerators with no kernel ecosystem are where hand-tuning cannot keep up."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "The enabler was dense feedback, and people built it."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

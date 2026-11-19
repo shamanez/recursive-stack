@@ -1,0 +1,61 @@
+{
+  "id": "2026-05-07-vibeserve",
+  "title": "VibeServe: can AI agents build bespoke LLM serving systems?",
+  "url": "https://arxiv.org/abs/2605.06068",
+  "org": "University of Washington",
+  "published": "2026-05-07",
+  "added": "2026-11-19",
+  "kind": "paper",
+  "layers": [
+    "loop",
+    "engine",
+    "serving",
+    "model"
+  ],
+  "mechanism": "agent",
+  "venue": "any",
+  "gist": "A planner with long-term memory and an issue tracker drives an inner loop of implementer, accuracy judge and performance evaluator to build a whole serving stack for one model, one chip and one workload.",
+  "changes": "A direct test of bespoke-per-workload: parity with general engines in the standard case, large wins only where the scenario is unusual. That is about where the value of specialisation should be expected to sit.",
+  "caveats": "In the standard setting the result is a tie after 25 hours. The biggest win is against a baseline the authors had to patch to run. Single node, and it relies on a correctness checker the user supplies.",
+  "numbers": [
+    {
+      "metric": "Standard setting",
+      "value": "matches vLLM, about 5% over SGLang",
+      "baseline": "tuned general engines",
+      "verification": "self-reported",
+      "setup": "Llama-3.1-8B, H100, 60 rounds"
+    },
+    {
+      "metric": "A 397B MoE on AMD accelerators",
+      "value": "2.33x goodput",
+      "baseline": "SGLang, patched by the authors to run",
+      "verification": "self-reported",
+      "setup": "4x MI300A"
+    },
+    {
+      "metric": "Non-standard scenarios",
+      "value": "1.69 to 6.27x",
+      "baseline": "general engines",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "Bespoke only pays where the workload is unusual. In the common case it ties."
+    },
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Agents built a whole stack that matches a mature engine."
+    },
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "Removing the skills library lowered the ceiling. Here accumulated knowledge helped, the opposite of Together's finding."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

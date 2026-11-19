@@ -1,0 +1,46 @@
+{
+  "id": "2026-09-14-vera-rubin-agentx",
+  "title": "Vera Rubin NVL72 agentic inference",
+  "url": "https://newsletter.semianalysis.com/p/vera-rubin-nvl72-agentic-inference",
+  "org": "SemiAnalysis",
+  "published": "2026-09-14",
+  "added": "2026-11-19",
+  "kind": "benchmark",
+  "layers": [
+    "hardware",
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "First AgentX results for the next NVIDIA generation. The hardware step moves cost per token by more than any software specialisation reported elsewhere here, though the size of the multiple depends heavily on which software baseline it is measured against.",
+  "changes": "Two lessons. A hardware generation can swamp tuning gains. And the same hardware comparison swings by an order of magnitude with the software baseline, which is a measure of how much the software is worth.",
+  "caveats": "Pre-release software on one engine only, with vendor staff helping verify. Later sections are paywalled.",
+  "numbers": [
+    {
+      "metric": "Throughput per dollar of total cost at 60 to 100 tok/s per user",
+      "value": "1.4 to 3x",
+      "baseline": "the previous generation (GB300)",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Throughput per megawatt at 170 tok/s per user",
+      "value": "62.9x against one software stack, 5.56x against another",
+      "baseline": "GB300 on TensorRT-LLM, and GB300 on SGLang",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "A new generation arrives and every tuned stack starts again."
+    },
+    {
+      "claim": "C2",
+      "direction": "complicates",
+      "note": "A hardware step can dwarf what workload tuning buys."
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}

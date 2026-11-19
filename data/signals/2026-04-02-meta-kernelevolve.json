@@ -1,0 +1,64 @@
+{
+  "id": "2026-04-02-meta-kernelevolve",
+  "title": "KernelEvolve: how Meta's ranking engineer agent optimizes AI infrastructure",
+  "url": "https://engineering.fb.com/2026/04/02/developer-tools/kernelevolve-how-metas-ranking-engineer-agent-optimizes-ai-infrastructure/",
+  "org": "Meta",
+  "published": "2026-04-02",
+  "added": "2026-11-19",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "kernels",
+    "compiler",
+    "hardware"
+  ],
+  "mechanism": "agent",
+  "venue": "onprem",
+  "gist": "Kernel generation as tree search over candidates in six kernel languages across NVIDIA, AMD and Meta's own chips, fed by retrieval over hardware documentation and profiler diagnostics. Search trajectories are reused to train smaller specialist models, with measured kernel speed as the reward.",
+  "changes": "Evidence that the loop works at scale on an operator's own mixed fleet, and a concrete flywheel: the search trains the next searcher. It is ads ranking, not LLM serving.",
+  "caveats": "Unverifiable from outside. No search budget, cost or failures given. Its perfect KernelBench score uses the protocol shown to be inflated. Engineers still choose the operator, the chip and the goal.",
+  "numbers": [
+    {
+      "metric": "Inference throughput, an ads model on NVIDIA GPUs",
+      "value": "over 60% higher",
+      "baseline": "a baseline already using torch.compile and vendor libraries",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Training throughput on Meta's own chip",
+      "value": "over 25% higher",
+      "baseline": "before",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "In production on a ranking workload, against an already-compiled baseline."
+    },
+    {
+      "claim": "C5",
+      "direction": "supports",
+      "note": "Trajectories train specialist models. That is a real feedback path from search to searcher."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "Three chip families, one of them in-house silicon with no outside ecosystem."
+    },
+    {
+      "claim": "C8",
+      "direction": "complicates",
+      "note": "The loop does run on hardware its user owns, when the owner is a hyperscaler."
+    }
+  ],
+  "also": [
+    {
+      "label": "Paper",
+      "url": "https://arxiv.org/abs/2512.23236"
+    }
+  ],
+  "read": "relayed",
+  "status": "active"
+}
