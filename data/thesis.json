@@ -155,7 +155,7 @@
       "short": "Churn forces automation",
       "statement": "New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary.",
       "plain": "By the time a person has tuned the kernels, traffic has moved to the next model. Something has to do day-zero support, and it will not be a person.",
-      "why": "It explains the timing. Agents could write kernels a year ago; what changed is that nothing stays still long enough to be worth tuning by hand.",
+      "why": "It explains the timing, and for a provider serving many models it is the daily problem: every new model needs a drafter, a tuned engine and a correctness check before the traffic arrives.",
       "confidence": 0.7,
       "history": [
         {

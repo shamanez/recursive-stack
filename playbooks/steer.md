@@ -11,7 +11,8 @@ new source did, so treat it as the highest-priority input there is.
   paragraphs, with links for depth. Text is fine where it explains.
 - "Local" means the stack fits what you have (your models, chips, traffic). It
   does not mean on-device hardware, and hardware itself is not the point.
-- They are reading this as a **provider**.
+- They are reading this as a **provider**, serving **many model families**. Work that
+  repeats per model matters most to them.
 - The frame is wider than agents optimising engines: it is inference becoming
   load-aware and adaptive, and how the parts connect (open and frontier models
   side by side, routing, speculative decoding, tuning for a domain).

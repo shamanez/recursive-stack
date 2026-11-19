@@ -2,8 +2,12 @@
   "id": "2026-11-19",
   "n": 0,
   "agent": "Claude Code (Fable 5.2)",
-  "summary": "Founding sweep, steered four times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. 62 signals are active.",
+  "summary": "Founding sweep, steered five times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. 62 signals are active.",
   "changes": [
+    {
+      "type": "course",
+      "text": "The reader serves many model families. Churn (C6) joins the claims their position rests on, the provider view now leads with the work that repeats per model, and bringing up a new model is its own step in the build order. W19 opened."
+    },
     {
       "type": "course",
       "text": "The reader widened the frame to inference becoming load-aware and adaptive, and asked how the parts connect and how to build one. Framing restated; all four parts re-judged."

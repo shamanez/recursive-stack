@@ -215,6 +215,18 @@
       ],
       "status": "open",
       "lens": true
+    },
+    {
+      "id": "W19",
+      "what": "Any provider publishing how long and how much it takes to get a new model from release to tuned serving, with or without agents.",
+      "why": "With many models this is the cost that repeats. Day-zero support is claimed by several teams; none has given a time or a price.",
+      "opened": "2026-11-19",
+      "due": "2026-12-19",
+      "claims": [
+        "C6"
+      ],
+      "status": "open",
+      "lens": true
     }
   ],
   "feeds": [

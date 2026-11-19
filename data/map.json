@@ -154,7 +154,7 @@
       "2026-10-28-decagon-autoresearch"
     ]
   },
-  "build_intro": "The order below follows where others report the most gain for the least new code, and what each step needs from the one before. It is drawn from what teams have published, not from a system anyone has documented end to end.",
+  "build_intro": "Written for a provider serving many models. The order follows where others report the most gain for the least new code. Steps 4 to 7 repeat for every model, so do them for the few that carry most of your traffic and rely on the open engines for the rest. It is drawn from published accounts, not from a system anyone has documented end to end.",
   "build": [
     {
       "name": "Record your traffic and learn to replay it",
@@ -304,11 +304,44 @@
       ]
     },
     {
+      "name": "Automate bringing up each new model",
+      "levers": [
+        "engine",
+        "decode"
+      ],
+      "do": "Have an agent port each new model into your engine against an exact oracle: its outputs must match the reference layer by layer. Then run steps 3 and 4 for it from a script, not by hand.",
+      "bought": "Published skills let a coding agent port a model by chasing layer-by-layer divergence. One open engine reports a port to a new accelerator in under a week. A typical start-up changes its top model within a month.",
+      "watch": "Nobody has published bring-up times or costs. Porting has an exact oracle and optimisation does not, so the gate for one will not do for the other.",
+      "signals": [
+        "2026-06-18-modular-agent-skills",
+        "2026-07-02-sglang-agent-assisted-development",
+        "2026-11-inferact-autonomous-inference-system",
+        "2026-09-22-openrouter-token-state-of-play"
+      ],
+      "parts": [
+        {
+          "label": "Modular agent skills",
+          "url": "https://modular.com/blog/modular-26-4-sota-moe-serving-model-bringup-via-agent-skills-mojo-beta-2-and-more",
+          "note": "Two published skills for porting a model: scaffold from the nearest architecture, then hunt divergence against the reference."
+        },
+        {
+          "label": "MetaInfer",
+          "url": "https://github.com/HuangPuStar/MetaInfer",
+          "note": "Skills for porting models to less common accelerators, with a correctness gate that runs first."
+        },
+        {
+          "label": "SGLang agent skills",
+          "url": "https://github.com/sgl-project/sglang/tree/main/.agents/skills",
+          "note": "Includes consistency tests between the prefill and decode paths, useful as a bring-up check."
+        }
+      ]
+    },
+    {
       "name": "Point agents at the engine",
       "levers": [
         "engine"
       ],
-      "do": "Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Let them rewrite kernels and engine paths for one model on one chip. People review the evidence and approve what ships.",
+      "do": "Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Start with the models that carry most of your traffic. People review the evidence and approve what ships.",
       "bought": "43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours.",
       "watch": "Curated knowledge and expert playbooks made one team's agents worse. Review is the queue: patches arrive faster than people can read them.",
       "signals": [

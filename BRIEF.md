@@ -36,9 +36,10 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 2. **Add gates that catch a fake win.** Measure every change end to end inside the full engine, never a kernel alone. Check outputs in three layers: kernel tests across shapes, a token-probability comparison, and task evals that exercise the changed path. Fail on request errors. _What it has bought others:_ Protection. Kernel speed-ups of 1.6 to 6.6x shrank to about 1x end to end, and one in sixteen agent runs in an independent benchmark gamed the measurement.
 3. **Tune what needs no new code.** Search the settings you already have against the rig: cache-aware and sticky routing, the prefill and decode split, caps on long prefills, cache retention. Use plain search here, not agents. _What it has bought others:_ The largest reported gains for the least risk: 2.9x from cache-aware routing on code generation, up to 93% from a prefill cap. One default flag explained 78% of a gap between two engines.
 4. **Fit the decoding to the traffic.** Measure how well your traffic speculates, by domain and by load, before building anything. Train a draft model for each target model, and let the amount of speculation follow the load. _What it has bought others:_ About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler: about half more live throughput. Tuning the drafter to the workload: 20 to 45%.
-5. **Point agents at the engine.** Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Let them rewrite kernels and engine paths for one model on one chip. People review the evidence and approve what ships. _What it has bought others:_ 43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours.
-6. **Choose between models, and tune one where the job is narrow.** Send each session to the cheapest model that can do it, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader. _What it has bought others:_ Routing: 33 to 60% lower cost by vendors' accounts, disputed outside. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.
-7. **Close the loop.** Detect when traffic has drifted, re-run the earlier steps, promote winners through shadow traffic, and send upstream whatever is not specific to you. _What it has bought others:_ One provider shadowed all live traffic onto a new build before cutover. Prompt lengths have been seen to rise about 80% within two weeks of a model release.
+5. **Automate bringing up each new model.** Have an agent port each new model into your engine against an exact oracle: its outputs must match the reference layer by layer. Then run steps 3 and 4 for it from a script, not by hand. _What it has bought others:_ Published skills let a coding agent port a model by chasing layer-by-layer divergence. One open engine reports a port to a new accelerator in under a week. A typical start-up changes its top model within a month.
+6. **Point agents at the engine.** Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Start with the models that carry most of your traffic. People review the evidence and approve what ships. _What it has bought others:_ 43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours.
+7. **Choose between models, and tune one where the job is narrow.** Send each session to the cheapest model that can do it, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader. _What it has bought others:_ Routing: 33 to 60% lower cost by vendors' accounts, disputed outside. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.
+8. **Close the loop.** Detect when traffic has drifted, re-run the earlier steps, promote winners through shadow traffic, and send upstream whatever is not specific to you. _What it has bought others:_ One provider shadowed all live traffic onto a new build before cutover. Prompt lengths have been seen to rise about 80% within two weeks of a model release.
 
 ## Who is building the loop
 
@@ -86,9 +87,9 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 **What the evidence implies for a provider:**
 
 - **The rig is the asset, not the agent.** Everyone building this says evaluation is the hard part: replayed traffic, an engine that reloads candidates, gates that catch fake wins. The usual gate misses six of seven numerical bugs. _(rests on C4 at 80%)_
-- **A kernel lead lasts weeks.** Both open engines run the loop themselves and absorb fixes fast. A general engine came within 6% of a bespoke one. Two private leads of about 2x remain unchecked. _(rests on C7 at 55%)_
+- **Many models multiply three of the six levers.** Each model needs its own drafter, its own tuned engine and its own cache. Traffic moves to new models within weeks, so spend that work on the few that carry most of it. _(rests on C6 at 70%, C2 at 80%)_
+- **A kernel lead lasts weeks, so lean on upstream.** Both open engines run the loop themselves and absorb fixes fast; a general engine came within 6% of a bespoke one. For the long tail of models, upstream is your tuning. _(rests on C7 at 55%)_
 - **Open models are your volume; routing is the contest.** Open models carry most tokens and about a quarter of spend. Whoever owns the harness or the router decides which sessions reach you, and decides once per session. _(rests on C9 at 70%)_
-- **Tuning per customer pays on narrow jobs, briefly.** A workload-fitted drafter buys 20 to 45%. A tuned model can double quality on one job at flat cost, then die with its base model or lose to the next general release. _(rests on C3 at 35%, C10 at 45%)_
 
 **Read next:**
 
@@ -156,8 +157,9 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 
 ## What changed in cycle 0
 
-Founding sweep, steered four times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. 62 signals are active.
+Founding sweep, steered five times the same day. The reader clarified that local means fitted to what you have, said they read this as a provider, asked for every team building the loop, and then widened the frame: inference becoming load-aware, how the levers connect, and how to build one. The thesis is now a map of six levers with the agent loop around them. 62 signals are active.
 
+- **course**: The reader serves many model families. Churn (C6) joins the claims their position rests on, the provider view now leads with the work that repeats per model, and bringing up a new model is its own step in the build order. W19 opened.
 - **course**: The reader widened the frame to inference becoming load-aware and adaptive, and asked how the parts connect and how to build one. Framing restated; all four parts re-judged.
 - **added**: The big picture: six levers (which model, which machine, the cluster split, decoding, the engine, the model itself), what each listens to and has bought, how they connect through the prompt cache, and a seven-step build order with reusable parts.
 - **added** `C9`: Open and frontier models share the work, opened at 0.7. Coexistence is measured on two gateways; whether a router beats a cheap default is disputed.
@@ -209,6 +211,7 @@ Founding sweep, steered four times the same day. The reader clarified that local
 | 2026-12-19 | Any provider publishing what its loop costs per deployment (GPU-hours, tokens) next to the gain it bought. |
 | 2026-12-19 | A second workload owner, not a provider, describing its own loop on its own traffic. |
 | 2026-12-19 | Any router published against the best fixed model in its own pool, on tasks someone else chose. |
+| 2026-12-19 | Any provider publishing how long and how much it takes to get a new model from release to tuned serving, with or without agents. |
 | 2026-12-31 | A provider publishing per-customer against class-level tuning on the same endpoints. |
 | 2026-12-31 | A tuned open model followed against the next general release on the same task. |
 
