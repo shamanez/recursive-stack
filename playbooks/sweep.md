@@ -11,7 +11,9 @@ that adds nothing and lowers one confidence with a good reason has succeeded.
 
 ## 0. Orient (read before you search)
 
-1. `date +%F` gives today's date. Use it everywhere a date is needed.
+1. `git pull --ff-only` so you start from the latest pushed state. If it fails,
+   stop and report why. `date +%F` gives today's date; use it everywhere a date is
+   needed.
 2. Read `BRIEF.md`, then `data/thesis.json`, `data/course.json`,
    `data/watchlist.json`, `data/tensions.json`, and the newest file in `data/cycles/`.
 3. Read `inbox.md`. This is where the human leaves links and notes.
