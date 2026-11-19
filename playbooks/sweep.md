@@ -198,8 +198,10 @@ the cycle record:
    mark ones a newer source replaces (`status: superseded`, `superseded_by`). Keep
    active signals under about eighty. Move `recent_from` in the roster forward so
    the Who tab's default view covers about the last six weeks.
-5. **Re-derive** the five points, the implications and the build order from
-   scratch against the current claims, and rewrite any that have drifted.
+5. **Re-derive** the five points, the implications, the build order and the open
+   ground (`open_ground` in `data/map.json`: six at most, things nobody has shown)
+   from scratch against the current claims, and rewrite any that have drifted.
+   Remove an open-ground item the day someone shows it, and say who.
 6. **Check the page** with `playbooks/check-page.md`.
 
 ## Guardrails

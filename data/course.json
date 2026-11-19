@@ -29,10 +29,7 @@
     }
   ],
   "reframe": "Inference optimisation is turning from hand-craft into search. Agents rewrite kernels and engine paths against replayed real traffic, so the thing being optimised shrinks from a model to what you actually have: this model, this traffic shape, this chip, this month. The scarce asset is not the agent but the rig that tells you whether a change is real.",
-  "questions": [
-    "Which lever would you build first? The build order here puts the measuring rig first and model tuning last; say if your situation reverses that.",
-    "Is this for building something, positioning research, or placing a bet? Write the answer in inbox.md and the next sweep will weight the watchlist to match."
-  ],
+  "questions": [],
   "ignore": [
     "KernelBench scores quoted without the verified protocol. The baseline was too easy.",
     "Single-stream, batch-size-1 tokens-per-second records. Real, but they say little about serving many users.",
@@ -55,7 +52,7 @@
   ],
   "position": {
     "label": "Provider",
-    "text": "You run inference for other people's workloads, across many model families."
+    "text": "You run inference for other people's workloads, across many model families. You are here to build, to find open ground, and to judge where the value will sit. You would build the measuring rig first."
   },
   "focus_claims": [
     "C4",
@@ -115,5 +112,11 @@
         "2026-07-22-cursor-router"
       ]
     }
-  ]
+  ],
+  "purpose": [
+    "Building a system",
+    "Positioning research",
+    "Placing a bet"
+  ],
+  "build_first": "The measuring rig"
 }

@@ -13,8 +13,9 @@ framing is holding and where it is not. An agent re-runs it every day.
 
 ## Look at it
 
-- **Interactive dashboard:** open [`index.html`](index.html) in a browser. It is
-  one self-contained file; no server needed.
+- **Live dashboard:** <https://shamanez.github.io/recursive-stack/>
+- **Offline:** open [`index.html`](index.html) in a browser. It is one
+  self-contained file; no server needed.
 - **Plain-text version:** [`BRIEF.md`](BRIEF.md), which renders on GitHub.
 
 What is on the dashboard:

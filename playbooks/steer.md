@@ -19,6 +19,14 @@ new source did, so treat it as the highest-priority input there is.
 - No team building the loop should be missing from the roster, and each should
   have its gist stated.
 - They want to know how to build such a system.
+- They would build the **measuring rig first**. That matches the build order; keep
+  the rig steps the best evidenced.
+- The tracker serves three purposes at once: **building a system** (weight tooling,
+  costs and how others built theirs), **positioning research** (weight gaps and
+  what nobody has shown: `open_ground` in `data/map.json`), and **placing a bet**
+  (weight who keeps the gains and which leads last).
+- The repository and the page are **public**, at their request, so they can share
+  the link.
 
 The current wording of their framing lives in `data/course.json`
 (`reader_framing`, `position`).
@@ -58,7 +66,7 @@ The current wording of their framing lives in `data/course.json`
 
 4. **Leave a trail.**
    - Move the inbox entry to "Processed" with the date and one line on what was
-     done. For something said in conversation, add a Processed line quoting it.
+     done. Summarise; never paste the reader's words. The repository is public.
    - Add a `course` change to today's cycle record.
    - If it is a standing preference about how to work or how the page should
      look, add it to the list at the top of this file and to `AGENTS.md`.

@@ -756,6 +756,9 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       section('The levers side by side', null, el('div', { class: 'scroll-x' }, el('table', { class: 'levers' },
         el('thead', null, el('tr', null, ['Lever', 'Listens to', 'Changes every', 'Stage', 'Has bought'].map(t => el('th', { scope: 'col' }, t)))),
         el('tbody', null, LV.map(l => el('tr', null, el('th', { scope: 'row' }, `${l.n} · ${l.name}`), el('td', { 'data-prose': true }, l.listens), el('td', { class: 'num' }, clockOf(l.clock).span), el('td', null, pill(LVSTAT[l.status])), el('td', { 'data-prose': true }, l.bought))))))),
+      (MAP.open_ground || []).length ? section('Open ground: what nobody has shown', 'Where the published accounts stop. Each is a gap someone could close, and several have a dated check waiting on it.',
+        el('div', { class: 'impl' }, MAP.open_ground.map(g => el('article', { class: 'icard' }, el('h3', null, g.head), el('p', { 'data-prose': true }, g.text),
+          el('div', { class: 'rests' }, el('div', { class: 'chips' }, (g.claims || []).map(c => claimChip(c)), (g.checks || []).map(w => el('button', { class: 'chip', type: 'button', 'data-tip': (checks.find(x => x.id === w) || {}).what, onclick: () => go('watch') }, `check ${w}`))), srcChips(g.signals)))))) : null,
       section('The loop, stage by stage', 'Every team on the Who tab is building some version of this. The shaded stage is where they all say the difficulty is.', figLoop()),
       section('Four clocks', 'Adaptive covers four very different speeds. Most confusion here comes from mixing them.',
         el('div', { class: 'clocks' }, M.timescales.map(t => el('div', { class: 'clock' }, el('h3', null, t.name), el('span', { class: 'num' }, t.span), el('p', { 'data-prose': true }, t.desc)))))];
@@ -1246,7 +1249,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   const status = document.getElementById('status');
   if (latest.id) status.append(el('span', null, 'Cycle ', el('b', null, latest.n)), el('span', null, 'swept ', el('b', null, fmt(latest.id))),
     el('span', null, 'next sweep ', el('b', null, dayDiff(latest.next_due) < 0 ? `overdue (${rel(latest.next_due)})` : rel(latest.next_due))));
-  document.getElementById('foot').append(el('span', null, D.meta.tagline), el('span', null, el('a', { href: D.meta.repo, target: '_blank', rel: 'noopener' }, 'Repository'), ' · generated from data/ · ', el('a', { href: '#glossary' }, 'Glossary')));
+  document.getElementById('foot').append(el('span', null, D.meta.tagline), el('span', null, D.meta.site ? [el('a', { href: D.meta.site }, 'Live page'), ' · '] : null, el('a', { href: D.meta.repo, target: '_blank', rel: 'noopener' }, 'Repository'), ' · generated from data/ · ', el('a', { href: '#glossary' }, 'Glossary')));
 
   const themeBtn = document.getElementById('theme');
   const isDark = () => (document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';

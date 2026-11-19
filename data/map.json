@@ -442,5 +442,86 @@
       ]
     }
   ],
-  "build_note": "Written in-house because nothing public exists: capture and redaction at your gateway, comparing a shadow's outputs and latency with the live side, an engine that reloads candidate code in seconds, and the detector that decides when to re-tune. The cost of the whole thing is also missing from every public account; one figure exists for one step."
+  "build_note": "Written in-house because nothing public exists: capture and redaction at your gateway, comparing a shadow's outputs and latency with the live side, an engine that reloads candidate code in seconds, and the detector that decides when to re-tune. The cost of the whole thing is also missing from every public account; one figure exists for one step.",
+  "open_ground": [
+    {
+      "head": "How to tell that traffic has drifted",
+      "text": "Every loop re-tunes when the load changes. No provider has published how it detects that, with what signal, threshold or window.",
+      "claims": [
+        "C2"
+      ],
+      "checks": [],
+      "signals": [
+        "2026-11-04-together-compiler",
+        "2026-11-inferact-autonomous-inference-system"
+      ]
+    },
+    {
+      "head": "Judging a change on traffic you have not seen",
+      "text": "Replay only covers what was recorded. The maintainers of vLLM say they cannot yet simulate unseen traffic, which is what would let a loop run without production access.",
+      "claims": [
+        "C4"
+      ],
+      "checks": [],
+      "signals": [
+        "2026-11-inferact-autonomous-inference-system",
+        "2026-04-22-applied-compute-agentic-benchmark"
+      ]
+    },
+    {
+      "head": "Tuning the levers together",
+      "text": "Each lever is tuned on its own, yet they are coupled through the cache and the model. One system sets speculation by load; nobody tunes routing, decoding and the engine jointly.",
+      "claims": [
+        "C2"
+      ],
+      "checks": [],
+      "signals": [
+        "2026-07-06-dspark",
+        "2026-10-08-openrouter-cache-is-crucial"
+      ]
+    },
+    {
+      "head": "What the loop costs per model",
+      "text": "One figure exists: about 200 GPU-hours for one bespoke engine. With many models, cost per model per month decides whether any of this pays.",
+      "claims": [
+        "C3",
+        "C6"
+      ],
+      "checks": [
+        "W12",
+        "W19"
+      ],
+      "signals": [
+        "2026-10-02-baseten-agentic-engine"
+      ]
+    },
+    {
+      "head": "A router against the best fixed model, fairly",
+      "text": "Vendors report large savings; an outside test found none. Nobody has compared a shipped router with the best single model in its pool on agentic work with caching priced in.",
+      "claims": [
+        "C9"
+      ],
+      "checks": [
+        "W16"
+      ],
+      "signals": [
+        "2026-10-26-autobench-do-routers-route",
+        "2026-05-14-twinrouterbench"
+      ]
+    },
+    {
+      "head": "Whether gains compound from one cycle to the next",
+      "text": "The recursive claim needs gain per cycle to rise, or a model trained on optimisation traces to beat its teacher. Nobody has shown either.",
+      "claims": [
+        "C5"
+      ],
+      "checks": [
+        "W8"
+      ],
+      "signals": [
+        "2026-10-03-seis-self-evolving-inference",
+        "2026-03-30-kernel-smith"
+      ]
+    }
+  ]
 }
