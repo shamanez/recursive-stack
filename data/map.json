@@ -77,8 +77,8 @@
       "listens": "How predictable the output is in this domain (code and maths speculate well, chat does not), how full the batches are right now, and how many recent guesses were accepted.",
       "clock": "request",
       "status": "working",
-      "bought": "About 3x for one request, falling to 1 to 1.5x at 32 concurrent. A load-aware scheduler with a new drafter raised live throughput by half. Choosing draft length by batch size alone added up to 15%. A drafter that keeps learning adds 1.25x.",
-      "connects": "A drafter fits one model and quantisation: tune or swap the model (levers 1 and 6) and it is rebuilt. Architecture also sets what a guess costs; on mixture-of-experts models, by one analysis, most at small batches. Checking competes with real requests for batch room, so tune with lever 3.",
+      "bought": "About 3x for one request, 1 to 1.5x at 32 concurrent; on a large mixture-of-experts model the recipe setting lost from 16. A load-aware scheduler raised throughput by half. Draft length by batch size added up to 15%. A self-training drafter adds 1.25x.",
+      "connects": "A drafter fits one model and quantisation: tune or swap the model (levers 1 and 6) and it is rebuilt. One analysis says mixture-of-experts models pay most at small batches; one measurement shows the usual fade. Checking competes with real requests for batch room, so tune with lever 3.",
       "signals": [
         "2026-07-06-dspark",
         "2026-08-18-dflash-2",
@@ -89,7 +89,8 @@
         "2025-10-10-together-atlas",
         "2025-12-27-nightjar",
         "2026-06-22-doubleword-adaptive-speculation",
-        "2026-06-08-economics-of-speculative-decoding"
+        "2026-06-08-economics-of-speculative-decoding",
+        "2026-07-openzeka-kimi-k3-speculation-under-load"
       ],
       "claims": [
         "C2",
@@ -105,13 +106,14 @@
       "listens": "Batch sizes, sequence lengths, cache-hit rates, and which parts of the model real inputs actually exercise.",
       "clock": "days",
       "status": "working",
-      "bought": "43% more throughput under a per-user speed floor against the best published run. Merged agent-written kernels: 1.3 to 1.9x on decode. Kernel gains measured alone mostly vanish end to end.",
+      "bought": "43% more throughput under a per-user speed floor against the best published run. Merged agent-written kernels: 1.3 to 1.9x on decode. Kernel gains measured alone mostly vanish end to end. Fused decode chosen per step: 1.2 to 2.3x for one user, fading with load.",
       "connects": "This is where agent loops do most of their work today. Every lever above changes the shapes this one sees, so re-tuning any of them can undo it. It is redone for each new model and each new chip.",
       "signals": [
         "2026-11-09-inferenceforge",
         "2026-10-16-vllm-kimi-k3-megakernel",
         "2026-11-04-together-compiler",
-        "2026-05-22-fastkernels"
+        "2026-05-22-fastkernels",
+        "2026-11-18-vllm-flydsl-monokernels"
       ],
       "claims": [
         "C1",
@@ -167,13 +169,14 @@
         "engine"
       ],
       "do": "Capture real sessions at your gateway with their timing, context lengths and cache behaviour, strip the content, and replay them against a candidate stack at real concurrency. Replayers exist; the capture and redaction side you write yourself.",
-      "bought": "Nothing by itself. It is what let an academic group with no customers top the public board, and what one company replays to drive its own loop.",
-      "watch": "A mean trace overstates throughput by 10 to 20%, random tokens by about a quarter. Repeated runs reuse the cache and flatter the result.",
+      "bought": "Nothing by itself. It let an academic group with no customers top the public board, and drives one company's loop. Public agent traces overstated capacity by about 1.7x for four models and hid a routing bug.",
+      "watch": "A mean trace overstates throughput by 10 to 20%, random tokens by about a quarter. Repeated runs reuse the cache and flatter the result. Traces recorded on another model mislead, since answer lengths follow the model.",
       "signals": [
         "2026-08-24-agentx-inferencex-v3",
         "2026-04-22-applied-compute-agentic-benchmark",
         "2026-10-28-decagon-autoresearch",
-        "2026-03-19-speed-bench"
+        "2026-03-19-speed-bench",
+        "2026-11-19-validation-driven-deployment"
       ],
       "parts": [
         {
@@ -280,7 +283,7 @@
       ],
       "do": "Measure how well your traffic speculates, by domain, by load and by model, before building anything. Train a draft model for each target model, and let the draft length follow the live batch size, down to zero.",
       "bought": "About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler with a new drafter: about half more live throughput. Draft length by batch size alone: up to 15%. Tuning the drafter to the workload: 20 to 45%.",
-      "watch": "Under load some drafters fall below break-even. On mixture-of-experts models small batches may not pay at all. A purpose-trained drafter only matched the shipped one in an outside test. Rebuild it whenever the model changes.",
+      "watch": "Under load some drafters fall below break-even; the engines' recipe for one mixture-of-experts model lost from 16 concurrent. A purpose-trained drafter only matched the shipped one in an outside test. Rebuild it whenever the model changes.",
       "signals": [
         "2026-08-18-dflash-2",
         "2026-07-06-dspark",
@@ -289,7 +292,8 @@
         "2026-09-23-modal-trillion-tokens",
         "2025-12-27-nightjar",
         "2026-06-22-doubleword-adaptive-speculation",
-        "2026-06-08-economics-of-speculative-decoding"
+        "2026-06-08-economics-of-speculative-decoding",
+        "2026-07-openzeka-kimi-k3-speculation-under-load"
       ],
       "parts": [
         {
@@ -469,7 +473,7 @@
     },
     {
       "head": "Judging a change on traffic you have not seen",
-      "text": "Replay only covers what was recorded. vLLM's maintainers say they cannot yet simulate unseen traffic. One provider has published an engine simulator; nobody has shown how well one predicts a real engine.",
+      "text": "Replay covers only what was recorded; traces from another model overstated capacity by 1.7x. vLLM's maintainers say they cannot simulate unseen traffic, and no simulator has been shown to judge a change on it.",
       "claims": [
         "C4"
       ],
@@ -479,7 +483,8 @@
       "signals": [
         "2026-11-inferact-autonomous-inference-system",
         "2026-04-22-applied-compute-agentic-benchmark",
-        "2026-06-22-doubleword-adaptive-speculation"
+        "2026-06-22-doubleword-adaptive-speculation",
+        "2026-11-19-validation-driven-deployment"
       ]
     },
     {

@@ -231,5 +231,13 @@
       "speculative length"
     ],
     "def": "How many tokens the draft model guesses ahead before the large model checks them. Longer drafts gain more when the guesses are good and waste more when they are not, so the best length moves with the load."
+  },
+  {
+    "term": "monokernel",
+    "aka": [
+      "mono decode",
+      "specialised decode"
+    ],
+    "def": "A fused GPU kernel that runs several steps of one decoder layer in a single launch, as vLLM's AMD paths do. Smaller than a megakernel, which fuses a whole forward pass."
   }
 ]

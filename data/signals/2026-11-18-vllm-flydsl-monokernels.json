@@ -1,0 +1,76 @@
+{
+  "id": "2026-11-18-vllm-flydsl-monokernels",
+  "title": "Keeping Agents Fast: High-Interactivity Decode with FlyDSL MonoKernels in vLLM",
+  "url": "https://vllm.ai/blog/2026-11-18-flydsl-monokernels",
+  "org": "AMD, on the vLLM blog",
+  "authors": "Felix Li and 20 co-authors",
+  "published": "2026-11-18",
+  "added": "2026-11-20",
+  "kind": "blog",
+  "layers": [
+    "engine",
+    "kernels"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "AMD engineers merged hand-written fused decode paths into vLLM for five models on MI355X, one also on MI325X. Each decoder layer runs as two or three persistent launches instead of dozens of kernels. The path is opt-in and chosen per layer and per step; steps too wide for the kernels fall back to the stock path. A shared standard governs where the code lives and what evidence each change carries.",
+  "changes": "Whether to fuse turns out to depend on the load. With graph replay on both sides, fused decode was 1.2 to 2.3x faster per token for one user and the gain shrank as concurrency rose. The fused camp is scaling up, with 12 per-model packages and 165k lines across both chip vendors.",
+  "caveats": "Measured by the kernel authors on their own chips, though the one-user figures come from merged pull requests. One model's gain is against a historical public run on an older stack. Fusion trades throughput for latency: a fused eight-GPU server delivered 26% less than two four-GPU replicas at 4 concurrent. A follow-up RFC finds 48 hand-set test tolerances and one 11.5k-line package with no numerics test.",
+  "numbers": [
+    {
+      "metric": "Per-token speed for one user, fused against stock decode",
+      "value": "1.20 to 2.26x",
+      "baseline": "stock vLLM with HIP graphs, same node",
+      "verification": "public-run",
+      "setup": "Six merged pull requests, MI355X and MI325X"
+    },
+    {
+      "metric": "The same gain as concurrency rises",
+      "value": "1.35x to 1.14x at 8 (DeepSeek-V4.1-Flash); 1.20x to parity at 16 (MiniMax-M3); 1.35 to 1.57x across the sweep (Muse Spark)",
+      "baseline": "stock vLLM, same node",
+      "verification": "public-run"
+    },
+    {
+      "metric": "Throughput at 4 concurrent, one fused eight-GPU server",
+      "value": "26% lower",
+      "baseline": "two four-GPU replicas",
+      "verification": "public-run"
+    },
+    {
+      "metric": "Model-specific decode code in vLLM",
+      "value": "12 packages, about 165k lines",
+      "baseline": "none shares a numerical reference; one has no numerics test",
+      "verification": "public-run",
+      "setup": "Audit in vLLM RFC #68016, November 2026"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Whether to fuse depends on concurrency and model: boundaries are drawn per model, and the gain shrinks as batches fill."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "The follow-up audit finds 165k lines of per-model decode code with hand-set tolerances and one package untested. The gates lag the code."
+    },
+    {
+      "claim": "C6",
+      "direction": "complicates",
+      "note": "People kept pace by hand for five models in about six weeks, but each model needs its own copy per chip and size, the repeated work C6 predicts."
+    }
+  ],
+  "also": [
+    {
+      "label": "RFC #60904, the standard for specialised decode",
+      "url": "https://github.com/vllm-project/vllm/issues/60904"
+    },
+    {
+      "label": "RFC #68016, numerical testing for specialised decode",
+      "url": "https://github.com/vllm-project/vllm/issues/68016"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

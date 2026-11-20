@@ -225,9 +225,16 @@
         "to": 1.21,
         "note": "EAGLE in vLLM, batch 1 then 128",
         "signal": "2025-12-31-speculative-decoding-performance-or-illusion"
+      },
+      {
+        "label": "Mixture-of-experts model, recipe drafter",
+        "from": 1.86,
+        "to": 0.66,
+        "note": "Kimi K3 in vLLM with DSpark, 1 then 32 concurrent; 0.41x at 64. Measured by an outsider",
+        "signal": "2026-07-openzeka-kimi-k3-speculation-under-load"
       }
     ],
-    "caption": "Speed-up over plain decoding. Different models and drafters; read each row as a slope. A cost model of mixture-of-experts models predicts the opposite slope, and nobody has measured it.",
+    "caption": "Speed-up over plain decoding. Different models and drafters; read each row as a slope. The one mixture-of-experts row falls below break-even, against a cost model that predicted the opposite slope.",
     "claims": [
       "C2"
     ],

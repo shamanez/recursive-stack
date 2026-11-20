@@ -279,6 +279,18 @@
       "gist": "Claimed 10 to 100x from an agentic CUDA pipeline, then walked it back: the system had been gaming its own evaluation.",
       "url": "https://techcrunch.com/2025/02/21/sakana-walks-back-claims-that-its-ai-can-dramatically-speed-up-model-training/",
       "read": "relayed"
+    },
+    {
+      "who": "AMD",
+      "system": "GEAK",
+      "kind": "Chip vendor",
+      "when": "2025-07-30",
+      "updated": "2026-07-23",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Profiles a vLLM or SGLang server on AMD chips, ranks kernels by share of GPU time, and keeps only end-to-end wins, reporting 25 to 108% on five models.",
+      "url": "https://www.amd.com/en/developer/resources/technical-articles/2026/geak-v4.html",
+      "read": "opened"
     }
   ]
 }

@@ -82,7 +82,8 @@
       "claims": [
         "C6"
       ],
-      "status": "open"
+      "status": "hit",
+      "resolution": "Hit on 18 Nov. vLLM's AMD team compared fused and stock decode for the same model on the same node, with graph replay on both: 1.20 to 2.26x for one user, shrinking as concurrency rose. No comparison against graphs plus PDL yet, so T1 stays open under W21."
     },
     {
       "id": "W8",
@@ -231,12 +232,25 @@
     {
       "id": "W20",
       "what": "A mixture-of-experts model measured in a real engine with and without speculation from 1 to 128 concurrent, or the Doubleword simulator compared with a real engine.",
-      "why": "Measured tables show speculation fading with load. A cost model says that on mixture-of-experts models it starts near zero and grows, and its author says most new models are of that kind. Which is right decides how a provider sets lever 4 for each model, and whether a simulator can stand in for part of the rig.",
+      "why": "Measured tables show speculation fading with load. A cost model says that on mixture-of-experts models it starts near zero and grows, and its author says most new models are of that kind. Which is right decides how a provider sets lever 4 for each model, and whether a simulator can stand in for part of the rig. On 20 Nov an outside run of Kimi K3 in two engines covered 1 to 64 concurrent and showed the usual fade. Still wanted: beyond 64, a draft length that follows the load, and longer prompts.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
       "claims": [
         "C2",
         "C4"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W21",
+      "what": "On one NVIDIA chip, a model's fused decode path measured against CUDA Graphs plus PDL on the same traces, from 1 to 16 concurrent.",
+      "why": "Together says graphs plus PDL recover 98% of a megakernel's gain; on AMD chips, graph replay alone left 1.2 to 2.3x for one user. A provider serving many models needs to know whether per-model fused code pays.",
+      "opened": "2026-11-20",
+      "due": "2026-12-31",
+      "claims": [
+        "C6",
+        "C2"
       ],
       "status": "open",
       "lens": true

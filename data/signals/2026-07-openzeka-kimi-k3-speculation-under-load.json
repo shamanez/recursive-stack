@@ -1,0 +1,55 @@
+{
+  "id": "2026-07-openzeka-kimi-k3-speculation-under-load",
+  "title": "Kimi K3 Inference Benchmark on DGX-B300",
+  "url": "https://whitepapers.openzeka.com/papers/kimi-k3-dgx-b300-inference-benchmark/",
+  "org": "Openzeka, an NVIDIA distribution partner",
+  "published": "2026-07",
+  "added": "2026-11-20",
+  "kind": "benchmark",
+  "layers": [
+    "model",
+    "serving",
+    "engine"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "An outside benchmark of Kimi K3, a 2.8-trillion-parameter mixture-of-experts model, on one eight-GPU B300 node. It runs vLLM and SGLang, each with and without the drafter their official recipes recommend, from 1 to 64 concurrent requests. Speculation nearly doubles one user's speed, breaks even at 16 concurrent in vLLM and 4 in SGLang, and at 64 delivers less than half the tokens of plain decoding.",
+  "changes": "The first measured mixture-of-experts table, and it fades like the dense ones. The rising curve a cost model predicted for such models has not shown up in a real engine. It also shows the engines' recipes fix the draft length, which at 64 concurrent cost more than half the throughput.",
+  "caveats": "One model, one node, 128-token prompts and answers, template prompts, and a fixed draft of seven tokens. The speculative vLLM run capped running requests at 32, which alone could flatten its curve past 32; the break-even at 16 sits below that cap. The two engines used different drafters. Measured by a hardware reseller. Spreading the model over eight GPUs may hide the small-batch expert effect.",
+  "numbers": [
+    {
+      "metric": "Per-user speed with speculation, one request",
+      "value": "188 vs 101 tok/s (1.86x)",
+      "baseline": "vLLM without speculation, same node",
+      "verification": "third-party",
+      "setup": "Kimi K3, 8x B300, tensor parallel 8, DSpark drafter with 7 tokens"
+    },
+    {
+      "metric": "Concurrency at which speculation stops paying",
+      "value": "about 16 in vLLM, about 4 in SGLang",
+      "baseline": "each engine without speculation",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Per-user speed with speculation, 32 and 64 concurrent",
+      "value": "0.66x and 0.41x",
+      "baseline": "vLLM without speculation",
+      "verification": "third-party"
+    },
+    {
+      "metric": "Aggregate output at 64 concurrent",
+      "value": "717 vs 1,759 tok/s",
+      "baseline": "vLLM without speculation",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Whether to speculate flips with the load and with the engine: on one model and chip, break-even came at 16 concurrent in vLLM and 4 in SGLang."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

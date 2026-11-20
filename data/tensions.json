@@ -11,22 +11,23 @@
         ]
       },
       {
-        "held_by": "vLLM, SGLang, Inferact",
-        "position": "Shipping agent-written fused decode paths now, with merged pull requests and gains of 1.3 to 2x over the stock engine.",
+        "held_by": "vLLM, SGLang, Inferact, AMD",
+        "position": "Shipping fused decode paths in upstream vLLM, some agent-written and some by hand, for a dozen model and chip pairs. Gains of 1.2 to 2x over the stock engine for one user.",
         "signals": [
           "2026-10-16-vllm-kimi-k3-megakernel",
           "2026-07-02-sglang-agent-assisted-development",
-          "2026-11-inferact-autonomous-inference-system"
+          "2026-11-inferact-autonomous-inference-system",
+          "2026-11-18-vllm-flydsl-monokernels"
         ]
       }
     ],
     "settles_when": "Someone runs the same model on the same chip on AgentX with a fused path against a CUDA Graphs plus PDL path, or either camp changes course.",
-    "lean": "Possibly both are right. A megakernel's cost was that people had to maintain it. If agents regenerate it per model in a day, the rigidity matters less. Watch whether the fused paths survive the next model release.",
+    "lean": "Both, by load. With graph replay on both sides, fused decode won by 1.2 to 2.3x for one user on AMD chips, and the gain shrank as concurrency rose. The price is code: 12 per-model packages and 165k lines. Nobody has yet run fused against graphs plus PDL on one NVIDIA chip.",
     "claims": [
       "C6",
       "C1"
     ],
-    "status": "open"
+    "status": "leaning"
   },
   {
     "id": "T2",
@@ -97,12 +98,13 @@
     "question": "Is the moat the traffic, or just the harness?",
     "sides": [
       {
-        "held_by": "Inferact, Together, Decagon",
-        "position": "You need real traffic. Synthetic inputs mislead the agents, and nobody can yet simulate traffic they have not seen.",
+        "held_by": "Inferact, Together, Decagon, an llm-d rollout",
+        "position": "You need real traffic. Synthetic inputs mislead the agents, nobody can yet simulate traffic they have not seen, and four models sized on public traces reached about 60% of that throughput on their own.",
         "signals": [
           "2026-11-inferact-autonomous-inference-system",
           "2026-11-16-together-deleted-megakernels",
-          "2026-10-28-decagon-autoresearch"
+          "2026-10-28-decagon-autoresearch",
+          "2026-11-19-validation-driven-deployment"
         ]
       },
       {
@@ -119,7 +121,8 @@
       "C4",
       "C7"
     ],
-    "status": "open"
+    "status": "leaning",
+    "lean": "Toward the traffic, for sizing. Public agent traces overstated four models' capacity by about 1.7x and hid a routing bug. Nobody has yet carried tuning gains, as opposed to capacity, from the public board to real traffic."
   },
   {
     "id": "T5",
@@ -244,14 +247,15 @@
     "question": "Does speculation pay less as batches fill, or more?",
     "sides": [
       {
-        "held_by": "Measured tables: Inco AI, UC Berkeley, NVIDIA, Together, Nightjar",
-        "position": "Less. About 3x for one request falls to 1 to 1.5x at 32 concurrent, and a fixed draft length ran up to 30% slower than no speculation at high load.",
+        "held_by": "Measured tables: Inco AI, UC Berkeley, NVIDIA, Together, Nightjar, Openzeka",
+        "position": "Less. About 3x for one request falls to 1 to 1.5x at 32 concurrent. On a large mixture-of-experts model the engines' recipe lost from 16 concurrent. A fixed draft length ran up to 30% slower than none at high load.",
         "signals": [
           "2026-08-18-dflash-2",
           "2025-12-31-speculative-decoding-performance-or-illusion",
           "2026-03-19-speed-bench",
           "2026-03-31-together-aurora",
-          "2025-12-27-nightjar"
+          "2025-12-27-nightjar",
+          "2026-07-openzeka-kimi-k3-speculation-under-load"
         ]
       },
       {
@@ -264,10 +268,10 @@
       }
     ],
     "settles_when": "Someone measures a mixture-of-experts model in a real engine, with and without speculation, from 1 to 128 concurrent.",
-    "lean": "Probably both, by architecture. The measured tables that name their models used dense ones. If the slope belongs to the model, a provider serving many models has to measure it for each.",
+    "lean": "Less, on both kinds so far. The first measured mixture-of-experts table, Kimi K3 in two engines, fades like the dense ones: 1.86x for one user, break-even at 16, 0.41x at 64. The modelled rise has not appeared in a real engine; beyond 64 concurrent is still unmeasured.",
     "claims": [
       "C2"
     ],
-    "status": "open"
+    "status": "leaning"
   }
 ]
