@@ -31,6 +31,8 @@ new source did, so treat it as the highest-priority input there is.
   providers and labs often post there first. Sweeps reach it through a web search
   limited to x.com and open single posts directly; X's own search needs a sign-in,
   and sweeps never sign in.
+- They asked for **looped models and adaptive depth** to be covered, with their
+  appeal for local use in mind. Depth is lever 7, and C11 asks where looping pays.
 
 The current wording of their framing lives in `data/course.json`
 (`reader_framing`, `position`).

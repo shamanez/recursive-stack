@@ -1,0 +1,56 @@
+{
+  "id": "2026-05-22-training-free-looped-transformers",
+  "title": "Training-Free Looped Transformers",
+  "url": "https://arxiv.org/abs/2605.23872",
+  "org": "University of Texas at Austin",
+  "authors": "Lizhang Chen, Jonathan Li, Chen Liang, Ni Lao, Qiang Liu",
+  "published": "2026-05-22",
+  "added": "2026-11-22",
+  "kind": "paper",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "Re-runs a block of four layers in the middle of a released model at inference time, with no training. Plain repetition breaks the model, so each pass takes a damped fraction of the step the block was trained to make. Mixture-of-experts models loop one layer at a time so their expert choices stay fixed. The cache keeps one entry per layer, as in the original model.",
+  "changes": "Shows depth can be a setting on a model already in service. More passes give more compute per token with the same weights and the same cache size, which opens lever 7. The gains are a point or two, and finding the block took a search per model and benchmark.",
+  "caveats": "The abstract says there was no per-cell tuning, but an appendix describes a per-cell search over about 720 settings. Only the 30B check was fixed in advance, and it gained at most 1.1 points in a table that leaves out cells where both settings lost. No intervals. Looping every generated token cost 22% more time. The authors' code repository returned 404 on 22 November.",
+  "numbers": [
+    {
+      "metric": "MMLU-Pro, Qwen3-4B-Instruct",
+      "value": "59.8% (+2.64 points)",
+      "baseline": "57.1%, the same model unlooped",
+      "verification": "self-reported",
+      "setup": "best of a per-cell search; 5-shot chain of thought; H100"
+    },
+    {
+      "metric": "CommonsenseQA, Qwen3-30B-A3B-Instruct",
+      "value": "79.9% (+1.14 points)",
+      "baseline": "78.7%, unlooped",
+      "verification": "self-reported",
+      "setup": "setting fixed before scoring"
+    },
+    {
+      "metric": "Time per query, looping every generated token",
+      "value": "+21.6%",
+      "baseline": "the same model unlooped",
+      "verification": "self-reported",
+      "setup": "Qwen3-4B, 200 GSM8K questions, three sub-steps over 4 of 36 layers"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C11",
+      "direction": "complicates",
+      "note": "Depth can be added with no training and no growth in the cache, but the gain is a point or two for extra compute on every looped token."
+    }
+  ],
+  "also": [
+    {
+      "label": "Full text",
+      "url": "https://arxiv.org/html/2605.23872v1"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

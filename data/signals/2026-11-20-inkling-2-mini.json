@@ -1,0 +1,66 @@
+{
+  "id": "2026-11-20-inkling-2-mini",
+  "title": "Introducing Inkling 2 Mini",
+  "url": "https://thinkingmachines.ai/news/inkling-2-mini/",
+  "org": "Thinking Machines Lab",
+  "published": "2026-11-20",
+  "added": "2026-11-22",
+  "kind": "product",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "An open-weights looped mixture-of-experts model, 26.4B parameters in total, small enough for a laptop at about 20 GB. Its middle 12 of 24 layers run three times per token. Two-thirds of its experts were pruned during training and the rest healed on a trillion distilled tokens. Weights were trained and are served in 4-bit, on the lab's own platform.",
+  "changes": "A lab now ships a looped model and serves it, at a fixed three passes. Pruning plus looping gives a laptop-sized model that the lab says leads open models under 100B on agentic coding. It also claims loops learned in training pay per unit of compute, which no retrofit has shown.",
+  "caveats": "Scores are the lab's own, with evaluation setups that vary by model. The compute comparison is on training loss, not tasks, and against an unpruned twin. Depth is fixed at three passes; only a research variant runs one to ten. Looping adds no knowledge, and factual recall matches models of its size. The healing used a trillion tokens, far from light post-training.",
+  "numbers": [
+    {
+      "metric": "DeepSWE v1.1, tasks resolved",
+      "value": "48.2%",
+      "baseline": "42.2%, Qwen3.8-27B, the next open model under 100B",
+      "verification": "self-reported",
+      "setup": "mini-swe-agent; setups vary by model"
+    },
+    {
+      "metric": "Inference compute a non-looped twin needs to match its loss",
+      "value": "+140%",
+      "baseline": "the unpruned looped model, same ladder",
+      "verification": "self-reported",
+      "setup": "512k-token agentic traces; the twin cost 7.5% less to train"
+    },
+    {
+      "metric": "Intelligence per joule on DGX Spark",
+      "value": "0.703",
+      "baseline": "0.430, Qwen3.6-35B-A3B",
+      "verification": "third-party",
+      "setup": "Stanford researchers with early access, as reported by the lab; MXFP8 against NVFP4"
+    },
+    {
+      "metric": "Memory footprint",
+      "value": "about 20 GB",
+      "baseline": "26.4B parameters, mostly 4-bit",
+      "verification": "self-reported",
+      "setup": "ran offline on a 48 GB MacBook Pro"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C11",
+      "direction": "complicates",
+      "note": "Built to fit a laptop, the memory case, yet its makers also claim loops learned in training win on inference compute."
+    }
+  ],
+  "also": [
+    {
+      "label": "Weights",
+      "url": "https://huggingface.co/thinkingmachines/Inkling-2-Mini"
+    },
+    {
+      "label": "Variable-loop research model",
+      "url": "https://huggingface.co/thinkingmachines/TML-d24-varloop-research"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

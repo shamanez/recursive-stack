@@ -1,6 +1,6 @@
 {
-  "_about": "The big picture. Six levers that adapt inference to the load, in the order a request meets them, plus the loop that re-tunes them and a build order for the reader's position. Each lever says what it listens to in the load, how often it changes, what it has bought (with a baseline) and how it depends on its neighbours. Update a lever's status only when the evidence changes.",
-  "umbrella": "Inference is becoming load-aware. Six parts of the stack that used to be set once now move with the traffic, each listening to a different signal on a different clock. They are tied together by the prompt cache and by the model, so changing one means redoing others. Agent loops are what make that redoing affordable.",
+  "_about": "The big picture. Seven levers that adapt inference to the load, in the order a request meets them, plus the loop that re-tunes them and a build order for the reader's position. Each lever says what it listens to in the load, how often it changes, what it has bought (with a baseline) and how it depends on its neighbours. Update a lever's status only when the evidence changes.",
+  "umbrella": "Inference is becoming load-aware. Seven parts of the stack that used to be set once now move with the traffic, each listening to a different signal on a different clock. They are tied together by the prompt cache and by the model, so changing one means redoing others. Agent loops are what make that redoing affordable.",
   "levers": [
     {
       "id": "model",
@@ -147,12 +147,35 @@
       "claims": [
         "C10"
       ]
+    },
+    {
+      "id": "depth",
+      "n": 7,
+      "name": "How deep each token goes",
+      "question": "Should this token run part of the model again, given how hard it is and how busy the machine is?",
+      "adapts": "How many passes a looped model makes through its shared middle layers, fixed at release today and per token where a model allows it, or where a token exits early. Weights stay the same.",
+      "listens": "How sure the model already is of the next token, how full the batches are, the request's latency budget, and how much cache memory each extra pass would take.",
+      "clock": "request",
+      "status": "early",
+      "bought": "Learned in training, loops helped one lab ship a 26B model it says leads open models under 100B on agentic coding. Added to a released model, a point or two; a plain 14B beat a looped 8B on maths at 1.3 times the time.",
+      "connects": "Extra passes compete for batch room like speculation (lever 4), and the window and step count are found per model like engine settings (lever 5). Trained loops keep a cache per pass over the prompt, so more passes mean fewer sequences per GPU. Training-free loops keep the cache size.",
+      "signals": [
+        "2026-11-20-inkling-2-mini",
+        "2025-10-29-ouro-looped-language-models",
+        "2026-10-30-no-free-loop",
+        "2026-05-22-training-free-looped-transformers",
+        "2026-10-06-hybrid-latent-attention-looped",
+        "2026-11-03-looped-model-serving-speed"
+      ],
+      "claims": [
+        "C11"
+      ]
     }
   ],
   "loop": {
     "name": "The loop",
     "hint": "agents and a measuring rig re-tune every lever as the load changes",
-    "text": "None of the six levers is new. What changed in 2026 is the cost of re-tuning them. Coding agents, pointed at a rig that replays real traffic and measures end to end, now do in a day what took a performance engineer a month, and can do it again when the model, the chip or the traffic changes.",
+    "text": "None of the seven levers is new. What changed in 2026 is the cost of re-tuning them. Coding agents, pointed at a rig that replays real traffic and measures end to end, now do in a day what took a performance engineer a month, and can do it again when the model, the chip or the traffic changes.",
     "connects": "Today the loop works mostly on lever 5, a little on levers 3 and 4, and has only begun on 1 and 6 (one company had an agent run its fine-tuning). Its limit is not the agent but the rig: knowing whether a change is real.",
     "signals": [
       "2026-11-inferact-autonomous-inference-system",

@@ -3,7 +3,7 @@
   "n": 3,
   "agent": "Claude Code (Opus 5.5)",
   "deep": false,
-  "summary": "No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries.",
+  "summary": "No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries. Later the same day, at the reader's request, depth became lever 7: looping part of a model buys quality per byte of weights, a check that priced the compute found a plain 14B beating a looped 8B on maths, and Thinking Machines shipped a looped model sized for a laptop. C11 opened at 0.65. Active signals now number 78, under the soft cap of eighty.",
   "changes": [
     {
       "type": "added",
@@ -47,6 +47,64 @@
     {
       "type": "course",
       "text": "Re-judged as of 22 Nov; all four verdicts hold. The many-models implication now says the open engines tune a new model in about two weeks, so in-house work pays in that window."
+    },
+    {
+      "type": "model",
+      "text": "Lever 7, how deep each token goes, added to the big picture at the early stage: looped models and early exit, listening to the model's confidence, how full batches are, the latency budget and each pass's cache cost. The page and the brief now count levers from the data instead of saying six."
+    },
+    {
+      "type": "added",
+      "ref": "2026-05-22-training-free-looped-transformers",
+      "text": "The paper the reader asked about. Four middle layers of a released model re-run with damped sub-steps and no training: a point or two on knowledge-heavy multiple choice, found by a per-cell search over about 720 settings, at the same cache size."
+    },
+    {
+      "type": "added",
+      "ref": "2026-10-30-no-free-loop",
+      "text": "Microsoft's check prices the loop's compute. On Qwen3-8B a training-free loop gained 0.6 to 2 points, not significantly, and a plain 14B beat it on MATH-500 at about 1.3 times the time. Basis of the new looping chart."
+    },
+    {
+      "type": "added",
+      "ref": "2025-10-29-ouro-looped-language-models",
+      "text": "Ouro, pretrained with a four-pass loop: a 1.4B roughly matches a 4B on reasoning by its authors' account. Its own tests keep a cache per pass for the prompt; decoding can keep only the last."
+    },
+    {
+      "type": "added",
+      "ref": "2026-10-06-hybrid-latent-attention-looped",
+      "text": "Ouro 1.4B holds 768 KiB of cache per token across four passes. Compressing it 10.7 times raised decoding throughput 2.5 to 7.4 times in vLLM."
+    },
+    {
+      "type": "added",
+      "ref": "2026-11-20-inkling-2-mini",
+      "text": "Thinking Machines ships Inkling 2 Mini, a looped and expert-pruned 26B model of about 20 GB that runs on a laptop and leads open models under 100B on agentic coding by its account. Served at a fixed three passes."
+    },
+    {
+      "type": "added",
+      "ref": "2026-11-03-looped-model-serving-speed",
+      "text": "Looped models carry their own engine debts: in a research engine built for them, exact fixes alone made Ouro 1.65 to 2.15x faster, because every pass repeats per-layer overheads. Bears on C6 as well as lever 7."
+    },
+    {
+      "type": "added",
+      "ref": "C11",
+      "text": "Opened at 0.65: looping pays where weight memory binds, and where compute or latency binds a larger plain model beats a loop added after training."
+    },
+    {
+      "type": "tension",
+      "ref": "T11",
+      "text": "Opened: do looped models save memory, or move it into the cache? Leans by regime, saved at batch one on short prompts and moved on long prompts at serving batch sizes."
+    },
+    {
+      "type": "watch",
+      "ref": "W23",
+      "text": "Opened, due 28 Feb: upstream support for a looped model with depth chosen per token or request."
+    },
+    {
+      "type": "watch",
+      "ref": "W24",
+      "text": "Opened, due 31 Mar: a looped and a dense model of equal quality served side by side, with memory and throughput per GPU."
+    },
+    {
+      "type": "course",
+      "text": "The reader asked whether looped models were covered, noting their appeal for local use, and left the call to the agent. They were not covered; depth is now lever 7. Verdicts re-judged and all hold; 'Load-aware' now counts seven levers, four in production."
     }
   ],
   "swept": [
@@ -57,7 +115,8 @@
     "Queued from cycle 2: LLM4LLM and the Fireworks routing posts, both opened. The Fireworks post dates from 21 Sep, not mid-November.",
     "X, through web search limited to x.com: agents tuning vLLM and SGLang, and routers between open and frontier models. Neither search returned X posts; the other pages they surfaced are listed below.",
     "Red-team of C7: searched for private leads over upstream that persisted, and for optimisations kept out of the open engines. Found none this month. The board's K3.1 data shows the open engines closing a 1.2 to 2.9x bring-up gap in about two weeks; the top VR200 rows are NVIDIA's own preview runs on an open engine. C7 holds at 0.55, since its raise condition needs announced private leads matched in public, and W5 is still open.",
-    "Fireworks' docs carry a standard pointer for automated readers to an index file. Ignored."
+    "Fireworks' docs carry a standard pointer for automated readers to an index file. Ignored.",
+    "At the reader's request, looped and adaptive-depth models. The training-free looping paper was read in full. A research sub-agent surveyed later work on training-free loops and then on loops with light post-training and pruning; what it reported is relayed unless listed here as opened. arXiv was searched for serving looped models and for load-aware early exit. Ouro's paper and model card, No Free Loop, Hybrid Latent Attention, the looped-engine study and Thinking Machines' Inkling 2 Mini post were opened first-hand."
   ],
   "rejected": [
     {
@@ -99,6 +158,26 @@
       "title": "Baseten router, LangChain routing numbers and the Tokenless launch, seen in search",
       "url": "https://fourweekmba.com/ai-baseten-router-nears-claude-opus-5-5-at-72-lower-cost/",
       "reason": "Not opened. Vendor savings of 64 to 72% against the dearest model, inside the routing chart's vendor range, with no best-single-model baseline."
+    },
+    {
+      "title": "LoopKV: Loop-Aware KV Cache Compression for Serving Looped Transformers",
+      "url": "https://arxiv.org/abs/2611.04137",
+      "reason": "Abstract only. Hybrid Latent Attention's point from the quantisation side: 1.7 to 2.2x goodput over 4-bit cache quantisation on Ouro 1.4B."
+    },
+    {
+      "title": "LASER: Load-Aware Serving with Early-Exit for Reasoning LLMs at the Edge",
+      "url": "https://arxiv.org/abs/2606.31580",
+      "reason": "Abstract only. A load-aware threshold for stopping a chain of thought early. That is reasoning length, not depth per token, so it moves nothing on lever 7 as defined."
+    },
+    {
+      "title": "Programs-of-Layers in LLMs through the Lens of Cortical Areas (RE-PoLar)",
+      "url": "https://arxiv.org/abs/2609.31360",
+      "reason": "Abstract only. Choosing which layers to skip or repeat per input on frozen models: the router's reported gain came from fixing answer format, so nothing deployable for serving yet."
+    },
+    {
+      "title": "Recirculation",
+      "url": "https://arxiv.org/abs/2608.17981",
+      "reason": "Abstract only. A training-free recurrence added in prefill with little generation cost, tested on Gemma 3. A different mechanism from looping; revisit if it reaches an engine."
     }
   ],
   "next_due": "2026-11-23"

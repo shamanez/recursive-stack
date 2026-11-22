@@ -6,7 +6,7 @@
     {
       "part": "Load-aware, fitted to what you have",
       "verdict": "holding",
-      "short": "Six levers now move with the load, and four are in production somewhere.",
+      "short": "Seven levers can move with the load, and four are in production somewhere.",
       "note": "This is the frame the evidence supports best. Routing follows where the cache is, the cluster split follows the traffic mix, speculation follows the domain and the batch size, and kernels are regenerated per model and chip. One megakernel could not span two chips. The caution: almost all of it is measured on one workload class, coding agents, and one public trace set."
     },
     {
@@ -75,7 +75,7 @@
       ]
     },
     {
-      "head": "Many models multiply three of the six levers",
+      "head": "Many models multiply three of the seven levers",
       "text": "Each model needs its own drafter, engine and cache. Open engines tune a new model in about two weeks, gaining up to 2.9x; your work pays in that window, on the models carrying traffic.",
       "claims": [
         "C6",

@@ -711,9 +711,13 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       g, el('p', { class: 'small muted' }, `${recent} of ${dated.length} dated signals landed in the last 30 days.` + (clipped ? ' Older months are cut off.' : '')));
   }
 
-  // The big picture: a request passes five levers, the model sits under them, the loop re-tunes them all.
+  // The big picture: a request passes the path levers, the model sits under them, the loop re-tunes them all.
   const MAP = D.map || {};
   const LV = MAP.levers || [];
+  const NUMWORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+  const numWord = n => NUMWORD[n] || String(n);
+  const capWord = n => { const w = numWord(n); return w.charAt(0).toUpperCase() + w.slice(1); };
+  const LV_PATH = LV.filter(l => !l.base).length;
   const LVSTAT = { working: ['good', '✓', 'Working today'], early: ['warn', '◐', 'Early'], planned: ['serious', '?', 'Announced, not shown'] };
   const clockOf = id => M.timescales.find(t => t.id === id) || { name: id, span: '' };
   const leverChip = id => { const l = LV.find(x => x.id === id); return l ? el('button', { class: 'chip', type: 'button', 'data-tip': l.question, onclick: () => { state.lever = id; go('map'); } }, `${l.n} · ${l.name}`) : null; };
@@ -754,7 +758,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   function viewMap() {
     return [head('How the parts connect', 'The big picture', MAP.umbrella),
       section('Before and after', null, figShift()),
-      section('Six levers and a loop', 'A request passes five levers on its way through. The model itself sits under them, and the loop re-tunes all of it. Select any part.', figMap()),
+      section(`${capWord(LV.length)} levers and a loop`, `A request passes ${numWord(LV_PATH)} levers on its way through. The model itself sits under them, and the loop re-tunes all of it. Select any part.`, figMap()),
       section('The levers side by side', null, el('div', { class: 'scroll-x' }, el('table', { class: 'levers' },
         el('thead', null, el('tr', null, ['Lever', 'Listens to', 'Changes every', 'Stage', 'Has bought'].map(t => el('th', { scope: 'col' }, t)))),
         el('tbody', null, LV.map(l => el('tr', null, el('th', { scope: 'row' }, `${l.n} · ${l.name}`), el('td', { 'data-prose': true }, l.listens), el('td', { class: 'num' }, clockOf(l.clock).span), el('td', null, pill(LVSTAT[l.status])), el('td', { 'data-prose': true }, l.bought))))))),
@@ -938,7 +942,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       el('ol', { class: 'reads' }, course.read_next.map(r => { const s = sigById[r.signal]; return el('li', null, el('div', null, sigLink(s), el('p', null, r.why))); }))) : null;
 
     return [banner, hero,
-      LV.length ? section('The big picture: six levers and a loop', MAP.umbrella, figMap(), el('a', { href: '#map', class: 'small' }, 'Before and after, the levers side by side, and the loop stage by stage')) : section('The shift, in one picture', null, figShift()),
+      LV.length ? section(`The big picture: ${numWord(LV.length)} levers and a loop`, MAP.umbrella, figMap(), el('a', { href: '#map', class: 'small' }, 'Before and after, the levers side by side, and the loop stage by stage')) : section('The shift, in one picture', null, figShift()),
       el('div', { class: 'cols' }, points, coursePanel),
       implications(),
       section('How sure, claim by claim', 'Bar length is confidence. The counts are signals for, mixed and against. Select a claim for its evidence.', figClaims()),

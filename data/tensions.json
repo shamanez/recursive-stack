@@ -277,5 +277,33 @@
       "C2"
     ],
     "status": "leaning"
+  },
+  {
+    "id": "T11",
+    "question": "Do looped models save memory, or move it into the cache?",
+    "sides": [
+      {
+        "held_by": "Ouro's authors, Thinking Machines, No Free Loop",
+        "position": "Save it. A 1.4B looped model reaches a 4B's reasoning scores with a third of the weights, a looped 26B fits a laptop in about 20 GB, and a loop pays under a fixed parameter budget.",
+        "signals": [
+          "2025-10-29-ouro-looped-language-models",
+          "2026-11-20-inkling-2-mini",
+          "2026-10-30-no-free-loop"
+        ]
+      },
+      {
+        "held_by": "Hybrid Latent Attention's authors",
+        "position": "Move it. A cache per pass gives Ouro 1.4B 768 KiB per token, which limits how many sequences a GPU holds. Compressing that cache bought 2.5 to 7.4 times the decoding throughput.",
+        "signals": [
+          "2026-10-06-hybrid-latent-attention-looped"
+        ]
+      }
+    ],
+    "settles_when": "A looped and a dense model of equal quality served in the same engine at a provider's batch sizes, with memory and throughput per GPU at several context lengths.",
+    "lean": "By regime. Saved at batch one on short prompts, the laptop case. Moved on long prompts at serving batch sizes, where agent traffic lives, since Ouro's own tests keep every pass's cache for the prompt. Training-free loops keep the cache size but buy little.",
+    "claims": [
+      "C11"
+    ],
+    "status": "open"
   }
 ]

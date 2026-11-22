@@ -1,0 +1,63 @@
+{
+  "id": "2025-10-29-ouro-looped-language-models",
+  "title": "Scaling Latent Reasoning via Looped Language Models",
+  "url": "https://arxiv.org/abs/2510.25741",
+  "org": "ByteDance Seed, with UC Santa Cruz, Princeton, Mila and others",
+  "authors": "Rui-Jie Zhu, Zixuan Wang, Kai Hua, Tianyu Zhang and 29 others",
+  "published": "2025-10-29",
+  "added": "2026-11-22",
+  "kind": "paper",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "online",
+  "venue": "any",
+  "gist": "Open looped models, Ouro, pretrained on 7.7 trillion tokens. A 1.4B or 2.6B stack of layers runs four times per token, and a learned gate can stop early on easy tokens. The authors report the 1.4B roughly matching a 4B dense model and the 2.6B beating an 8B on several reasoning benchmarks, with about a third of the weights.",
+  "changes": "The strongest case for depth as a lever. When the loop is learned in pretraining, a small model does much of a larger one's job, so weights per unit of quality fall about threefold. Serving pays instead, with four passes per token and a cache for each pass over the prompt.",
+  "caveats": "Self-reported, against other labs' base models run through the authors' own pipeline, and Qwen3 saw 36 trillion tokens to Ouro's 7.7. The 1.4B trails Qwen3-4B on MMLU, 67.4 against 73.2. Its model card says vLLM always runs all four passes and ignores the early exit, and it pins an older transformers release.",
+  "numbers": [
+    {
+      "metric": "BBH, Ouro 1.4B at four passes",
+      "value": "71.0",
+      "baseline": "71.0, Qwen3-4B base",
+      "verification": "self-reported",
+      "setup": "the authors' lm-eval pipeline for every model"
+    },
+    {
+      "metric": "GSM8K, Ouro 1.4B",
+      "value": "78.9",
+      "baseline": "72.9, Qwen3-4B base",
+      "verification": "self-reported",
+      "setup": "as above"
+    },
+    {
+      "metric": "MMLU-Pro, Ouro 2.6B",
+      "value": "55.7",
+      "baseline": "53.7, Qwen3-8B base",
+      "verification": "self-reported",
+      "setup": "as above"
+    },
+    {
+      "metric": "Decoding cache, last pass only",
+      "value": "4x less memory (MATH-500 80.4)",
+      "baseline": "a cache per pass (82.4)",
+      "verification": "self-reported",
+      "setup": "Ouro 1.4B; the prompt still needs all four"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C11",
+      "direction": "supports",
+      "note": "Learned loops buy quality per byte, a third of the weights for similar reasoning scores, at four passes of compute per token."
+    }
+  ],
+  "also": [
+    {
+      "label": "Model card",
+      "url": "https://huggingface.co/ByteDance/Ouro-2.6B"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

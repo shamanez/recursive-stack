@@ -28,7 +28,7 @@ Signals, Cycle log, Glossary. For each:
 
 - The browser console shows no errors.
 - Nothing is clipped, overlapping or spilling out of its box.
-- The figure on that tab drew: the lever map has six parts and a detail panel,
+- The figure on that tab drew: the lever map has seven parts and a detail panel,
   the loop ring has five stages, the Who timeline has one mark per roster entry,
   the Watch timeline has one marker per check.
 

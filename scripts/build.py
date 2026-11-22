@@ -192,7 +192,7 @@ def main():
 
     active_signals = [s for s in signals if s.get("status") == "active"]
     if len(active_signals) > 80:
-        warn(f"{len(active_signals)} active signals. Six levers and a loop need about ten each; past eighty, retire or merge.")
+        warn(f"{len(active_signals)} active signals. Each lever and the loop need about ten; past eighty, retire or merge.")
 
     # ---- model
     for stage in model.get("loop", []):
@@ -522,7 +522,8 @@ def brief(b, evidence):
     add("")
     levers = b["map"].get("levers") or []
     if levers:
-        add("## The big picture: six levers and a loop")
+        words = "no one two three four five six seven eight nine ten eleven twelve".split()
+        add(f"## The big picture: {words[len(levers)] if len(levers) < len(words) else len(levers)} levers and a loop")
         add("")
         add(b["map"]["umbrella"])
         add("")

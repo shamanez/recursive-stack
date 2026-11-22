@@ -1,16 +1,17 @@
 {
   "headline": "Inference is becoming *load-aware*: the stack now fits itself to the traffic.",
-  "subhead": "Six levers move with the load, from which model answers to which kernel runs. Coding agents are what make re-tuning them affordable.",
-  "intro": "Serving a large language model means a chain of decisions: which model answers, which machine takes the request, how a cluster is split between reading prompts and writing answers, how generation is sped up, and how it all runs on a particular chip. Each used to be set once, by hand. During 2026 they began to move with the load: with what is being asked, by whom, on what hardware. Coding agents made that affordable by taking over the tuning. This page maps the levers and how they connect, tracks who has each one working and what it has bought, and checks the claims against the evidence, including your own reading of it. An agent re-examines it every day.",
+  "subhead": "Seven levers can move with the load, from which model answers to how deep each token goes. Coding agents are what make re-tuning them affordable.",
+  "intro": "Serving a large language model means a chain of decisions: which model answers, which machine takes the request, how a cluster splits reading prompts from writing answers, how generation is sped up, how much computation each token gets, and how it runs on a particular chip. Each was set once, by hand. During 2026 they began to move with the load: with what is being asked, by whom, on what hardware. Coding agents made that affordable by taking over the tuning. This page maps the levers and how they connect, tracks who has each one working and what it has bought, and checks the claims against the evidence, including your own reading of it. An agent re-examines it every day.",
   "picture": [
     {
-      "head": "Six levers now move with the load",
-      "text": "Which model answers, which machine takes it, how the cluster is split, how tokens are written, how the engine runs, and what the model is. Four are in production somewhere.",
+      "head": "Seven levers can move with the load",
+      "text": "Which model answers, which machine takes it, how the cluster is split, how tokens are written, how the engine runs, what the model is, and how deep each token goes. Four run in production.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
         "2026-08-17-llmd-sticky-until-saturated",
         "2026-07-06-dspark",
-        "2026-11-04-together-compiler"
+        "2026-11-04-together-compiler",
+        "2026-11-20-inkling-2-mini"
       ],
       "more": "map"
     },
@@ -249,6 +250,24 @@
       ],
       "raise_if": "A tuned open model shown head to head against a current frontier model on the customer's own task, with cost, and still ahead three months later.",
       "lower_if": "More tuned models overtaken by the next general release within a quarter, or more providers withdrawing tuning products.",
+      "status": "active"
+    },
+    {
+      "id": "C11",
+      "short": "Looping trades time for memory",
+      "statement": "Looping pays where weight memory binds. Running part of a model more than once per token buys quality per byte of weights at extra compute per token, so it suits a laptop or many models on one GPU; where compute or latency binds, a larger plain model beats a loop added after training.",
+      "plain": "A looped model is a smaller model that works harder on each word. That helps when memory is short and hurts when time is.",
+      "why": "For a provider serving many models, this decides whether looped models fit more models per GPU or are a slower road to quality that a bigger model gives more cheaply. Trained loops keep a cache for every pass over the prompt, which can cancel the saving on weights.",
+      "confidence": 0.65,
+      "history": [
+        {
+          "cycle": "2026-11-22",
+          "confidence": 0.65,
+          "why": "Opened when the reader asked whether looped models were covered. A check that priced the compute found loops added after training paying only at 0.8B, and a plain 14B beating a looped 8B on maths at modest extra time. Learned loops do match larger models per byte, and one lab built a looped model to fit a laptop. Against: that lab also claims a per-compute win for loops learned in training, and nobody has served a looped and a dense model of equal quality side by side."
+        }
+      ],
+      "raise_if": "A looped and a dense model of equal quality served in one engine, with the looped one ahead where weights limit what fits and behind where cache or compute does.",
+      "lower_if": "A loop added after training beating a larger model at equal decoding time, or a looped model ahead of a dense one of equal compute on throughput per GPU at equal quality.",
       "status": "active"
     }
   ]

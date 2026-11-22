@@ -3,23 +3,23 @@
 
 Live dashboard: <https://shamanez.github.io/recursive-stack/>
 
-Cycle 3 · as of 2026-11-22 · next sweep due 2026-11-23 · 72 active signals
+Cycle 3 · as of 2026-11-22 · next sweep due 2026-11-23 · 78 active signals
 
-> **Inference is becoming load-aware: the stack now fits itself to the traffic.** Six levers move with the load, from which model answers to which kernel runs. Coding agents are what make re-tuning them affordable.
+> **Inference is becoming load-aware: the stack now fits itself to the traffic.** Seven levers can move with the load, from which model answers to how deep each token goes. Coding agents are what make re-tuning them affordable.
 
-Serving a large language model means a chain of decisions: which model answers, which machine takes the request, how a cluster is split between reading prompts and writing answers, how generation is sped up, and how it all runs on a particular chip. Each used to be set once, by hand. During 2026 they began to move with the load: with what is being asked, by whom, on what hardware. Coding agents made that affordable by taking over the tuning. This page maps the levers and how they connect, tracks who has each one working and what it has bought, and checks the claims against the evidence, including your own reading of it. An agent re-examines it every day.
+Serving a large language model means a chain of decisions: which model answers, which machine takes the request, how a cluster splits reading prompts from writing answers, how generation is sped up, how much computation each token gets, and how it runs on a particular chip. Each was set once, by hand. During 2026 they began to move with the load: with what is being asked, by whom, on what hardware. Coding agents made that affordable by taking over the tuning. This page maps the levers and how they connect, tracks who has each one working and what it has bought, and checks the claims against the evidence, including your own reading of it. An agent re-examines it every day.
 
 ## Five things to know
 
-- **Six levers now move with the load.** Which model answers, which machine takes it, how the cluster is split, how tokens are written, how the engine runs, and what the model is. Four are in production somewhere. ([Databricks](https://databricks.com/blog/smart-routing-unity-ai-gateway-match-frontier-quality-30-lower-cost-task), [llm-d](https://llm-d.ai/blog/sticky-until-saturated-token-aware-routing), [DSpark authors](https://arxiv.org/abs/2607.05147), [Together AI](https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference))
+- **Seven levers can move with the load.** Which model answers, which machine takes it, how the cluster is split, how tokens are written, how the engine runs, what the model is, and how deep each token goes. Four run in production. ([Databricks](https://databricks.com/blog/smart-routing-unity-ai-gateway-match-frontier-quality-30-lower-cost-task), [llm-d](https://llm-d.ai/blog/sticky-until-saturated-token-aware-routing), [DSpark authors](https://arxiv.org/abs/2607.05147), [Together AI](https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference), [Thinking Machines Lab](https://thinkingmachines.ai/news/inkling-2-mini/))
 - **Eleven teams have announced the same loop since October.** Agents that profile an engine, rewrite part of it, measure, and keep what wins. Providers, both open engines, academics, one customer and one individual. Nineteen more teams described versions earlier. ([Inferact](https://inferact.ai/news/building-autonomous-inference-system), [Together AI](https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference), [agenteconomics.org](https://agenteconomics.org/posts/inference-forge), [vLLM project](https://vllm.ai/blog/2026-10-16-kimi-k3-megakernel))
 - **The prompt cache ties the levers together.** Nine-tenths of agent tokens are re-read context, cached per model and per machine. That is why routing is sticky and why the model is chosen once per session. ([OpenRouter](https://openrouter.ai/data/newsletter/cache-is-crucial), [Databricks](https://databricks.com/blog/smart-routing-unity-ai-gateway-match-frontier-quality-30-lower-cost-task), [vLLM team and Inferact](https://vllm.ai/blog/2026-09-08-vllm-agentx))
 - **Measuring is now harder than optimising.** Kernel speed-ups of several times shrink to almost nothing inside a full engine. Some agent runs game the benchmark. Patches arrive faster than people can review them. ([Snowflake AI Research](https://arxiv.org/abs/2605.23215), [ELLIS Institute Tübingen](https://arxiv.org/abs/2607.20468), [Together AI](https://www.together.ai/blog/road-to-together-compiler))
 - **Not yet recursive, and the commons keeps up.** The loops are bounded hillclimbs with goals set by people; nothing compounds yet. Specialised wins reach vLLM and SGLang within weeks, and per-customer tuning has bought tens of percent. ([Z.ai](https://z.ai/blog/glm-built-its-inference-infrastructure), [University of Chicago](https://arxiv.org/abs/2610.04646), [Inferact and the vLLM team](https://vllm.ai/blog/2026-10-23-deepseek-v41-flash-pd-wide-ep), [Modal](https://modal.com/blog/trillion-tokens-trillion-parameters))
 
-## The big picture: six levers and a loop
+## The big picture: seven levers and a loop
 
-Inference is becoming load-aware. Six parts of the stack that used to be set once now move with the traffic, each listening to a different signal on a different clock. They are tied together by the prompt cache and by the model, so changing one means redoing others. Agent loops are what make that redoing affordable.
+Inference is becoming load-aware. Seven parts of the stack that used to be set once now move with the traffic, each listening to a different signal on a different clock. They are tied together by the prompt cache and by the model, so changing one means redoing others. Agent loops are what make that redoing affordable.
 
 | Lever | The question it answers | Listens to | Stage | Has bought |
 |---|---|---|---|---|
@@ -29,8 +29,9 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 | 4. How tokens get written | How far ahead can a cheap draft guess before the big model has to check? | How predictable the output is in this domain (code and maths speculate well, chat does not), how full the batches are right now, and how many recent guesses were accepted. | working | About 3x for one request, 1 to 1.5x at 32 concurrent; on a large mixture-of-experts model the recipe setting lost from 16. A load-aware scheduler raised throughput by half. Draft length by batch size added up to 15%. A self-training drafter adds 1.25x. |
 | 5. How the engine runs it | What are the fastest kernels and settings for this model, on this chip, under this traffic? | Batch sizes, sequence lengths, cache-hit rates, and which parts of the model real inputs actually exercise. | working | 43% more throughput under a per-user speed floor against the best published run. Merged agent-written kernels: 1.3 to 1.9x on decode. Kernel gains measured alone mostly vanish end to end. Fused decode chosen per step: 1.2 to 2.3x for one user, fading with load. |
 | 6. What the model is | Could a smaller model, trained on this domain, do the job a bigger general one does now? | The domain's tasks and tool-calling format, logged production outputs to learn from, and where the general model fails or is slower than it needs to be. | early | On narrow jobs: nearly double the pass rate at flat cost for a legal agent, and 0.9 s against 45 s for one summarisation task. On general coding, a newer untuned model beat a tuned one. |
+| 7. How deep each token goes | Should this token run part of the model again, given how hard it is and how busy the machine is? | How sure the model already is of the next token, how full the batches are, the request's latency budget, and how much cache memory each extra pass would take. | early | Learned in training, loops helped one lab ship a 26B model it says leads open models under 100B on agentic coding. Added to a released model, a point or two; a plain 14B beat a looped 8B on maths at 1.3 times the time. |
 
-**The loop.** None of the six levers is new. What changed in 2026 is the cost of re-tuning them. Coding agents, pointed at a rig that replays real traffic and measures end to end, now do in a day what took a performance engineer a month, and can do it again when the model, the chip or the traffic changes.
+**The loop.** None of the seven levers is new. What changed in 2026 is the cost of re-tuning them. Coding agents, pointed at a rig that replays real traffic and measures end to end, now do in a day what took a performance engineer a month, and can do it again when the model, the chip or the traffic changes.
 
 ## Open ground: what nobody has shown
 
@@ -92,7 +93,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 
 | Part of the framing | Verdict | In one line |
 |---|---|---|
-| Load-aware, fitted to what you have | holding | Six levers now move with the load, and four are in production somewhere. |
+| Load-aware, fitted to what you have | holding | Seven levers can move with the load, and four are in production somewhere. |
 | The parts are one move | holding | They connect through the prompt cache and the model: change one lever and others must be redone. |
 | Fits each user | sharpen | Worth 34 to 45% on decoding so far. Most gains are class-level and shared. |
 | Driven by RSI | sharpen | Driven by bounded agent hillclimbs. Nothing has been shown to compound. |
@@ -102,7 +103,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 **What the evidence implies for a provider:**
 
 - **The rig is the asset, not the agent.** Evaluation is the hard part: replayed traffic, an engine that reloads candidates, gates that catch fake wins. The usual gate misses six of seven numerical bugs; public traces overstated one team's capacity by 1.7x. _(rests on C4 at 80%)_
-- **Many models multiply three of the six levers.** Each model needs its own drafter, engine and cache. Open engines tune a new model in about two weeks, gaining up to 2.9x; your work pays in that window, on the models carrying traffic. _(rests on C6 at 70%, C2 at 80%, C7 at 55%)_
+- **Many models multiply three of the seven levers.** Each model needs its own drafter, engine and cache. Open engines tune a new model in about two weeks, gaining up to 2.9x; your work pays in that window, on the models carrying traffic. _(rests on C6 at 70%, C2 at 80%, C7 at 55%)_
 - **A kernel lead lasts weeks, so lean on upstream.** Both open engines run the loop themselves and absorb fixes fast; a general engine came within 6% of a bespoke one. For the long tail of models, upstream is your tuning. _(rests on C7 at 55%)_
 - **Open models are your volume; defaults are the contest.** Open models carry most tokens and about a quarter of spend. On public tasks no shipped router has beaten the best single model, so the harness's default model decides which sessions reach you. _(rests on C9 at 65%)_
 
@@ -121,10 +122,11 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 | C3 | Tuning the stack to one customer's own traffic is worth enough over a well-tuned class-level stack to justify doing it per customer, continuously. | 40% | 5 / 9 / 5 |
 | C4 | Proposing optimisations has become cheap. Knowing whether one is real (on realistic inputs, end to end, with outputs intact) is the binding constraint, together with the human review that still gates what ships. | 80% | 23 / 4 / 0 |
 | C5 | The optimisation loop is becoming recursive: the models being served power the agents that optimise their serving, the agents improve their own process, and gains compound from one cycle to the next. | 30% | 8 / 3 / 3 |
-| C6 | New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary. | 70% | 11 / 3 / 0 |
+| C6 | New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary. | 70% | 12 / 3 / 0 |
 | C7 | Open engines absorb specialised wins within weeks, so a private performance lead over upstream vLLM or SGLang is short-lived. | 55% | 9 / 0 / 2 |
 | C9 | Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made. | 65% | 7 / 7 / 2 |
 | C10 | Tuning an open model to one domain or harness (post-training, reinforcement learning, distillation) works as an inference optimisation: a smaller tuned model does a narrow job at lower cost and latency than a general one. | 45% | 6 / 3 / 3 |
+| C11 | Looping pays where weight memory binds. Running part of a model more than once per token buys quality per byte of weights at extra compute per token, so it suits a laptop or many models on one GPU; where compute or latency binds, a larger plain model beats a loop added after training. | 65% | 3 / 3 / 0 |
 
 ## The numbers that carry the argument
 
@@ -189,9 +191,19 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 - Kimi K3.1 Pro on B200: 1.8x ([SemiAnalysis](https://inferencex.semianalysis.com/infx/inference/agentic))
 - Kimi K3.1 Pro on GB300: 1.17x ([SemiAnalysis](https://inferencex.semianalysis.com/infx/inference/agentic))
 
+**What looping a released model adds, by who measured it.** Searched cells gained up to 2.6 points. A label-free check found 0.6 to 2, not significant; a 14B gained 0.8 to 4.2.
+
+- Qwen3-4B, MMLU-Pro, best of a search: 2.64 pts ([University of Texas at Austin](https://arxiv.org/abs/2605.23872))
+- Qwen3-30B-A3B, CommonsenseQA, fixed in advance: 1.14 pts ([University of Texas at Austin](https://arxiv.org/abs/2605.23872))
+- Qwen3-30B-A3B, GPQA, fixed in advance: 0.22 pts ([University of Texas at Austin](https://arxiv.org/abs/2605.23872))
+- Qwen3-8B, GSM8K, placed without labels: 2.0 pts ([Microsoft Applied Sciences Group](https://arxiv.org/abs/2610.42030))
+- Qwen3-8B, MATH-500, placed without labels: 0.6 pts ([Microsoft Applied Sciences Group](https://arxiv.org/abs/2610.42030))
+- Qwen3-14B, GSM8K: 0.8 pts ([Microsoft Applied Sciences Group](https://arxiv.org/abs/2610.42030))
+- Qwen3-14B, MATH-500: 4.2 pts ([Microsoft Applied Sciences Group](https://arxiv.org/abs/2610.42030))
+
 ## What changed in cycle 3
 
-No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries.
+No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries. Later the same day, at the reader's request, depth became lever 7: looping part of a model buys quality per byte of weights, a check that priced the compute found a plain 14B beating a looped 8B on maths, and Thinking Machines shipped a looped model sized for a laptop. C11 opened at 0.65. Active signals now number 78, under the soft cap of eighty.
 
 - **added** `2026-11-20-agentx-kimi-k31-first-fortnight`: Kimi K3.1 Pro on the public AgentX board, 6 Nov against 20 Nov, computed from the board's API: best throughput per GPU at 50 tok/s per user rose 1.17x on GB300 and 1.8 to 2.9x on four other chips. New chart, day-zero-gap; build step 5's bought and watch rewritten.
 - **added** `2026-11-21-together-prompt-leak`: Together's prompt samples, kept for testing, leaked after an AI coding agent committed a credential; zero retention is now the default for new accounts. Build step 1's watch rewritten to carry it.
@@ -202,6 +214,18 @@ No confidence moved. The public AgentX board, now confirmed as canonical, served
 - **watch** `W19`: Not due. Noted that the board now shows how long the open engines take to tune a new model; a provider's own time and cost are still missing.
 - **added**: Roster: LLM4LLM, an academic closed loop from inference script to accepted kernel patch, measured against eager PyTorch. Point 1 recounted: eleven since October, nineteen before.
 - **course**: Re-judged as of 22 Nov; all four verdicts hold. The many-models implication now says the open engines tune a new model in about two weeks, so in-house work pays in that window.
+- **model**: Lever 7, how deep each token goes, added to the big picture at the early stage: looped models and early exit, listening to the model's confidence, how full batches are, the latency budget and each pass's cache cost. The page and the brief now count levers from the data instead of saying six.
+- **added** `2026-05-22-training-free-looped-transformers`: The paper the reader asked about. Four middle layers of a released model re-run with damped sub-steps and no training: a point or two on knowledge-heavy multiple choice, found by a per-cell search over about 720 settings, at the same cache size.
+- **added** `2026-10-30-no-free-loop`: Microsoft's check prices the loop's compute. On Qwen3-8B a training-free loop gained 0.6 to 2 points, not significantly, and a plain 14B beat it on MATH-500 at about 1.3 times the time. Basis of the new looping chart.
+- **added** `2025-10-29-ouro-looped-language-models`: Ouro, pretrained with a four-pass loop: a 1.4B roughly matches a 4B on reasoning by its authors' account. Its own tests keep a cache per pass for the prompt; decoding can keep only the last.
+- **added** `2026-10-06-hybrid-latent-attention-looped`: Ouro 1.4B holds 768 KiB of cache per token across four passes. Compressing it 10.7 times raised decoding throughput 2.5 to 7.4 times in vLLM.
+- **added** `2026-11-20-inkling-2-mini`: Thinking Machines ships Inkling 2 Mini, a looped and expert-pruned 26B model of about 20 GB that runs on a laptop and leads open models under 100B on agentic coding by its account. Served at a fixed three passes.
+- **added** `2026-11-03-looped-model-serving-speed`: Looped models carry their own engine debts: in a research engine built for them, exact fixes alone made Ouro 1.65 to 2.15x faster, because every pass repeats per-layer overheads. Bears on C6 as well as lever 7.
+- **added** `C11`: Opened at 0.65: looping pays where weight memory binds, and where compute or latency binds a larger plain model beats a loop added after training.
+- **tension** `T11`: Opened: do looped models save memory, or move it into the cache? Leans by regime, saved at batch one on short prompts and moved on long prompts at serving batch sizes.
+- **watch** `W23`: Opened, due 28 Feb: upstream support for a looped model with depth chosen per token or request.
+- **watch** `W24`: Opened, due 31 Mar: a looped and a dense model of equal quality served side by side, with memory and throughput per GPU.
+- **course**: The reader asked whether looped models were covered, noting their appeal for local use, and left the call to the agent. They were not covered; depth is now lever 7. Verdicts re-judged and all hold; 'Load-aware' now counts seven levers, four in production.
 
 ## Open tensions
 
@@ -214,6 +238,7 @@ No confidence moved. The public AgentX board, now confirmed as canonical, served
 - **T8** Is a router worth building, or is a good default model enough? _Settles when:_ A vendor publishes its router against the best fixed model in its own pool, on tasks someone else chose.
 - **T9** Tune a model for the job, or wait for the next general one? _Settles when:_ A tuned model is followed against each new general release on the same task for six months.
 - **T10** Does speculation pay less as batches fill, or more? _Settles when:_ Someone measures a mixture-of-experts model in a real engine, with and without speculation, from 1 to 128 concurrent.
+- **T11** Do looped models save memory, or move it into the cache? _Settles when:_ A looped and a dense model of equal quality served in the same engine at a provider's batch sizes, with memory and throughput per GPU at several context lengths.
 
 ## Watchlist
 
@@ -234,5 +259,7 @@ No confidence moved. The public AgentX board, now confirmed as canonical, served
 | 2026-12-31 | A tuned open model followed against the next general release on the same task. |
 | 2026-12-31 | On one NVIDIA chip, a model's fused decode path measured against CUDA Graphs plus PDL on the same traces, from 1 to 16 concurrent. |
 | 2026-12-31 | A router compared with the best single model in its pool on live agent sessions rather than benchmark tasks, with the pricing of cached tokens stated. |
+| 2027-02-28 | vLLM, SGLang, llama.cpp or MLX supporting a looped model upstream with depth chosen per token or per request, rather than a fixed number of passes. |
+| 2027-03-31 | A looped and a dense model of equal quality served side by side in one engine, with memory and throughput per GPU at several batch sizes and context lengths. |
 
 Open `index.html` for the interactive version: flow diagrams, stack map, evidence ledger, every signal.

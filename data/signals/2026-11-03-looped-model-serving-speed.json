@@ -1,0 +1,62 @@
+{
+  "id": "2026-11-03-looped-model-serving-speed",
+  "title": "What Sets the Serving Speed of Looped Language Models? Measurements and Optimizations Graded by Exactness",
+  "url": "https://arxiv.org/abs/2611.05150",
+  "org": "University of Tübingen, UIUC, Fudan and others",
+  "authors": "Dezhen Lu, Runguo Li, Zixiang Ni, Yuchen Tang, Xingquan Kong, Jiaxing Yang, Jiarui Guo, Lingxiang Gao",
+  "published": "2026-11-03",
+  "added": "2026-11-22",
+  "kind": "paper",
+  "layers": [
+    "engine",
+    "serving"
+  ],
+  "mechanism": "hand",
+  "venue": "cluster",
+  "gist": "Measures two looped models, Ouro and Huginn, in vllm-rlt, an open engine built for looped models, and grades each speed-up by whether outputs stay bit-identical. A looped token pays every per-layer overhead once per pass: 5,689 small GPU kernels per Ouro token at batch 1, and many reserved cache slots that are never written.",
+  "changes": "A looped model is a new architecture with its own engine debts. Exact fixes alone made Ouro 1.65 to 2.15 times faster in the looped engine, so a looped model served without that work leaves two-fifths to half of its speed unclaimed, as other new models do in their first weeks.",
+  "caveats": "One GH200 and burst workloads; the headline table has three runs per cell, the rest mostly one. The baseline is an early research engine, not upstream vLLM or SGLang. Exactness is checked on GSM8K token sequences. There is no comparison with a dense model of equal quality.",
+  "numbers": [
+    {
+      "metric": "Ouro serving throughput, released defaults",
+      "value": "1.65 to 2.15x",
+      "baseline": "the vllm-rlt base engine",
+      "verification": "self-reported",
+      "setup": "one GH200, burst workloads"
+    },
+    {
+      "metric": "Huginn serving throughput, released defaults",
+      "value": "1.77 to 3.16x",
+      "baseline": "the vllm-rlt base engine",
+      "verification": "self-reported",
+      "setup": "one GH200, burst workloads"
+    },
+    {
+      "metric": "Fusing Ouro's loop submissions alone",
+      "value": "0.99x",
+      "baseline": "unfused, batch 1",
+      "verification": "self-reported",
+      "setup": "the small kernels, not the submissions, were the cost"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "A new architecture family brings per-pass overheads that general engines do not handle; exact engine work alone roughly doubled throughput."
+    },
+    {
+      "claim": "C11",
+      "direction": "complicates",
+      "note": "Each pass repeats fixed per-layer costs, so a looped token costs more than its arithmetic suggests until the engine catches up."
+    }
+  ],
+  "also": [
+    {
+      "label": "Full text",
+      "url": "https://arxiv.org/html/2611.05150v1"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

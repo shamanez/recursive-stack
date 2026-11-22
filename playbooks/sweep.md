@@ -101,7 +101,7 @@ More than three signals in a day means you are not triaging.
 The page is figure-first, with text where it explains. Update the pictures before
 the prose, and leave alone whatever is still true.
 
-- **The lever map** (`data/map.json`). Six levers, each with what it listens to,
+- **The lever map** (`data/map.json`). Seven levers, each with what it listens to,
   its clock, its `status` (`working`, `early`, `planned`), what it has `bought`
   (with a baseline) and how it `connects` to its neighbours. When a signal changes
   what a lever has bought or how far along it is, update that lever. The `build`

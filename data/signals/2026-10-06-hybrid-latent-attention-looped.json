@@ -1,0 +1,57 @@
+{
+  "id": "2026-10-06-hybrid-latent-attention-looped",
+  "title": "Hybrid Latent Attention for Looped Language Models",
+  "url": "https://arxiv.org/abs/2610.07940",
+  "org": "Virginia Tech",
+  "authors": "Yuhan Chen, Siyuan Zhang, Nan Wang, Feiyang Kang, Ruoxi Jia",
+  "published": "2026-10-06",
+  "added": "2026-11-22",
+  "kind": "paper",
+  "layers": [
+    "model",
+    "serving"
+  ],
+  "mechanism": "hand",
+  "venue": "cluster",
+  "gist": "A looped model that keeps a cache for every pass multiplies its cache by the number of passes, so Ouro 1.4B holds 768 KiB per token. This paper keeps exact keys and values only for recent tokens and turns older ones into small latents, training only the added parameters with the original weights frozen, and serves the result in vLLM.",
+  "changes": "Shows where a looped model's memory goes at serving scale. The cache limited batch size: shrinking it 10.7 times let one GPU hold 4 to 9 times as many sequences and decode 2.5 to 7.4 times faster. The saving on weights only survives if the cache is handled too.",
+  "caveats": "Self-reported, on A100s at 16-bit, against the full cache of the same model rather than a dense model of equal quality. Each model needs extra training for the added parameters, and it keeps a little over 97% of the original accuracy, so some is lost.",
+  "numbers": [
+    {
+      "metric": "Cache per token, Ouro 1.4B",
+      "value": "72 KiB (10.7x less)",
+      "baseline": "768 KiB, a full cache for each of four passes",
+      "verification": "self-reported",
+      "setup": "vLLM, A100 80 GB, 16-bit"
+    },
+    {
+      "metric": "Concurrent sequences per GPU",
+      "value": "4.0 to 8.8x",
+      "baseline": "full cache, 1K to 16K tokens of context",
+      "verification": "self-reported",
+      "setup": "as above"
+    },
+    {
+      "metric": "Peak decoding throughput",
+      "value": "2.5 to 7.4x",
+      "baseline": "full cache, 1K to 16K tokens of context",
+      "verification": "self-reported",
+      "setup": "as above"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C11",
+      "direction": "supports",
+      "note": "At serving batch sizes a looped model's cache binds, and the saving on weights is lost unless the cache is compressed or shared."
+    }
+  ],
+  "also": [
+    {
+      "label": "Full text",
+      "url": "https://arxiv.org/html/2610.07940v1"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

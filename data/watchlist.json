@@ -270,6 +270,30 @@
       ],
       "status": "open",
       "lens": true
+    },
+    {
+      "id": "W23",
+      "what": "vLLM, SGLang, llama.cpp or MLX supporting a looped model upstream with depth chosen per token or per request, rather than a fixed number of passes.",
+      "why": "vLLM runs Ouro at its full four passes and ignores the learned early exit, Inkling 2 Mini supports only three passes, and the rest lives in research forks. Upstream support is what would make depth a lever a provider can pull.",
+      "opened": "2026-11-22",
+      "due": "2027-02-28",
+      "claims": [
+        "C11"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W24",
+      "what": "A looped and a dense model of equal quality served side by side in one engine, with memory and throughput per GPU at several batch sizes and context lengths.",
+      "why": "It would settle T11 and test C11 where a provider lives: whether a looped model's saving on weights survives its cache at real batch sizes and prompt lengths.",
+      "opened": "2026-11-22",
+      "due": "2027-03-31",
+      "claims": [
+        "C11"
+      ],
+      "status": "open",
+      "lens": true
     }
   ],
   "feeds": [
@@ -382,6 +406,11 @@
       "name": "X (through web search)",
       "url": "https://x.com",
       "why": "Maintainers, providers and labs often post launches and numbers here first. Search it with a web search restricted to x.com; X's own search needs a sign-in, and sweeps do not sign in. A post is a lead: open what it links to."
+    },
+    {
+      "name": "vLLM issues on looped models",
+      "url": "https://github.com/vllm-project/vllm/issues?q=Ouro+OR+looped+sort%3Aupdated-desc",
+      "why": "Where upstream support for looped models and per-token exit would first show up (W23)."
     }
   ]
 }

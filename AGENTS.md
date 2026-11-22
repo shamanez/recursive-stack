@@ -28,7 +28,7 @@ over paragraphs. What they have said so far is listed at the top of
 ```
 data/                 the source of truth; everything else is generated from it
   thesis.json         headline, intro paragraph, the five points, the claims with confidence history
-  map.json            the big picture: six levers, how each connects, the loop, and the build order
+  map.json            the big picture: seven levers, how each connects, the loop, and the build order
   course.json         the reader's framing judged part by part, their position, what the evidence implies for it
   signals/*.json      one file per source that moved something
   roster.json         every team that has described the loop, one line each
