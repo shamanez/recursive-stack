@@ -157,10 +157,11 @@
       "listens": "How sure the model already is of the next token, how full the batches are, the request's latency budget, and how much cache memory each extra pass would take.",
       "clock": "request",
       "status": "early",
-      "bought": "Learned in training, loops helped one lab ship a 26B model it says leads open models under 100B on agentic coding. Added to a released model, a point or two; a plain 14B beat a looped 8B on maths at 1.3 times the time.",
+      "bought": "Trained in, loops let one lab ship a 26B it says leads open models under 100B on coding, and a second pass on 7% of tokens adds 3 to 4 points. Retrofitted, a point or two; a plain 14B beat a looped 8B.",
       "connects": "Extra passes compete for batch room like speculation (lever 4), and the window and step count are found per model like engine settings (lever 5). Trained loops keep a cache per pass over the prompt, so more passes mean fewer sequences per GPU. Training-free loops keep the cache size.",
       "signals": [
         "2026-11-20-inkling-2-mini",
+        "2025-11-11-think-at-hard",
         "2025-10-29-ouro-looped-language-models",
         "2026-10-30-no-free-loop",
         "2026-05-22-training-free-looped-transformers",

@@ -3,7 +3,7 @@
 
 Live dashboard: <https://shamanez.github.io/recursive-stack/>
 
-Cycle 3 · as of 2026-11-22 · next sweep due 2026-11-23 · 78 active signals
+Cycle 3 · as of 2026-11-22 · next sweep due 2026-11-23 · 79 active signals
 
 > **Inference is becoming load-aware: the stack now fits itself to the traffic.** Seven levers can move with the load, from which model answers to how deep each token goes. Coding agents are what make re-tuning them affordable.
 
@@ -29,7 +29,7 @@ Inference is becoming load-aware. Seven parts of the stack that used to be set o
 | 4. How tokens get written | How far ahead can a cheap draft guess before the big model has to check? | How predictable the output is in this domain (code and maths speculate well, chat does not), how full the batches are right now, and how many recent guesses were accepted. | working | About 3x for one request, 1 to 1.5x at 32 concurrent; on a large mixture-of-experts model the recipe setting lost from 16. A load-aware scheduler raised throughput by half. Draft length by batch size added up to 15%. A self-training drafter adds 1.25x. |
 | 5. How the engine runs it | What are the fastest kernels and settings for this model, on this chip, under this traffic? | Batch sizes, sequence lengths, cache-hit rates, and which parts of the model real inputs actually exercise. | working | 43% more throughput under a per-user speed floor against the best published run. Merged agent-written kernels: 1.3 to 1.9x on decode. Kernel gains measured alone mostly vanish end to end. Fused decode chosen per step: 1.2 to 2.3x for one user, fading with load. |
 | 6. What the model is | Could a smaller model, trained on this domain, do the job a bigger general one does now? | The domain's tasks and tool-calling format, logged production outputs to learn from, and where the general model fails or is slower than it needs to be. | early | On narrow jobs: nearly double the pass rate at flat cost for a legal agent, and 0.9 s against 45 s for one summarisation task. On general coding, a newer untuned model beat a tuned one. |
-| 7. How deep each token goes | Should this token run part of the model again, given how hard it is and how busy the machine is? | How sure the model already is of the next token, how full the batches are, the request's latency budget, and how much cache memory each extra pass would take. | early | Learned in training, loops helped one lab ship a 26B model it says leads open models under 100B on agentic coding. Added to a released model, a point or two; a plain 14B beat a looped 8B on maths at 1.3 times the time. |
+| 7. How deep each token goes | Should this token run part of the model again, given how hard it is and how busy the machine is? | How sure the model already is of the next token, how full the batches are, the request's latency budget, and how much cache memory each extra pass would take. | early | Trained in, loops let one lab ship a 26B it says leads open models under 100B on coding, and a second pass on 7% of tokens adds 3 to 4 points. Retrofitted, a point or two; a plain 14B beat a looped 8B. |
 
 **The loop.** None of the seven levers is new. What changed in 2026 is the cost of re-tuning them. Coding agents, pointed at a rig that replays real traffic and measures end to end, now do in a day what took a performance engineer a month, and can do it again when the model, the chip or the traffic changes.
 
@@ -126,7 +126,7 @@ Inference is becoming load-aware. Seven parts of the stack that used to be set o
 | C7 | Open engines absorb specialised wins within weeks, so a private performance lead over upstream vLLM or SGLang is short-lived. | 55% | 9 / 0 / 2 |
 | C9 | Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made. | 65% | 7 / 7 / 2 |
 | C10 | Tuning an open model to one domain or harness (post-training, reinforcement learning, distillation) works as an inference optimisation: a smaller tuned model does a narrow job at lower cost and latency than a general one. | 45% | 6 / 3 / 3 |
-| C11 | Looping pays where weight memory binds. Running part of a model more than once per token buys quality per byte of weights at extra compute per token, so it suits a laptop or many models on one GPU; where compute or latency binds, a larger plain model beats a loop added after training. | 65% | 3 / 3 / 0 |
+| C11 | Looping pays where weight memory binds. Running part of a model more than once per token buys quality per byte of weights at extra compute per token, so it suits a laptop or many models on one GPU; where compute or latency binds, a larger plain model beats a loop added after training. | 65% | 3 / 4 / 0 |
 
 ## The numbers that carry the argument
 
@@ -203,7 +203,7 @@ Inference is becoming load-aware. Seven parts of the stack that used to be set o
 
 ## What changed in cycle 3
 
-No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries. Later the same day, at the reader's request, depth became lever 7: looping part of a model buys quality per byte of weights, a check that priced the compute found a plain 14B beating a looped 8B on maths, and Thinking Machines shipped a looped model sized for a laptop. C11 opened at 0.65. Active signals now number 78, under the soft cap of eighty.
+No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries. Later the same day, at the reader's request, depth became lever 7: looping part of a model buys quality per byte of weights, a check that priced the compute found a plain 14B beating a looped 8B on maths, and Thinking Machines shipped a looped model sized for a laptop. C11 opened at 0.65. Active signals now number 79, under the soft cap of eighty.
 
 - **added** `2026-11-20-agentx-kimi-k31-first-fortnight`: Kimi K3.1 Pro on the public AgentX board, 6 Nov against 20 Nov, computed from the board's API: best throughput per GPU at 50 tok/s per user rose 1.17x on GB300 and 1.8 to 2.9x on four other chips. New chart, day-zero-gap; build step 5's bought and watch rewritten.
 - **added** `2026-11-21-together-prompt-leak`: Together's prompt samples, kept for testing, leaked after an AI coding agent committed a credential; zero retention is now the default for new accounts. Build step 1's watch rewritten to carry it.
@@ -221,6 +221,7 @@ No confidence moved. The public AgentX board, now confirmed as canonical, served
 - **added** `2026-10-06-hybrid-latent-attention-looped`: Ouro 1.4B holds 768 KiB of cache per token across four passes. Compressing it 10.7 times raised decoding throughput 2.5 to 7.4 times in vLLM.
 - **added** `2026-11-20-inkling-2-mini`: Thinking Machines ships Inkling 2 Mini, a looped and expert-pruned 26B model of about 20 GB that runs on a laptop and leads open models under 100B on agentic coding by its account. Served at a fixed three passes.
 - **added** `2026-11-03-looped-model-serving-speed`: Looped models carry their own engine debts: in a research engine built for them, exact fixes alone made Ouro 1.65 to 2.15x faster, because every pass repeats per-layer overheads. Bears on C6 as well as lever 7.
+- **added** `2025-11-11-think-at-hard`: Think-at-Hard re-runs only the tokens a small decider flags as hard, about 7% of them, and beats both a single pass and looping every token by 3 to 4 points at 4 to 5% more traffic. The per-token case for lever 7; its bought line now includes it.
 - **added** `C11`: Opened at 0.65: looping pays where weight memory binds, and where compute or latency binds a larger plain model beats a loop added after training.
 - **tension** `T11`: Opened: do looped models save memory, or move it into the cache? Leans by regime, saved at batch one on short prompts and moved on long prompts at serving batch sizes.
 - **watch** `W23`: Opened, due 28 Feb: upstream support for a looped model with depth chosen per token or request.

@@ -1,0 +1,56 @@
+{
+  "id": "2025-11-11-think-at-hard",
+  "title": "Think-at-Hard: Dynamic Looped Transformers for Improved Reasoning",
+  "url": "https://arxiv.org/abs/2511.08577",
+  "org": "Tsinghua University, Infinigence AI, Shanghai Jiao Tong University",
+  "authors": "Tianyu Fu, Yichen You, Zekai Chen, Guohao Dai, Huazhong Yang, Yu Wang",
+  "published": "2025-11-11",
+  "added": "2026-11-22",
+  "kind": "paper",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "online",
+  "venue": "any",
+  "gist": "Fine-tunes Qwen3 base models of 0.6B and 1.7B into looped models that run a second pass only on tokens a small learned decider flags as likely wrong, with LoRA adapters active on the extra pass. The authors find most tokens are already right after one pass, and that looping every token sometimes turns right answers wrong.",
+  "changes": "The clearest case for depth chosen per token, which is lever 7's question. Skipping the extra pass on 93% of tokens beat looping every token by about 4 points and a single pass by 3 to 3.8, for 4 to 5% more compute and memory traffic per token.",
+  "caveats": "Self-reported, on small models fine-tuned on 100,000 reasoning samples, against baselines trained on the same data. Each model needs its own decider and adapters. Timing is from one A800 in the authors' own implementation. No serving engine runs it yet.",
+  "numbers": [
+    {
+      "metric": "Average over nine reasoning benchmarks, Qwen3-1.7B",
+      "value": "+3.8 points",
+      "baseline": "a single-pass model fine-tuned on the same data",
+      "verification": "self-reported",
+      "setup": "1.07 passes per token on average"
+    },
+    {
+      "metric": "Same, against looping every token",
+      "value": "+3.8 to 4.4 points",
+      "baseline": "an always-loop model trained on the same data",
+      "verification": "self-reported",
+      "setup": "93% of tokens skip the extra pass"
+    },
+    {
+      "metric": "Compute and memory traffic per token",
+      "value": "+4 to 5%",
+      "baseline": "a single pass",
+      "verification": "self-reported",
+      "setup": "looping every token costs 2.08 to 2.18x"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C11",
+      "direction": "complicates",
+      "note": "Looping only the hard tokens adds about 5% traffic and still gains, which softens the time cost the claim rests on."
+    }
+  ],
+  "also": [
+    {
+      "label": "Code",
+      "url": "https://github.com/thu-nics/TaH"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

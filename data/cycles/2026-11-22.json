@@ -3,7 +3,7 @@
   "n": 3,
   "agent": "Claude Code (Opus 5.5)",
   "deep": false,
-  "summary": "No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries. Later the same day, at the reader's request, depth became lever 7: looping part of a model buys quality per byte of weights, a check that priced the compute found a plain 14B beating a looped 8B on maths, and Thinking Machines shipped a looped model sized for a laptop. C11 opened at 0.65. Active signals now number 78, under the soft cap of eighty.",
+  "summary": "No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries. Later the same day, at the reader's request, depth became lever 7: looping part of a model buys quality per byte of weights, a check that priced the compute found a plain 14B beating a looped 8B on maths, and Thinking Machines shipped a looped model sized for a laptop. C11 opened at 0.65. Active signals now number 79, under the soft cap of eighty.",
   "changes": [
     {
       "type": "added",
@@ -81,6 +81,11 @@
       "type": "added",
       "ref": "2026-11-03-looped-model-serving-speed",
       "text": "Looped models carry their own engine debts: in a research engine built for them, exact fixes alone made Ouro 1.65 to 2.15x faster, because every pass repeats per-layer overheads. Bears on C6 as well as lever 7."
+    },
+    {
+      "type": "added",
+      "ref": "2025-11-11-think-at-hard",
+      "text": "Think-at-Hard re-runs only the tokens a small decider flags as hard, about 7% of them, and beats both a single pass and looping every token by 3 to 4 points at 4 to 5% more traffic. The per-token case for lever 7; its bought line now includes it."
     },
     {
       "type": "added",
