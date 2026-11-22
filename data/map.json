@@ -171,13 +171,14 @@
       ],
       "do": "Capture real sessions at your gateway with their timing, context lengths and cache behaviour, strip the content, and replay them against a candidate stack at real concurrency. Replayers exist; the capture and redaction side you write yourself.",
       "bought": "Nothing by itself. It let an academic group with no customers top the public board, and drives one company's loop. Public agent traces overstated capacity by about 1.7x for four models and hid a routing bug.",
-      "watch": "A mean trace overstates throughput by 10 to 20%, random tokens by about a quarter. Repeated runs reuse the cache and flatter the result. Traces recorded on another model mislead, since answer lengths follow the model.",
+      "watch": "Mean traces overstate throughput by 10 to 20%, reruns hit a warm cache, and traces from another model mislead. One provider's stored prompts leaked through an agent-committed credential; it now defaults new accounts to zero retention.",
       "signals": [
         "2026-08-24-agentx-inferencex-v3",
         "2026-04-22-applied-compute-agentic-benchmark",
         "2026-10-28-decagon-autoresearch",
         "2026-03-19-speed-bench",
-        "2026-11-19-validation-driven-deployment"
+        "2026-11-19-validation-driven-deployment",
+        "2026-11-21-together-prompt-leak"
       ],
       "parts": [
         {
@@ -326,9 +327,10 @@
         "decode"
       ],
       "do": "Have an agent port each new model into your engine against an exact oracle: its outputs must match the reference layer by layer. Then run steps 3 and 4 for it from a script, not by hand.",
-      "bought": "Published skills let a coding agent port a model by chasing layer-by-layer divergence. One open engine reports a port to a new accelerator in under a week. A typical start-up changes its top model within a month.",
-      "watch": "Nobody has published bring-up times or costs. Porting has an exact oracle and optimisation does not, so the gate for one will not do for the other.",
+      "bought": "On the public board, a new model's throughput per GPU rose 1.2 to 2.9x per chip in its first fortnight. Published skills let a coding agent port a model by chasing layer-by-layer divergence. A typical start-up changes its top model within a month.",
+      "watch": "Bring-up times show on the public board; no provider has published its own time or cost. Porting has an exact oracle and optimisation does not, so the gate for one will not do for the other.",
       "signals": [
+        "2026-11-20-agentx-kimi-k31-first-fortnight",
         "2026-06-18-modular-agent-skills",
         "2026-07-02-sglang-agent-assisted-development",
         "2026-11-inferact-autonomous-inference-system",
@@ -399,7 +401,8 @@
         "2026-10-26-autobench-do-routers-route",
         "2026-08-26-harvey-tenet",
         "2026-11-18-datadog-fine-tune-baseten",
-        "2026-11-04-cognition-swe-2-flash"
+        "2026-11-04-cognition-swe-2-flash",
+        "2026-09-21-fireworks-frontier-is-a-router"
       ],
       "parts": [
         {

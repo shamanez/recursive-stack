@@ -10,7 +10,8 @@
         "C7",
         "C4"
       ],
-      "status": "open"
+      "status": "hit",
+      "resolution": "The canonical board is inferencex.semianalysis.com, run from SemiAnalysisAI/InferenceX; the unofficial-copy notice is hidden markup shown only on other hosts. Baseline on 22 Nov, best total tokens per GPU at 50 tok/s per user or faster: Kimi K3 24.4k and Kimi K3.1 Pro 36.7k on GB300, GLM-5.3 23.2k on B300."
     },
     {
       "id": "W2",
@@ -223,7 +224,7 @@
     {
       "id": "W19",
       "what": "Any provider publishing how long and how much it takes to get a new model from release to tuned serving, with or without agents.",
-      "why": "With many models this is the cost that repeats. Day-zero support is claimed by several teams; none has given a time or a price.",
+      "why": "With many models this is the cost that repeats. Day-zero support is claimed by several teams; none has given a time or a price. On 22 Nov the public board showed the open engines take about two weeks to tune a new model; a provider's own time and cost are still unpublished.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
       "claims": [

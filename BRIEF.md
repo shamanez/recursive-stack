@@ -3,7 +3,7 @@
 
 Live dashboard: <https://shamanez.github.io/recursive-stack/>
 
-Cycle 2 · as of 2026-11-21 · next sweep due 2026-11-22 · 69 active signals
+Cycle 3 · as of 2026-11-22 · next sweep due 2026-11-23 · 72 active signals
 
 > **Inference is becoming load-aware: the stack now fits itself to the traffic.** Six levers move with the load, from which model answers to which kernel runs. Coding agents are what make re-tuning them affordable.
 
@@ -12,7 +12,7 @@ Serving a large language model means a chain of decisions: which model answers, 
 ## Five things to know
 
 - **Six levers now move with the load.** Which model answers, which machine takes it, how the cluster is split, how tokens are written, how the engine runs, and what the model is. Four are in production somewhere. ([Databricks](https://databricks.com/blog/smart-routing-unity-ai-gateway-match-frontier-quality-30-lower-cost-task), [llm-d](https://llm-d.ai/blog/sticky-until-saturated-token-aware-routing), [DSpark authors](https://arxiv.org/abs/2607.05147), [Together AI](https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference))
-- **Eleven teams have announced the same loop since October.** Agents that profile an engine, rewrite part of it, measure, and keep what wins. Providers, both open engines, academics, one customer and one individual. Eighteen more teams described versions earlier. ([Inferact](https://inferact.ai/news/building-autonomous-inference-system), [Together AI](https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference), [agenteconomics.org](https://agenteconomics.org/posts/inference-forge), [vLLM project](https://vllm.ai/blog/2026-10-16-kimi-k3-megakernel))
+- **Eleven teams have announced the same loop since October.** Agents that profile an engine, rewrite part of it, measure, and keep what wins. Providers, both open engines, academics, one customer and one individual. Nineteen more teams described versions earlier. ([Inferact](https://inferact.ai/news/building-autonomous-inference-system), [Together AI](https://www.together.ai/blog/together-compiler-continual-compilation-for-ai-inference), [agenteconomics.org](https://agenteconomics.org/posts/inference-forge), [vLLM project](https://vllm.ai/blog/2026-10-16-kimi-k3-megakernel))
 - **The prompt cache ties the levers together.** Nine-tenths of agent tokens are re-read context, cached per model and per machine. That is why routing is sticky and why the model is chosen once per session. ([OpenRouter](https://openrouter.ai/data/newsletter/cache-is-crucial), [Databricks](https://databricks.com/blog/smart-routing-unity-ai-gateway-match-frontier-quality-30-lower-cost-task), [vLLM team and Inferact](https://vllm.ai/blog/2026-09-08-vllm-agentx))
 - **Measuring is now harder than optimising.** Kernel speed-ups of several times shrink to almost nothing inside a full engine. Some agent runs game the benchmark. Patches arrive faster than people can review them. ([Snowflake AI Research](https://arxiv.org/abs/2605.23215), [ELLIS Institute Tübingen](https://arxiv.org/abs/2607.20468), [Together AI](https://www.together.ai/blog/road-to-together-compiler))
 - **Not yet recursive, and the commons keeps up.** The loops are bounded hillclimbs with goals set by people; nothing compounds yet. Specialised wins reach vLLM and SGLang within weeks, and per-customer tuning has bought tens of percent. ([Z.ai](https://z.ai/blog/glm-built-its-inference-infrastructure), [University of Chicago](https://arxiv.org/abs/2610.04646), [Inferact and the vLLM team](https://vllm.ai/blog/2026-10-23-deepseek-v41-flash-pd-wide-ep), [Modal](https://modal.com/blog/trillion-tokens-trillion-parameters))
@@ -46,7 +46,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 2. **Add gates that catch a fake win.** Measure every change end to end inside the full engine, never a kernel alone. Check outputs in three layers: kernel tests across shapes, a token-probability comparison, and task evals that exercise the changed path. Fail on request errors. _What it has bought others:_ Protection. Kernel speed-ups of 1.6 to 6.6x shrank to about 1x end to end, and one in sixteen agent runs in an independent benchmark gamed the measurement.
 3. **Tune what needs no new code.** Search the settings you already have against the rig: cache-aware and sticky routing, the prefill and decode split, caps on long prefills, cache retention. Use plain search here, not agents. _What it has bought others:_ The largest reported gains for the least risk: 2.9x from cache-aware routing on code generation, up to 93% from a prefill cap. One default flag explained 78% of a gap between two engines.
 4. **Fit the decoding to the traffic.** Measure how well your traffic speculates, by domain, by load and by model, before building anything. Train a draft model for each target model, and let the draft length follow the live batch size, down to zero. _What it has bought others:_ About 3x for a single request, 1 to 1.5x at 32 concurrent. A load-aware scheduler with a new drafter: about half more live throughput. Draft length by batch size alone: up to 15%. Tuning the drafter to the workload: 20 to 45%.
-5. **Automate bringing up each new model.** Have an agent port each new model into your engine against an exact oracle: its outputs must match the reference layer by layer. Then run steps 3 and 4 for it from a script, not by hand. _What it has bought others:_ Published skills let a coding agent port a model by chasing layer-by-layer divergence. One open engine reports a port to a new accelerator in under a week. A typical start-up changes its top model within a month.
+5. **Automate bringing up each new model.** Have an agent port each new model into your engine against an exact oracle: its outputs must match the reference layer by layer. Then run steps 3 and 4 for it from a script, not by hand. _What it has bought others:_ On the public board, a new model's throughput per GPU rose 1.2 to 2.9x per chip in its first fortnight. Published skills let a coding agent port a model by chasing layer-by-layer divergence. A typical start-up changes its top model within a month.
 6. **Point agents at the engine.** Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Start with the models that carry most of your traffic. People review the evidence and approve what ships. _What it has bought others:_ 43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours.
 7. **Choose between models, and tune one where the job is narrow.** Start from the best single model for the job and route only where the work is varied, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader. _What it has bought others:_ Routing: 33 to 74% lower cost by vendors' accounts; on public tasks, no shipped router has yet beaten the best single model. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.
 8. **Close the loop.** Detect when traffic has drifted, re-run the earlier steps, promote winners through shadow traffic, and send upstream whatever is not specific to you. _What it has bought others:_ One provider shadowed all live traffic onto a new build before cutover. Prompt lengths have been seen to rise about 80% within two weeks of a model release.
@@ -72,6 +72,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 | 2026-09-15 | [Unity: FlashVector](https://arxiv.org/abs/2609.17391) | An agent tunes the whole serving stack for ads models, from kernels to the model server. Recommenders, not LLMs. | production |
 | 2026-09-11 | [Yang, Jiang, Qu, Cheng: RoofLang](https://arxiv.org/abs/2609.12551) | A language for describing inference workloads so an agent can search whole architectures, with an evaluator that needs no implementation. | research |
 | 2026-08-28 | [Tianyu Zhang and co-authors: Infer-forge](https://www.lmsys.org/blog/2026-08-28-infer-forge-loop-engineering) | An internal harness runs SGLang work as agent task loops with fixed contracts and gates. Up to nine ran at once; verification caught a fake 5.7% kernel win. | production |
+| 2026-08-22 | [Hui Zeng and co-authors: LLM4LLM](https://arxiv.org/abs/2608.21836) | An agent profiles an inference script, writes kernels for its dominant phases and keeps patches only if the whole model speeds up. 3.9 to 7x over eager PyTorch. | research |
 | 2026-07-28 | [Asari AI: Self-improving agents](https://asari.ai/blog/inference-optimization) | Says its agents beat vLLM by up to 16% on eight GPUs. No code and no outside check. | claimed |
 | 2026-07-14 | [Authors of arXiv 2607.12875: MetaInfer](https://arxiv.org/abs/2607.12875) | An agent ports models to less common accelerators by following a costed map of routes. Baseten's engine run built on it. | research |
 | 2026-06-18 | [Modular: Agent skills for model bring-up](https://modular.com/blog/modular-26-4-sota-moe-serving-model-bringup-via-agent-skills-mojo-beta-2-and-more) | Published skills let a coding agent port a new model into its engine. The kernels underneath stay human-written. | production |
@@ -101,7 +102,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 **What the evidence implies for a provider:**
 
 - **The rig is the asset, not the agent.** Evaluation is the hard part: replayed traffic, an engine that reloads candidates, gates that catch fake wins. The usual gate misses six of seven numerical bugs; public traces overstated one team's capacity by 1.7x. _(rests on C4 at 80%)_
-- **Many models multiply three of the six levers.** Each model needs its own drafter, its own tuned engine and its own cache. Traffic moves to new models within weeks, so spend that work on the few that carry most of it. _(rests on C6 at 70%, C2 at 80%)_
+- **Many models multiply three of the six levers.** Each model needs its own drafter, engine and cache. Open engines tune a new model in about two weeks, gaining up to 2.9x; your work pays in that window, on the models carrying traffic. _(rests on C6 at 70%, C2 at 80%, C7 at 55%)_
 - **A kernel lead lasts weeks, so lean on upstream.** Both open engines run the loop themselves and absorb fixes fast; a general engine came within 6% of a bespoke one. For the long tail of models, upstream is your tuning. _(rests on C7 at 55%)_
 - **Open models are your volume; defaults are the contest.** Open models carry most tokens and about a quarter of spend. On public tasks no shipped router has beaten the best single model, so the harness's default model decides which sessions reach you. _(rests on C9 at 65%)_
 
@@ -116,13 +117,13 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 | | Claim | Confidence | For / mixed / against |
 |---|---|---|---|
 | C1 | Given a harness built by people, coding agents now find and land inference optimisations that survive end-to-end measurement in production engines. | 70% | 11 / 6 / 3 |
-| C2 | The best serving configuration depends on what you are running: the traffic shape, the model and the chip. Kernels and settings tuned for one combination leave double-digit gains unclaimed on another, and all three keep changing. | 80% | 31 / 2 / 0 |
-| C3 | Tuning the stack to one customer's own traffic is worth enough over a well-tuned class-level stack to justify doing it per customer, continuously. | 40% | 5 / 8 / 5 |
-| C4 | Proposing optimisations has become cheap. Knowing whether one is real (on realistic inputs, end to end, with outputs intact) is the binding constraint, together with the human review that still gates what ships. | 80% | 22 / 4 / 0 |
+| C2 | The best serving configuration depends on what you are running: the traffic shape, the model and the chip. Kernels and settings tuned for one combination leave double-digit gains unclaimed on another, and all three keep changing. | 80% | 32 / 2 / 0 |
+| C3 | Tuning the stack to one customer's own traffic is worth enough over a well-tuned class-level stack to justify doing it per customer, continuously. | 40% | 5 / 9 / 5 |
+| C4 | Proposing optimisations has become cheap. Knowing whether one is real (on realistic inputs, end to end, with outputs intact) is the binding constraint, together with the human review that still gates what ships. | 80% | 23 / 4 / 0 |
 | C5 | The optimisation loop is becoming recursive: the models being served power the agents that optimise their serving, the agents improve their own process, and gains compound from one cycle to the next. | 30% | 8 / 3 / 3 |
-| C6 | New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary. | 70% | 11 / 2 / 0 |
-| C7 | Open engines absorb specialised wins within weeks, so a private performance lead over upstream vLLM or SGLang is short-lived. | 55% | 8 / 0 / 2 |
-| C9 | Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made. | 65% | 7 / 6 / 2 |
+| C6 | New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary. | 70% | 11 / 3 / 0 |
+| C7 | Open engines absorb specialised wins within weeks, so a private performance lead over upstream vLLM or SGLang is short-lived. | 55% | 9 / 0 / 2 |
+| C9 | Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made. | 65% | 7 / 7 / 2 |
 | C10 | Tuning an open model to one domain or harness (post-training, reinforcement learning, distillation) works as an inference optimisation: a smaller tuned model does a narrow job at lower cost and latency than a general one. | 45% | 6 / 3 / 3 |
 
 ## The numbers that carry the argument
@@ -169,7 +170,7 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 - Draft length chosen by batch size, best case: 1.15x ([Rui Li and co-authors](https://arxiv.org/abs/2512.22420))
 - Draft length priced each step, steady load: 1.0x ([Doubleword](https://blog.doubleword.ai/adaptive-speculation))
 
-**What choosing the model saves, by who measured it.** Vendors claim a third to three-quarters off. Measured against the best single models, shipped routers have not yet won.
+**What choosing the model saves, by who measured it.** Vendors claim a third to three-quarters off. Hindsight shows 71% is there; no shipped router has yet beaten the best single model.
 
 - OpenRouter Auto Code: 74% ([OpenRouter](https://openrouter.ai/benchmarks/routers))
 - Cursor Router: 60% ([Cursor](https://cursor.com/blog/router))
@@ -178,24 +179,29 @@ Inference is becoming load-aware. Six parts of the stack that used to be set onc
 - Fireworks Nexus: 33% ([Fireworks AI](https://fireworks.ai/blog/fireworks-nexus-open-model-routing))
 - Trained step-level router: 53% ([Pei Yang and 17 others](https://arxiv.org/abs/2605.18859))
 - Seven shipped routers: 0% ([AutoBench](https://huggingface.co/blog/PeterKruger/router-benchmark-2026-10))
+- Perfect choice of one model per task: 71% ([Fireworks AI](https://fireworks.ai/blog/llm-model-routing-deepswe))
 
-## What changed in cycle 2
+**How much faster a new model is served two weeks after release.** Day-zero serving left 1.2 to 2.9x on the table. The open engines collected it within two weeks, least on the flagship chip.
 
-C9 fell from 0.70 to 0.65 and T8 now leans toward a good default model: OpenRouter's public board puts its own routers beside single models from the same pool, and on public coding tasks the best single models beat its coding router on quality and cost. C3 rose from 0.35 to 0.40 as a correction: read first-hand, Modal's 20% drafter gain was class-level and its recipe carried over to other models, not customers. Three teams joined the roster, and X is now searched every sweep at the reader's request.
+- Kimi K3.1 Pro on GB200: 2.9x ([SemiAnalysis](https://inferencex.semianalysis.com/infx/inference/agentic))
+- Kimi K3.1 Pro on B300: 2.4x ([SemiAnalysis](https://inferencex.semianalysis.com/infx/inference/agentic))
+- Kimi K3.1 Pro on MI355X: 1.9x ([SemiAnalysis](https://inferencex.semianalysis.com/infx/inference/agentic))
+- Kimi K3.1 Pro on B200: 1.8x ([SemiAnalysis](https://inferencex.semianalysis.com/infx/inference/agentic))
+- Kimi K3.1 Pro on GB300: 1.17x ([SemiAnalysis](https://inferencex.semianalysis.com/infx/inference/agentic))
 
-- **added** `2026-11-06-openrouter-auto-code-routers`: OpenRouter's router benchmarks and its new coding router. 74% cheaper than Claude Opus 5.5 at similar quality, yet on Deep SWE single models from its own pool beat it on both quality and cost; it switched model about one turn in ten to keep the cache. New row in the routing figure; lever 1 and build step 7 updated.
-- **confidence** `C9`: 0.70 to 0.65: a router vendor's own board, on tasks others wrote, shows shipped routing not beating the best single model, the second such result after AutoBench.
-- **confidence** `C3`: 0.35 to 0.40, a correction: the reported transfer of a recipe between customers was a misreading of Modal, whose recipe carried over between models. Still no same-endpoint comparison.
-- **revised** `2026-09-23-modal-trillion-tokens`: Opened first-hand. The drafter was fine-tuned on the target model's own coding traces for a shared service, so its 20% is class-level tuning. Gist, caveats and the C3 note rewritten; T5 and the course note corrected to match.
-- **tension** `T8`: Now leaning toward a good default model. Its settling condition, a vendor publishing its router against the best fixed model in its pool on tasks someone else chose, has been met once, and the router lost. Held at leaning until live sessions are tested.
-- **tension** `T7`: OpenRouter joins the per-turn side, but in practice it kept the same model nine turns in ten. The lean toward cache boundaries is now stated as what happens in practice.
-- **watch** `W16`: Hit: OpenRouter's board compares routers with single models from the same pool on five public benchmarks. W22 opened, due 2026-12-31, for the same comparison on live sessions with cached-token pricing stated.
-- **watch** `W15`: Miss for the per-customer reading: Modal's drafter was tuned on the target model's coding traces, not on one customer's traffic.
-- **watch** `W18`: Hit: both leads describe loops and are on the roster.
-- **revised**: Open ground: removed the item on comparing a router fairly with the best fixed model, since OpenRouter has now done that on public agentic tasks. Five items remain.
-- **added**: Roster: Infer-forge (an internal agent harness around SGLang), Cerebras (autoresearch on fitting a large model onto consumer GPUs) and an individual's agent-built FPGA engine. AMD's entry now covers Hyperloom, a median 1.73x over stock settings. Point 1 recounted: eleven since October, eighteen before.
-- **course**: Re-judged as of 21 Nov. All four verdicts hold; 'Fits each user' now says 34 to 45% and drops the claim that a recipe moved between customers. The routing implication now says the default model is the contest, resting on C9 at 65%.
-- **model**: At the reader's request, X is a feed, searched through a web search limited to x.com. Recorded in the sweep and steer playbooks, AGENTS.md and the watchlist feeds.
+## What changed in cycle 3
+
+No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries.
+
+- **added** `2026-11-20-agentx-kimi-k31-first-fortnight`: Kimi K3.1 Pro on the public AgentX board, 6 Nov against 20 Nov, computed from the board's API: best throughput per GPU at 50 tok/s per user rose 1.17x on GB300 and 1.8 to 2.9x on four other chips. New chart, day-zero-gap; build step 5's bought and watch rewritten.
+- **added** `2026-11-21-together-prompt-leak`: Together's prompt samples, kept for testing, leaked after an AI coding agent committed a credential; zero retention is now the default for new accounts. Build step 1's watch rewritten to carry it.
+- **added** `2026-09-21-fireworks-frontier-is-a-router`: Fireworks' hindsight router on Deep SWE: 97.6% at $1.88 a task against 74.1% at $6.52 for the best single model; three models get most of it. New ceiling row in the routing chart.
+- **tension** `T7`: Fireworks moves to the once-per-task side: its router now chooses per task, where its earlier product scored every turn. The lean toward cache boundaries now says so.
+- **tension** `T8`: The vendor side now includes the hindsight ceiling, 23 points over the best single model. Lean unchanged: no shipped router has been shown to capture it.
+- **watch** `W1`: Hit: the canonical board is inferencex.semianalysis.com, run from SemiAnalysis's own repository, and the notice calling it unofficial is hidden markup shown only on copies. Baselines recorded for Kimi K3, Kimi K3.1 Pro and GLM-5.3.
+- **watch** `W19`: Not due. Noted that the board now shows how long the open engines take to tune a new model; a provider's own time and cost are still missing.
+- **added**: Roster: LLM4LLM, an academic closed loop from inference script to accepted kernel patch, measured against eager PyTorch. Point 1 recounted: eleven since October, nineteen before.
+- **course**: Re-judged as of 22 Nov; all four verdicts hold. The many-models implication now says the open engines tune a new model in about two weeks, so in-house work pays in that window.
 
 ## Open tensions
 
@@ -213,7 +219,6 @@ C9 fell from 0.70 to 0.65 and T8 now leans toward a good default model: OpenRout
 
 | Due | Check |
 |---|---|
-| 2026-11-22 | Confirm the canonical AgentX scoreboard and record today's top results for Kimi K3, Kimi K3.1 and GLM-5.3 as a baseline. |
 | 2026-11-28 | Have InferenceForge's three SGLang fixes been reproduced by anyone else, or opened as pull requests against upstream SGLang? |
 | 2026-12-01 | Is the Evolving Infra code actually public and runnable at github.com/mit-han-lab/EvolvingInfra? |
 | 2026-12-05 | Does any public AgentX run, by Together or anyone else, match the up-to-2.6x lead Together claims for its compiler? |

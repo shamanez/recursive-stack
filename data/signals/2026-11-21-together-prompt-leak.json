@@ -1,0 +1,34 @@
+{
+  "id": "2026-11-21-together-prompt-leak",
+  "title": "Security event: Prompt leakage for requests in June and July of 2026",
+  "url": "https://www.together.ai/blog/security-event-prompt-leakage-for-requests-in-june-and-july-of-2026",
+  "org": "Together AI",
+  "authors": "Vipul Ved Prakash",
+  "published": "2026-11-21",
+  "added": "2026-11-22",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "Together kept samples of customer prompts, authorised for software testing, in a private repository. While working on a public code repository, an AI coding agent committed a credential to that store; scanning caught and reverted it, but an outside party had already downloaded the samples and tried credentials found in them. Together now checks every pull request for credentials, uses short-lived ones, has changed how it uses coding agents, and makes zero data retention the default for new accounts.",
+  "changes": "Stored traffic is the rig's raw material and a liability. Prompt samples kept for testing are what build step 1 records, and agent-written code exposed them. Zero retention by default also shrinks the traffic a provider may keep per customer, which weighs on C3.",
+  "caveats": "The company's own account of its own incident, with the scope still under review. It does not say what the samples tested, so the link to replay or performance work is an inference. Zero retention is the default only for new accounts; existing customers must turn it on. Nothing says whether a person reviewed the agent's commit.",
+  "numbers": [],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "An agent's commit exposed a credential and only a scan after the fact caught it. What agents ship needs gates beyond speed and correctness."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "After the leak a provider made zero retention the default, so keeping a new customer's traffic to tune on becomes something the customer must allow."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

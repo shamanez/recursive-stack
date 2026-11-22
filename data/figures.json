@@ -305,7 +305,7 @@
     "id": "routing-savings",
     "type": "bars",
     "title": "What choosing the model saves, by who measured it",
-    "takeaway": "Vendors claim a third to three-quarters off. Measured against the best single models, shipped routers have not yet won.",
+    "takeaway": "Vendors claim a third to three-quarters off. Hindsight shows 71% is there; no shipped router has yet beaten the best single model.",
     "unit": "%",
     "groups": [
       {
@@ -315,6 +315,10 @@
       {
         "id": "outside",
         "name": "Measured by someone else"
+      },
+      {
+        "id": "ceiling",
+        "name": "Upper bound, in hindsight"
       }
     ],
     "rows": [
@@ -366,11 +370,81 @@
         "group": "outside",
         "note": "AutoBench: none beat always using a cheap strong model",
         "signal": "2026-10-26-autobench-do-routers-route"
+      },
+      {
+        "label": "Perfect choice of one model per task",
+        "value": 71,
+        "group": "ceiling",
+        "note": "Fireworks on Deep SWE, against the best single model, and 23 points better",
+        "signal": "2026-09-21-fireworks-frontier-is-a-router"
       }
     ],
-    "caption": "Cost reduction at claimed equal quality, each against its own baseline. The baselines differ.",
+    "caption": "Cost reduction at claimed equal quality, each against its own baseline. The baselines differ, and the ceiling is scored in hindsight.",
     "claims": [
       "C9"
+    ],
+    "featured": false
+  },
+  {
+    "id": "day-zero-gap",
+    "type": "bars",
+    "title": "How much faster a new model is served two weeks after release",
+    "takeaway": "Day-zero serving left 1.2 to 2.9x on the table. The open engines collected it within two weeks, least on the flagship chip.",
+    "unit": "x",
+    "reference": 1,
+    "reference_label": "the first day of public runs",
+    "groups": [
+      {
+        "id": "flagship",
+        "name": "NVIDIA's flagship rack"
+      },
+      {
+        "id": "other",
+        "name": "Other chips"
+      }
+    ],
+    "rows": [
+      {
+        "label": "Kimi K3.1 Pro on GB200",
+        "value": 2.9,
+        "group": "other",
+        "note": "7.9k to 23.0k tokens per GPU, same engine both days",
+        "signal": "2026-11-20-agentx-kimi-k31-first-fortnight"
+      },
+      {
+        "label": "Kimi K3.1 Pro on B300",
+        "value": 2.4,
+        "group": "other",
+        "note": "15.3k to 36.6k, after moving to a disaggregated setup",
+        "signal": "2026-11-20-agentx-kimi-k31-first-fortnight"
+      },
+      {
+        "label": "Kimi K3.1 Pro on MI355X",
+        "value": 1.9,
+        "group": "other",
+        "note": "9.2k to 17.3k, after a change of engine",
+        "signal": "2026-11-20-agentx-kimi-k31-first-fortnight"
+      },
+      {
+        "label": "Kimi K3.1 Pro on B200",
+        "value": 1.8,
+        "group": "other",
+        "note": "3.5k to 6.1k",
+        "signal": "2026-11-20-agentx-kimi-k31-first-fortnight"
+      },
+      {
+        "label": "Kimi K3.1 Pro on GB300",
+        "value": 1.17,
+        "group": "flagship",
+        "note": "31.3k to 36.7k",
+        "signal": "2026-11-20-agentx-kimi-k31-first-fortnight"
+      }
+    ],
+    "caption": "Best total tokens per GPU on the public AgentX board at 50 tokens per second per user or faster, 6 Nov against 20 Nov. Computed by this tracker from the board's data.",
+    "claims": [
+      "C6",
+      "C7",
+      "C2"
     ],
     "featured": false
   }

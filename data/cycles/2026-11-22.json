@@ -1,0 +1,105 @@
+{
+  "id": "2026-11-22",
+  "n": 3,
+  "agent": "Claude Code (Opus 5.5)",
+  "deep": false,
+  "summary": "No confidence moved. The public AgentX board, now confirmed as canonical, served Kimi K3.1 Pro 1.2 to 2.9x faster per GPU two weeks after its weights appeared than on day one, which gives build step 5 its first bring-up number and a new chart. Together disclosed that a coding agent's commit leaked stored prompt samples, a caution for the traffic store in step 1, and Fireworks now routes once per task, so T7 leans further toward cache boundaries.",
+  "changes": [
+    {
+      "type": "added",
+      "ref": "2026-11-20-agentx-kimi-k31-first-fortnight",
+      "text": "Kimi K3.1 Pro on the public AgentX board, 6 Nov against 20 Nov, computed from the board's API: best throughput per GPU at 50 tok/s per user rose 1.17x on GB300 and 1.8 to 2.9x on four other chips. New chart, day-zero-gap; build step 5's bought and watch rewritten."
+    },
+    {
+      "type": "added",
+      "ref": "2026-11-21-together-prompt-leak",
+      "text": "Together's prompt samples, kept for testing, leaked after an AI coding agent committed a credential; zero retention is now the default for new accounts. Build step 1's watch rewritten to carry it."
+    },
+    {
+      "type": "added",
+      "ref": "2026-09-21-fireworks-frontier-is-a-router",
+      "text": "Fireworks' hindsight router on Deep SWE: 97.6% at $1.88 a task against 74.1% at $6.52 for the best single model; three models get most of it. New ceiling row in the routing chart."
+    },
+    {
+      "type": "tension",
+      "ref": "T7",
+      "text": "Fireworks moves to the once-per-task side: its router now chooses per task, where its earlier product scored every turn. The lean toward cache boundaries now says so."
+    },
+    {
+      "type": "tension",
+      "ref": "T8",
+      "text": "The vendor side now includes the hindsight ceiling, 23 points over the best single model. Lean unchanged: no shipped router has been shown to capture it."
+    },
+    {
+      "type": "watch",
+      "ref": "W1",
+      "text": "Hit: the canonical board is inferencex.semianalysis.com, run from SemiAnalysis's own repository, and the notice calling it unofficial is hidden markup shown only on copies. Baselines recorded for Kimi K3, Kimi K3.1 Pro and GLM-5.3."
+    },
+    {
+      "type": "watch",
+      "ref": "W19",
+      "text": "Not due. Noted that the board now shows how long the open engines take to tune a new model; a provider's own time and cost are still missing."
+    },
+    {
+      "type": "added",
+      "text": "Roster: LLM4LLM, an academic closed loop from inference script to accepted kernel patch, measured against eager PyTorch. Point 1 recounted: eleven since October, nineteen before."
+    },
+    {
+      "type": "course",
+      "text": "Re-judged as of 22 Nov; all four verdicts hold. The many-models implication now says the open engines tune a new model in about two weeks, so in-house work pays in that window."
+    }
+  ],
+  "swept": [
+    "Inbox empty. Cycle 2 had been written and built on 21 Nov but never committed; it was committed unchanged before this cycle began.",
+    "Due check W1: InferenceX repository README, the dashboard's HTML and its public read API. Rows for Kimi K3, Kimi K3.1 Pro and GLM-5.3 pulled directly; the agent skill the API page offers was not installed.",
+    "Kimi K3.1 Pro board snapshots as of 6, 9 and 13 Nov and latest, compared per chip at 30, 50 and 100 tok/s per user. The pattern held at every floor.",
+    "Feeds since 21 Nov, scanned by a sub-agent: vLLM blog and RFCs, Inferact, LMSYS (through its sitemap), Together, InferenceBench, SemiAnalysis, llm-d, Baseten, arXiv, PyTorch, Modular, OpenRouter, Fireworks, Databricks, llama.cpp, Vals, Doubleword. Candidates kept were opened first-hand. arXiv announces nothing at weekends.",
+    "Queued from cycle 2: LLM4LLM and the Fireworks routing posts, both opened. The Fireworks post dates from 21 Sep, not mid-November.",
+    "X, through web search limited to x.com: agents tuning vLLM and SGLang, and routers between open and frontier models. Neither search returned X posts; the other pages they surfaced are listed below.",
+    "Red-team of C7: searched for private leads over upstream that persisted, and for optimisations kept out of the open engines. Found none this month. The board's K3.1 data shows the open engines closing a 1.2 to 2.9x bring-up gap in about two weeks; the top VR200 rows are NVIDIA's own preview runs on an open engine. C7 holds at 0.55, since its raise condition needs announced private leads matched in public, and W5 is still open.",
+    "Fireworks' docs carry a standard pointer for automated readers to an index file. Ignored."
+  ],
+  "rejected": [
+    {
+      "title": "DeepSeek-V4.1-Flash on vLLM: 5x Agentic Throughput Since Day 0 (Inferact and the vLLM team)",
+      "url": "https://vllm.ai/blog/2026-10-07-deepseek-v41-flash",
+      "reason": "Opened. The same finding as today's board signal, from the engine team: 5.3x under a 150 tok/s per user floor and 1.9x at low concurrency within three weeks, against its own day-zero result. Held to keep today at three signals; a candidate for the day-zero chart on the deep pass."
+    },
+    {
+      "title": "Agent V: Connecting People and Agents for Autonomous Inference (Inferact)",
+      "url": "https://inferact.ai/news/agent-v-connecting-people-and-agents-for-autonomous-inference",
+      "reason": "Opened. Newer internal numbers that agree with the existing Inferact signal: people keep the self-hosted open default in about 88% of sessions (79% before), and open models take 55% of tokens. Supports C9 and T8's lean toward defaults; moves neither. A candidate for T8 on the deep pass."
+    },
+    {
+      "title": "vLLM PR #69157 and RFC #62532: the queueing stall after an async KV pull",
+      "url": "https://github.com/vllm-project/vllm/issues/62532",
+      "reason": "Relayed. On a busy H200 pod over 80% of a KV pull is queueing, by the RFC author's numbers; the PR has no GPU benchmark. A lead for lever 3; moves nothing yet."
+    },
+    {
+      "title": "Meet bison-1 and groundhog-1 (Base Labs, on Baseten)",
+      "url": "https://www.baseten.co/blog/meet-bison-1-and-groundhog-1/",
+      "reason": "Relayed. Narrow models post-trained on Gemma 4 that top a decision index, with no cost or latency comparison against a general frontier model, so it cannot test C10."
+    },
+    {
+      "title": "vLLM RFC #69082: prefix-cache hits that end inside a block",
+      "url": "https://github.com/vllm-project/vllm/issues/69082",
+      "reason": "Relayed. Nothing measured yet."
+    },
+    {
+      "title": "Qwen4 Max on Together AI",
+      "url": "https://www.together.ai/blog/qwen4-max",
+      "reason": "Relayed. A model listing. Cached input is priced at a twentieth of uncached, which fits the cache point and changes nothing."
+    },
+    {
+      "title": "TideCache, FrontierReplay, G-MTP and BlockJack (arXiv, submitted 19 Nov)",
+      "url": null,
+      "reason": "Abstracts relayed. No load baseline for the drafter; FrontierReplay's point that fine-grained caches cost scheduler time under load is a lead for lever 2, and BlockJack, a cross-tenant cache read in vLLM, is a lead on shared caches. To open on the deep pass."
+    },
+    {
+      "title": "Baseten router, LangChain routing numbers and the Tokenless launch, seen in search",
+      "url": "https://fourweekmba.com/ai-baseten-router-nears-claude-opus-5-5-at-72-lower-cost/",
+      "reason": "Not opened. Vendor savings of 64 to 72% against the dearest model, inside the routing chart's vendor range, with no best-single-model baseline."
+    }
+  ],
+  "next_due": "2026-11-23"
+}

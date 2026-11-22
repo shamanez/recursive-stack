@@ -1,0 +1,54 @@
+{
+  "id": "2026-09-21-fireworks-frontier-is-a-router",
+  "title": "The frontier isn't a model. It's a router.",
+  "url": "https://fireworks.ai/blog/llm-model-routing-deepswe",
+  "org": "Fireworks AI",
+  "published": "2026-09-21",
+  "added": "2026-11-22",
+  "kind": "blog",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "Fireworks ran 18 models four times each on 113 Deep SWE tasks and asked what a perfect router would score if it chose one model per task, in hindsight, and kept it for the whole task. The best single model scored 74.1% at $6.52 a task; the hindsight choice 97.6% at $1.88, or 90.3% at $1.45 from open models alone. Three complementary models capture most of it. Its own router chooses per task and is cache-aware.",
+  "changes": "Puts a ceiling under T8: choosing once per task, with no switching, has 23 points and two-thirds of the cost to find, and three models get most of it. Fireworks now routes per task, which moves it to the once-per-session side of T7.",
+  "caveats": "The ceiling is hindsight, scored on the same tasks it picks from, which the authors say biases it upward. Costs were rescaled to the board's published figures because the raw trial costs disagreed. The production figure, 53% lower session cost, has no quality measure and is against Claude Opus 5 alone, not the best single model. The post cites a benchmark finding that routers often fail to beat simple baselines.",
+  "numbers": [
+    {
+      "metric": "Deep SWE pass rate and cost per task, perfect choice of one model per task",
+      "value": "97.6% at $1.88",
+      "baseline": "best single model, GPT-6 Astra: 74.1% at $6.52",
+      "verification": "self-reported",
+      "setup": "18 models, 113 tasks, pass@1 from four rollouts each"
+    },
+    {
+      "metric": "The same, open-weight models only",
+      "value": "90.3% at $1.45",
+      "baseline": "best single model: 74.1% at $6.52",
+      "verification": "self-reported",
+      "setup": "six open models"
+    },
+    {
+      "metric": "Pass rate of the best three models together",
+      "value": "91.2%",
+      "baseline": "74.1% for the best one, 97.6% for all eighteen",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Session cost through its router, own coding traffic",
+      "value": "$7.42 (53% lower)",
+      "baseline": "$15.81 for Claude Opus 5 alone, 2,334 sessions over four weeks",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "Open and frontier models are complementary enough that a perfect choice per task beats any one model by 23 points, and open models alone beat every closed one. No shipped router has been shown to capture it."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

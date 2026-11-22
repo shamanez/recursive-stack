@@ -159,26 +159,26 @@
     "question": "Choose the model once per session, or for every request?",
     "sides": [
       {
-        "held_by": "Databricks, Together, GitHub",
+        "held_by": "Databricks, Together, GitHub, Fireworks",
         "position": "Once, at the start, or only where no cache is lost: session start, compaction, sub-agent launch. Switching mid-session re-reads the whole context at full price.",
         "signals": [
           "2026-08-13-databricks-smart-routing",
           "2026-10-05-together-link",
-          "2026-06-17-github-copilot-auto-routing"
+          "2026-06-17-github-copilot-auto-routing",
+          "2026-09-21-fireworks-frontier-is-a-router"
         ]
       },
       {
-        "held_by": "Cursor, Fireworks, OpenRouter",
+        "held_by": "Cursor, OpenRouter",
         "position": "Every request or turn, with the cost of the cache miss priced into the decision. A session that gets harder should not be stuck on the model it started with.",
         "signals": [
           "2026-07-22-cursor-router",
-          "2026-07-26-fireworks-nexus",
           "2026-11-06-openrouter-auto-code-routers"
         ]
       }
     ],
     "settles_when": "An independent agentic benchmark with caching priced in compares the two on the same tasks. One early result has a trained per-step router halving cost.",
-    "lean": "Toward cache boundaries in practice. A router that decides every turn and prices the cache still kept the same model nine turns in ten, and nine-tenths of agent tokens are cached re-reads.",
+    "lean": "Toward cache boundaries in practice. A router that decides every turn and prices the cache still kept the same model nine turns in ten, and Fireworks moved its router from every turn to once per task.",
     "claims": [
       "C9",
       "C2"
@@ -191,11 +191,12 @@
     "sides": [
       {
         "held_by": "Router vendors",
-        "position": "Routing cuts cost by 30 to 60% at equal quality, by their own measurements.",
+        "position": "Routing cuts cost by a third to three-quarters at equal quality, by their own measurements, and a perfect choice per task would beat the best single model by 23 points.",
         "signals": [
           "2026-07-22-cursor-router",
           "2026-08-13-databricks-smart-routing",
-          "2026-07-26-fireworks-nexus"
+          "2026-07-26-fireworks-nexus",
+          "2026-09-21-fireworks-frontier-is-a-router"
         ]
       },
       {

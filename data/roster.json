@@ -324,6 +324,17 @@
       "gist": "Hyperloom profiles a vLLM or SGLang server, searches settings and agent-written kernels, keeps only end-to-end wins, and stores recipes; a median 1.73x over stock on AMD chips.",
       "url": "https://rocm.blogs.amd.com/software-tools-optimization/hyperloom-optimization/README.html",
       "read": "opened"
+    },
+    {
+      "who": "Hui Zeng and co-authors",
+      "system": "LLM4LLM",
+      "kind": "Academic group",
+      "when": "2026-08-22",
+      "means": "agent",
+      "stage": "research",
+      "gist": "An agent profiles an inference script, writes kernels for its dominant phases and keeps patches only if the whole model speeds up. 3.9 to 7x over eager PyTorch.",
+      "url": "https://arxiv.org/abs/2608.21836",
+      "read": "opened"
     }
   ]
 }

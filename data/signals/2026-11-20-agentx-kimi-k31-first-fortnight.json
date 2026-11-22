@@ -1,0 +1,91 @@
+{
+  "id": "2026-11-20-agentx-kimi-k31-first-fortnight",
+  "title": "Kimi K3.1 Pro on AgentX: the first fifteen days of public runs",
+  "url": "https://inferencex.semianalysis.com/infx/inference/agentic",
+  "org": "SemiAnalysis (InferenceX)",
+  "published": "2026-11-20",
+  "added": "2026-11-22",
+  "kind": "benchmark",
+  "layers": [
+    "engine",
+    "serving"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "The public AgentX board has run Kimi K3.1 Pro on five chips since its open weights appeared on 5 November. This tracker compared the board's best result per chip at 50 tokens per second per user or faster on 6 November with the same on 20 November. Throughput per GPU rose 1.2x on GB300 and 1.8 to 2.9x on B200, B300, GB200 and MI355X, mostly from switching engine and moving to disaggregated setups.",
+  "changes": "A first public answer to how long tuned serving takes after a model's release. Day-zero serving left 1.2 to 2.9x on the table and the open engines collected it within about two weeks, least on the flagship chip. A provider serving a new model on day zero runs well below its later speed.",
+  "caveats": "Computed by this tracker from the board's public API; SemiAnalysis has not published this comparison. Best per chip at a speed floor mixes engines, precisions and topologies, so it tracks the best setup available, not one engine improving. Total tokens per GPU is mostly cached input. Day zero here is the open weights, twelve days after the API launch, and engine teams may have had early access.",
+  "numbers": [
+    {
+      "metric": "Best total tokens per GPU at 50 tok/s per user or faster, GB300",
+      "value": "36.7k (1.17x)",
+      "baseline": "31.3k on 6 Nov, the first day of public runs",
+      "verification": "public-run",
+      "setup": "GB300 NVL72, disaggregated; Dynamo with SGLang, then with vLLM"
+    },
+    {
+      "metric": "The same, GB200",
+      "value": "23.0k (2.9x)",
+      "baseline": "7.9k on 6 Nov",
+      "verification": "public-run",
+      "setup": "GB200 NVL72, Dynamo with SGLang, disaggregated both times"
+    },
+    {
+      "metric": "The same, B300",
+      "value": "36.6k (2.4x)",
+      "baseline": "15.3k on 6 Nov, SGLang on one node",
+      "verification": "public-run",
+      "setup": "Dynamo with vLLM, disaggregated across nodes"
+    },
+    {
+      "metric": "The same, MI355X",
+      "value": "17.3k (1.9x)",
+      "baseline": "9.2k on 6 Nov, SGLang",
+      "verification": "public-run",
+      "setup": "TokenSpeed, an open engine, by 20 Nov"
+    },
+    {
+      "metric": "The same, B200",
+      "value": "6.1k (1.8x)",
+      "baseline": "3.5k on 6 Nov, vLLM",
+      "verification": "public-run",
+      "setup": "SGLang by 11 Nov"
+    },
+    {
+      "metric": "Best per chip at 100 tok/s per user or faster",
+      "value": "1.3 to 3.6x",
+      "baseline": "the same chips on 6 Nov",
+      "verification": "public-run",
+      "setup": "GB300, GB200, B300, MI355X"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C6",
+      "direction": "complicates",
+      "note": "The churn is costly: a new model ran at a third to five-sixths of its later throughput in its first fortnight. But engine teams and chip partners closed the gap in about two weeks without a fully automated loop."
+    },
+    {
+      "claim": "C7",
+      "direction": "supports",
+      "note": "The open engines tuned a new model to most of its gain, in public, within two weeks, so a private lead on a new model has about that long."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The flagship chip started within 17% of its later result while the others started 1.8 to 2.9x short. Early tuning for one chip did not carry to the rest."
+    }
+  ],
+  "also": [
+    {
+      "label": "Board data as of 6 Nov (API)",
+      "url": "https://inferencex.semianalysis.com/api/v1/benchmarks?model=Kimi-K3.1-Pro&date=2026-11-06"
+    },
+    {
+      "label": "Board data, latest (API)",
+      "url": "https://inferencex.semianalysis.com/api/v1/benchmarks?model=Kimi-K3.1-Pro"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}
