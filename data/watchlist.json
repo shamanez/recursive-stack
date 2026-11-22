@@ -179,8 +179,9 @@
       "claims": [
         "C3"
       ],
-      "status": "open",
-      "lens": true
+      "status": "miss",
+      "lens": true,
+      "resolution": "Opened first-hand: the drafter was fine-tuned on coding traces the target model produced, for a shared coding service, and the recipe was reused across models. Nothing says it saw one customer's traffic, so the 20% is class-level."
     },
     {
       "id": "W16",
@@ -191,8 +192,9 @@
       "claims": [
         "C9"
       ],
-      "status": "open",
-      "lens": true
+      "status": "hit",
+      "lens": true,
+      "resolution": "OpenRouter's public board runs its routers beside single models from the same pool on five public benchmarks. On Deep SWE several single models beat its coding router on quality and cost, and it says no router beats the best single model everywhere. W22 carries the live-session question."
     },
     {
       "id": "W17",
@@ -214,8 +216,9 @@
       "claims": [
         "C1"
       ],
-      "status": "open",
-      "lens": true
+      "status": "hit",
+      "lens": true,
+      "resolution": "Both describe loops and are now on the roster: Infer-forge, an internal agent harness around SGLang (28 Aug), and Cerebras's autoresearch runs on fitting a large model onto consumer GPUs (19 Mar)."
     },
     {
       "id": "W19",
@@ -251,6 +254,18 @@
       "claims": [
         "C6",
         "C2"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W22",
+      "what": "A router compared with the best single model in its pool on live agent sessions rather than benchmark tasks, with the pricing of cached tokens stated.",
+      "why": "On public tasks a vendor's own router lost to the best single models. Live sessions vary more, which is the case routing is meant to win. Whether a provider should build a router or simply pick its default well turns on this.",
+      "opened": "2026-11-21",
+      "due": "2026-12-31",
+      "claims": [
+        "C9"
       ],
       "status": "open",
       "lens": true
@@ -361,6 +376,11 @@
       "name": "Doubleword blog",
       "url": "https://blog.doubleword.ai",
       "why": "A provider working out the economics of speculation per architecture, with an open simulator. A follow-up on building the adaptive policy is implied."
+    },
+    {
+      "name": "X (through web search)",
+      "url": "https://x.com",
+      "why": "Maintainers, providers and labs often post launches and numbers here first. Search it with a web search restricted to x.com; X's own search needs a sign-in, and sweeps do not sign in. A post is a lead: open what it links to."
     }
   ]
 }

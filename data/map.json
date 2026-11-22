@@ -11,7 +11,7 @@
       "listens": "How hard the first task of the session looks, live load and price on each model, and whether a cache would be lost by switching.",
       "clock": "request",
       "status": "working",
-      "bought": "Vendors report 33 to 60% lower cost at equal quality. Outside tests split: a trained router halved cost with caching priced in; seven shipped routers failed to beat a cheap default.",
+      "bought": "Vendors report 33 to 74% lower cost, each against its own baseline. Against the best single models, one vendor's router lost on its own board and seven shipped routers failed to beat a cheap default outside. A trained research router halved cost.",
       "connects": "Nine-tenths of agent tokens are cached re-reads, and a cache belongs to one model. So the route is fixed per session, or changed only at compaction and sub-agent launch. Every model you route to needs its own drafter and tuned engine.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
@@ -20,7 +20,8 @@
         "2026-10-08-openrouter-cache-is-crucial",
         "2026-09-22-openrouter-token-state-of-play",
         "2026-10-26-autobench-do-routers-route",
-        "2026-05-14-twinrouterbench"
+        "2026-05-14-twinrouterbench",
+        "2026-11-06-openrouter-auto-code-routers"
       ],
       "claims": [
         "C9"
@@ -389,11 +390,12 @@
         "model",
         "weights"
       ],
-      "do": "Send each session to the cheapest model that can do it, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader.",
-      "bought": "Routing: 33 to 60% lower cost by vendors' accounts, disputed outside. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.",
-      "watch": "No shipped router beat a cheap default in one outside test. A tuned model needs its own drafter and engine, and dies when its base model is withdrawn, sometimes within weeks.",
+      "do": "Start from the best single model for the job and route only where the work is varied, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader.",
+      "bought": "Routing: 33 to 74% lower cost by vendors' accounts; on public tasks, no shipped router has yet beaten the best single model. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.",
+      "watch": "On its board, one vendor's router lost to single models from its pool; nobody has tested on live sessions. A tuned model needs its own drafter and engine, and dies when its base model is withdrawn.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
+        "2026-11-06-openrouter-auto-code-routers",
         "2026-10-26-autobench-do-routers-route",
         "2026-08-26-harvey-tenet",
         "2026-11-18-datadog-fine-tune-baseten",
@@ -404,6 +406,11 @@
           "label": "TwinRouterBench",
           "url": "https://arxiv.org/abs/2605.18859",
           "note": "Scores a router step by step with prompt caching priced in. Use it before trusting a router."
+        },
+        {
+          "label": "OpenRouter router benchmarks",
+          "url": "https://openrouter.ai/benchmarks/routers",
+          "note": "Routers beside single models from the same pool on public tasks. Read it per benchmark, not the averaged chart."
         },
         {
           "label": "Agentic RL recipe",
@@ -513,20 +520,6 @@
       ],
       "signals": [
         "2026-10-02-baseten-agentic-engine"
-      ]
-    },
-    {
-      "head": "A router against the best fixed model, fairly",
-      "text": "Vendors report large savings; an outside test found none. Nobody has compared a shipped router with the best single model in its pool on agentic work with caching priced in.",
-      "claims": [
-        "C9"
-      ],
-      "checks": [
-        "W16"
-      ],
-      "signals": [
-        "2026-10-26-autobench-do-routers-route",
-        "2026-05-14-twinrouterbench"
       ]
     },
     {

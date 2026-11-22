@@ -27,6 +27,10 @@ new source did, so treat it as the highest-priority input there is.
   (weight who keeps the gains and which leads last).
 - The repository and the page are **public**, at their request, so they can share
   the link.
+- They want **X (Twitter) searched** alongside blogs and papers: maintainers,
+  providers and labs often post there first. Sweeps reach it through a web search
+  limited to x.com and open single posts directly; X's own search needs a sign-in,
+  and sweeps never sign in.
 
 The current wording of their framing lives in `data/course.json`
 (`reader_framing`, `position`).

@@ -3,6 +3,17 @@
   "recent_from": "2026-10-01",
   "entries": [
     {
+      "who": "Ankit Gupta",
+      "system": "Agent-built FPGA inference engine",
+      "kind": "Independent researcher",
+      "when": "2026-11-20",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A coding agent built an LLM engine on a cloud FPGA for a ternary model, then sped it 33x over its own first build, spending $10k on tokens.",
+      "url": "https://ankitg.me/blog/vibecoding-inference-chip/",
+      "read": "opened"
+    },
+    {
       "who": "Inferact",
       "system": "Agent V",
       "kind": "Inference provider, maintains vLLM",
@@ -160,6 +171,17 @@
       "read": "opened"
     },
     {
+      "who": "Tianyu Zhang and co-authors",
+      "system": "Infer-forge",
+      "kind": "Industry serving team, affiliation not stated",
+      "when": "2026-08-28",
+      "means": "agent",
+      "stage": "production",
+      "gist": "An internal harness runs SGLang work as agent task loops with fixed contracts and gates. Up to nine ran at once; verification caught a fake 5.7% kernel win.",
+      "url": "https://www.lmsys.org/blog/2026-08-28-infer-forge-loop-engineering",
+      "read": "opened"
+    },
+    {
       "who": "Asari AI",
       "system": "Self-improving agents",
       "kind": "Startup",
@@ -259,6 +281,17 @@
       "read": "relayed"
     },
     {
+      "who": "Cerebras",
+      "system": "Autoresearch experiments",
+      "kind": "Chip vendor",
+      "when": "2026-03-19",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Pointed an autoresearch loop at fitting a trillion-parameter model on consumer GPUs, not its own cloud. Left alone, the agent drifted to its own question.",
+      "url": "https://www.cerebras.ai/blog/how-to-stop-your-autoresearch-loop-from-cheating",
+      "read": "opened"
+    },
+    {
       "who": "Stanford",
       "system": "Astra",
       "kind": "Academic group",
@@ -282,14 +315,14 @@
     },
     {
       "who": "AMD",
-      "system": "GEAK",
+      "system": "GEAK and Hyperloom",
       "kind": "Chip vendor",
       "when": "2025-07-30",
-      "updated": "2026-07-23",
+      "updated": "2026-09-21",
       "means": "agent",
       "stage": "research",
-      "gist": "Profiles a vLLM or SGLang server on AMD chips, ranks kernels by share of GPU time, and keeps only end-to-end wins, reporting 25 to 108% on five models.",
-      "url": "https://www.amd.com/en/developer/resources/technical-articles/2026/geak-v4.html",
+      "gist": "Hyperloom profiles a vLLM or SGLang server, searches settings and agent-written kernels, keeps only end-to-end wins, and stores recipes; a median 1.73x over stock on AMD chips.",
+      "url": "https://rocm.blogs.amd.com/software-tools-optimization/hyperloom-optimization/README.html",
       "read": "opened"
     }
   ]

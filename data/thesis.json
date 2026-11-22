@@ -15,8 +15,8 @@
       "more": "map"
     },
     {
-      "head": "Ten teams have announced the same loop since October",
-      "text": "Agents that profile an engine, rewrite part of it, measure, and keep what wins. Providers, both open engines, academics and one customer. Fourteen more teams described versions earlier.",
+      "head": "Eleven teams have announced the same loop since October",
+      "text": "Agents that profile an engine, rewrite part of it, measure, and keep what wins. Providers, both open engines, academics, one customer and one individual. Eighteen more teams described versions earlier.",
       "signals": [
         "2026-11-inferact-autonomous-inference-system",
         "2026-11-04-together-compiler",
@@ -102,12 +102,17 @@
       "statement": "Tuning the stack to one customer's own traffic is worth enough over a well-tuned class-level stack to justify doing it per customer, continuously.",
       "plain": "Your workload gets its own engine build. This is the part of user-workload-aware that is still a bet.",
       "why": "It decides whether the value sits with whoever holds each customer's traffic, or in shared engines that everyone gets for free.",
-      "confidence": 0.35,
+      "confidence": 0.4,
       "history": [
         {
           "cycle": "2026-11-19",
           "confidence": 0.35,
           "why": "Founding estimate. The like-for-like numbers that exist are 20 to 45%, recipes are reported to transfer between customers, and a general engine came within 6% of a bespoke one. The case for is that a bespoke engine now costs a couple of hundred GPU-hours."
+        },
+        {
+          "cycle": "2026-11-21",
+          "confidence": 0.4,
+          "why": "Correction after reading Modal first-hand. Its 20% came from tuning a drafter to the coding-agent class, and its recipe carried over to other models, not customers. One founding reason against was a misreading. Per-customer drafter gains are 34 to 45% on different baselines; there is still no same-endpoint comparison."
         }
       ],
       "raise_if": "A provider publishes same-endpoint numbers showing per-customer tuning beating its own class-level stack by more than about 1.5x, or the cost of a bespoke engine keeps falling.",
@@ -211,12 +216,17 @@
       "statement": "Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made.",
       "plain": "Nobody picks one model any more. Something picks per session, and it cannot change its mind mid-session without paying to re-read everything.",
       "why": "For a provider this sets what you serve. Open models carry most of the tokens and about a quarter of the money, and the routing decision is a product you can own or lose to the harness.",
-      "confidence": 0.7,
+      "confidence": 0.65,
       "history": [
         {
           "cycle": "2026-11-19",
           "confidence": 0.7,
           "why": "Opened when the reader widened the frame. Coexistence is measured on two gateways and shipped by five products. Held down because an independent test found routers do not beat a fixed cheap model, and a static swap may capture most of the saving."
+        },
+        {
+          "cycle": "2026-11-21",
+          "confidence": 0.65,
+          "why": "A router vendor's own public board shows single models from its pool beating its coding router on quality and cost on public coding tasks, a second result after AutoBench. The cache part holds: that router stayed on one model nine turns in ten."
         }
       ],
       "raise_if": "An independent agentic benchmark, with caching priced in, shows a shipped router beating the best fixed model on cost at equal quality.",

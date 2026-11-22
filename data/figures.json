@@ -305,7 +305,7 @@
     "id": "routing-savings",
     "type": "bars",
     "title": "What choosing the model saves, by who measured it",
-    "takeaway": "Vendors report a third to three-fifths off. Outside, a trained router halved cost; no shipped router beat a cheap default.",
+    "takeaway": "Vendors claim a third to three-quarters off. Measured against the best single models, shipped routers have not yet won.",
     "unit": "%",
     "groups": [
       {
@@ -318,6 +318,13 @@
       }
     ],
     "rows": [
+      {
+        "label": "OpenRouter Auto Code",
+        "value": 74,
+        "group": "vendor",
+        "note": "against Claude Opus 5.5, the dearest model in its pool",
+        "signal": "2026-11-06-openrouter-auto-code-routers"
+      },
       {
         "label": "Cursor Router",
         "value": 60,

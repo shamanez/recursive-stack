@@ -1,0 +1,137 @@
+{
+  "id": "2026-11-21",
+  "n": 2,
+  "agent": "Claude Code (Opus 5.5)",
+  "deep": false,
+  "summary": "C9 fell from 0.70 to 0.65 and T8 now leans toward a good default model: OpenRouter's public board puts its own routers beside single models from the same pool, and on public coding tasks the best single models beat its coding router on quality and cost. C3 rose from 0.35 to 0.40 as a correction: read first-hand, Modal's 20% drafter gain was class-level and its recipe carried over to other models, not customers. Three teams joined the roster, and X is now searched every sweep at the reader's request.",
+  "changes": [
+    {
+      "type": "added",
+      "ref": "2026-11-06-openrouter-auto-code-routers",
+      "text": "OpenRouter's router benchmarks and its new coding router. 74% cheaper than Claude Opus 5.5 at similar quality, yet on Deep SWE single models from its own pool beat it on both quality and cost; it switched model about one turn in ten to keep the cache. New row in the routing figure; lever 1 and build step 7 updated."
+    },
+    {
+      "type": "confidence",
+      "ref": "C9",
+      "text": "0.70 to 0.65: a router vendor's own board, on tasks others wrote, shows shipped routing not beating the best single model, the second such result after AutoBench."
+    },
+    {
+      "type": "confidence",
+      "ref": "C3",
+      "text": "0.35 to 0.40, a correction: the reported transfer of a recipe between customers was a misreading of Modal, whose recipe carried over between models. Still no same-endpoint comparison."
+    },
+    {
+      "type": "revised",
+      "ref": "2026-09-23-modal-trillion-tokens",
+      "text": "Opened first-hand. The drafter was fine-tuned on the target model's own coding traces for a shared service, so its 20% is class-level tuning. Gist, caveats and the C3 note rewritten; T5 and the course note corrected to match."
+    },
+    {
+      "type": "tension",
+      "ref": "T8",
+      "text": "Now leaning toward a good default model. Its settling condition, a vendor publishing its router against the best fixed model in its pool on tasks someone else chose, has been met once, and the router lost. Held at leaning until live sessions are tested."
+    },
+    {
+      "type": "tension",
+      "ref": "T7",
+      "text": "OpenRouter joins the per-turn side, but in practice it kept the same model nine turns in ten. The lean toward cache boundaries is now stated as what happens in practice."
+    },
+    {
+      "type": "watch",
+      "ref": "W16",
+      "text": "Hit: OpenRouter's board compares routers with single models from the same pool on five public benchmarks. W22 opened, due 2026-12-31, for the same comparison on live sessions with cached-token pricing stated."
+    },
+    {
+      "type": "watch",
+      "ref": "W15",
+      "text": "Miss for the per-customer reading: Modal's drafter was tuned on the target model's coding traces, not on one customer's traffic."
+    },
+    {
+      "type": "watch",
+      "ref": "W18",
+      "text": "Hit: both leads describe loops and are on the roster."
+    },
+    {
+      "type": "revised",
+      "text": "Open ground: removed the item on comparing a router fairly with the best fixed model, since OpenRouter has now done that on public agentic tasks. Five items remain."
+    },
+    {
+      "type": "added",
+      "text": "Roster: Infer-forge (an internal agent harness around SGLang), Cerebras (autoresearch on fitting a large model onto consumer GPUs) and an individual's agent-built FPGA engine. AMD's entry now covers Hyperloom, a median 1.73x over stock settings. Point 1 recounted: eleven since October, eighteen before."
+    },
+    {
+      "type": "course",
+      "text": "Re-judged as of 21 Nov. All four verdicts hold; 'Fits each user' now says 34 to 45% and drops the claim that a recipe moved between customers. The routing implication now says the default model is the contest, resting on C9 at 65%."
+    },
+    {
+      "type": "model",
+      "text": "At the reader's request, X is a feed, searched through a web search limited to x.com. Recorded in the sweep and steer playbooks, AGENTS.md and the watchlist feeds."
+    }
+  ],
+  "swept": [
+    "Inbox empty; the reader sent an X post in conversation and asked that X be searched. X's own search needs a sign-in, which sweeps never do, so X was searched through web search limited to x.com and single posts were opened directly.",
+    "X searches: agents optimising inference engines; inference companies built on open engines; model routers and caching; speculative decoding under load and upstream kernels.",
+    "Due checks W15 and W18: Modal's post, the LMSYS Infer-forge post and the Cerebras autoresearch post, all opened first-hand.",
+    "Feeds since 20 Nov, scanned by a sub-agent: vLLM blog and RFCs, Inferact, LMSYS, Together, AgentX, SemiAnalysis, InferenceBench, llm-d, Baseten, arXiv, PyTorch, Modular, OpenRouter, Fireworks, Databricks, llama.cpp, Vals, Doubleword. LMSYS, InferenceBench rows, AgentX dates and Baseten dates could not be fully read. Candidates kept were opened first-hand.",
+    "Roster leads from the X post and the feed scan: RadixArk, FriendliAI, Novita AI, Hyperloom, ServerBench, an FPGA engine post.",
+    "Red-team of C6: looked for architectures converging or engines covering new models at release without automation. Day-zero support is now routine through early access, and most flagships share mixture-of-experts and inherited attention designs, but attention still diverges and day-zero is not tuned. C6 holds at 0.70.",
+    "The Fireworks changelog still carries a line asking automated readers to fetch its docs index, and the FPGA post quotes prompts its author gave his agent. Both ignored."
+  ],
+  "rejected": [
+    {
+      "title": "Sonnet Xu on X: companies built on open-source inference projects",
+      "url": "https://x.com/sonnet_xu/status/2123773103436341663",
+      "reason": "Sent by the reader. A map of business models with no numbers. An Inferact maintainer replied that the engine ships upstream and the company's edge is control and continuous optimisation, which fits C7 but is one line. Led to today's X searches."
+    },
+    {
+      "title": "RadixArk launch (the SGLang company)",
+      "url": "https://x.com/radixark/status/2051648113014882586",
+      "reason": "Funding news. The SGLang team's loop is already on the roster."
+    },
+    {
+      "title": "FriendliAI engine pages",
+      "url": "https://friendli.ai/periflow",
+      "reason": "Seen in search, not opened. Hand-built kernels; no agent loop described."
+    },
+    {
+      "title": "Scaling Kimi inference with DSpark speculative decoding in vLLM (Novita AI)",
+      "url": "https://novita.ai/blog/kimi-k2-dspark-speculative-decoding-throughput/",
+      "reason": "Opened. 2.55x at batch size 1 only, so it cannot answer W20. Novita calls DSpark its own method; the tracker credits the DSpark paper's authors, to be reconciled on the deep pass."
+    },
+    {
+      "title": "ServerBench: can coding agents design specialised LLM serving systems? (arXiv 2611.06841)",
+      "url": "https://arxiv.org/abs/2611.06841",
+      "reason": "Abstract opened. A benchmark, so not a roster entry, as with InferenceBench. Best run 4.87x the vLLM reference on value per dollar, but only 22 of 33 runs gave a verified system: support for C4, which is already at 0.80."
+    },
+    {
+      "title": "Comment on vLLM RFC #61698: cheap correctness probes for quantised KV caches",
+      "url": "https://github.com/vllm-project/vllm/issues/61698",
+      "reason": "Relayed. A logprob gate passed a KV-cache config that failed every cached-path canary. Another case for the C4 numerical-gate signal; moves nothing."
+    },
+    {
+      "title": "METR Q4 2026 capability update",
+      "url": "https://metr.org/blog/2026-11-20-q4-2026-capability-update/",
+      "reason": "Relayed. AI R&D on training, not inference; nothing on compounding in serving."
+    },
+    {
+      "title": "Inkling 2 Mini day-zero support in vLLM",
+      "url": "https://vllm.ai/blog/2026-11-20-inkling2-mini",
+      "reason": "Relayed. Another day-zero launch with no time or cost given (W19)."
+    },
+    {
+      "title": "LLM4LLM (arXiv 2608.21836) and Fireworks posts of 17 and 18 Nov on choosing and combining models",
+      "url": null,
+      "reason": "Seen in the feed report, not opened. Queued for the next sweep: LLM4LLM for the roster, the Fireworks posts against today's C9 move."
+    },
+    {
+      "title": "Factory Router and Devin Fusion, seen on X",
+      "url": "https://x.com/rohanpaul_ai/status/2061868407130329470",
+      "reason": "Not opened. Vendor savings of 20 to 40% with no single-model baseline; the routing figure already shows the vendor range."
+    },
+    {
+      "title": "vLLM against SGLang (Red Hat) and LLM architecture surveys",
+      "url": "https://developers.redhat.com/articles/2026/10/14/vllm-vs-sglang-choosing-the-right-inference-engine-for-your-workload",
+      "reason": "Seen in search for the C6 red-team, not opened. Day-zero support through early access, and partial convergence on mixture-of-experts; neither shows tuned serving at release without automation."
+    }
+  ],
+  "next_due": "2026-11-22"
+}

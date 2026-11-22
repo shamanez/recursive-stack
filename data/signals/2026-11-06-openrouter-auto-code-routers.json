@@ -1,0 +1,46 @@
+{
+  "id": "2026-11-06-openrouter-auto-code-routers",
+  "title": "Model routing benchmarks, and the new Auto and Auto Code routers",
+  "url": "https://openrouter.ai/benchmarks/routers",
+  "org": "OpenRouter",
+  "published": "2026-11-06",
+  "added": "2026-11-21",
+  "kind": "benchmark",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "OpenRouter rebuilt its router and added one for coding agents. It decides every turn from eleven signals plus live price and cache state, but switches only when the gain beats the cache it gives up: in beta it kept the same model for nearly nine turns in ten. A public board runs its routers beside single models from the same pool on five public benchmarks.",
+  "changes": "The comparison T8 asked for, from a router vendor. Its coding router costs 74% less than Claude Opus 5.5 at similar quality, but on Deep SWE several single models from its pool beat it on both quality and cost, and OpenRouter itself says no router beats the best single model everywhere.",
+  "caveats": "Run by the vendor, on tasks others wrote. Quality on the overview chart is averaged over whichever benchmarks each entry completed, and many single-model baselines skip some, so compare per benchmark. Costs are recorded per task and the board tracks cache hits, but how cached tokens are priced is not stated. Benchmark tasks are not live sessions. Found through a post on X.",
+  "numbers": [
+    {
+      "metric": "Cost per task of the coding router at similar quality",
+      "value": "74% lower",
+      "baseline": "Claude Opus 5.5, the dearest model in its pool, across five benchmarks",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Deep SWE score and cost per task, coding router",
+      "value": "74.3% at $1.98",
+      "baseline": "single models from the same pool: Claude Sonnet 5.5 at 77.8% for $0.40, Kimi K3.1 Pro at 77.9% for $0.85",
+      "verification": "public-run"
+    },
+    {
+      "metric": "Agent turns that stayed on the same model",
+      "value": "nearly 9 in 10",
+      "baseline": "all agent turns in the beta",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "challenges",
+      "note": "A router vendor's own board shows single models from its pool beating its coding router on public coding tasks. The cache part holds: even a router that decides every turn switched about one turn in ten."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

@@ -54,6 +54,11 @@ Before reading anything new:
 - Work through `feeds` in `data/watchlist.json`, looking only at what is new since
   the last cycle. On a daily cadence that is usually a handful of posts.
 - Run two or three fresh searches of your own for the last few days.
+- Search X, at the reader's request. Run one or two web searches limited to
+  `x.com` for the last few days: maintainers, providers and labs announcing a
+  loop, a number or a launch. A single post opens without signing in; X's own
+  search does not, so never sign in. Treat a post as a lead: open what it links
+  to, and cite the post only when it carries the number itself.
 - **Red-team one claim, every sweep.** Rotate through `focus_claims` in
   `data/course.json` first, then the rest, highest confidence first. Search
   specifically for evidence *against* it: critiques, failed replications,

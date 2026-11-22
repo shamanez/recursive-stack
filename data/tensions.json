@@ -130,7 +130,7 @@
     "sides": [
       {
         "held_by": "Modal, vLLM",
-        "position": "Class level is most of it. Per-customer tuning was worth about 20% like for like, the recipe transferred to other customers, and a general engine came within 6% of a bespoke one.",
+        "position": "Class level is most of it. Tuning a drafter to the coding-agent class was worth about 20%, and a general engine came within 6% of a bespoke one.",
         "signals": [
           "2026-09-23-modal-trillion-tokens",
           "2026-09-08-vllm-agentx",
@@ -168,16 +168,17 @@
         ]
       },
       {
-        "held_by": "Cursor, Fireworks",
+        "held_by": "Cursor, Fireworks, OpenRouter",
         "position": "Every request or turn, with the cost of the cache miss priced into the decision. A session that gets harder should not be stuck on the model it started with.",
         "signals": [
           "2026-07-22-cursor-router",
-          "2026-07-26-fireworks-nexus"
+          "2026-07-26-fireworks-nexus",
+          "2026-11-06-openrouter-auto-code-routers"
         ]
       }
     ],
     "settles_when": "An independent agentic benchmark with caching priced in compares the two on the same tasks. One early result has a trained per-step router halving cost.",
-    "lean": "Toward cache boundaries. The team that tried per-request routing and published why moved away from it, and nine-tenths of agent tokens are cached re-reads.",
+    "lean": "Toward cache boundaries in practice. A router that decides every turn and prices the cache still kept the same model nine turns in ten, and nine-tenths of agent tokens are cached re-reads.",
     "claims": [
       "C9",
       "C2"
@@ -198,11 +199,12 @@
         ]
       },
       {
-        "held_by": "Independent tests",
-        "position": "No router beat always calling a cheap strong model, several collapsed to one model, and a fixed open model already tied a frontier one at two-thirds the cost.",
+        "held_by": "Independent tests, and one vendor's own board",
+        "position": "No router beat always calling a cheap strong model, several collapsed to one model, and on one vendor's own public board single models from its pool beat its coding router.",
         "signals": [
           "2026-10-26-autobench-do-routers-route",
-          "2026-07-08-databricks-coding-agent-benchmark"
+          "2026-07-08-databricks-coding-agent-benchmark",
+          "2026-11-06-openrouter-auto-code-routers"
         ]
       }
     ],
@@ -210,7 +212,8 @@
     "claims": [
       "C9"
     ],
-    "status": "open"
+    "status": "leaning",
+    "lean": "Toward a good default model. The first vendor to publish its router beside single models from its own pool, on public tasks, lost to the best of them and says so. Live sessions are untested."
   },
   {
     "id": "T9",

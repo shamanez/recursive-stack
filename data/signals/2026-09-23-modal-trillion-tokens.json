@@ -13,9 +13,9 @@
   ],
   "mechanism": "hand",
   "venue": "dedicated",
-  "gist": "A stack tuned for one customer's coding-agent traffic: a draft model fine-tuned on the target model's own coding traces, an 8-bit KV cache, a CPU-memory cache tier, and session-affinity routing.",
-  "changes": "Contains a clean tuned-against-generic number: a draft model fine-tuned on coding traces from the target model was worth about 20%. The post also says the same principles carried over to other customers and models.",
-  "caveats": "Relayed, and one detail is unsettled: a later check found Modal's other drafter post used synthetic data, so whether this drafter saw the customer's own traffic is unconfirmed. The 2.8x and 5.6x headline figures are against an unspecified unoptimised replica.",
+  "gist": "How Modal tuned its shared Kimi K2.6 service for coding-agent traffic, sold directly and through OpenRouter: a drafter first trained on a generic mix, then fine-tuned on coding traces the target model produced, an 8-bit KV cache, a CPU-memory cache tier, and load-aware session routing.",
+  "changes": "A clean tuned-against-generic number at the level of the workload class: fine-tuning the drafter on the target model's own coding traces was worth about 20%. Modal says it then repeated the recipe, faster, for other models.",
+  "caveats": "Opened first-hand on 21 Nov. Nothing says the drafter saw one customer's traffic; it can keep training on production outputs, but the 20% is on representative traces. The recipe carried over to other models, not customers. The 2.8x and 5.6x headline figures are against an unoptimised replica.",
   "numbers": [
     {
       "metric": "Speculative accept length after fine-tuning the draft on coding traces for the target model",
@@ -35,7 +35,7 @@
     {
       "claim": "C3",
       "direction": "challenges",
-      "note": "Like for like, a drafter tuned for this workload was worth about 20%, and the recipe transferred to other customers. Whether it saw the customer's own traffic is unconfirmed."
+      "note": "Tuning a drafter to the coding-agent class, on the model's own outputs, was worth about 20%. This is class-level, not per-customer, tuning."
     },
     {
       "claim": "C2",
@@ -43,6 +43,6 @@
       "note": "The stack was designed around the shape of coding-agent traffic: 100k tokens in, 500 out."
     }
   ],
-  "read": "relayed",
+  "read": "opened",
   "status": "active"
 }
