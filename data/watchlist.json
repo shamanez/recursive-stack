@@ -168,8 +168,9 @@
         "C1",
         "C7"
       ],
-      "status": "open",
-      "lens": true
+      "status": "hit",
+      "lens": true,
+      "resolution": "Hit, late: Alibaba's Herschel paper of 30 Sep, missed by the founding sweep, describes agents implementing and testing engine and kernel fixes across over 120 model variants and ten chip types, with expert review and canary rollout. Fireworks, Modal, Groq and Cerebras are still silent."
     },
     {
       "id": "W15",

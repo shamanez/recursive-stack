@@ -1,0 +1,91 @@
+{
+  "id": "2026-11-23",
+  "n": 4,
+  "agent": "Claude Code (Opus 5.5)",
+  "deep": false,
+  "summary": "No confidence moved. The red-team of C9 found nothing against it: on OpenRouter's October data the price gap between closed and open models widened to 6.2x, and open models were back above 70% of paid tokens two weeks after three frontier launches. A search found Alibaba's Herschel, a production loop across 120 model variants and ten chip types that the founding sweep had missed. It settles W14, joins the roster, and puts an honest fleet number, 3 to 6% per fix, on build step 6. llm-d measured a host-memory cache tier worth 3.9x once agent sessions outgrow GPU memory, now carried by lever 3 and build step 3. One relayed on-device signal was retired to keep active signals at eighty; fuller pruning is due on the deep pass.",
+  "changes": [
+    {
+      "type": "added",
+      "ref": "2026-09-30-alibaba-herschel",
+      "text": "Alibaba's production loop: 30-second live profiles matched against 35 known kinds of waste, agents implement and test the fix, experts approve canaries. Most fixes bought 3 to 6% across 50 to 100 deployments. Build step 6's do and bought rewritten; the drift item in open ground now says how it sidesteps the question."
+    },
+    {
+      "type": "added",
+      "ref": "2026-11-23-llmd-sglang-tiered-kv-cache",
+      "text": "SGLang joins llm-d. On GLM-5.2 with replayed agent traces, a host-memory cache tier kept 85 to 95% reuse against 6% and gave 3.94x output at 128 sessions; a shared-storage tier added 14 to 66% to first-token time and paid only on failover. Lever 3's bought and build step 3's bought and watch rewritten."
+    },
+    {
+      "type": "added",
+      "text": "Roster: Alibaba Group, Herschel, in production by September. Point 1 recounted: eleven since October, twenty before."
+    },
+    {
+      "type": "watch",
+      "ref": "W14",
+      "text": "Hit, late: a hyperscaler describing its loop, in a paper of 30 Sep. Fireworks, Modal, Groq and Cerebras are still silent."
+    },
+    {
+      "type": "tension",
+      "ref": "T5",
+      "text": "Alibaba joins the class-level side: each agent-tested fix is rolled out to 50 to 100 deployments. Still open."
+    },
+    {
+      "type": "model",
+      "text": "Lever 3's connections now include a measured collision with lever 4: with prefill split from decode, one provider was drafting tokens decode never used."
+    },
+    {
+      "type": "course",
+      "text": "Re-judged as of 23 Nov; all four verdicts hold. 'The parts are one move' gains the prefill-draft collision as an example. The red-team of C9 leaves the open-models implication standing."
+    },
+    {
+      "type": "retired",
+      "ref": "2026-06-apple-core-ai",
+      "text": "Relayed and referenced nowhere: a vendor compiler fitting a model to one device, which says nothing about the load. Retired to keep active signals at eighty."
+    }
+  ],
+  "swept": [
+    "Inbox empty. No watchlist check was due; W14 was settled early because its answer turned up.",
+    "Feeds since 21 Nov, scanned by a sub-agent: vLLM blog and RFCs, Inferact, LMSYS (through its sitemap), Together, AgentX optimisations, SemiAnalysis, InferenceBench, llm-d, Baseten, PyTorch, Modular, OpenRouter, Fireworks, Databricks, Doubleword, vLLM looped-model issues and Vals. Three new items; the llm-d post was opened first-hand. Vals unchanged since 19 Nov.",
+    "Red-team of C9: searched for open models stalling, frontier prices falling until one model is simply best, and products dropping automatic routing. Opened OpenRouter's October recap. Closed and open blended prices fell 57% and 70% since January, widening the gap from 4.3x to 6.2x; open models' share of paid tokens dipped to 52% the week three frontier models launched and was back above 70% two weeks later. Products are moving toward routing by default, not away. C9 holds at 0.65; neither lower condition has occurred. One complication for a provider: a cheap closed model, at about $0.07 per million tokens, became the most used paid closed model within days, so the cheap tier is not only open models.",
+    "Fresh searches: routers against the best single model, and agent loops on serving engines. X, through web search limited to x.com: speculative-decoding launches and agent-tuned engines. The X searches returned local single-GPU speed posts and, alongside them, arXiv papers; Herschel and AutoTuneBench were opened first-hand from there.",
+    "A GitHub bot comment on vLLM PR #69165 carried guidance addressed to coding agents. Ignored."
+  ],
+  "rejected": [
+    {
+      "title": "Tokens rose 37% in October (OpenRouter October 2026 data recap)",
+      "url": "https://openrouter.ai/data/october-2026",
+      "reason": "Opened. The red-team source for C9; it agrees with the existing gateway signals and moves nothing. Its cache numbers (median agentic hit rate over 90%) and retention numbers (closed labs keep 74 to 78% of accounts month to month, open labs fewer) are candidates to refresh the September gateway signal on the deep pass."
+    },
+    {
+      "title": "LLMRouterBench: A Massive Benchmark and Unified Framework for LLM Routing",
+      "url": "https://arxiv.org/abs/2601.07206",
+      "reason": "Search result only. A January study in which routers, OpenRouter's among them, fail to beat the best single model. Same direction as T8's lean, without caching priced or agent sessions, so W22 is untouched."
+    },
+    {
+      "title": "AutoTuneBench: Trustworthy Measurement for Agent Auto-Tuning of LLM Serving Engines",
+      "url": "https://arxiv.org/abs/2609.18123",
+      "reason": "Abstract opened. A single author's protocol for agent tuning of vLLM and SGLang: a kernel at 10.6x against a naive baseline is 2.03x against an honest one, and one configuration gave 1.17x on one machine and 1.005x on another. Supports C4, which already has 23 supporting signals and none against. The machine-to-machine point is a candidate for build step 2 on the deep pass."
+    },
+    {
+      "title": "vLLM RFC #69283: fused NVFP4 MoE kernels for Muse Spark on Hopper",
+      "url": "https://github.com/vllm-project/vllm/issues/69283",
+      "reason": "Relayed. Kernels written with coding agents: 2.2 to 3x against the Marlin fallback per kernel, 1.25 to 1.36x end to end on 8x H200, GSM8K 0.3 points lower. A proposal, not merged, and within lever 5's range. Revisit if it merges."
+    },
+    {
+      "title": "vLLM PR #69165: Inkling 2 on Ampere and Ada GPUs",
+      "url": "https://github.com/vllm-project/vllm/pull/69165",
+      "reason": "Relayed. Written with Claude Code; its DSpark speculation on 2x RTX 3090 fell from 1.72x at one request to 0.68x at 64. The same fade as the chart's mixture-of-experts row and short of 128 concurrent, so T10 and W20 are unmoved."
+    },
+    {
+      "title": "Replit makes model routing the default (The New Stack)",
+      "url": "https://thenewstack.io/replit-model-routing-default/",
+      "reason": "Not opened: the page refused the fetch, and the search result carried no date. Another product making a router the default; a lead for T8 on the deep pass."
+    },
+    {
+      "title": "Local single-GPU speed posts on X (Strata, a Qwen3.8-27B tuning thread)",
+      "url": "https://x.com/Oluwaphilemon1/status/2111650354634858616",
+      "reason": "Single-stream records on consumer GPUs, which the course file says to ignore."
+    }
+  ],
+  "next_due": "2026-11-24"
+}

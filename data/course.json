@@ -1,6 +1,6 @@
 {
   "_about": "The steering note for the human reader. reader_framing is their own working view in close to their own words; only they change it (via inbox.md). Every sweep re-judges each verdict against the current evidence and rewrites the rest.",
-  "as_of": "2026-11-22",
+  "as_of": "2026-11-23",
   "reader_framing": "Inference is becoming load-aware and adaptive: the stack fits itself to what you have and to the traffic it sees. Agents tuning the stack, open and frontier models side by side, routing, speculative decoders and tuning for a domain are all parts of that one move, and I want to know how to build such a system.",
   "verdicts": [
     {
@@ -13,7 +13,7 @@
       "part": "The parts are one move",
       "verdict": "holding",
       "short": "They connect through the prompt cache and the model: change one lever and others must be redone.",
-      "note": "Yes, and the connections are concrete. A cache belongs to one model on one machine, so it fixes how often a model can be chosen and where a request must go. A drafter belongs to one exact model, so tuning or swapping the model means a new drafter and a re-tuned engine. That coupling is why re-tuning is constant, and why agents doing it cheaply matters."
+      "note": "Yes, and the connections are concrete. A cache belongs to one model on one machine, so it fixes how often a model can be chosen and where a request must go. A drafter belongs to one exact model, so tuning or swapping the model means a new drafter and a re-tuned engine. Splitting prefill from decode left one provider drafting tokens that decode never used. That coupling is why re-tuning is constant, and why agents doing it cheaply matters."
     },
     {
       "part": "Fits each user",

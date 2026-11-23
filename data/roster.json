@@ -138,6 +138,17 @@
       "read": "relayed"
     },
     {
+      "who": "Alibaba Group",
+      "system": "Herschel",
+      "kind": "Inference provider, cloud model-as-a-service",
+      "when": "2026-09-30",
+      "means": "agent",
+      "stage": "production",
+      "gist": "Profiles live deployments in 30-second windows, matches 35 known kinds of waste, and has agents implement and test fixes for expert review. Most fixes bought 3 to 6%.",
+      "signal": "2026-09-30-alibaba-herschel",
+      "read": "opened"
+    },
+    {
       "who": "Z.ai",
       "system": "Infra Agent",
       "kind": "Model lab",

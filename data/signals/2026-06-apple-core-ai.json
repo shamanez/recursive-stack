@@ -26,5 +26,6 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "retired",
+  "retired_why": "Retired on 23 Nov to stay under eighty active signals. A vendor compiler fitting a model to one phone or laptop says nothing about fitting the stack to the load, and C2 has over thirty other supporting signals."
 }

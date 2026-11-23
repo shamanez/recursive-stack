@@ -58,12 +58,14 @@
       "listens": "The mix of long prompts and steady generation, and which contexts agents are still waiting to reuse.",
       "clock": "minutes",
       "status": "early",
-      "bought": "1.28x over the best fixed split once traffic shifts, in a research system. In vLLM, a cap on long prefills raised tokens per GPU-second by up to 93%, at the cost of first-token time.",
-      "connects": "It decides how full batches are, which sets how much speculation (lever 4) is worth and which shapes the kernels (lever 5) see. Evicting the wrong context undoes lever 2.",
+      "bought": "1.28x over the best fixed split as traffic shifts, in a research system. A cap on long prefills raised tokens per GPU-second by up to 93%, costing first-token time. Spilling the cache to host memory gave 3.9x output once sessions outgrew the GPU.",
+      "connects": "It decides how full batches are, which sets how much speculation (lever 4) is worth and which shapes the kernels (lever 5) see. Evicting the wrong context undoes lever 2. Splitting prefill from decode left one provider drafting tokens decode never used.",
       "signals": [
         "2026-11-09-evolving-infra",
         "2026-09-08-vllm-agentx",
-        "2026-08-24-agentx-inferencex-v3"
+        "2026-08-24-agentx-inferencex-v3",
+        "2026-11-23-llmd-sglang-tiered-kv-cache",
+        "2026-09-30-alibaba-herschel"
       ],
       "claims": [
         "C2"
@@ -114,7 +116,8 @@
         "2026-10-16-vllm-kimi-k3-megakernel",
         "2026-11-04-together-compiler",
         "2026-05-22-fastkernels",
-        "2026-11-18-vllm-flydsl-monokernels"
+        "2026-11-18-vllm-flydsl-monokernels",
+        "2026-09-30-alibaba-herschel"
       ],
       "claims": [
         "C1",
@@ -276,13 +279,14 @@
         "split"
       ],
       "do": "Search the settings you already have against the rig: cache-aware and sticky routing, the prefill and decode split, caps on long prefills, cache retention. Use plain search here, not agents.",
-      "bought": "The largest reported gains for the least risk: 2.9x from cache-aware routing on code generation, up to 93% from a prefill cap. One default flag explained 78% of a gap between two engines.",
-      "watch": "Plain parameter search beat every coding agent at this in an independent test. Gains on prefill-bound work do not appear on decode-bound work.",
+      "bought": "The largest reported gains for the least risk: 2.9x from cache-aware routing on code generation, 3.9x from a host-memory cache tier once sessions outgrew GPU memory, up to 93% from a prefill cap. One default flag explained 78% of a gap between two engines.",
+      "watch": "Plain search beat every coding agent here in an independent test. Prefill-bound gains do not appear on decode-bound work. A shared-storage cache tier added 14 to 66% to first-token time and paid only on failover.",
       "signals": [
         "2026-08-17-llmd-sticky-until-saturated",
         "2026-09-08-vllm-agentx",
         "2026-11-04-vllm-sglang-controlled-evaluation",
-        "2026-05-20-inferencebench"
+        "2026-05-20-inferencebench",
+        "2026-11-23-llmd-sglang-tiered-kv-cache"
       ],
       "parts": [
         {
@@ -383,14 +387,15 @@
       "levers": [
         "engine"
       ],
-      "do": "Give coding agents the rig, an engine that reloads candidate code in seconds, and a plain goal. Start with the models that carry most of your traffic. People review the evidence and approve what ships.",
-      "bought": "43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours.",
+      "do": "Give coding agents the rig, an engine that reloads code in seconds, and a plain goal. Start with the models that carry most of your traffic, and let short profiles of live deployments pick the targets. People review the evidence and approve what ships.",
+      "bought": "43% under a speed floor in three days; merged kernels worth 1.3 to 1.9x on decode; a whole bespoke engine in a week for about 200 GPU-hours; across a hyperscaler's fleet, 3 to 6% per fix on 50 to 100 deployments.",
       "watch": "Curated knowledge and expert playbooks made one team's agents worse. Review is the queue: patches arrive faster than people can read them.",
       "signals": [
         "2026-11-09-inferenceforge",
         "2026-10-16-vllm-kimi-k3-megakernel",
         "2026-10-02-baseten-agentic-engine",
-        "2026-11-16-together-deleted-megakernels"
+        "2026-11-16-together-deleted-megakernels",
+        "2026-09-30-alibaba-herschel"
       ],
       "parts": [
         {
@@ -495,14 +500,15 @@
   "open_ground": [
     {
       "head": "How to tell that traffic has drifted",
-      "text": "Every loop re-tunes when the load changes. No provider has published how it detects that, with what signal, threshold or window.",
+      "text": "Every loop re-tunes when the load changes. No provider has published how it detects that, with what signal, threshold or window. Alibaba sidesteps it, profiling live deployments in 30-second windows for known waste.",
       "claims": [
         "C2"
       ],
       "checks": [],
       "signals": [
         "2026-11-04-together-compiler",
-        "2026-11-inferact-autonomous-inference-system"
+        "2026-11-inferact-autonomous-inference-system",
+        "2026-09-30-alibaba-herschel"
       ]
     },
     {

@@ -1,0 +1,61 @@
+{
+  "id": "2026-11-23-llmd-sglang-tiered-kv-cache",
+  "title": "Bringing First-Class SGLang Serving to llm-d",
+  "url": "https://llm-d.ai/blog/serving-glm-5-2-sglang-tiered-kv-cache-on-llm-d",
+  "org": "llm-d and SGLang (Google, IBM Research and SGLang maintainers)",
+  "published": "2026-11-23",
+  "added": "2026-11-23",
+  "kind": "blog",
+  "layers": [
+    "serving",
+    "routing"
+  ],
+  "mechanism": "rules",
+  "venue": "cluster",
+  "gist": "SGLang now runs inside llm-d's Kubernetes router next to vLLM, with each data-parallel rank exposed so routing can follow its cache. On GLM-5.2 with replayed coding-agent traces on 16 H200s, sessions outgrew GPU memory past 32 concurrent, and by 128 the cache hit rate was 6%. Spilling the cache to host memory kept reuse at 85 to 95%. A third tier on shared storage cost time in steady state and paid off when a pod failed.",
+  "changes": "Cache capacity is a load-aware setting in its own right. A host-memory tier matters once sessions outgrow GPU memory, here past 32 concurrent, and was then worth almost 4x. The shared-storage tier is insurance that costs first-token time every day and pays only when a pod fails.",
+  "caveats": "The project's own measurements on one model, one chip and one public trace set. The baseline at 128 sessions, GPU memory only with a 174-second median first token, is a setting nobody would run in production. The storage tier's cost comes from synchronous write-through and prefetch settings; no asynchronous setting is reported.",
+  "numbers": [
+    {
+      "metric": "Output throughput at 128 concurrent sessions with a host-memory cache tier",
+      "value": "3.94x",
+      "baseline": "GPU memory only, same 16-GPU layout",
+      "verification": "self-reported",
+      "setup": "GLM-5.2, 16x H200, one prefill and one decode pod, AgentX replay of coding-agent traces"
+    },
+    {
+      "metric": "Cache hit rate with the host-memory tier",
+      "value": "85 to 95% from 16 to 128 concurrent",
+      "baseline": "6% at 128 concurrent with GPU memory only",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Median time to first token at 128 concurrent",
+      "value": "8.7x lower than 174.2 s",
+      "baseline": "GPU memory only",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Median time to first token with a shared-storage tier added, steady state",
+      "value": "14 to 33% higher on one replica; 26% at 64 and 66% at 128 concurrent on 32 GPUs",
+      "baseline": "the same layout without the storage tier",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Median time to first token after a prefill pod failed",
+      "value": "28.8 s, with 99.94% of prefix tokens restored from storage",
+      "baseline": "38.4 s without the storage tier",
+      "verification": "self-reported",
+      "setup": "32x H200, 24 sessions of about 98K tokens"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "Which cache tiers pay depends on the load: host memory once sessions outgrow the GPU, shared storage only where pods fail."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

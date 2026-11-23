@@ -239,5 +239,14 @@
       "specialised decode"
     ],
     "def": "A fused GPU kernel that runs several steps of one decoder layer in a single launch, as vLLM's AMD paths do. Smaller than a megakernel, which fuses a whole forward pass."
+  },
+  {
+    "term": "canary",
+    "aka": [
+      "canary deployment",
+      "canary validation",
+      "canaries"
+    ],
+    "def": "Releasing a change to a small slice of live traffic first and watching errors and latency before rolling it out wider. A regression stops the rollout."
   }
 ]

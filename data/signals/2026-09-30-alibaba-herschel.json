@@ -1,0 +1,91 @@
+{
+  "id": "2026-09-30-alibaba-herschel",
+  "title": "Herschel: Continuous Optimization of Production LLM Inference through On-Demand Profiling",
+  "url": "https://arxiv.org/abs/2609.40247",
+  "org": "Alibaba Group",
+  "authors": "Luping Wang and 13 others",
+  "published": "2026-09-30",
+  "added": "2026-11-23",
+  "kind": "paper",
+  "layers": [
+    "loop",
+    "engine",
+    "kernels"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "Alibaba's model-as-a-service platform attaches a profiler to running deployments for windows of about 30 seconds, with no restart, and matches what it sees against 35 known kinds of waste drawn from over 20,000 open-source pull requests. Agents implement the matching reference fix and test it at reduced scale on idle GPUs; experts decide what goes to canary. Six months covered 17,000 traces from over 120 model variants on more than ten chip types.",
+  "changes": "A hyperscaler runs the loop in production, and publishes the most complete design for one. Live profiling picks the targets, agents write the fixes, people approve. Most fixes bought 3 to 6% across 50 to 100 deployments. It also shows two levers colliding, where splitting prefill from decode left drafted tokens nobody used.",
+  "caveats": "Self-reported, with no outside check. The paper does not separate the agents' share of the work from the pattern library's and the expert teams', and gives no cost for the experiments. One gain comes from offline tests of an upstream port, not production. Its largest number, 8 to 32% lower time per token, is on an in-house chip.",
+  "numbers": [
+    {
+      "metric": "Prefill throughput after overlapping KV object creation with execution",
+      "value": "3.3 to 5.7% higher, short contexts",
+      "baseline": "the same deployments before the fix",
+      "verification": "self-reported",
+      "setup": "about 50 GLM and Qwen deployments"
+    },
+    {
+      "metric": "Time to first token after pruning prefill drafts that never reached decode",
+      "value": "about 6% lower, short contexts",
+      "baseline": "the same deployments before the fix",
+      "verification": "self-reported",
+      "setup": "about 100 hybrid-attention deployments with prefill and decode split"
+    },
+    {
+      "metric": "Time per output token after re-laying out paged attention",
+      "value": "8 to 32% lower",
+      "baseline": "the previous layout on the same chip",
+      "verification": "self-reported",
+      "setup": "small dense models on an in-house accelerator, about 30 deployments"
+    },
+    {
+      "metric": "Production traces matching a known inefficiency pattern",
+      "value": "23% of about 17,000",
+      "baseline": "six months of sampled traces, over 120 model variants, over ten chip types",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Profiler overhead while recording",
+      "value": "under 0.5% on first-token time, up to 7% on time per token",
+      "baseline": "unprofiled runs",
+      "verification": "self-reported",
+      "setup": "8x H20, vLLM, Qwen3-32B and Qwen3-235B-A22B"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Agent-implemented engine and kernel fixes passed canary and are widely deployed at a hyperscaler, measured on production workloads."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "Its stated reason for the loop is breadth: over 120 model variants on more than ten chip types, too many combinations for experts to tune by hand."
+    },
+    {
+      "claim": "C2",
+      "direction": "supports",
+      "note": "The same waste took 8% of one deployment's worker time and under 1% of another's, and one deployment's most common attention shape ran at 15% of the hardware bound."
+    },
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "Most of the system gathers evidence and gates changes; the agent is one stage between a profiler and an expert review."
+    },
+    {
+      "claim": "C3",
+      "direction": "complicates",
+      "note": "Fixes found in one deployment's profile were rolled out to 50 to 100 others, so the tuning is fleet-wide rather than per customer."
+    }
+  ],
+  "also": [
+    {
+      "label": "Full paper (HTML)",
+      "url": "https://arxiv.org/html/2609.40247"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}
