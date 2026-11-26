@@ -16,7 +16,7 @@
     {
       "id": "W2",
       "what": "Have InferenceForge's three SGLang fixes been reproduced by anyone else, or opened as pull requests against upstream SGLang?",
-      "why": "They sit in a personal fork. Upstreaming would be the first independent check on an outsider's agent-found gain, and a data point on how fast the commons absorbs one.",
+      "why": "They sit in a personal fork. Upstreaming would be the first independent check on an outsider's agent-found gain, and a data point on how fast the commons absorbs one. On 26 Nov a research pass found the three fixes still sitting as pull requests on the author's own fork, with nothing opened upstream and no reproduction. Two overlap upstream work that predates the post.",
       "opened": "2026-11-19",
       "due": "2026-11-28",
       "claims": [
@@ -34,7 +34,8 @@
       "claims": [
         "C2"
       ],
-      "status": "open"
+      "status": "hit",
+      "resolution": "Yes. The repository is public, with deployment and benchmark instructions and a path to reproduce the paper. Nobody outside has reproduced its headline numbers yet, and one open issue questions a table against a figure."
     },
     {
       "id": "W4",
@@ -65,7 +66,7 @@
     {
       "id": "W6",
       "what": "Has InferenceBench run a matched-budget search beside its newest agent entries, and has the gap (12.08x agent against 14.30x search) closed?",
-      "why": "This is the cleanest independent gauge of whether agents are getting better at the experimenting, not just the knowing.",
+      "why": "This is the cleanest independent gauge of whether agents are getting better at the experimenting, not just the knowing. On 26 Nov the board was at version 1.0.8. The top agent was unchanged at 12.08x against 14.30x for search, and five newer entries all scored below it.",
       "opened": "2026-11-19",
       "due": "2026-12-10",
       "claims": [
@@ -226,7 +227,7 @@
     {
       "id": "W19",
       "what": "Any provider publishing how long and how much it takes to get a new model from release to tuned serving, with or without agents.",
-      "why": "With many models this is the cost that repeats. Day-zero support is claimed by several teams; none has given a time or a price. On 22 Nov the public board showed the open engines take about two weeks to tune a new model; a provider's own time and cost are still unpublished.",
+      "why": "With many models this is the cost that repeats. Day-zero support is claimed by several teams; none has given a time or a price. On 22 Nov the public board showed the open engines take about two weeks to tune a new model; a provider's own time and cost are still unpublished. On 26 Nov the closest figures were one company's 401 minutes from public weights to a live endpoint, untuned, and an individual's 41-hour agent campaign costing about $400 of GPU time. Still nothing from a provider on tuned serving.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
       "claims": [
@@ -238,7 +239,7 @@
     {
       "id": "W20",
       "what": "A mixture-of-experts model measured in a real engine with and without speculation from 1 to 128 concurrent, or the Doubleword simulator compared with a real engine.",
-      "why": "Measured tables show speculation fading with load. A cost model says that on mixture-of-experts models it starts near zero and grows, and its author says most new models are of that kind. Which is right decides how a provider sets lever 4 for each model, and whether a simulator can stand in for part of the rig. On 20 Nov an outside run of Kimi K3 in two engines covered 1 to 64 concurrent and showed the usual fade. Still wanted: beyond 64, a draft length that follows the load, and longer prompts. On 26 Nov a different simulator, BLIS, was found to predict real runs within 6.7% for scheduling policies. The Doubleword one is still unchecked.",
+      "why": "Measured tables show speculation fading with load. A cost model says that on mixture-of-experts models it starts near zero and grows, and its author says most new models are of that kind. Which is right decides how a provider sets lever 4 for each model, and whether a simulator can stand in for part of the rig. On 20 Nov an outside run of Kimi K3 in two engines covered 1 to 64 concurrent and showed the usual fade. Still wanted: beyond 64, a draft length that follows the load, and longer prompts. On 26 Nov a different simulator, BLIS, was found to predict real runs within 6.7% for scheduling policies. The Doubleword one is still unchecked. A research pass on 26 Nov also reported three measured mixture-of-experts sets in which speculation held up as batches filled: a vLLM post on adaptive verification of 14 August, a Red Hat post of 16 April, and the body of arXiv 2610.40287. None was opened first-hand; if they hold, T10's lean is wrong.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
       "claims": [
@@ -264,7 +265,7 @@
     {
       "id": "W22",
       "what": "A router compared with the best single model in its pool on live agent sessions rather than benchmark tasks, with the pricing of cached tokens stated.",
-      "why": "On public tasks a vendor's own router lost to the best single models. Live sessions vary more, which is the case routing is meant to win. Whether a provider should build a router or simply pick its default well turns on this.",
+      "why": "On public tasks a vendor's own router lost to the best single models. Live sessions vary more, which is the case routing is meant to win. Whether a provider should build a router or simply pick its default well turns on this. On 26 Nov: an outside index compared six routers with the best model in each pool on benchmark tasks and all lost, but sessions were not live and cached tokens were not priced. One vendor reports a live test with its router just ahead of a model in its own pool.",
       "opened": "2026-11-21",
       "due": "2026-12-31",
       "claims": [
@@ -300,7 +301,7 @@
     {
       "id": "W25",
       "what": "Cross-model cache transfer merged into vLLM, SGLang or llm-d, shipped by a provider or a router, or tested by an outside group on multi-turn agent sessions with tool calls.",
-      "why": "Three research systems move a cache between open models faster than a re-read. If one reaches an engine, a router can change model mid-session inside an open pool, which loosens the tie that lever 1 and C9 rest on. Until then it is a lab result on small models.",
+      "why": "Three research systems move a cache between open models faster than a re-read. If one reaches an engine, a router can change model mid-session inside an open pool, which loosens the tie that lever 1 and C9 rest on. Until then it is a lab result on small models. On 26 Nov the first translator's code and weights were public as a separate package that injects a translated cache into stock vLLM. A newer paper extends translation to compressed and linear attention and warns that re-translating across turns collapses. Still no merge and no outside test.",
       "opened": "2026-11-26",
       "due": "2027-02-28",
       "claims": [

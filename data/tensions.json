@@ -205,18 +205,18 @@
         "signals": [
           "2026-07-22-cursor-router",
           "2026-08-13-databricks-smart-routing",
-          "2026-07-26-fireworks-nexus",
           "2026-09-21-fireworks-frontier-is-a-router",
           "2026-10-28-github-copilot-fusion"
         ]
       },
       {
         "held_by": "Independent tests, and one vendor's own board",
-        "position": "No router beat always calling a cheap strong model, several collapsed to one model, and on one vendor's own public board single models from its pool beat its coding router.",
+        "position": "No router beat always calling a cheap strong model, several collapsed to one model, and on one vendor's own public board single models from its pool beat its coding router. An outside index then ran six shipped routers on long agentic tasks: each lost on both score and cost to some single model.",
         "signals": [
           "2026-10-26-autobench-do-routers-route",
           "2026-07-08-databricks-coding-agent-benchmark",
-          "2026-11-06-openrouter-auto-code-routers"
+          "2026-11-06-openrouter-auto-code-routers",
+          "2026-11-03-vals-router-index"
         ]
       }
     ],
@@ -225,7 +225,7 @@
       "C9"
     ],
     "status": "leaning",
-    "lean": "Still toward a good default model on coding tasks, where single models beat one vendor's router on its own board. But a second vendor now reports its router ahead on a public agentic board, by its own reading and with caching unstated. Live sessions are untested."
+    "lean": "Toward a good default model, more firmly. An outside index ran six shipped routers through tasks it chose, and every one lost on score and cost to a single model, usually a cheap open one. That is close to the settling test. It stays open because the sessions were not live, cached tokens were not priced, and the one router since reported ahead on a public board was not among the six."
   },
   {
     "id": "T9",

@@ -1,0 +1,53 @@
+{
+  "id": "2026-11-03-vals-router-index",
+  "title": "Vals Router Index",
+  "url": "https://www.vals.ai/benchmarks/vals_router_index",
+  "org": "Vals AI",
+  "published": "2026-11-03",
+  "added": "2026-11-26",
+  "kind": "benchmark",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "any",
+  "gist": "An independent index ran six shipped routers at their default settings through about 1,250 long agentic tasks in finance, coding, law and tax, with the same agents and graders it uses for single models. Every router was beaten on both score and cost by at least one single model, and none matched the best model in its own pool on score. Harder tasks did not get more of a router's spend on pricier models.",
+  "changes": "The test T8 was waiting for, run by an outside party. Routers buy a lower bill by giving up a few points, and one cheap open model beat all six on both score and cost. For a provider that favours defaults. Being the strong, cheap open model matters more than being in a router's pool.",
+  "caveats": "Benchmark tasks, not live sessions, and the page does not say how cached tokens were priced, which is where routers are said to lose most. Routers ran at default settings. The top router's deficit to the cheap model is within the margin of error. The router reported ahead on another public board in November is not among the six. Six of the eight benchmarks are private.",
+  "numbers": [
+    {
+      "metric": "Best router's score and cost per task",
+      "value": "60.0% at $1.25",
+      "baseline": "63.9% at $3.61 for the best model in its pool; 61.3% at $0.66 for a cheap open model",
+      "verification": "third-party",
+      "setup": "About 1,250 agentic tasks, default settings"
+    },
+    {
+      "metric": "Routers on the cost and accuracy frontier",
+      "value": "none of six",
+      "baseline": "every single model run on the same tasks",
+      "verification": "third-party"
+    },
+    {
+      "metric": "A cost-saving router against a model from its own pool",
+      "value": "52.2% at $0.82 against 61.3% at $0.66",
+      "baseline": "that model called directly",
+      "verification": "third-party"
+    },
+    {
+      "metric": "A twelve-model router against its strongest model",
+      "value": "55.7% at $5.30 against 69.0% at $15.87",
+      "baseline": "that model called directly",
+      "verification": "third-party"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "The work is shared, and a cheap open model wins on value. The routers meant to arrange the sharing lost to it on both score and cost."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

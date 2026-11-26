@@ -305,7 +305,7 @@
     "id": "routing-savings",
     "type": "bars",
     "title": "What choosing the model saves, by who measured it",
-    "takeaway": "Vendors claim a third to three-quarters off. Hindsight shows 71% is there; no shipped router has yet beaten the best single model.",
+    "takeaway": "Vendors claim a third to three-quarters off. Outside, the best router saved 65% for 3.9 points less; none beat a cheap model.",
     "unit": "%",
     "groups": [
       {
@@ -351,11 +351,11 @@
         "signal": "2026-08-13-databricks-smart-routing"
       },
       {
-        "label": "Fireworks Nexus",
-        "value": 33,
-        "group": "vendor",
-        "note": "cost per merged pull request, preliminary",
-        "signal": "2026-07-26-fireworks-nexus"
+        "label": "Fireworks Nexus, on an outside index",
+        "value": 65,
+        "group": "outside",
+        "note": "Vals: a third of the cost of the best model in its pool, for 3.9 points less. A cheap open model beat it on both",
+        "signal": "2026-11-03-vals-router-index"
       },
       {
         "label": "Trained step-level router",
@@ -379,7 +379,7 @@
         "signal": "2026-09-21-fireworks-frontier-is-a-router"
       }
     ],
-    "caption": "Cost reduction at claimed equal quality, each against its own baseline. The baselines differ, and the ceiling is scored in hindsight.",
+    "caption": "Cost reduction, each against its own baseline. Vendors claim equal quality; the outside index row gave up 3.9 points for its saving. The baselines differ, and the ceiling is scored in hindsight.",
     "claims": [
       "C9"
     ],

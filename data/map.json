@@ -11,7 +11,7 @@
       "listens": "How hard the first task of the session looks, live load and price on each model, and whether a cache would be lost by switching.",
       "clock": "request",
       "status": "working",
-      "bought": "Vendors report 33 to 74% lower cost, each against its own baseline. Outside, seven shipped routers failed to beat a cheap default and one lost on its vendor's own board. Another topped a public agentic board at lower cost, by its vendor's reading.",
+      "bought": "Vendors report 35 to 74% lower cost against their own baselines. An outside index found all six shipped routers beaten on score and cost by some single model; the best cost a third of its pool's top model for 3.9 points less.",
       "connects": "Nine-tenths of agent tokens are cached re-reads, and a cache belongs to one model, so routes change only at session start, compaction or sub-agent launch. Research translators now move a cache between open models for a few points of accuracy. Each routed model needs its own drafter and engine.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
@@ -25,7 +25,8 @@
         "2026-11-baseten-speculative-encoding",
         "2026-09-01-cachebridge",
         "2026-08-04-cross-model-kv-transfer-linear",
-        "2026-10-28-github-copilot-fusion"
+        "2026-10-28-github-copilot-fusion",
+        "2026-11-03-vals-router-index"
       ],
       "claims": [
         "C9"
@@ -434,7 +435,7 @@
         "weights"
       ],
       "do": "Start from the best single model for the job and route only where the work is varied, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader.",
-      "bought": "Routing: 33 to 74% lower cost by vendors' accounts. On public coding tasks single models beat one vendor's router; another vendor reports its router ahead on a public agentic board. Tuning: 11 to 21 points on a legal benchmark for four open models.",
+      "bought": "Routing: 35 to 74% lower cost by vendors' accounts. An outside index found every shipped router beaten on score and cost by a single model; one vendor reports its router ahead on another public board. Tuning: 11 to 21 points on a legal benchmark for four open models.",
       "watch": "Nobody has tested a router on live sessions with the cache priced. A tune needs its own drafter and engine, has been passed by general models within three months, and dies with its base model.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
@@ -445,9 +446,15 @@
         "2026-11-04-cognition-swe-2-flash",
         "2026-09-21-fireworks-frontier-is-a-router",
         "2026-10-28-github-copilot-fusion",
-        "2026-11-24-baseten-harvey-post-training"
+        "2026-11-24-baseten-harvey-post-training",
+        "2026-11-03-vals-router-index"
       ],
       "parts": [
+        {
+          "label": "Vals Router Index",
+          "url": "https://www.vals.ai/benchmarks/vals_router_index",
+          "note": "An outside index that runs routers and single models through the same long agentic tasks. Look a router up here before paying for one."
+        },
         {
           "label": "TwinRouterBench",
           "url": "https://arxiv.org/abs/2605.18859",

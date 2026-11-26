@@ -107,7 +107,7 @@
     },
     {
       "head": "Open models are your volume; defaults are the contest",
-      "text": "Open models carry most tokens and about a quarter of spend. One router reports beating leading single models on a public board, with an all-closed pool. Defaults and routers decide which sessions reach you.",
+      "text": "Open models carry most tokens and a quarter of spend. An outside index found one cheap open model beating all six shipped routers on score and cost. Be the default, not a pool member.",
       "claims": [
         "C9"
       ],
@@ -115,7 +115,8 @@
         "2026-09-22-openrouter-token-state-of-play",
         "2026-11-06-openrouter-auto-code-routers",
         "2026-10-26-autobench-do-routers-route",
-        "2026-10-28-github-copilot-fusion"
+        "2026-10-28-github-copilot-fusion",
+        "2026-11-03-vals-router-index"
       ]
     }
   ],

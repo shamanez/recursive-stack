@@ -670,6 +670,28 @@
       "gist": "Agents translate CUDA kernels to a wafer-scale chip's toolchain: 3.47x over the reference on that chip.",
       "url": "https://arxiv.org/abs/2608.25124",
       "read": "relayed"
+    },
+    {
+      "who": "Johnson Shi",
+      "system": "Agent-run tuning campaign on two open engines",
+      "kind": "Independent researcher",
+      "when": "2026-11-21",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A coding agent ran 337 trials over 41 hours on two open engines for one model: single-user decode 4.1x over defaults, for about $400 of GPU time.",
+      "url": "https://x.com/johnsonshi86/status/2124250717963932121",
+      "read": "relayed"
+    },
+    {
+      "who": "OpenRSI",
+      "system": "SGLang-Omni optimisation loop",
+      "kind": "Independent research group",
+      "when": "2026-11-10",
+      "means": "agent",
+      "stage": "claimed",
+      "gist": "Says agents ran a continuous optimisation loop on a speech and omni engine and had 14 pull requests merged by its maintainers. The write-up would not load.",
+      "url": "https://x.com/OpenRSI/status/2119869682929066288",
+      "read": "relayed"
     }
   ]
 }

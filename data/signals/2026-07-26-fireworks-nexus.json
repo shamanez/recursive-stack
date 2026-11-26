@@ -37,5 +37,7 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "superseded",
+  "superseded_by": "2026-11-03-vals-router-index",
+  "retired_why": "Its one number was the vendor's preliminary figure for two customers. An outside index has since measured the same router against the best model in its pool."
 }

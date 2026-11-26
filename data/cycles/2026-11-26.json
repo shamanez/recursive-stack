@@ -3,8 +3,27 @@
   "n": 5,
   "agent": "Claude Code (Fable 5.2)",
   "deep": true,
-  "summary": "A catch-up sweep and the weekly deep pass, run after three scheduled sweeps did not complete. No confidence moved. The morning's link put cache translation between models under lever 1. The deep pass then found a provider, Sarvam, running the loop in production with a simulator in front of live tests; a simulator whose scheduling policies held on real hardware; GitHub moving its router from session boundaries to every prompt; and Harvey tuning four newer open models after its August tune was passed within three months, which settles W17. The roster check found 29 teams earlier passes had missed, 22 of them recorded second-hand. Seven signals were retired or superseded to return to eighty active. Seven signals in one day is over the guide of three; it reflects four days of backlog and a first deep pass, and is not a pattern to keep.",
+  "summary": "A catch-up sweep and the weekly deep pass, run after three scheduled sweeps did not complete. No confidence moved. The morning's link put cache translation between models under lever 1. The deep pass then found a provider, Sarvam, running the loop in production with a simulator in front of live tests; a simulator whose scheduling policies held on real hardware; an outside index on which all six shipped routers lost to a single model on score and cost; GitHub moving its router to every prompt; and Harvey tuning four newer open models after its August tune was passed within three months. W3 and W17 are settled. The roster check found 31 teams earlier passes had missed, 24 of them recorded second-hand; the roster now holds 62. Eight signals were retired or superseded to return to eighty active. Eight signals in one day is well over the guide of three. It reflects four days of backlog and a first deep pass, and is not a pattern to keep.",
   "changes": [
+    {
+      "type": "added",
+      "ref": "2026-11-03-vals-router-index",
+      "text": "An outside index ran six shipped routers on about 1,250 long agentic tasks. None sits on the cost and accuracy frontier; the best cost a third of its pool's top model for 3.9 points less, and one cheap open model beat all six on both. It supersedes a vendor's preliminary figure for the same router."
+    },
+    {
+      "type": "watch",
+      "ref": "W3",
+      "text": "Hit. The Evolving Infra repository is public with instructions to deploy, benchmark and reproduce. No outside reproduction of its headline numbers yet."
+    },
+    {
+      "type": "revised",
+      "ref": "2026-11-baseten-speculative-encoding",
+      "text": "Corrected the same day: code and weights for the cache translator are public, as a separate package that injects a translated cache into stock vLLM. The morning's entry said there was no code."
+    },
+    {
+      "type": "watch",
+      "text": "W2, W6, W19, W20, W22 and W25 annotated with what a research pass found on 26 Nov. The W20 note matters most: three measured sets, not yet opened first-hand, are reported to show speculation holding up with load on mixture-of-experts models, which would undo T10's lean."
+    },
     {
       "type": "added",
       "ref": "2026-11-16-sarvam-token-factory",
@@ -27,7 +46,7 @@
     },
     {
       "type": "retired",
-      "text": "Six signals retired: a learned-latency scheduler, an agentic RL recipe, two on-device runtime posts, a routing-headroom benchmark and an evaluator language. Each was cited by at most one list and its point is made elsewhere with measurements. The two on-device ones can come back if local serving becomes its own thread."
+      "text": "Six signals retired, and two superseded by newer sources on the same products: a learned-latency scheduler, an agentic RL recipe, two on-device runtime posts, a routing-headroom benchmark and an evaluator language. Each was cited by at most one list and its point is made elsewhere with measurements. The two on-device ones can come back if local serving becomes its own thread."
     },
     {
       "type": "revised",
@@ -41,7 +60,7 @@
     {
       "type": "tension",
       "ref": "T8",
-      "text": "Still leaning toward a good default on coding tasks, but a shipped router is now reported ahead on a public agentic board, by its vendor's reading."
+      "text": "Leans more firmly toward a good default. An outside index ran six shipped routers on tasks it chose and each lost on score and cost to a single model. It stays open because sessions were not live, cache pricing was not stated, and one newer router, reported ahead on another board by its vendor, was not tested."
     },
     {
       "type": "tension",
@@ -63,7 +82,7 @@
     },
     {
       "type": "revised",
-      "text": "Levers 1, 3 and 6, build steps 2, 3, 7 and 8, and the open-ground item on judging unseen traffic updated. BLIS joined the build parts. The roster grew from 31 to 60 and its recent view now starts on 15 October; the front page's second point was recounted."
+      "text": "Levers 1, 3 and 6, build steps 2, 3, 7 and 8, and the open-ground item on judging unseen traffic updated. BLIS joined the build parts. The roster grew from 31 to 62 and its recent view now starts on 15 October; the front page's second point was recounted."
     },
     {
       "type": "confidence",
@@ -116,6 +135,7 @@
     "Feeds since 21 Nov, scanned by a sub-agent: vLLM blog and RFCs, Inferact, LMSYS through its sitemap, Together, AgentX optimisations, InferenceBench, llm-d, Baseten and its research site, PyTorch, Modular, OpenRouter, Fireworks, Doubleword, Vals, vLLM looped-model issues and four arXiv queries. The SemiAnalysis newsletter returned no posts and was not checked.",
     "Roster check by kind of team, by a sub-agent: providers, open engines, model labs, chip vendors, workload owners, academics and the public board. Seven of the 29 additions were then opened first-hand; the other 22 are marked relayed.",
     "Red-team of all four focus claims, by a sub-agent, with the decisive pages opened first-hand: BLIS, GitHub's two Fusion posts and OpenRouter's router board, which still shows single models ahead of its coding router on coding tasks.",
+    "X, through web search limited to x.com, by a sub-agent that also checked every open dated question. Single posts were opened without signing in. It surfaced an individual's agent-run tuning campaign, the code release for the cache translator, a foundation's claim of merged agent-written fixes, and two router comparisons; the Vals index, the two repositories and one abstract were then opened first-hand.",
     "First-hand reads for the deep pass: Databricks Smart Routing and its docs, vLLM Kimi K3, vLLM AgentX, DFlash 2 and its model card, Baseten's agent-built engine, Harvey Tenet, Sarvam Token Factory, Databricks Proteus, Reflection Beam on vLLM, Morph, Cursor's kernel harness, and the abstracts of NoeVera, DuoDiscover, CompoundingKernel, RSIBench-Infra and BLIS.",
     "The morning's single-topic update: the reader's link on cache translation, three of the papers it builds on, two web searches and one search limited to x.com.",
     "Two research agents reported a banner on inferencex.semianalysis.com saying the copy was unaffiliated and might be modified. Opened in a browser, the page shows no such banner; it looks like an artefact of their fetch tool.",
@@ -201,6 +221,16 @@
       "title": "Teams searched for and not found",
       "url": "https://x.com",
       "reason": "no loop announcement found from Fireworks, Anyscale, Groq, SambaNova, Nebius, DeepInfra, Lambda, CoreWeave, Replicate, the three hyperscalers' model services, llama.cpp, MLX, Ollama, Moonshot, MiniMax, DeepSeek, Mistral, Qualcomm or Apple. Try again next deep pass"
+    },
+    {
+      "title": "Leads for the next sweeps, reported by a research pass and not opened",
+      "url": "https://arxiv.org/abs/2611.12062",
+      "reason": "cache translation extended to compressed and linear attention (arXiv 2611.12062); reusing a cache across weight updates (2611.14051); separate loop depths for prefill and decode with a load-following controller (2611.07211); whether halting heads save compute in batches (2610.32246); an agentic router said to lead a live arena by 0.3% (arena.ai, 12 Oct); Amazon's first results for its own chip on the public board"
+    },
+    {
+      "title": "A possible discrepancy in the day-zero chart",
+      "url": "https://inferencex.semianalysis.com/infx/agentx/optimizations",
+      "reason": "a research pass read the public board's data on 26 Nov and found one model on one AMD chip at 22.0k tokens per GPU-second from a run of 20 Nov, where the tracker's fortnight signal has 17.3k. Check it before the chart is next touched"
     }
   ],
   "next_due": "2026-11-27"
