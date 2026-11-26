@@ -52,7 +52,7 @@
     {
       "id": "W5",
       "what": "Does any public AgentX run, by Together or anyone else, match the up-to-2.6x lead Together claims for its compiler?",
-      "why": "A private lead that never appears on the public board cannot be told apart from a favourable baseline. If the open engines close it, the commons is keeping up.",
+      "why": "A private lead that never appears on the public board cannot be told apart from a favourable baseline. If the open engines close it, the commons is keeping up. On 26 Nov, 22 days on, a research pass found no public run matching it, and heard of a closed engine from another team said to have led one board since September. Neither was opened first-hand; see W27.",
       "opened": "2026-11-19",
       "due": "2026-12-05",
       "claims": [
@@ -207,7 +207,8 @@
       "claims": [
         "C10"
       ],
-      "status": "open"
+      "status": "hit",
+      "resolution": "Yes, and it was overtaken. Harvey's August tune of one open model scored 19.7% on its legal benchmark; by November an untuned general model scored 27.1%. Harvey answered by tuning four newer open models, the best reaching 30.3%."
     },
     {
       "id": "W18",
@@ -237,7 +238,7 @@
     {
       "id": "W20",
       "what": "A mixture-of-experts model measured in a real engine with and without speculation from 1 to 128 concurrent, or the Doubleword simulator compared with a real engine.",
-      "why": "Measured tables show speculation fading with load. A cost model says that on mixture-of-experts models it starts near zero and grows, and its author says most new models are of that kind. Which is right decides how a provider sets lever 4 for each model, and whether a simulator can stand in for part of the rig. On 20 Nov an outside run of Kimi K3 in two engines covered 1 to 64 concurrent and showed the usual fade. Still wanted: beyond 64, a draft length that follows the load, and longer prompts.",
+      "why": "Measured tables show speculation fading with load. A cost model says that on mixture-of-experts models it starts near zero and grows, and its author says most new models are of that kind. Which is right decides how a provider sets lever 4 for each model, and whether a simulator can stand in for part of the rig. On 20 Nov an outside run of Kimi K3 in two engines covered 1 to 64 concurrent and showed the usual fade. Still wanted: beyond 64, a draft length that follows the load, and longer prompts. On 26 Nov a different simulator, BLIS, was found to predict real runs within 6.7% for scheduling policies. The Doubleword one is still unchecked.",
       "opened": "2026-11-19",
       "due": "2026-12-19",
       "claims": [
@@ -304,6 +305,29 @@
       "due": "2027-02-28",
       "claims": [
         "C9"
+      ],
+      "status": "open",
+      "lens": true
+    },
+    {
+      "id": "W26",
+      "what": "Read RSIBench-Infra in full: which agents and baselines, how many of its 20 tasks are LLM serving, and whether results above 1.10x beat tuned engines or only official recipes.",
+      "why": "Its abstract says two-thirds of task results passed a validated 1.10x end to end, measured independently at up to 32 accelerators. That is the kind of evidence C1 says would raise it, but the abstract does not say against what.",
+      "opened": "2026-11-26",
+      "due": "2026-12-03",
+      "claims": [
+        "C1"
+      ],
+      "status": "open"
+    },
+    {
+      "id": "W27",
+      "what": "Open TileRT's own pages and the public board: has a closed binary led single-user agent serving since September, and has any open engine matched it?",
+      "why": "A lead held for two months by a closed engine would be the clearest case against the commons keeping up. It was reported by a research pass and its pages have timed out twice.",
+      "opened": "2026-11-26",
+      "due": "2026-12-03",
+      "claims": [
+        "C7"
       ],
       "status": "open",
       "lens": true
@@ -434,6 +458,11 @@
       "name": "arXiv: cross-model cache transfer",
       "url": "https://arxiv.org/search/?query=%22KV+cache%22+transfer+cross-model&searchtype=all&abstracts=show&order=-announced_date_first&size=25",
       "why": "Papers on moving a session's cache from one model to another. At least four appeared between August and November 2026."
+    },
+    {
+      "name": "Sarvam AI blog",
+      "url": "https://www.sarvam.ai/blogs",
+      "why": "A provider running the loop in production, with a simulator in front of live tests. Publishes its own before-and-after tables."
     }
   ]
 }

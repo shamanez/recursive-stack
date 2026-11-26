@@ -257,5 +257,13 @@
       "cross-model cache transfer"
     ],
     "def": "Converting the context one model has already read into the form a different model stores, so the second can carry on without reading it again. Lossy so far, and it needs both models' internals, which rules out closed models."
+  },
+  {
+    "term": "simulator",
+    "aka": [
+      "simulators",
+      "simulation"
+    ],
+    "def": "A program that predicts how a serving stack would behave without running it on GPUs. One has been shown to pick scheduling policies that hold on real hardware; none yet judges changes to engine or kernel code."
   }
 ]

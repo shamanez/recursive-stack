@@ -1,0 +1,50 @@
+{
+  "id": "2026-10-09-blis-simulate-before-you-scale",
+  "title": "Simulate Before You Scale: High-Fidelity LLM Inference Planning Without GPUs",
+  "url": "https://arxiv.org/abs/2610.14255",
+  "org": "Dipanwita Guhathakurta and co-authors",
+  "authors": "Dipanwita Guhathakurta, Mert Toslali, Srinivasan Parthasarathy, Jing Chen, Michael Kalantar, Nicholas A. Masluk, Vishakha Ramani, Asser Tantawi, Fabio Oliveira",
+  "published": "2026-10-09",
+  "added": "2026-11-26",
+  "kind": "paper",
+  "layers": [
+    "serving",
+    "routing"
+  ],
+  "mechanism": "frame",
+  "venue": "cluster",
+  "gist": "A simulator of the whole serving pipeline that runs on CPUs: admission, routing, scheduling, prefill and decode, cache and preemption. Its coefficients are fitted once, with no profiling per model or chip. Two policies developed entirely inside it were then checked on real hardware and merged into an open serving platform. Accepted at a performance-measurement conference.",
+  "changes": "The first simulator here whose winners held on real hardware, with an error figure. That is the cheap oracle C4 names, for scheduling and admission only. It moves judging configuration changes off GPUs, which is the cheap half of the rig. Nothing like it exists for engine or kernel code.",
+  "caveats": "Read from the abstract. The authors' own numbers, on a testbed and not production traffic. A 6.7% median error says little about the tail, and two configurations ranked within that margin could still be mis-ordered. It covers policies and layouts, not code changes. One older model anchors the configuration search.",
+  "numbers": [
+    {
+      "metric": "End-to-end prediction error",
+      "value": "6.7% median, about 200x faster than running",
+      "baseline": "real GPU runs: 36 experiments, six models, three GPU types",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Admission policy developed in simulation, then run on hardware",
+      "value": "critical-tier P90 time to first token down by up to 82%",
+      "baseline": "the platform's policy before it",
+      "verification": "self-reported",
+      "setup": "Merged into llm-d"
+    },
+    {
+      "metric": "Flow-control policy developed in simulation",
+      "value": "median end-to-end latency down 32 to 48% under overload",
+      "baseline": "the platform's policy before it",
+      "verification": "self-reported",
+      "setup": "Merged into llm-d"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "challenges",
+      "note": "A cheap oracle predicted real runs within about 7% and picked policies that held on hardware. It covers scheduling and admission, not engine code."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

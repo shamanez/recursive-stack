@@ -1,0 +1,47 @@
+{
+  "id": "2026-10-28-github-copilot-fusion",
+  "title": "Route and orchestrate models with GitHub Copilot Fusion",
+  "url": "https://github.blog/changelog/2026-10-28-route-and-orchestrate-models-with-github-copilot-fusion/",
+  "org": "GitHub",
+  "published": "2026-10-28",
+  "added": "2026-11-26",
+  "kind": "product",
+  "layers": [
+    "routing"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "GitHub replaced its automatic model picker with a system that chooses and combines models for each prompt: one model alone, a cheap draft with a quality check and escalation, or a draft, a review by a second model and a revision. In November it joined a public terminal-task leaderboard. The models it names are all closed.",
+  "changes": "GitHub has changed sides. In June it routed only at session start and compaction to protect the cache; since October it decides for every prompt. It is also the first shipped router reported ahead of the leading single models on a public agentic board, at lower cost, by its own reading.",
+  "caveats": "The leaderboard is hosted by others, but the comparison is GitHub's own and the board itself was not opened. Neither post says how the cache is handled or priced when the model changes, which is the question this tracker cares about. A limited-time 30% discount applies to its use. No open-weight model is named in its pool.",
+  "numbers": [
+    {
+      "metric": "Tasks resolved on a public terminal-task leaderboard",
+      "value": "71.2%, 5.4 points ahead, at 57% and 88% lower cost",
+      "baseline": "the two leading single frontier models on the same board",
+      "verification": "self-reported",
+      "setup": "Its highest effort tier, November 2026"
+    },
+    {
+      "metric": "Score on a coding-agent index",
+      "value": "60, within two points, at about half the cost per task and 40% less time",
+      "baseline": "a leading coding agent on one frontier model at its highest effort",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "Models do share the work behind one harness, but the pool named is all closed and the choice is made per prompt, not per session."
+    }
+  ],
+  "also": [
+    {
+      "label": "November update with the leaderboard result",
+      "url": "https://github.blog/changelog/2026-11-17-github-copilot-fusion-updates-more-availability-benchmarks-and-models/"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

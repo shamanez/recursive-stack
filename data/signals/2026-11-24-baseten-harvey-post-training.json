@@ -1,0 +1,65 @@
+{
+  "id": "2026-11-24-baseten-harvey-post-training",
+  "title": "Open-weight models beat the closed frontier on legal tasks with Harvey",
+  "url": "https://www.baseten.co/blog/open-weight-models-beat-the-closed-frontier-on-legal-tasks-with-harvey/",
+  "org": "Baseten and Harvey",
+  "authors": "Jonathon Liu, Xavier Morris, Will Rankin, Aaron Ellis-Bloor, Matthew Blau, Albert Lee",
+  "published": "2026-11-24",
+  "added": "2026-11-26",
+  "kind": "blog",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "dedicated",
+  "gist": "Harvey and a provider post-trained four recent open models on agentic legal work and scored them on Harvey's benchmark, where a task passes only if every criterion is met. All four rose by 11 to 21 points. One, at 30.3%, passed the best closed model at 27.1%; the other three stayed below it but above two other closed models. Coding scores held.",
+  "changes": "Tuning turns out to be a treadmill that still pays. Harvey's August tune of an older model, at 19.7%, was passed by an untuned general model within three months. Re-tuning newer bases took the lead back. For a provider, post-training is work that repeats with every base model, like a drafter or an engine.",
+  "caveats": "Run by the provider and the customer on the customer's own benchmark. Closed-model scores came from a slightly different harness, reproduced within a point for one model. No cost per task, no training compute and no held-out split for the main benchmark are given. The headline says open models beat the closed frontier; one of four tuned models did.",
+  "numbers": [
+    {
+      "metric": "All-pass rate on the legal agent benchmark, best tuned open model",
+      "value": "30.3%, from 19.2% before tuning",
+      "baseline": "27.1% for the best closed model, untuned",
+      "verification": "self-reported",
+      "setup": "Muse Spark Open, medium reasoning"
+    },
+    {
+      "metric": "The other three tuned open models",
+      "value": "20.8 to 23.3%, from 0 to 11.7% before tuning",
+      "baseline": "16.3% and 5.0% for two other closed models",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Contract tasks absent from training",
+      "value": "4.0 to 13.0% and 10.0 to 16.0%",
+      "baseline": "the same two models before tuning",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Hard coding tasks after legal tuning",
+      "value": "68.6% against 70.6%, with about 35% fewer output tokens",
+      "baseline": "the same model untuned at its highest reasoning setting",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A tuned open model passed the best closed model on the customer's own task. No cost is given, so the claim's cost half still rests on the August result."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "The customer tuned four new base models three months after tuning one. The work repeats with each base."
+    }
+  ],
+  "also": [
+    {
+      "label": "The August tune it follows",
+      "url": "https://fireworks.ai/customers/harvey-tenet-kimi-k3-post-training"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

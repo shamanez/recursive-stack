@@ -30,5 +30,6 @@
   ],
   "added": "2026-11-19",
   "read": "opened",
-  "status": "active"
+  "status": "retired",
+  "retired_why": "A proposed evaluator that needs no implementation. A simulator checked against real hardware now makes the point with numbers. Its roster entry stays."
 }

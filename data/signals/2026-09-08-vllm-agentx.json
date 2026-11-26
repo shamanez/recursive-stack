@@ -16,11 +16,18 @@
   "venue": "any",
   "gist": "The general-purpose open engine reworked for agent traffic: a shared KV block pool, cache retention aware of sessions, a cap on long prefills in the scheduler, and per-model parallelism choices. On this workload, simply keeping a session on the same server beat every load-balancing signal.",
   "changes": "The workload class changed the engine's design, not only its settings. And because it happened in the commons, everyone got it.",
-  "caveats": "No before-optimisation baseline for the headline throughput. The prefill cap buys throughput by making long requests wait longer for a first token. Hints from the agent harness are future work.",
+  "caveats": "No before-optimisation baseline for the headline throughput. The prefill cap buys throughput by making long requests wait longer for a first token. The cost comparison with a closed model's API prices assumes a perfect cache hit rate and says nothing about quality. Hints from the agent harness are future work.",
   "numbers": [
     {
       "metric": "Total tokens per GPU-second from a 512-token cap on long prefills",
       "value": "up to 93% higher",
+      "baseline": "the same engine without the cap",
+      "verification": "public-run",
+      "setup": "DeepSeek V4 Pro, B300"
+    },
+    {
+      "metric": "P90 interactivity from the same 512-token cap",
+      "value": "about 2.3x",
       "baseline": "the same engine without the cap",
       "verification": "public-run",
       "setup": "DeepSeek V4 Pro, B300"
@@ -49,6 +56,6 @@
       "note": "Changes for the whole class, in the shared engine, delivered the bulk of the gain with no per-customer work."
     }
   ],
-  "read": "relayed",
+  "read": "opened",
   "status": "active"
 }

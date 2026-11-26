@@ -3,7 +3,7 @@
   "title": "Hyper optimizing Kimi K3 in vLLM: moving fast and responsibly",
   "url": "https://vllm.ai/blog/2026-10-16-kimi-k3-megakernel",
   "org": "vLLM project (NVIDIA, Inferact, Red Hat)",
-  "authors": "Benjamin Chislett",
+  "authors": "Benjamin Chislett (NVIDIA)",
   "published": "2026-10-16",
   "added": "2026-11-19",
   "kind": "blog",
@@ -16,7 +16,7 @@
   "venue": "any",
   "gist": "Coding agents helped write a fused decode path for one model on one chip, merged into vLLM. The post's real subject is process: agent-written optimisations now arrive faster than maintainers can read them, so it proposes isolating them in per-model directories and having reviewers judge evidence (full-model evaluations plus kernel tests) instead of every line.",
   "changes": "Public, merged proof that agent-written kernel work is in the main open engine, and an admission that human review is now the queue. Also the opposite bet to Together's on megakernels, in the same month.",
-  "caveats": "Agent-assisted, not autonomous; the loop is not described. Headline numbers exclude prefill and use synthetic acceptance. One approving reviewer said they had not read all the kernel code. Standalone kernel tests missed a compiler reordering bug and numerical issues.",
+  "caveats": "Agent-assisted, not autonomous; the loop is not described. Decode numbers exclude prefill, and the speculation figure uses a synthetic acceptance length. The AgentX gain of 1.8x compares 16 GPUs with an earlier run on 8. Standalone kernel tests missed a compiler reordering bug and numerical issues that only long evaluations caught. A reviewer's remark about unread kernel code comes from the pull request, read second-hand.",
   "numbers": [
     {
       "metric": "Per-layer decode, Kimi K3 on GB300",
@@ -30,6 +30,13 @@
       "value": "1.31x to 1.92x",
       "baseline": "stock vLLM, batch 1 to 64",
       "verification": "public-run"
+    },
+    {
+      "metric": "Decode with speculation, one request",
+      "value": "842 vs 488 tok/s (1.73x)",
+      "baseline": "stock vLLM with the same speculation settings",
+      "verification": "public-run",
+      "setup": "16 GB300s, seven draft tokens, acceptance length fixed at 6, prefill excluded"
     }
   ],
   "bears_on": [
@@ -55,6 +62,6 @@
       "url": "https://github.com/vllm-project/vllm/issues/59665"
     }
   ],
-  "read": "relayed",
+  "read": "opened",
   "status": "active"
 }

@@ -596,5 +596,58 @@
       "C9"
     ],
     "featured": false
+  },
+  {
+    "id": "post-training-legal",
+    "type": "pairs",
+    "title": "Post-training open models on one customer's legal benchmark",
+    "takeaway": "Tuning added 9 to 21 points. One tuned open model passed the best closed model; the others did not.",
+    "unit": "%",
+    "from_label": "before tuning",
+    "to_label": "after",
+    "reference": 27.1,
+    "reference_label": "best closed model, untuned",
+    "rows": [
+      {
+        "label": "Muse Spark Open",
+        "from": 19.2,
+        "to": 30.3,
+        "note": "The only one above the best closed model",
+        "signal": "2026-11-24-baseten-harvey-post-training"
+      },
+      {
+        "label": "Inkling 2 Small",
+        "from": 11.7,
+        "to": 23.3,
+        "note": "Also rose from 4% to 13% on contract tasks it was not trained on",
+        "signal": "2026-11-24-baseten-harvey-post-training"
+      },
+      {
+        "label": "Nemotron 3.5 Super VL",
+        "from": 1.3,
+        "to": 21.8,
+        "note": "Above two closed models after tuning",
+        "signal": "2026-11-24-baseten-harvey-post-training"
+      },
+      {
+        "label": "Beam 1.0",
+        "from": 0.0,
+        "to": 20.8,
+        "note": "From no task passed",
+        "signal": "2026-11-24-baseten-harvey-post-training"
+      },
+      {
+        "label": "Kimi K3, tuned in August",
+        "from": 10.8,
+        "to": 19.7,
+        "note": "The earlier tune, with another provider, at a flat cost per task",
+        "signal": "2026-08-26-harvey-tenet"
+      }
+    ],
+    "caption": "Share of tasks meeting every criterion on Harvey's legal agent benchmark. The provider and the customer ran it, and closed-model scores came from a slightly different harness. The August row is from an earlier write-up; an untuned general model passed it within three months.",
+    "claims": [
+      "C10"
+    ],
+    "featured": false
   }
 ]

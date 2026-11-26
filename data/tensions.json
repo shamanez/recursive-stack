@@ -160,21 +160,21 @@
     "question": "Choose the model once per session, or for every request?",
     "sides": [
       {
-        "held_by": "Databricks, Together, GitHub, Fireworks",
+        "held_by": "Databricks, Together, Fireworks, and GitHub until October",
         "position": "Once, at the start, or only where no cache is lost: session start, compaction, sub-agent launch. Switching mid-session re-reads the whole context at full price.",
         "signals": [
           "2026-08-13-databricks-smart-routing",
           "2026-10-05-together-link",
-          "2026-06-17-github-copilot-auto-routing",
           "2026-09-21-fireworks-frontier-is-a-router"
         ]
       },
       {
-        "held_by": "Cursor, OpenRouter",
+        "held_by": "Cursor, OpenRouter, and GitHub since October",
         "position": "Every request or turn, with the cost of the cache miss priced into the decision. A session that gets harder should not be stuck on the model it started with.",
         "signals": [
           "2026-07-22-cursor-router",
-          "2026-11-06-openrouter-auto-code-routers"
+          "2026-11-06-openrouter-auto-code-routers",
+          "2026-10-28-github-copilot-fusion"
         ]
       },
       {
@@ -188,12 +188,12 @@
       }
     ],
     "settles_when": "An independent agentic benchmark with caching priced in compares the two on the same tasks. One early result has a trained per-step router halving cost.",
-    "lean": "Toward cache boundaries in practice. A router that decides every turn and prices the cache still kept the same model nine turns in ten, and Fireworks moved its router from every turn to once per task. Translating the cache would loosen this inside a pool of open models; no engine or product does it yet.",
+    "lean": "Split. A router that prices the cache still kept the same model nine turns in ten, and Fireworks moved from every turn to once per task. GitHub went the other way in October, and Databricks names making the switch cheap as its next step. Translating the cache would loosen this inside a pool of open models; no engine or product does it yet.",
     "claims": [
       "C9",
       "C2"
     ],
-    "status": "leaning"
+    "status": "open"
   },
   {
     "id": "T8",
@@ -201,12 +201,13 @@
     "sides": [
       {
         "held_by": "Router vendors",
-        "position": "Routing cuts cost by a third to three-quarters at equal quality, by their own measurements, and a perfect choice per task would beat the best single model by 23 points.",
+        "position": "Routing cuts cost by a third to three-quarters at equal quality, by their own measurements, and a perfect choice per task would beat the best single model by 23 points. In November one shipped router was reported ahead of the leading single models on a public agentic board, at lower cost.",
         "signals": [
           "2026-07-22-cursor-router",
           "2026-08-13-databricks-smart-routing",
           "2026-07-26-fireworks-nexus",
-          "2026-09-21-fireworks-frontier-is-a-router"
+          "2026-09-21-fireworks-frontier-is-a-router",
+          "2026-10-28-github-copilot-fusion"
         ]
       },
       {
@@ -224,17 +225,18 @@
       "C9"
     ],
     "status": "leaning",
-    "lean": "Toward a good default model. The first vendor to publish its router beside single models from its own pool, on public tasks, lost to the best of them and says so. Live sessions are untested."
+    "lean": "Still toward a good default model on coding tasks, where single models beat one vendor's router on its own board. But a second vendor now reports its router ahead on a public agentic board, by its own reading and with caching unstated. Live sessions are untested."
   },
   {
     "id": "T9",
     "question": "Tune a model for the job, or wait for the next general one?",
     "sides": [
       {
-        "held_by": "Harvey, Datadog, Fireworks, Together",
+        "held_by": "Harvey, Datadog, Fireworks, Together, Baseten",
         "position": "Tune. On a narrow job it has nearly doubled quality at flat cost, or cut latency by an order of magnitude against a general model.",
         "signals": [
           "2026-08-26-harvey-tenet",
+          "2026-11-24-baseten-harvey-post-training",
           "2026-11-18-datadog-fine-tune-baseten",
           "2026-08-31-fireworks-training-api",
           "2026-10-19-together-post-training"
@@ -250,7 +252,7 @@
       }
     ],
     "settles_when": "A tuned model is followed against each new general release on the same task for six months.",
-    "lean": "It depends on how narrow the job is. The wins are on single tasks with their own data and grader; the losses are on general coding, where the next release moves fastest.",
+    "lean": "It depends on how narrow the job is, and it has to be repeated. Harvey's August tune was passed by an untuned general model within three months; tuning four newer bases took the lead back by three points. The wins are on single tasks with their own data and grader; the losses are on general coding, where the next release moves fastest.",
     "claims": [
       "C10"
     ],

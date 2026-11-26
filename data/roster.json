@@ -1,6 +1,6 @@
 {
   "_about": "Who has described an optimisation loop for inference, one line each. An entry needs either a signal (it has been weighed against the thesis) or a url (noted, not yet weighed). 'when' is when it was first described; 'updated' is a later post that matters. recent_from sets what the front page shows before 'show all'. Every sweep checks for teams missing from this list.",
-  "recent_from": "2026-10-01",
+  "recent_from": "2026-10-15",
   "entries": [
     {
       "who": "Ankit Gupta",
@@ -89,7 +89,7 @@
       "stage": "upstream",
       "gist": "Agent-written kernels merged for one model on one chip. Proposes that reviewers judge evidence, since patches now outrun reading.",
       "signal": "2026-10-16-vllm-kimi-k3-megakernel",
-      "read": "relayed"
+      "read": "opened"
     },
     {
       "who": "University of Chicago",
@@ -112,7 +112,7 @@
       "stage": "research",
       "gist": "A coding agent with a standing goal built a custom engine for one model in about a week. Not serving production traffic.",
       "signal": "2026-10-02-baseten-agentic-engine",
-      "read": "relayed"
+      "read": "opened"
     },
     {
       "who": "MIT HAN Lab and others",
@@ -178,8 +178,8 @@
       "means": "agent",
       "stage": "research",
       "gist": "A language for describing inference workloads so an agent can search whole architectures, with an evaluator that needs no implementation.",
-      "signal": "2026-09-11-rooflang",
-      "read": "opened"
+      "read": "opened",
+      "url": "https://arxiv.org/abs/2609.12551"
     },
     {
       "who": "Tianyu Zhang and co-authors",
@@ -346,6 +346,330 @@
       "gist": "An agent profiles an inference script, writes kernels for its dominant phases and keeps patches only if the whole model speeds up. 3.9 to 7x over eager PyTorch.",
       "url": "https://arxiv.org/abs/2608.21836",
       "read": "opened"
+    },
+    {
+      "who": "Sarvam AI",
+      "system": "Token Factory",
+      "kind": "Inference provider and model lab",
+      "when": "2026-11-16",
+      "means": "agent",
+      "stage": "production",
+      "gist": "An orchestrator agent reads fleet telemetry and hands experiments to sub-agents per layer. A calibrated simulator filters candidates before live A/B tests; an engineer approves every change.",
+      "signal": "2026-11-16-sarvam-token-factory",
+      "read": "opened"
+    },
+    {
+      "who": "Databricks",
+      "system": "Proteus",
+      "kind": "Data platform and model provider",
+      "when": "2026-09-04",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Agents write kernels specialised to request shapes. The harness re-times winners, hides some tests and flags impossible speed-ups. Kernel gains of 1.8 to 5.2x, none end to end.",
+      "url": "https://www.databricks.com/blog/achieving-extreme-efficiency-through-specialized-gpu-kernel-generation",
+      "read": "opened"
+    },
+    {
+      "who": "Shubham Agarwal and co-authors",
+      "system": "DuoDiscover",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-10-12",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A fleet of coding agents each invents a fast proxy for the slow true evaluation and climbs it; fidelity tests retire proxies that drift. 1.92x on vLLM.",
+      "url": "https://arxiv.org/abs/2610.17184",
+      "read": "opened"
+    },
+    {
+      "who": "Qian Qu and co-authors",
+      "system": "CompoundingKernel",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-11-14",
+      "updated": "2026-11-20",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Over a thousand agents search GPU kernels from an archive of every correct one. First on a public kernel board; reliable measurement, not agent count, set the limit.",
+      "url": "https://arxiv.org/abs/2611.19230",
+      "read": "opened"
+    },
+    {
+      "who": "Pinaki Prasad Guha Neogi and co-authors",
+      "system": "NoeVera",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-11-22",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Agents keep a knowledge base and call a serving simulator to choose configurations: within 5% of the best in six or seven tries, against nine for Bayesian optimisation.",
+      "url": "https://arxiv.org/abs/2611.29255",
+      "read": "opened"
+    },
+    {
+      "who": "Morph",
+      "system": "Autoresearch kernel loop",
+      "kind": "Inference provider",
+      "when": "2026-06-19",
+      "means": "agent",
+      "stage": "production",
+      "gist": "A loop proposes kernels for cheap GPUs, checks them against a reference, times them on production traces and ships winners: 97 to 162 tok/s on one card.",
+      "url": "https://www.morphllm.com/blog/codegen-inference-research",
+      "read": "opened"
+    },
+    {
+      "who": "Cursor with NVIDIA",
+      "system": "Multi-agent kernel harness",
+      "kind": "Workload owner with a chip vendor",
+      "when": "2026-04-14",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A planner-and-workers harness ran three weeks on 235 kernel problems across 27 GPUs: 38% faster on average than baselines. Kernel-level results.",
+      "url": "https://cursor.com/blog/multi-agent-kernels",
+      "read": "opened"
+    },
+    {
+      "who": "OpenAI",
+      "system": "Self-tuned serving, as reported",
+      "kind": "Model lab",
+      "when": "2026-09-17",
+      "means": "agent",
+      "stage": "claimed",
+      "gist": "A trade-press account of a conference talk says a model checkpoint tuned its own serving on new chips for 72 hours and doubled speed. No primary source.",
+      "url": "https://techarena.ai/content/ai-infra-summit-2026-why-the-inference-buildout-isnt-pausing",
+      "read": "relayed"
+    },
+    {
+      "who": "NVIDIA",
+      "system": "Agent swarms on a benchmark submission",
+      "kind": "Chip vendor",
+      "when": "2026-11-05",
+      "means": "agent",
+      "stage": "claimed",
+      "gist": "A benchmark write-up says NVIDIA put engineers and agent swarms on a counter-submission; a job post describes agents that benchmark, profile and tune open engines. No numbers.",
+      "url": "https://inferencex.semianalysis.com/blog/tpu-strikes-the-king",
+      "read": "relayed"
+    },
+    {
+      "who": "Intelligent Internet",
+      "system": "Meta-Zenith",
+      "kind": "Startup",
+      "when": "2026-09-09",
+      "means": "agent",
+      "stage": "research",
+      "gist": "An agent ran 111 unattended trials on a vLLM fork with bit-exact outputs as the gate and kept 25: 63% over stock vLLM on one consumer GPU.",
+      "url": "https://github.com/Intelligent-Internet/Qwen3.8-Inference-MetaZenith",
+      "read": "relayed"
+    },
+    {
+      "who": "Xingyu Dang",
+      "system": "megakernel-zoo",
+      "kind": "Independent researcher",
+      "when": "2026-11-16",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A coding agent wrote one persistent decode kernel per model for nine checkpoints against a fixed evaluator. The author reports 1.1 to 1.8x over the fastest engines.",
+      "url": "https://github.com/dangxingyu/megakernel-zoo",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2611.03517",
+      "system": "KernelSeek",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-11-02",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A coding agent steered by short questions rewrote attention kernels: 1.16x over the standard library on average, some cases at a third of its speed. Kernels only.",
+      "url": "https://arxiv.org/abs/2611.03517",
+      "read": "relayed"
+    },
+    {
+      "who": "Meta (PyTorch)",
+      "system": "KernelAgent",
+      "kind": "Open framework",
+      "when": "2026-03-06",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Agents profile, diagnose, fix and benchmark Triton kernels with hardware counters: 1.56x over default compilation on 100 benchmark tasks.",
+      "url": "https://pytorch.org/blog/kernelagent-hardware-guided-gpu-kernel-optimization-via-multi-agent-orchestration/",
+      "read": "relayed"
+    },
+    {
+      "who": "Gimlet Labs",
+      "system": "KForge",
+      "kind": "Startup",
+      "when": "2026-06-01",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A generation agent and a profiling agent write kernels across chips. End to end it was worth about 2% over a vendor engine on one model.",
+      "url": "https://arxiv.org/abs/2606.02963",
+      "read": "relayed"
+    },
+    {
+      "who": "Red Hat",
+      "system": "LLM-Tuna 2.0",
+      "kind": "Open-source vendor",
+      "when": "2026-09-25",
+      "means": "agent",
+      "stage": "claimed",
+      "gist": "A conference talk describes an agent that reads vLLM logs, triggers profiling, keeps a knowledge base and tunes configuration. No numbers on the page.",
+      "url": "https://pretalx.devconf.info/devconf-us-2026/talk/9SMF9X/",
+      "read": "relayed"
+    },
+    {
+      "who": "Alibaba Group",
+      "system": "Atrex Kernel Agent",
+      "kind": "Hyperscaler",
+      "when": "2026-11",
+      "means": "agent",
+      "stage": "claimed",
+      "gist": "An open kernel-agent loop for NVIDIA, AMD and its own chips. Claims up to 1.55x over production baselines on its model's operators.",
+      "url": "https://github.com/alibaba/atrex-kernel-agent",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2611.04998",
+      "system": "ForgeKernel",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-11-03",
+      "means": "agent",
+      "stage": "research",
+      "gist": "An agent wrote kernels 1.10x faster on average than expert references on 29 NVIDIA configurations, and 25% over the public best on a Huawei accelerator.",
+      "url": "https://arxiv.org/abs/2611.04998",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2610.36434",
+      "system": "JustGoal",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-10-27",
+      "means": "agent",
+      "stage": "research",
+      "gist": "An agent given only a goal, no workflow, beat open libraries on 8 of 10 operators on one NVIDIA chip, by 1.14 to 2.34x.",
+      "url": "https://arxiv.org/abs/2610.36434",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2609.12379",
+      "system": "ForgeMegakernel",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-09-11",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Agent-written fused decode paths: 1.21x on average over one open engine.",
+      "url": "https://arxiv.org/abs/2609.12379",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2610.36848",
+      "system": "Evolving Agent Teams",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-10-27",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A team of agents that reorganises itself beat a production attention kernel by 1.2x on average, winning 36 of 47 workloads.",
+      "url": "https://arxiv.org/abs/2610.36848",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2608.12629",
+      "system": "CAKE",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-08-12",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Agent-written attention kernels 2.05x over the official ones for one model; four changes were sent upstream as pull requests.",
+      "url": "https://arxiv.org/abs/2608.12629",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2610.31034",
+      "system": "CANNBot-CAKE",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-10-22",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A kernel agent for Huawei's accelerators: 1.33x on 53 operators against a baseline the abstract does not define.",
+      "url": "https://arxiv.org/abs/2610.31034",
+      "read": "relayed"
+    },
+    {
+      "who": "Intel Labs",
+      "system": "Xe-Forge",
+      "kind": "Chip vendor",
+      "when": "2026-04-16",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A kernel agent for Intel's graphics cards: 1.17x on average over plain PyTorch.",
+      "url": "https://arxiv.org/abs/2605.26118",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2511.15915",
+      "system": "AccelOpt",
+      "kind": "Research group, affiliation not shown",
+      "when": "2025-11-19",
+      "updated": "2026-04-15",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A self-improving agent wrote kernels for Amazon's accelerator, raising them from 49% to 61% of peak throughput.",
+      "url": "https://arxiv.org/abs/2511.15915",
+      "read": "relayed"
+    },
+    {
+      "who": "Intellifusion",
+      "system": "Houmao",
+      "kind": "Chip vendor",
+      "when": "2026-05-25",
+      "means": "agent",
+      "stage": "research",
+      "gist": "An agent's fused mixture-of-experts kernel ran 1.71x over the reference library in a systems-conference kernel contest.",
+      "url": "https://arxiv.org/abs/2608.14560",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2611.04331",
+      "system": "Warpline",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-11-03",
+      "updated": "2026-11-17",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A kernel-agent pipeline reached 7.69x on ten benchmark problems, against 6.94x for a bare agent and 6.13x for an earlier agent workflow.",
+      "url": "https://arxiv.org/abs/2611.04331",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2603.10085",
+      "system": "KernelClaw",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-03-10",
+      "updated": "2026-10-18",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A kernel agent scoring 6.98x over plain PyTorch on the easiest tier of a kernel benchmark.",
+      "url": "https://arxiv.org/abs/2603.10085",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2609.30059",
+      "system": "KernelOPT",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-09-24",
+      "updated": "2026-11-19",
+      "means": "agent",
+      "stage": "research",
+      "gist": "A kernel agent reaching 1.40x over PyTorch's compiler on the easiest benchmark tier, on one NVIDIA chip.",
+      "url": "https://arxiv.org/abs/2609.30059",
+      "read": "relayed"
+    },
+    {
+      "who": "Authors of arXiv 2608.25124",
+      "system": "FABRICA",
+      "kind": "Research group, affiliation not shown",
+      "when": "2026-08-25",
+      "means": "agent",
+      "stage": "research",
+      "gist": "Agents translate CUDA kernels to a wafer-scale chip's toolchain: 3.47x over the reference on that chip.",
+      "url": "https://arxiv.org/abs/2608.25124",
+      "read": "relayed"
     }
   ]
 }

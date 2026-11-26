@@ -1,0 +1,88 @@
+{
+  "id": "2026-11-16-sarvam-token-factory",
+  "title": "Introducing Sarvam Token Factory",
+  "url": "https://www.sarvam.ai/blogs/sarvam-token-factory",
+  "org": "Sarvam AI",
+  "published": "2026-11-16",
+  "added": "2026-11-26",
+  "kind": "blog",
+  "layers": [
+    "loop",
+    "serving",
+    "engine",
+    "routing"
+  ],
+  "mechanism": "agent",
+  "venue": "cluster",
+  "gist": "A provider in India launched its serving stack for its own and open models. An orchestrator agent reads fleet telemetry and hands experiments to sub-agents per layer; a simulator calibrated on its servers filters candidates before live A/B tests, and an engineer approves each change. The post lists eight changes tested on one model, six kept, and bugs it found in an upstream fused kernel.",
+  "changes": "Another provider runs the loop in production, and the first to say a simulator screens changes before live tests. Its gains sit where the build order says: cache tier, prefill and routing, with first-token time 2.1x better than the stock stack on the same nodes. An upstream fused kernel had shipped a correctness bug.",
+  "caveats": "All numbers are its own. The 1.9x throughput figure compares with a public board's published run, not a rerun on its hardware, and that run had speculation off at the top load. The agent loop gets one paragraph: no count of agent-found changes, no cost, and nothing on how well the simulator predicts. Whether its kernel fixes went upstream is not stated.",
+  "numbers": [
+    {
+      "metric": "Median time to first token at 64 agent sessions",
+      "value": "667 ms against 1,428 ms; slowest 1%: 3.2 s against 14.1 s",
+      "baseline": "stock vLLM 0.31 and Dynamo on the same two B200 nodes, at the same throughput per GPU",
+      "verification": "self-reported",
+      "setup": "GLM 5.3 Flash, public agent traces"
+    },
+    {
+      "metric": "Tokens per GPU at about 70 tokens a second per user",
+      "value": "6,177 against 3,213 (1.9x)",
+      "baseline": "a public board's published vLLM run on B200, not rerun",
+      "verification": "self-reported",
+      "setup": "Kimi K3.1 Pro, 16 B200s"
+    },
+    {
+      "metric": "Prompt tokens served from cache in production",
+      "value": "95.7%, up from 91.4%, which halves prefill work",
+      "baseline": "GPU memory alone, before a shared cache store",
+      "verification": "self-reported",
+      "setup": "DeepSeek V4.1 Flash, seven days to 6 November"
+    },
+    {
+      "metric": "Prefill nodes needed at peak",
+      "value": "34 against 58",
+      "baseline": "the same traffic without the shared cache store",
+      "verification": "self-reported",
+      "setup": "GLM 5.3"
+    },
+    {
+      "metric": "Long code replies garbled by an upstream fused kernel",
+      "value": "32 of 299, none after its fix",
+      "baseline": "vLLM's fused decode kernel for GLM 5.3 Flash, which skipped a clamp",
+      "verification": "self-reported",
+      "setup": "Public agent traces"
+    },
+    {
+      "metric": "Draft tokens per step at 320 sessions",
+      "value": "3 instead of 4 gave 6.2% more throughput",
+      "baseline": "the same drafter proposing 4",
+      "verification": "self-reported",
+      "setup": "Kimi K3.1 Pro decode"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C4",
+      "direction": "supports",
+      "note": "An upstream fused kernel shipped without a clamp and garbled about one long code reply in nine. Its own changes pass a simulator, a live test and an engineer."
+    },
+    {
+      "claim": "C7",
+      "direction": "challenges",
+      "note": "A private stack returns the first token 2.1x sooner than the stock open one on the same nodes, and reports 1.9x a public board's throughput."
+    },
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "Agents run dozens of experiments per model in days, with a person approving each change."
+    },
+    {
+      "claim": "C6",
+      "direction": "supports",
+      "note": "It says each new model breaks kernel, cache and scheduling assumptions that must be fixed within hours of release."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

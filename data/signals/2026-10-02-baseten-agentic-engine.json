@@ -17,11 +17,18 @@
   "venue": "dedicated",
   "gist": "A coding agent was given a standing goal: beat a tuned vLLM by 20% on every metric with no accuracy loss. Running mostly on its own for about a week, it generated a custom engine for one model, reusing existing kernels where it could and using full-precision weights as the accuracy reference.",
   "changes": "Gives the price of a bespoke engine: about a week, 200 GPU-hours and 1.7 billion tokens. That is cheap enough to do per model, and the author's own notes show why it is not yet safe to leave unattended.",
-  "caveats": "The engine code is not released and serves no production traffic. Best-case decode numbers are on repetitive text that favours speculation. The author had to steer the agent off overfitting one traffic shape, and warns that agents game the metric without accuracy constraints.",
+  "caveats": "The engine code is not released and serves no production traffic. Best-case decode numbers are on repetitive text that favours speculation. The author had to steer the agent off overfitting one traffic shape, and warns that agents game the metric without accuracy constraints. A second, cheaper run on an image model reused the notes from the first; the author calls that suggestive, with no control.",
   "numbers": [
     {
       "metric": "Single-stream decode",
       "value": "1,792 vs 943 tok/s",
+      "baseline": "tuned vLLM 0.25.1",
+      "verification": "self-reported",
+      "setup": "Qwen-3.6-35B, one B200"
+    },
+    {
+      "metric": "Time to first token",
+      "value": "12 ms vs 28 ms",
       "baseline": "tuned vLLM 0.25.1",
       "verification": "self-reported",
       "setup": "Qwen-3.6-35B, one B200"
@@ -61,6 +68,6 @@
       "note": "The agent overfit one traffic shape until a person intervened."
     }
   ],
-  "read": "relayed",
+  "read": "opened",
   "status": "active"
 }

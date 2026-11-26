@@ -42,5 +42,6 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "retired",
+  "retired_why": "A recipe, with a plan to put the model into an optimisation loop that has not been reported since. The tuning evidence now rests on measured customer results. The recipe stays linked as a build part."
 }

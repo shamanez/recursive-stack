@@ -13,12 +13,18 @@
   "venue": "dedicated",
   "gist": "A legal AI company post-trained an open model with reinforcement learning on tens of thousands of long agent runs per checkpoint, each over 50 turns. The trained model nearly doubled its pass rate on a legal agent benchmark at about the same cost per task, and the gain carried to two held-out legal benchmarks.",
   "changes": "The strongest single result for tuning as an inference lever: nearly twice the quality for the same serving cost, on the customer's own kind of work.",
-  "caveats": "No comparison with a frontier model, and no training data or compute disclosed. A public leaderboard checked eight weeks later showed several cheaper general models at or above its score, though the runs are not strictly comparable.",
+  "caveats": "No comparison with a frontier model, and no training data or compute disclosed. Three months later an untuned general model scored 27.1% on the same benchmark against this tune's 19.7%, and Harvey post-trained four newer open models with another provider.",
   "numbers": [
     {
       "metric": "Pass rate on a legal agent benchmark",
       "value": "19.7% against 10.8%",
       "baseline": "the same open model before tuning, at about the same cost per task",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Cost per benchmark task",
+      "value": "$5.92 against $5.62",
+      "baseline": "the same open model before tuning",
       "verification": "self-reported"
     },
     {
@@ -40,6 +46,6 @@
       "note": "Within two months general models appear to have caught up on the same leaderboard."
     }
   ],
-  "read": "relayed",
+  "read": "opened",
   "status": "active"
 }

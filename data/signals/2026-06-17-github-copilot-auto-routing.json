@@ -41,5 +41,7 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "superseded",
+  "superseded_by": "2026-10-28-github-copilot-fusion",
+  "retired_why": "GitHub replaced this router in October with one that decides for every prompt, so its account of routing only at cache boundaries no longer describes the product."
 }

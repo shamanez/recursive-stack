@@ -11,7 +11,7 @@
       "listens": "How hard the first task of the session looks, live load and price on each model, and whether a cache would be lost by switching.",
       "clock": "request",
       "status": "working",
-      "bought": "Vendors report 33 to 74% lower cost, each against its own baseline. Against the best single models, one vendor's router lost on its own board and seven shipped routers failed to beat a cheap default outside. A trained research router halved cost.",
+      "bought": "Vendors report 33 to 74% lower cost, each against its own baseline. Outside, seven shipped routers failed to beat a cheap default and one lost on its vendor's own board. Another topped a public agentic board at lower cost, by its vendor's reading.",
       "connects": "Nine-tenths of agent tokens are cached re-reads, and a cache belongs to one model, so routes change only at session start, compaction or sub-agent launch. Research translators now move a cache between open models for a few points of accuracy. Each routed model needs its own drafter and engine.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
@@ -24,7 +24,8 @@
         "2026-11-06-openrouter-auto-code-routers",
         "2026-11-baseten-speculative-encoding",
         "2026-09-01-cachebridge",
-        "2026-08-04-cross-model-kv-transfer-linear"
+        "2026-08-04-cross-model-kv-transfer-linear",
+        "2026-10-28-github-copilot-fusion"
       ],
       "claims": [
         "C9"
@@ -43,7 +44,6 @@
       "connects": "Sticky routing is what makes the prompt cache pay, and the cache is most of an agent workload's cost. It needs the cache map kept by lever 3, and it can take hints from the agent harness about priority and expected length.",
       "signals": [
         "2026-08-17-llmd-sticky-until-saturated",
-        "2026-03-13-llmd-predicted-latency",
         "nvidia-dynamo-agentic-inference",
         "2026-09-08-vllm-agentx",
         "2026-10-08-openrouter-cache-is-crucial"
@@ -61,14 +61,15 @@
       "listens": "The mix of long prompts and steady generation, and which contexts agents are still waiting to reuse.",
       "clock": "minutes",
       "status": "early",
-      "bought": "1.28x over the best fixed split as traffic shifts, in a research system. A cap on long prefills raised tokens per GPU-second by up to 93%, costing first-token time. Spilling the cache to host memory gave 3.9x output once sessions outgrew the GPU.",
+      "bought": "1.28x over the best fixed split as traffic shifts, in research. A prefill cap: up to 93% more tokens per GPU-second. A host-memory cache tier: 3.9x once sessions outgrew the GPU. A shared cache store cut one provider's prefill nodes from 58 to 34.",
       "connects": "It decides how full batches are, which sets how much speculation (lever 4) is worth and which shapes the kernels (lever 5) see. Evicting the wrong context undoes lever 2. Splitting prefill from decode left one provider drafting tokens decode never used.",
       "signals": [
         "2026-11-09-evolving-infra",
         "2026-09-08-vllm-agentx",
         "2026-08-24-agentx-inferencex-v3",
         "2026-11-23-llmd-sglang-tiered-kv-cache",
-        "2026-09-30-alibaba-herschel"
+        "2026-09-30-alibaba-herschel",
+        "2026-11-16-sarvam-token-factory"
       ],
       "claims": [
         "C2"
@@ -139,14 +140,14 @@
       "listens": "The domain's tasks and tool-calling format, logged production outputs to learn from, and where the general model fails or is slower than it needs to be.",
       "clock": "release",
       "status": "early",
-      "bought": "On narrow jobs: nearly double the pass rate at flat cost for a legal agent, and 0.9 s against 45 s for one summarisation task. On general coding, a newer untuned model beat a tuned one.",
-      "connects": "A tuned model lets lever 1 send more sessions down the cheap path. It needs its own drafter (lever 4) and compiled engine (lever 5), and it dies when its base model is withdrawn. Adapters sharing one deployment keep it affordable.",
+      "bought": "On one legal benchmark, tuning nearly doubled an open model's pass rate at flat cost in August; in November four re-tuned newer models gained 11 to 21 points and one passed the best closed model. 0.9 s against 45 s on one summarisation job.",
+      "connects": "A tuned model lets lever 1 send more sessions down the cheap path. It needs its own drafter (lever 4) and compiled engine (lever 5), and it dies when its base model is withdrawn. General models passed one tune within three months. Adapters sharing one deployment keep it affordable.",
       "signals": [
         "2026-08-26-harvey-tenet",
+        "2026-11-24-baseten-harvey-post-training",
         "2026-11-18-datadog-fine-tune-baseten",
         "2026-08-31-fireworks-training-api",
         "2026-10-19-together-post-training",
-        "2026-11-02-fireflash-agentic-rl-recipe",
         "2026-11-04-cognition-swe-2-flash",
         "2026-05-07-openai-fine-tuning-wind-down"
       ],
@@ -187,7 +188,8 @@
     "signals": [
       "2026-11-inferact-autonomous-inference-system",
       "2026-11-04-together-compiler",
-      "2026-10-28-decagon-autoresearch"
+      "2026-10-28-decagon-autoresearch",
+      "2026-11-16-sarvam-token-factory"
     ]
   },
   "build_intro": "Written for a provider serving many models. The order follows where others report the most gain for the least new code. Steps 4 to 7 repeat for every model, so do them for the few that carry most of your traffic and rely on the open engines for the rest. It is drawn from published accounts, not from a system anyone has documented end to end.",
@@ -245,12 +247,13 @@
       ],
       "do": "Measure every change end to end inside the full engine, never a kernel alone. Check outputs in three layers: kernel tests across shapes, a token-probability comparison, and task evals that exercise the changed path. Fail on request errors.",
       "bought": "Protection. Kernel speed-ups of 1.6 to 6.6x shrank to about 1x end to end, and one in sixteen agent runs in an independent benchmark gamed the measurement.",
-      "watch": "A standard task-score gate caught 1 of 7 known numerical bugs and passed a run in which the engine had crashed. Agents have been caught changing the benchmark.",
+      "watch": "A standard task-score gate caught 1 of 7 known numerical bugs. Agents have been caught changing the benchmark. An upstream fused kernel shipped that garbled about one long code reply in nine.",
       "signals": [
         "2026-05-22-fastkernels",
         "2026-10-14-vllm-byog-evals-rfc",
         "2026-05-20-inferencebench",
-        "2026-10-03-seis-self-evolving-inference"
+        "2026-10-03-seis-self-evolving-inference",
+        "2026-11-16-sarvam-token-factory"
       ],
       "parts": [
         {
@@ -281,7 +284,7 @@
         "worker",
         "split"
       ],
-      "do": "Search the settings you already have against the rig: cache-aware and sticky routing, the prefill and decode split, caps on long prefills, cache retention. Use plain search here, not agents.",
+      "do": "Search the settings you already have against the rig: cache-aware and sticky routing, the prefill and decode split, caps on long prefills, cache retention. Use plain search here, not agents. Screen candidates in a simulator first: one picked policies that held on hardware.",
       "bought": "The largest reported gains for the least risk: 2.9x from cache-aware routing on code generation, 3.9x from a host-memory cache tier once sessions outgrew GPU memory, up to 93% from a prefill cap. One default flag explained 78% of a gap between two engines.",
       "watch": "Plain search beat every coding agent here in an independent test. Prefill-bound gains do not appear on decode-bound work. A shared-storage cache tier added 14 to 66% to first-token time and paid only on failover.",
       "signals": [
@@ -289,7 +292,8 @@
         "2026-09-08-vllm-agentx",
         "2026-11-04-vllm-sglang-controlled-evaluation",
         "2026-05-20-inferencebench",
-        "2026-11-23-llmd-sglang-tiered-kv-cache"
+        "2026-11-23-llmd-sglang-tiered-kv-cache",
+        "2026-10-09-blis-simulate-before-you-scale"
       ],
       "parts": [
         {
@@ -306,6 +310,11 @@
           "label": "DynoSim",
           "url": "https://docs.nvidia.com/dynamo/knowledge-base/concepts/simulation/overview.md",
           "note": "Simulates scheduling and caching without GPUs to shortlist settings. Confirm the shortlist on real hardware."
+        },
+        {
+          "label": "BLIS",
+          "url": "https://arxiv.org/abs/2610.14255",
+          "note": "A simulator of the serving pipeline that runs on CPUs. 6.7% median error against real runs, and two policies found in it were merged into llm-d. For scheduling and admission, not engine code."
         }
       ]
     },
@@ -425,8 +434,8 @@
         "weights"
       ],
       "do": "Start from the best single model for the job and route only where the work is varied, deciding at session start or where no cache is lost. Post-train an open model only for single jobs where you have the data and a grader.",
-      "bought": "Routing: 33 to 74% lower cost by vendors' accounts; on public tasks, no shipped router has yet beaten the best single model. Tuning: nearly double the pass rate on a legal agent at flat cost; 0.9 s against 45 s on one summarisation job.",
-      "watch": "On its board, one vendor's router lost to single models from its pool; nobody has tested on live sessions. A tuned model needs its own drafter and engine, and dies when its base model is withdrawn.",
+      "bought": "Routing: 33 to 74% lower cost by vendors' accounts. On public coding tasks single models beat one vendor's router; another vendor reports its router ahead on a public agentic board. Tuning: 11 to 21 points on a legal benchmark for four open models.",
+      "watch": "Nobody has tested a router on live sessions with the cache priced. A tune needs its own drafter and engine, has been passed by general models within three months, and dies with its base model.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
         "2026-11-06-openrouter-auto-code-routers",
@@ -434,7 +443,9 @@
         "2026-08-26-harvey-tenet",
         "2026-11-18-datadog-fine-tune-baseten",
         "2026-11-04-cognition-swe-2-flash",
-        "2026-09-21-fireworks-frontier-is-a-router"
+        "2026-09-21-fireworks-frontier-is-a-router",
+        "2026-10-28-github-copilot-fusion",
+        "2026-11-24-baseten-harvey-post-training"
       ],
       "parts": [
         {
@@ -473,12 +484,13 @@
         "engine"
       ],
       "do": "Detect when traffic has drifted, re-run the earlier steps, promote winners through shadow traffic, and send upstream whatever is not specific to you.",
-      "bought": "One provider shadowed all live traffic onto a new build before cutover. Prompt lengths have been seen to rise about 80% within two weeks of a model release.",
+      "bought": "One provider shadowed all live traffic onto a new build before cutover. Another screens changes in a calibrated simulator, then live A/B tests, with an engineer approving each. Prompt lengths have been seen to rise about 80% within two weeks of a model release.",
       "watch": "No provider has published how it detects drift, and nothing public compares a shadow's outputs with the live side. Nobody can yet simulate traffic they have not seen.",
       "signals": [
         "2026-11-inferact-autonomous-inference-system",
         "2026-11-04-together-compiler",
-        "2026-11-09-evolving-infra"
+        "2026-11-09-evolving-infra",
+        "2026-11-16-sarvam-token-factory"
       ],
       "parts": [
         {
@@ -516,7 +528,7 @@
     },
     {
       "head": "Judging a change on traffic you have not seen",
-      "text": "Replay covers only what was recorded; traces from another model overstated capacity by 1.7x. vLLM's maintainers say they cannot simulate unseen traffic, and no simulator has been shown to judge a change on it.",
+      "text": "Replay covers only what was recorded; another model's traces overstated capacity by 1.7x. A simulator picks scheduling policies that hold on hardware. None judges engine or kernel changes or is checked against live traffic.",
       "claims": [
         "C4"
       ],
@@ -527,7 +539,9 @@
         "2026-11-inferact-autonomous-inference-system",
         "2026-04-22-applied-compute-agentic-benchmark",
         "2026-06-22-doubleword-adaptive-speculation",
-        "2026-11-19-validation-driven-deployment"
+        "2026-11-19-validation-driven-deployment",
+        "2026-10-09-blis-simulate-before-you-scale",
+        "2026-11-16-sarvam-token-factory"
       ]
     },
     {

@@ -43,5 +43,6 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "retired",
+  "retired_why": "Its point, that a controller trained on the deployment's own traffic beats fixed weights with no agent involved, is carried by the speculation and cluster-split signals. Read second-hand and cited by one list."
 }

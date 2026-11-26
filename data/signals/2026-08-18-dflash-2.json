@@ -13,7 +13,7 @@
   "venue": "any",
   "gist": "A block drafter that keeps several candidates per position and uses a tiny selector to pick one coherent path through them. Its published tables show speed-up against plain decoding at three load levels and five kinds of task.",
   "changes": "The cleanest public numbers on what happens to speculation under load: a threefold gain for a single request falls to almost nothing at 32 concurrent, and rival drafters fall below break-even.",
-  "caveats": "Self-reported on one model and one GPU; training data is not disclosed and there is no paper. The comparison uses a community build of a rival drafter. The company offers to build drafters for customers' tuned models, which implies each tuned model needs its own.",
+  "caveats": "Self-reported on one model and one GPU; training data is not disclosed and there is no paper. The tables by load are on the model card, not in the post. The rival DSpark drafter is a community build, which scored below the model's own head. The company offers to build drafters for customers' tuned models, which implies each tuned model needs its own.",
   "numbers": [
     {
       "metric": "Speed-up, one request at a time",
@@ -23,16 +23,25 @@
       "setup": "Qwen3.8-27B, one H200"
     },
     {
+      "metric": "Speed-up at 8 concurrent requests",
+      "value": "2.27 to 2.85x",
+      "baseline": "plain decoding without speculation",
+      "verification": "self-reported",
+      "setup": "Qwen3.8-27B, SGLang, one H200"
+    },
+    {
       "metric": "Speed-up at 32 concurrent requests",
       "value": "1.01 to 1.45x",
       "baseline": "plain decoding without speculation",
-      "verification": "self-reported"
+      "verification": "self-reported",
+      "setup": "Qwen3.8-27B, SGLang, one H200"
     },
     {
       "metric": "Rival drafters at 32 concurrent",
       "value": "0.74 to 1.13x, below break-even on four of five tasks",
       "baseline": "plain decoding without speculation",
-      "verification": "self-reported"
+      "verification": "self-reported",
+      "setup": "Qwen3.8-27B, SGLang, one H200"
     }
   ],
   "bears_on": [
@@ -49,10 +58,10 @@
   ],
   "also": [
     {
-      "label": "Model card with tables",
-      "url": "https://huggingface.co/z-lab/Qwen3.8-27B-DFlash2"
+      "label": "Model card with the tables by load",
+      "url": "https://huggingface.co/incoai/Qwen3.8-27B-DFlash2"
     }
   ],
-  "read": "relayed",
+  "read": "opened",
   "status": "active"
 }

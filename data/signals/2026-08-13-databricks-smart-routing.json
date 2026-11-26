@@ -3,6 +3,7 @@
   "title": "Smart Routing in Unity AI Gateway: match frontier quality at 30%+ lower cost per task",
   "url": "https://databricks.com/blog/smart-routing-unity-ai-gateway-match-frontier-quality-30-lower-cost-task",
   "org": "Databricks",
+  "authors": "Ankit Mathur, Ivan Zhou, Bryan Qiu, Rohit Agrawal, Elise Gonzales, Kelly Albano",
   "published": "2026-08-13",
   "added": "2026-11-19",
   "kind": "product",
@@ -12,13 +13,13 @@
   "mechanism": "online",
   "venue": "cluster",
   "gist": "A small classifier reads only the task description and start-of-session metadata, then one policy starts at a mid-size model and moves up or down. The model is fixed for the session because switching between turns breaks the prompt cache, which the post calls the main cost driver. Sub-agent launches are routed separately.",
-  "changes": "The clearest statement of why routing is done per session: the team tried per-request routing and rejected it on cache cost. Sub-agent launches turn out to be the natural switch point, since they have no cache to lose.",
-  "caveats": "Self-reported with no task counts or pool list. The documentation is narrower than the blog: only sub-agents are routed, the main session keeps its default model, routing for one harness is paused, and the feature is still beta.",
+  "changes": "The clearest statement of why routing is done per session: per-request routing was rejected on cache cost. The team names its own next step as making a mid-session switch cheap, calls switching untenable at scale today, and says routers do well on benchmark tasks and worse on real sessions.",
+  "caveats": "Self-reported with no task counts or pool list. The documentation, read on 26 November, is narrower than the blog: only sub-agents are routed, the main session keeps its default model, routing for one harness is paused, and the feature is still beta. The post says a router with perfect foresight would beat every single model for a fraction of the spend.",
   "numbers": [
     {
       "metric": "Cost per task on internal workloads",
       "value": "65% of the frontier model's",
-      "baseline": "the best single model, at equal or better quality",
+      "baseline": "a leading frontier model; the post says the router also outperformed every single model",
       "verification": "self-reported"
     },
     {
@@ -42,10 +43,10 @@
   ],
   "also": [
     {
-      "label": "Docs, where the scope is narrower",
-      "url": "https://docs.databricks.com/aws/en/ai-gateway/smart-routing"
+      "label": "Documentation: what is routed today",
+      "url": "https://docs.databricks.com/aws/en/ai-gateway/coding-agent-model-selection"
     }
   ],
-  "read": "relayed",
+  "read": "opened",
   "status": "active"
 }

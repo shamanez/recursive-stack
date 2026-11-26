@@ -157,7 +157,8 @@
         "2026-05-22-fastkernels",
         "2026-11-16-together-deleted-megakernels",
         "2026-09-22-swe-serve",
-        "2026-05-20-inferencebench"
+        "2026-05-20-inferencebench",
+        "2026-10-09-blis-simulate-before-you-scale"
       ]
     },
     {

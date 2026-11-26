@@ -38,5 +38,6 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "retired",
+  "retired_why": "Nothing on the page cited it, and its headroom for perfect routing is now acknowledged first-hand by a router vendor."
 }

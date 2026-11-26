@@ -2,9 +2,77 @@
   "id": "2026-11-26",
   "n": 5,
   "agent": "Claude Code (Fable 5.2)",
-  "deep": false,
-  "summary": "Not a full sweep. The reader sent Baseten's paper on translating a cache between models and asked whether the idea was covered; it was not. Three signals now sit under lever 1: one network for seven models, a serving system tested on agent tasks, and a linear map that needs no training but failed on two pairs in six. No confidence moved, because all three are the authors' own results on small open models. The scheduled sweeps of 24 to 26 November did not complete, so the feeds were last scanned on the 23rd and the weekly deep pass is overdue. Active signals stand at 83, three over the guide; pruning is left to that deep pass.",
+  "deep": true,
+  "summary": "A catch-up sweep and the weekly deep pass, run after three scheduled sweeps did not complete. No confidence moved. The morning's link put cache translation between models under lever 1. The deep pass then found a provider, Sarvam, running the loop in production with a simulator in front of live tests; a simulator whose scheduling policies held on real hardware; GitHub moving its router from session boundaries to every prompt; and Harvey tuning four newer open models after its August tune was passed within three months, which settles W17. The roster check found 29 teams earlier passes had missed, 22 of them recorded second-hand. Seven signals were retired or superseded to return to eighty active. Seven signals in one day is over the guide of three; it reflects four days of backlog and a first deep pass, and is not a pattern to keep.",
   "changes": [
+    {
+      "type": "added",
+      "ref": "2026-11-16-sarvam-token-factory",
+      "text": "A provider runs the loop in production: an orchestrator agent, a calibrated simulator, live A/B tests, an engineer's approval. First token 2.1x sooner than the stock stack on the same nodes; a shared cache store cut prefill nodes from 58 to 34; an upstream fused kernel had garbled one long code reply in nine."
+    },
+    {
+      "type": "added",
+      "ref": "2026-11-24-baseten-harvey-post-training",
+      "text": "Four open models post-trained on one customer's legal benchmark rose 11 to 21 points; one passed the best closed model, 30.3% against 27.1%. The customer's August tune had been passed by an untuned model within three months."
+    },
+    {
+      "type": "added",
+      "ref": "2026-10-09-blis-simulate-before-you-scale",
+      "text": "A CPU-only simulator with 6.7% median error against real runs. Two scheduling policies developed inside it held on hardware and were merged into llm-d. The first counter-evidence to C4 with a number."
+    },
+    {
+      "type": "added",
+      "ref": "2026-10-28-github-copilot-fusion",
+      "text": "GitHub's router now decides for every prompt and is reported ahead of the leading single models on a public agentic board. It supersedes the June signal, in which the same company routed only at cache boundaries."
+    },
+    {
+      "type": "retired",
+      "text": "Six signals retired: a learned-latency scheduler, an agentic RL recipe, two on-device runtime posts, a routing-headroom benchmark and an evaluator language. Each was cited by at most one list and its point is made elsewhere with measurements. The two on-device ones can come back if local serving becomes its own thread."
+    },
+    {
+      "type": "revised",
+      "text": "Six second-hand sources opened first-hand: Databricks Smart Routing and its documentation, vLLM's Kimi K3 and AgentX posts, DFlash 2 with its model card, Baseten's agent-built engine and Harvey Tenet. Every number held. Corrections: the Kimi K3 gain on agent traces compares 16 GPUs with an earlier run on 8; DFlash 2's tables by load are on the model card, not in the post; Databricks' cost figure is against a frontier model, and its post names making a mid-session switch cheap as the next step."
+    },
+    {
+      "type": "tension",
+      "ref": "T7",
+      "text": "Reopened. GitHub moved from the once-per-session side to the every-prompt side, and Databricks says switching must get cheaper. The lean toward cache boundaries no longer holds."
+    },
+    {
+      "type": "tension",
+      "ref": "T8",
+      "text": "Still leaning toward a good default on coding tasks, but a shipped router is now reported ahead on a public agentic board, by its vendor's reading."
+    },
+    {
+      "type": "tension",
+      "ref": "T9",
+      "text": "Lean sharpened: tuning works on a narrow job and has to be repeated. One customer's tune lasted under three months before general models passed it."
+    },
+    {
+      "type": "watch",
+      "ref": "W17",
+      "text": "Hit. The August legal tune, 19.7%, was passed by an untuned general model at 27.1% within three months; re-tuning newer bases reached 30.3%."
+    },
+    {
+      "type": "watch",
+      "text": "W26 opened to read a new end-to-end benchmark of the loop in full before weighing it against C1. W27 opened to open TileRT's own pages, a closed engine said to have led one board since September. W5 and W20 annotated."
+    },
+    {
+      "type": "added",
+      "text": "New chart under More charts: post-training open models on one customer's legal benchmark, with the best closed model as the reference line."
+    },
+    {
+      "type": "revised",
+      "text": "Levers 1, 3 and 6, build steps 2, 3, 7 and 8, and the open-ground item on judging unseen traffic updated. BLIS joined the build parts. The roster grew from 31 to 60 and its recent view now starts on 15 October; the front page's second point was recounted."
+    },
+    {
+      "type": "confidence",
+      "text": "None moved. C4 held at 0.80: one condition on each side occurred in part, an upstream fused kernel that shipped a bug and a simulator whose policies held on hardware. C10 held at 0.45: a tune was overtaken within a quarter, and re-tuning passed the best closed model. C9 held at 0.65, but its parts are separating: models do share the work, cheap closed models now contest the routine slot, and routers and cache translation both work around the cache limit. Consider splitting it at the next deep pass. C7 held at 0.55 pending W5 and W27."
+    },
+    {
+      "type": "course",
+      "text": "The provider implication on routing now says one router reports beating leading single models on a public board with an all-closed pool. No verdict changed."
+    },
     {
       "type": "added",
       "ref": "2026-11-baseten-speculative-encoding",
@@ -44,9 +112,14 @@
     }
   ],
   "swept": [
-    "The reader's link, opened first-hand, and three of the papers it builds on, each read from its arXiv abstract page",
-    "Two web searches for cross-model cache transfer and for reactions to the paper; one search limited to x.com, which found nothing on it",
-    "No feed scan, no red-team and no due checks: this was a single-topic update, and a full sweep is still owed"
+    "Inbox empty at the start of the pass. No watchlist check was due; W17 was settled early because its answer turned up.",
+    "Feeds since 21 Nov, scanned by a sub-agent: vLLM blog and RFCs, Inferact, LMSYS through its sitemap, Together, AgentX optimisations, InferenceBench, llm-d, Baseten and its research site, PyTorch, Modular, OpenRouter, Fireworks, Doubleword, Vals, vLLM looped-model issues and four arXiv queries. The SemiAnalysis newsletter returned no posts and was not checked.",
+    "Roster check by kind of team, by a sub-agent: providers, open engines, model labs, chip vendors, workload owners, academics and the public board. Seven of the 29 additions were then opened first-hand; the other 22 are marked relayed.",
+    "Red-team of all four focus claims, by a sub-agent, with the decisive pages opened first-hand: BLIS, GitHub's two Fusion posts and OpenRouter's router board, which still shows single models ahead of its coding router on coding tasks.",
+    "First-hand reads for the deep pass: Databricks Smart Routing and its docs, vLLM Kimi K3, vLLM AgentX, DFlash 2 and its model card, Baseten's agent-built engine, Harvey Tenet, Sarvam Token Factory, Databricks Proteus, Reflection Beam on vLLM, Morph, Cursor's kernel harness, and the abstracts of NoeVera, DuoDiscover, CompoundingKernel, RSIBench-Infra and BLIS.",
+    "The morning's single-topic update: the reader's link on cache translation, three of the papers it builds on, two web searches and one search limited to x.com.",
+    "Two research agents reported a banner on inferencex.semianalysis.com saying the copy was unaffiliated and might be modified. Opened in a browser, the page shows no such banner; it looks like an artefact of their fetch tool.",
+    "Text addressed to agents, ignored: a file on the public board's site says it is intended for language models; two repository readmes and one blog post carry launch prompts for coding agents; llama.cpp's contributing guide tells contributors to load a file into their agent."
   ],
   "rejected": [
     {
@@ -63,6 +136,71 @@
       "title": "Think Before You Speak: training-free latent communication between language models (arXiv 2610.16165)",
       "url": "https://arxiv.org/abs/2610.16165",
       "reason": "seen in search, not opened; about models passing internal states to each other, with no serving angle evident"
+    },
+    {
+      "title": "Skip the DRAM Tier: MoRI UMBP Runs the Agentic KV Cache on NVMe",
+      "url": "https://vllm.ai/blog/2026-11-23-skip-the-dram-tier",
+      "reason": "opened; adds to the cache-tier result of 23 Nov without changing it. Worth keeping in mind: an NVMe pool matched a DRAM pool of the same size within 1%, and each 1% of prompt tokens served from cache was worth about 10% throughput"
+    },
+    {
+      "title": "Pipeline Parallelism for Prefill in the Agentic Era",
+      "url": "https://inferact.ai/news/pipeline-parallelism-in-agentic-era",
+      "reason": "relayed; the best parallelism layout depends on the first-token target and the load, which C2 already says with stronger evidence"
+    },
+    {
+      "title": "True On-Policy RL: Bit-Exact Rollout and Training with SGLang and Miles",
+      "url": "https://miles.radixark.com/blogs/true-on-policy-rl-bit-exact-rollout-and-training-with-sglang-and-miles",
+      "reason": "relayed; an agent ported support for a new model in under eight hours, but for a training framework, so it does not answer W19"
+    },
+    {
+      "title": "ERNIE 5.5 Flash low-latency decoding",
+      "url": "https://www.lmsys.org/blog/2026-11-23-ernie55-flash-low-latency",
+      "reason": "relayed; the headline speed uses a simulated acceptance length"
+    },
+    {
+      "title": "Fireworks changelog and Together preemptible compute",
+      "url": "https://docs.fireworks.ai/updates/changelog",
+      "reason": "relayed; half-price interruptible and premium fast tiers, with no numbers against a baseline. Providers are starting to price by priority, which the tracker has no lever for yet"
+    },
+    {
+      "title": "NoeVera, Proteus, DuoDiscover and CompoundingKernel",
+      "url": "https://arxiv.org/abs/2610.17184",
+      "reason": "opened and added to the roster, not weighed as signals. DuoDiscover and CompoundingKernel both say measurement, not agent count, limits the search, which supports C4; Proteus found its memory layer ate most tokens until lessons were scoped, which bears on T2"
+    },
+    {
+      "title": "Serving Reflection Beam on vLLM from Day 0",
+      "url": "https://vllm.ai/blog/2026-10-16-reflection-beam",
+      "reason": "opened; the same teams as two roster entries. One line worth noting for lever 4: deciding each step how many draft tokens to verify added 10% throughput at high concurrency"
+    },
+    {
+      "title": "RSIBench-Infra (arXiv 2611.24395)",
+      "url": "https://arxiv.org/abs/2611.24395",
+      "reason": "abstract opened; deferred to W26 because the abstract does not say what its baselines are"
+    },
+    {
+      "title": "TileRT",
+      "url": "https://github.com/tile-ai/tilert",
+      "reason": "relayed, not opened; deferred to W27"
+    },
+    {
+      "title": "ServeTwin (arXiv 2610.02732) and comments on the vLLM evals RFC",
+      "url": "https://arxiv.org/abs/2610.02732",
+      "reason": "relayed; a second simulator with no hardware validation, and a cheaper numerics check proposed in an open thread. BLIS carries the point"
+    },
+    {
+      "title": "Fireworks posts comparing cheap closed models with open ones",
+      "url": "https://fireworks.ai/blog/what-minimax-m3-1-flash-reveals-about-choosing-and-combining-models",
+      "reason": "relayed; a provider's own runs show a cheap closed model costing less per task than an open one on some benchmarks. Noted under C9; open it before the claim is split"
+    },
+    {
+      "title": "Roster candidates without a date on the page",
+      "url": "https://github.com/RightNow-AI/AutoMegaKernel",
+      "reason": "relayed; four small projects (AutoMegaKernel, auto-inference-gpu, an agent skill for local servers, a conference talk on agent-written kernels) could not be dated from their pages, and the roster needs a date. Two more papers were left out because it was unclear they describe a loop"
+    },
+    {
+      "title": "Teams searched for and not found",
+      "url": "https://x.com",
+      "reason": "no loop announcement found from Fireworks, Anyscale, Groq, SambaNova, Nebius, DeepInfra, Lambda, CoreWeave, Replicate, the three hyperscalers' model services, llama.cpp, MLX, Ollama, Moonshot, MiniMax, DeepSeek, Mistral, Qualcomm or Apple. Try again next deep pass"
     }
   ],
   "next_due": "2026-11-27"
