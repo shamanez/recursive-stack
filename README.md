@@ -1,15 +1,17 @@
 # The Recursive Stack
 
-**Inference is becoming load-aware: the stack now fits itself to the traffic. What
+**Inference now fits itself to the task, the load and the system it runs on. What
 does that do to the layer that serves the models, and how do you build for it?**
 
-A living, opinionated tracker. It maps the levers that adapt inference to the load
-and how they connect, holds a thesis made of claims that can lose, weighs every
+A living, opinionated tracker. It maps the levers that adapt inference to the task,
+the load and the system, by choosing while serving, by training and by rewriting
+code, and how they connect. It holds a thesis made of claims that can lose, weighs every
 new source against them, lays out a build order, and tells you where your own
 framing is holding and where it is not. An agent re-runs it every day.
 
-> Six levers move with the load, from which model answers to which kernel runs.
-> Coding agents are what make re-tuning them affordable.
+> Seven levers adapt, from which model answers to how deep each token goes. Some
+> move while serving, some through training on real traffic, some through code that
+> coding agents rewrite. Agents are what make the re-tuning affordable.
 
 ## Look at it
 
@@ -18,21 +20,22 @@ framing is holding and where it is not. An agent re-runs it every day.
   self-contained file; no server needed.
 - **Plain-text version:** [`BRIEF.md`](BRIEF.md), which renders on GitHub.
 
-What is on the dashboard:
+What is on the dashboard. The tabs come in three groups after the overview.
 
-| Tab | What it shows |
-|---|---|
-| Now | The lever map, five things to know, a verdict on your framing, what it means for a provider, confidence per claim |
-| Big picture | Before and after, the six levers side by side, how they connect, the optimisation loop stage by stage |
-| Build | A build order for a provider: what each step has bought others, what to watch out for, and open-source parts to reuse |
-| Who | Every team found that has described the loop, on a timeline, with what each one actually did |
-| Thesis | Each claim with its confidence, the evidence for and against, and what would move it |
-| Stack map | Every source placed by stack layer, by what produces the optimisation, and by where it runs |
-| Evidence | The charts that carry the argument, then every number with its baseline and who checked it |
-| Tensions | Where credible sources do opposite things, and what would settle each |
-| Watch | Dated checks written before the answer is known |
-| Signals | The sources, searchable and filterable |
-| Cycle log | What each sweep changed, and what it looked at and left out |
+| Group | Tab | What it shows |
+|---|---|---|
+| | Overview | For a newcomer: what adapts, to what and how, in one clickable picture; one request followed through the stack; five things to know; a verdict on your framing; a guide to the rest |
+| Understand | Big picture | Before and after, the seven levers side by side, how they connect, the optimisation loop stage by stage |
+| | Build | A build order for a provider: what each step has bought others, what to watch out for, and open-source parts to reuse |
+| | Who | Every team found that has described the loop, on a timeline, with what each one actually did |
+| | Glossary | Plain definitions; dotted words anywhere on the page show them |
+| Weigh the evidence | Claims | Each claim with its confidence, the evidence for and against, and what would move it |
+| | Numbers | The charts that carry the argument, then every number with its baseline and who checked it |
+| | Tensions | Where credible sources do opposite things, and what would settle each |
+| | Sources | The sources, searchable and filterable |
+| | Stack map | Every source placed by stack layer, by what produces the optimisation, and by where it runs |
+| Follow the changes | Checks | Dated checks written before the answer is known |
+| | Change log | What each sweep changed, and what it looked at and left out |
 
 ## Why this is not a literature review
 

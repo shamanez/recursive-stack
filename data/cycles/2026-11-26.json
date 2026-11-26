@@ -3,8 +3,69 @@
   "n": 5,
   "agent": "Claude Code (Fable 5.2)",
   "deep": true,
-  "summary": "A catch-up sweep and the weekly deep pass, run after three scheduled sweeps did not complete. No confidence moved. The morning's link put cache translation between models under lever 1. The deep pass then found a provider, Sarvam, running the loop in production with a simulator in front of live tests; a simulator whose scheduling policies held on real hardware; an outside index on which all six shipped routers lost to a single model on score and cost; GitHub moving its router to every prompt; and Harvey tuning four newer open models after its August tune was passed within three months. W3 and W17 are settled. The roster check found 31 teams earlier passes had missed, 24 of them recorded second-hand; the roster now holds 62. Eight signals were retired or superseded to return to eighty active. Eight signals in one day is well over the guide of three. It reflects four days of backlog and a first deep pass, and is not a pattern to keep.",
+  "summary": "A catch-up sweep and the weekly deep pass, run after three scheduled sweeps did not complete. No confidence moved. The morning's link put cache translation between models under lever 1. The deep pass then found a provider, Sarvam, running the loop in production with a simulator in front of live tests; a simulator whose scheduling policies held on real hardware; an outside index on which all six shipped routers lost to a single model on score and cost; GitHub moving its router to every prompt; and Harvey tuning four newer open models after its August tune was passed within three months. W3 and W17 are settled. The roster check found 31 teams earlier passes had missed, 24 of them recorded second-hand; the roster now holds 62. Eight signals were retired or superseded to return to eighty active. Late in the day the reader widened the frame again: inference is task-aware and system-aware as well as load-aware, and post-training is one of the ways it adapts. That was checked first-hand and largely holds; it opened C12, raised C10 to 0.50 and rebuilt the landing page around it. Twelve signals in one day is far over the guide of three, from four days of backlog, a first deep pass and a steer. Active signals stand at 82, two over the guide, after four first-hand training sources went in; the next deep pass prunes.",
   "changes": [
+    {
+      "type": "course",
+      "text": "The reader said inference is task-aware and system-aware as well as load-aware, and that post-training is part of how it adapts: drafters trained for the workload, small models adapted to a codebase, online reinforcement learning with weights swapped in live. Framing restated. Two verdicts added, both holding: task-aware, and training is part of it, with per-codebase tuning the thin part."
+    },
+    {
+      "type": "added",
+      "ref": "C12",
+      "text": "New claim at 0.70: post-training has become a serving lever. Drafters train on live traffic and are swapped in while serving; Cursor retrains its main coding model from live use every five hours and Shopify a smaller model daily. Against: an outside test found a purpose-trained drafter no better than the shipped one, and live weight swaps are still a developer feature in the open engines."
+    },
+    {
+      "type": "added",
+      "ref": "2026-03-26-cursor-real-time-rl",
+      "text": "Cursor's real-time reinforcement learning: a new checkpoint of its main model from live user interactions as often as every five hours. In its A/B test, 2.28% more edits kept, 3.13% fewer dissatisfied follow-ups, 10.3% lower latency."
+    },
+    {
+      "type": "added",
+      "ref": "2026-08-05-shopify-sidekick-continual-learning",
+      "text": "Shopify retrains a smaller model daily from repaired production failures; it replaced a frontier model at an estimated 96% lower serving cost. Trained gist tokens stood in for a 6,000-token prompt: first-token time down about 19%, about 14% fewer GPUs."
+    },
+    {
+      "type": "added",
+      "ref": "2026-05-15-google-gemini-for-google",
+      "text": "Google tuned Gemini 2.5 Pro on its own engineering data: in a blind test across 29,000 developers, 23% fewer iterations per turn, 8.9% lower turn latency, 16.8% more code kept. General scores slipped to 0.84 on one hard exam, and the tune stayed on an older base."
+    },
+    {
+      "type": "added",
+      "ref": "2026-10-14-vllm-train-inference-consistency",
+      "text": "Training run on vLLM's own serving kernels, so trainer and server agree exactly, at 91% of rollout speed. Training and serving are being built from the same parts."
+    },
+    {
+      "type": "confidence",
+      "ref": "C10",
+      "text": "0.45 to 0.50. Google's company-tuned model and Shopify's daily-retrained small model are production cases measured on the owners' own work. Both self-measured and not followed against the next general release, so the raise condition is not met."
+    },
+    {
+      "type": "tension",
+      "ref": "T9",
+      "text": "A third side: keep retraining from live use, as Cursor and Shopify do, so a tune follows the product instead of going stale. The lean now names who owns the feedback."
+    },
+    {
+      "type": "watch",
+      "ref": "W28",
+      "text": "Opened, due 2027-02-28: an outside measurement of a continually retrained model against the frozen one, or live weight updates supported in vLLM or SGLang."
+    },
+    {
+      "type": "model",
+      "text": "The front page has a new organising picture: what serving adapts to (the task, the load, the system) by how it adapts (choose while serving, train the weights, rewrite the code), nine squares each with one number and a status. Levers now say which of the three they follow, and one median agent request is walked through all seven."
+    },
+    {
+      "type": "revised",
+      "ref": "weights",
+      "text": "Lever 6, what the model is, moved from early to working: a coding model retrained from live use every five hours, a company-tuned model and a daily-retrained small model all serve production traffic. Five of seven levers now run in production somewhere."
+    },
+    {
+      "type": "revised",
+      "text": "Landing page rebuilt for newcomers: new headline and plain-words introduction, a start path, the clickable picture, the request walk, and a guide to the tabs. Tabs are grouped into Understand, Weigh the evidence and Follow the changes, and four are renamed: Claims, Numbers, Sources, Checks, Change log."
+    },
+    {
+      "type": "retired",
+      "text": "One signal retired and one superseded to make room: a hardware-generation benchmark cited nowhere, and a coding benchmark whose point the outside router index now makes."
+    },
     {
       "type": "added",
       "ref": "2026-11-03-vals-router-index",
@@ -139,7 +200,8 @@
     "First-hand reads for the deep pass: Databricks Smart Routing and its docs, vLLM Kimi K3, vLLM AgentX, DFlash 2 and its model card, Baseten's agent-built engine, Harvey Tenet, Sarvam Token Factory, Databricks Proteus, Reflection Beam on vLLM, Morph, Cursor's kernel harness, and the abstracts of NoeVera, DuoDiscover, CompoundingKernel, RSIBench-Infra and BLIS.",
     "The morning's single-topic update: the reader's link on cache translation, three of the papers it builds on, two web searches and one search limited to x.com.",
     "Two research agents reported a banner on inferencex.semianalysis.com saying the copy was unaffiliated and might be modified. Opened in a browser, the page shows no such banner; it looks like an artefact of their fetch tool.",
-    "Text addressed to agents, ignored: a file on the public board's site says it is intended for language models; two repository readmes and one blog post carry launch prompts for coding agents; llama.cpp's contributing guide tells contributors to load a file into their agent."
+    "Text addressed to agents, ignored: a file on the public board's site says it is intended for language models; two repository readmes and one blog post carry launch prompts for coding agents; llama.cpp's contributing guide tells contributors to load a file into their agent.",
+    "For the reader's steer on training: a research sub-agent on codebase-specific models, online reinforcement learning with live weight swaps, and training aimed at serving efficiency. Cursor, Shopify, Google, vLLM's consistency post and a 2024 critique of per-customer tuning were then opened first-hand."
   ],
   "rejected": [
     {
@@ -231,6 +293,16 @@
       "title": "A possible discrepancy in the day-zero chart",
       "url": "https://inferencex.semianalysis.com/infx/agentx/optimizations",
       "reason": "a research pass read the public board's data on 26 Nov and found one model on one AMD chip at 22.0k tokens per GPU-second from a run of 20 Nov, where the tracker's fortnight signal has 17.3k. Check it before the chart is next touched"
+    },
+    {
+      "title": "Relayed training leads, not opened",
+      "url": "https://www.baseten.co/blog/powering-inference-for-the-continual-learning-era/",
+      "reason": "Baseten and Trajectory's hourly checkpoints promoted by A/B test; Microsoft's coding model trained by reinforcement learning in its own harness; Intercom's model trained on its own conversations; a 4B model trained on one repository (SWE-Spot); IBM's tuning on two private repositories; Cursor's Composer 2 trained in NVFP4; Nemotron 3 Super's draft heads; a 1-trillion-parameter weight update in 7 seconds in SGLang's training branch. All bear on C12; open the strongest before the next deep pass"
+    },
+    {
+      "title": "Personalization: Context Awareness vs Customer-Specific Finetuning",
+      "url": "https://devin.ai/blog/personalization-context-awareness-vs-customer-specific-finetuning",
+      "reason": "opened; an argument with no numbers that per-customer tuning helps only for rare languages and retrieval is better otherwise. Linked under the Google signal as its counterpoint and cited in C12's opening"
     }
   ],
   "next_due": "2026-11-27"

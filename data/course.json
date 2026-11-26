@@ -1,13 +1,25 @@
 {
   "_about": "The steering note for the human reader. reader_framing is their own working view in close to their own words; only they change it (via inbox.md). Every sweep re-judges each verdict against the current evidence and rewrites the rest.",
   "as_of": "2026-11-26",
-  "reader_framing": "Inference is becoming load-aware and adaptive: the stack fits itself to what you have and to the traffic it sees. Agents tuning the stack, open and frontier models side by side, routing, speculative decoders and tuning for a domain are all parts of that one move, and I want to know how to build such a system.",
+  "reader_framing": "Inference is becoming adaptive: not only load-aware but task-aware and system-aware, fitting itself to what is asked, to the traffic it sees and to what you have. Post-training is part of that: draft models trained for the workload, small models adapted to a codebase, models updated by online reinforcement learning and swapped in while serving. Agents tuning the stack, open and frontier models side by side, routing, speculative decoders and tuning for a domain are all parts of that one move, and I want to know how to build such a system.",
   "verdicts": [
     {
-      "part": "Load-aware, fitted to what you have",
+      "part": "Load-aware and system-aware",
       "verdict": "holding",
-      "short": "Seven levers can move with the load, and four are in production somewhere.",
+      "short": "Seven levers follow the task, the load or the system; five are in production somewhere.",
       "note": "This is the frame the evidence supports best. Routing follows where the cache is, the cluster split follows the traffic mix, speculation follows the domain and the batch size, and kernels are regenerated per model and chip. One megakernel could not span two chips. The caution: almost all of it is measured on one workload class, coding agents, and one public trace set."
+    },
+    {
+      "part": "Task-aware too",
+      "verdict": "holding",
+      "short": "Speculation, depth and tuning follow the task. Routing by task has not yet beaten one strong model.",
+      "note": "Right. The same drafter has its guesses accepted 5.6 tokens at a time on maths, 5.1 on code and 3.5 on chat, so speculation follows the task by nature. Looped models give hard tokens extra passes, and domain tuning is task-awareness in the weights. The weak spot is choosing the model by task: an outside index found every shipped router beaten on score and cost by a single model."
+    },
+    {
+      "part": "Training is part of it",
+      "verdict": "holding",
+      "short": "Drafters train on live traffic; some products retrain the model itself every few hours. Per-codebase tuning is thinner.",
+      "note": "Right, and more than the tracker had. Draft models are trained on live traffic and swapped in while serving, worth 1.2 to 1.45x by vendors' measures. Cursor retrains its coding model from live use as often as every five hours, and Shopify retrains a smaller model daily that replaced a frontier one. Training is also bending toward serving: trainers now run the serving engine's own kernels and the chip's low-precision formats. The thin part is adapting a model to one customer's codebase. Google did it for its own code, but a code-assistant maker argues per-customer tuning beats retrieval only for rare languages, and little has been published since. Swapping weights inside a running engine is still a developer feature; in practice the new model goes up beside the old and traffic moves over."
     },
     {
       "part": "The parts are one move",
@@ -28,7 +40,7 @@
       "note": "Driven by coding agents running bounded hillclimbs inside harnesses that people built, with people setting the goal and approving what ships. The recursive part is true only weakly: a model serves the agents that tune its serving. Nobody has shown gains compounding, and the label already sits on a system with no self-improvement in it."
     }
   ],
-  "reframe": "Inference optimisation is turning from hand-craft into search. Agents rewrite kernels and engine paths against replayed real traffic, so the thing being optimised shrinks from a model to what you actually have: this model, this traffic shape, this chip, this month. The scarce asset is not the agent but the rig that tells you whether a change is real.",
+  "reframe": "Inference optimisation is turning from a one-off craft into continuous fitting: of settings while serving, of weights trained on real traffic, and of code that agents rewrite against replayed traffic. What is being optimised shrinks from a model to what you actually have: this task, this traffic, this model on this chip, this month. The scarce asset is not the agent or the trainer but the rig that tells you whether a change is real.",
   "questions": [],
   "ignore": [
     "KernelBench scores quoted without the verified protocol. The baseline was too easy.",
@@ -58,7 +70,8 @@
     "C4",
     "C6",
     "C7",
-    "C9"
+    "C9",
+    "C12"
   ],
   "implications": [
     {
@@ -78,11 +91,12 @@
     },
     {
       "head": "Many models multiply three of the seven levers",
-      "text": "Each model needs its own drafter, engine and cache. Open engines tune a new model in about two weeks, gaining up to 2.9x; your work pays in that window, on the models carrying traffic.",
+      "text": "Each model needs its own drafter, engine and cache, and the best drafter is trained on its traffic. Open engines tune a new model in about two weeks; focus on the models carrying traffic.",
       "claims": [
         "C6",
         "C2",
-        "C7"
+        "C7",
+        "C12"
       ],
       "signals": [
         "2026-11-20-agentx-kimi-k31-first-fortnight",

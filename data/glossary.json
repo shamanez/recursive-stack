@@ -265,5 +265,47 @@
       "simulation"
     ],
     "def": "A program that predicts how a serving stack would behave without running it on GPUs. One has been shown to pick scheduling policies that hold on real hardware; none yet judges changes to engine or kernel code."
+  },
+  {
+    "term": "load-aware",
+    "aka": [
+      "load aware"
+    ],
+    "def": "Adapting to how busy the machines are and the shape of the traffic: how many requests at once, how long the prompts are, how much is already cached."
+  },
+  {
+    "term": "task-aware",
+    "aka": [
+      "task aware"
+    ],
+    "def": "Adapting to what is being asked: code or chat, easy or hard, which field. Code and maths are easier to guess ahead on than chat."
+  },
+  {
+    "term": "system-aware",
+    "aka": [
+      "system aware"
+    ],
+    "def": "Adapting to what the service runs on: the model's architecture, the chip and the engine. Settings, kernels and draft models tuned for one rarely suit another."
+  },
+  {
+    "term": "hot-swap",
+    "aka": [
+      "hot-swapped",
+      "hot-swaps",
+      "swapped in live",
+      "swapped in while it serves",
+      "swapped in while serving"
+    ],
+    "def": "Replacing a model's weights, or a draft model's, while the server keeps serving, so a newly trained version takes over without downtime."
+  },
+  {
+    "term": "online learning",
+    "aka": [
+      "online reinforcement learning",
+      "online RL",
+      "trained online",
+      "online-trained"
+    ],
+    "def": "Training a model continuously from what happens in production, such as which drafted tokens were accepted or which suggestions users kept, instead of in occasional offline runs."
   }
 ]

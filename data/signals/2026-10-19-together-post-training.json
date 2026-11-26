@@ -25,6 +25,11 @@
       "claim": "C3",
       "direction": "supports",
       "note": "Many adapters sharing one deployment lowers the cost of a model per customer."
+    },
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "A provider sells training on its own serving stack: trained adapters swap inside one deployment and are served on the numerics they were trained with."
     }
   ],
   "read": "opened",

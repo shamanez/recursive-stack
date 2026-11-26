@@ -42,5 +42,6 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "retired",
+  "retired_why": "Cited by no lever, figure or tension, and read second-hand. Its point, that a new chip generation resets the tuning, is carried by the churn signals."
 }

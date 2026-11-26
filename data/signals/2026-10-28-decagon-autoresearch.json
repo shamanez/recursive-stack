@@ -53,6 +53,11 @@
       "claim": "C4",
       "direction": "supports",
       "note": "Replayed production traffic is the evaluation rig."
+    },
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "A workload owner's own drafter, adapted to its traffic, gave 1.34x over its production drafter."
     }
   ],
   "read": "relayed",

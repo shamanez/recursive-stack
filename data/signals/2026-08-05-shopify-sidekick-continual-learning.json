@@ -1,0 +1,54 @@
+{
+  "id": "2026-08-05-shopify-sidekick-continual-learning",
+  "title": "Sidekick's continual learning loop",
+  "url": "https://shopify.engineering/sidekicks-continual-learning-loop",
+  "org": "Shopify",
+  "authors": "Andrew McNamara, Cody Mazza-Anthony",
+  "published": "2026-08-05",
+  "added": "2026-11-26",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "serving"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "Shopify mines low-scoring production conversations from its store agent, repairs them with a panel of frontier models, and trains a smaller model on the repaired runs, first by imitation and then by reinforcement learning against a calibrated judge. The pipeline and a full fine-tune run daily. It also trained a short sequence of learned tokens to stand in for a 6,000-token system prompt.",
+  "changes": "A product replaced a frontier model with a smaller one it retrains every day from its own failures, and trained part of the prompt into the weights to serve it faster. Both are training done for serving: one for the task, one for the cost of every request.",
+  "caveats": "Shopify's own figures. The 96% saving is estimated from average token prices, not measured spend, and the quality lead over the frontier model is asserted without a number. The page shows only an update date. How new weights reach production is not described, and the agent serves one narrow job, writing queries against its own API.",
+  "numbers": [
+    {
+      "metric": "Estimated yearly serving cost",
+      "value": "about $1M against about $27M (96% lower)",
+      "baseline": "the same traffic on a frontier model, from average token prices",
+      "verification": "self-reported",
+      "setup": "Up to 2,000 requests a minute"
+    },
+    {
+      "metric": "Time to first token after training learned prompt tokens",
+      "value": "about 19% lower; end-to-end latency about 38% lower",
+      "baseline": "the full 6,000-token system prompt, load test at 350 requests a minute",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "GPUs for the same traffic",
+      "value": "about 14% fewer",
+      "baseline": "the full system prompt on identical GPUs",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "A smaller model is retrained daily from the product's own production failures, and a prompt was trained into learned tokens to cut serving cost."
+    },
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A smaller tuned model replaced a frontier one on a narrow job at an estimated 96% lower serving cost."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

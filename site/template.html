@@ -78,6 +78,10 @@ button, select, input { font: inherit; color: inherit; }
 .tabs a:hover { color: var(--ink); }
 .tabs a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
 .tabs .count { font: 500 11px/1 var(--font-data); background: var(--accent-soft); color: var(--accent); border-radius: 9px; padding: 3px 6px; margin-left: 6px; }
+/* Tabs come in groups so a newcomer can see the shape of the site: understand it, weigh the evidence, follow the changes. */
+.tabs .tgroup { display: flex; align-items: center; gap: 2px; }
+.tabs .tgroup + .tgroup { border-left: 1px solid var(--line); margin-left: 8px; padding-left: 8px; }
+.tabs .tglabel { font: 500 10px/1 var(--font-data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); padding: 0 4px; white-space: nowrap; }
 
 /* ---------- page furniture */
 main { padding-block: 32px 56px; display: grid; gap: 40px; }
@@ -91,6 +95,77 @@ main > * { min-width: 0; }
 .hero h1 em { font-style: normal; color: var(--accent); }
 .hero .sub { font-size: 18px; color: var(--ink); max-width: 60ch; font-weight: 500; }
 .hero .intro { font-size: 15.5px; line-height: 1.65; color: var(--ink-2); max-width: 74ch; }
+/* The start path: four jumps down this page, in reading order. */
+.start { display: grid; gap: 8px; margin-top: 6px; }
+.start ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; counter-reset: st; }
+.start li { counter-increment: st; }
+.start button { width: 100%; height: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; font: 500 13.5px/1.3 var(--font-text); color: var(--ink); }
+.start button::before { content: counter(st); width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 600 12px/26px var(--font-data); text-align: center; }
+.start button:hover { border-color: var(--accent); }
+.start button small { display: block; font: 400 12px/1.35 var(--font-text); color: var(--ink-3); margin-top: 2px; }
+[id^="go-"] { scroll-margin-top: 120px; }
+
+/* ---------- figure: what inference adapts to (columns) and how (rows) */
+.mxwrap { display: grid; gap: 14px; }
+.mx { display: grid; grid-template-columns: 150px repeat(3, minmax(0, 1fr)); gap: 6px; }
+.mx-corner { display: grid; align-content: end; gap: 2px; padding: 0 4px 8px; font: 500 10.5px/1.3 var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.mx-col, .mx-row { display: grid; gap: 3px; align-content: end; padding: 6px 10px 10px; border-radius: 8px; cursor: help; }
+.mx-col { border-bottom: 2px solid var(--line-2); }
+.mx-row { align-content: center; border-right: 2px solid var(--line-2); }
+.mx-col strong, .mx-row strong { font: 600 16px/1.2 var(--font-display); }
+.mx-col span, .mx-row span { font-size: 12.5px; color: var(--ink-2); line-height: 1.35; }
+.mx-row span { font-family: var(--font-data); font-size: 11.5px; color: var(--ink-3); }
+.mx-cell { display: grid; gap: 6px; align-content: start; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 12px 10px; cursor: pointer; color: var(--ink); font: inherit; min-height: 112px; }
+.mx-cell:hover { border-color: var(--line-2); background: var(--inset); }
+.mx-cell[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.mx-to { display: none; font: 500 10.5px/1 var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.mx-head { font: 600 14px/1.3 var(--font-display); }
+.mx-num { font-size: 12px; color: var(--ink-2); line-height: 1.35; }
+.mx-cell .lmeta, .mx-cell[aria-pressed="true"] .lmeta { margin-top: auto; color: var(--ink-3); }
+.mx-detail { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 14px 32px; }
+.mx-detail h3 { font-size: 19px; }
+.mx-detail .kv p { font-size: 14px; color: var(--ink-2); }
+.mx-detail .big { font: 500 15px/1.45 var(--font-display); color: var(--ink); }
+
+/* ---------- figure: one request, step by step */
+.walk { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px 18px; display: grid; gap: 16px; }
+.req { display: grid; gap: 8px; }
+.req p { font-size: 14px; color: var(--ink-2); max-width: 82ch; }
+.reqbar { display: flex; height: 16px; gap: 2px; }
+.reqbar i { display: block; height: 100%; border-radius: 3px; }
+.reqbar .r-old { background: var(--line-2); }
+.reqbar .r-new { background: var(--accent); min-width: 6px; }
+.reqbar .r-out { background: transparent; border: 2px dashed var(--accent); min-width: 22px; }
+.reqkey { display: flex; flex-wrap: wrap; gap: 4px 16px; font: 400 12px/1.4 var(--font-data); color: var(--ink-2); }
+.reqkey span { display: inline-flex; align-items: center; gap: 6px; }
+.reqkey i { width: 12px; height: 10px; border-radius: 2px; display: inline-block; }
+.wsteps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 4px; }
+.wsteps button { width: 100%; display: grid; gap: 6px; text-align: left; background: none; border: 0; padding: 0 2px; cursor: pointer; font: 500 12px/1.25 var(--font-text); color: var(--ink-3); }
+.wsteps button::before { content: ""; height: 6px; border-radius: 3px; background: var(--inset); }
+.wsteps button.is-done::before { background: color-mix(in srgb, var(--accent) 45%, var(--inset)); }
+.wsteps button[aria-current="step"]::before { background: var(--accent); }
+.wsteps button[aria-current="step"] { color: var(--ink); }
+.wsteps button:hover { color: var(--accent); }
+.wcard { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 14px 32px; min-height: 210px; }
+.wcard h3 { font-size: 21px; }
+.wcard .q { color: var(--ink-2); font-size: 14px; font-style: italic; }
+.wcard .story { font: 500 16px/1.5 var(--font-text); color: var(--ink); max-width: 60ch; }
+.wcard .kv p { font-size: 13.5px; color: var(--ink-2); }
+.wnav { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.wnav .count { margin-left: auto; font: 400 12px/1 var(--font-data); color: var(--ink-3); }
+.btn { background: var(--accent); color: var(--on-accent); border: 0; border-radius: 8px; padding: 8px 14px; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.tagchip { display: inline-flex; align-items: center; font: 500 12px/1 var(--font-data); padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line-2); color: var(--ink-2); background: var(--surface); }
+
+/* ---------- the site guide */
+.guide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.gcol { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.gcol h3 { font-size: 16px; }
+.gcol > p { font-size: 13px; color: var(--ink-3); }
+.glink { display: grid; gap: 2px; text-decoration: none; padding: 8px 10px; margin: 0 -10px; border-radius: 8px; }
+.glink:hover { background: var(--inset); }
+.glink strong { font: 600 14px/1.3 var(--font-display); color: var(--accent); }
+.glink span { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
 .facts { display: flex; flex-wrap: wrap; gap: 6px 20px; font: 400 13px/1.5 var(--font-data); color: var(--ink-2); }
 .facts b { color: var(--ink); font-weight: 500; }
 .sec { display: grid; gap: 14px; }
@@ -485,7 +560,18 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   .lstep + .lstep { padding-top: 18px; clip-path: polygon(0 0, 50% 8px, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px)); }
   .lever-detail, .sgrid { grid-template-columns: minmax(0, 1fr); }
   .rstage { justify-self: start; }
+  .start ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mx { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .mx-corner, .mx-col { display: none; }
+  .mx-row { border-right: 0; border-bottom: 2px solid var(--line-2); padding: 14px 4px 6px; grid-template-columns: auto auto; justify-content: start; gap: 10px; align-items: baseline; cursor: default; }
+  .mx-cell { min-height: 0; }
+  .mx-to { display: block; }
+  .mx-detail, .wcard { grid-template-columns: minmax(0, 1fr); }
+  .wsteps { grid-template-columns: repeat(var(--n), minmax(26px, 1fr)); }
+  .wsteps button span { display: none; }
+  .guide { grid-template-columns: minmax(0, 1fr); }
 }
+@media (max-width: 480px) { .start ol { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) { .tiles { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
@@ -586,7 +672,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   const section = (title, note, ...body) => el('section', { class: 'sec' }, el('h2', null, title), note ? el('p', { class: 'sec-note', 'data-prose': true }, note) : null, body);
   const mechLegend = () => el('div', { class: 'legend' }, M.mechanisms.map(m => el('span', { 'data-tip': m.desc, tabindex: '0' }, mech(m.id), m.name)));
 
-  const state = { mapMode: 'mechanism', loopSel: null, roster: 'recent', lever: null, sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
+  const state = { mapMode: 'mechanism', loopSel: null, roster: 'recent', lever: null, cell: null, walk: 0,sig: { q: '', layer: '', mechanism: '', venue: '', claim: '', kind: '', off: false }, led: { q: '', ver: '' }, focusClaim: null };
 
   // =====================================================================
   // FIGURES
@@ -742,7 +828,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
         detail.replaceChildren(
           el('div', { class: 'lq' }, el('div', { class: 'vhead' }, el('span', { class: 'tag' }, `Lever ${l.n} · ${ck.name.toLowerCase()} · ${ck.span}`), pill(LVSTAT[l.status])), el('h3', null, l.question),
             el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What adapts'), el('p', { 'data-prose': true }, l.adapts)),
-            el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What it listens to in the load'), el('p', { 'data-prose': true }, l.listens))),
+            el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What it listens to'), el('p', { 'data-prose': true }, l.listens), tagChips(l.tags))),
           el('div', { class: 'lq' },
             el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What it has bought'), el('p', { 'data-prose': true }, l.bought)),
             el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'How it connects to the rest'), el('p', { 'data-prose': true }, l.connects)),
@@ -754,6 +840,112 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     return el('div', { class: 'lmap' },
       el('div', { class: 'lends' }, el('span', null, 'a request comes in →'), el('span', null, '→ tokens go out')),
       el('div', { class: 'lflow' }, stepBtns), baseBtns, loopBtn, detail);
+  }
+
+  // What a lever listens to, named the way the front page names it: the task, the load, the system.
+  const MX = MAP.matrix || null;
+  const toName = id => ((MX && MX.to.find(t => t.id === id)) || { name: id }).name;
+  const tagChips = tags => (tags || []).length && MX ? el('div', { class: 'chips', style: 'align-items:center' }, el('span', { class: 'tag' }, 'Follows'),
+    tags.map(t => el('span', { class: 'tagchip', 'data-tip': (MX.to.find(x => x.id === t) || {}).desc || null, tabindex: '0' }, toName(t).replace(/^The /, 'the ')))) : null;
+
+  // The front-page picture: what the stack adapts to (columns) and how it adapts (rows). Each square is a claim with a number.
+  function figMatrix() {
+    if (!MX) return null;
+    const key = c => `${c.by}:${c.to}`;
+    if (!state.cell || !MX.cells.some(c => key(c) === state.cell)) state.cell = MX.start || key(MX.cells[0]);
+    const detail = el('div', { class: 'mx-detail', 'aria-live': 'polite' });
+    const btns = {};
+    const tone = s => `var(--${LVSTAT[s][0]})`;
+    const grid = el('div', { class: 'mx', role: 'group', 'aria-label': 'What serving adapts to, and how. Select a square.' },
+      el('div', { class: 'mx-corner', 'aria-hidden': 'true' }, el('span', null, 'adapts to →'), el('span', null, 'by ↓')),
+      MX.to.map(t => el('div', { class: 'mx-col', 'data-tip': t.desc, tabindex: '0' }, el('strong', null, t.name), el('span', null, t.ask))),
+      MX.by.map(b => [
+        el('div', { class: 'mx-row', 'data-tip': b.desc, tabindex: '0' }, el('strong', null, b.name), el('span', null, b.clock)),
+        MX.to.map(t => {
+          const c = MX.cells.find(x => x.by === b.id && x.to === t.id);
+          if (!c) return el('div', { class: 'mx-cell', style: 'cursor:default;opacity:0.5' }, el('span', { class: 'mx-to' }, t.name), el('span', { class: 'mx-num' }, 'Nothing here yet.'));
+          const btn = el('button', { class: 'mx-cell', type: 'button', 'aria-label': `${b.name} for ${t.name.toLowerCase()}: ${c.head}`, onclick: () => { state.cell = key(c); paint(); if (window.innerWidth < 860) detail.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } },
+            el('span', { class: 'mx-to' }, t.name), el('span', { class: 'mx-head' }, c.head), el('span', { class: 'mx-num' }, c.stat),
+            el('span', { class: 'lmeta', style: `--tone:${tone(c.status)}` }, el('i'), LVSTAT[c.status][2].toLowerCase()));
+          btns[key(c)] = btn;
+          return btn;
+        })]));
+    function paint() {
+      Object.entries(btns).forEach(([k, b]) => b.setAttribute('aria-pressed', String(k === state.cell)));
+      const c = MX.cells.find(x => key(x) === state.cell);
+      const b = MX.by.find(x => x.id === c.by), t = MX.to.find(x => x.id === c.to);
+      detail.replaceChildren(
+        el('div', { class: 'lq' }, el('div', { class: 'vhead' }, el('span', { class: 'tag' }, `${b.name} · ${t.name.toLowerCase()} · ${b.clock}`), pill(LVSTAT[c.status])),
+          el('h3', null, c.head), el('p', { class: 'big', 'data-prose': true }, c.text)),
+        el('div', { class: 'lq' },
+          el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'The number'), el('p', { 'data-prose': true }, c.number)),
+          (c.levers || []).length ? el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Levers it moves'), el('div', { class: 'chips' }, c.levers.map(leverChip))) : null,
+          el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Sources'), srcChips(c.signals || [])),
+          (c.claims || []).length ? el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Claims it tests'), el('div', { class: 'chips' }, c.claims.map(id => claimChip(id)))) : null));
+      annotate(detail);
+    }
+    paint();
+    return el('div', { class: 'mxwrap' }, grid, detail);
+  }
+
+  // One request, followed lever by lever. Back, next, or play; the arrow keys work too.
+  function figWalk() {
+    const W = MAP.walk;
+    if (!W) return null;
+    const steps = LV.filter(l => !l.base && l.story).concat(LV.filter(l => l.base && l.story)).map(l => ({ l }));
+    if (MAP.loop && MAP.loop.story) steps.push({ loop: MAP.loop });
+    const N = steps.length;
+    state.walk = Math.min(state.walk || 0, N - 1);
+    let timer = null;
+    const total = (W.parts || []).reduce((a, p) => a + p.tokens, 0) + (W.out || 0);
+    const fmtK = n => n.toLocaleString('en-GB');
+    const req = el('div', { class: 'req' },
+      el('span', { class: 'tag' }, 'The request'), el('p', { 'data-prose': true }, W.request),
+      total ? el('div', { class: 'reqbar', role: 'img', 'aria-label': (W.parts || []).map(p => `${fmtK(p.tokens)} tokens ${p.label}`).join(', ') + (W.out ? `, about ${fmtK(W.out)} to write` : '') },
+        (W.parts || []).map((p, i) => el('i', { class: i === 0 ? 'r-old' : 'r-new', style: `flex:${p.tokens}` })), W.out ? el('i', { class: 'r-out', style: `flex:${W.out}` }) : null) : null,
+      total ? el('div', { class: 'reqkey' }, (W.parts || []).map((p, i) => el('span', null, el('i', { style: i === 0 ? 'background:var(--line-2)' : 'background:var(--accent)' }), `${fmtK(p.tokens)} ${p.label}`)),
+        W.out ? el('span', null, el('i', { style: 'border:2px dashed var(--accent)' }), `about ${fmtK(W.out)} to write`) : null) : null,
+      (W.signals || []).length ? el('div', { class: 'chips', style: 'align-items:center' }, el('span', { class: 'tag' }, 'From'), srcChips(W.signals)) : null);
+    const stepBtns = steps.map((s, i) => el('button', { type: 'button', 'aria-label': `Step ${i + 1}: ${s.l ? s.l.name : s.loop.name}`, onclick: () => { stop(); state.walk = i; paint(); } },
+      el('span', null, s.l ? `${i + 1}. ${s.l.name}` : `↻ ${s.loop.name}`)));
+    const list = el('ol', { class: 'wsteps', style: `--n:${N}`, 'aria-label': 'Steps' }, stepBtns.map(b => el('li', null, b)));
+    const card = el('div', { class: 'wcard', 'aria-live': 'polite' });
+    const back = el('button', { class: 'ghost', type: 'button', onclick: () => { stop(); move(-1); } }, '← Back');
+    const next = el('button', { class: 'btn', type: 'button', onclick: () => { stop(); move(1); } }, 'Next →');
+    const play = el('button', { class: 'ghost', type: 'button', onclick: () => (timer ? stop() : start()) }, 'Play');
+    const count = el('span', { class: 'count' });
+    function move(d) { state.walk = Math.max(0, Math.min(N - 1, state.walk + d)); paint(); const r = card.getBoundingClientRect(); if (r.top < 110) window.scrollBy({ top: r.top - 130, behavior: 'smooth' }); }
+    function start() {
+      if (state.walk >= N - 1) state.walk = 0;
+      play.textContent = 'Pause'; paint();
+      timer = setInterval(() => { if (!document.body.contains(card) || state.walk >= N - 1) return stop(); move(1); }, 6500);
+    }
+    function stop() { if (timer) clearInterval(timer); timer = null; play.textContent = 'Play'; }
+    function paint() {
+      const i = state.walk, s = steps[i];
+      stepBtns.forEach((b, k) => { b.classList.toggle('is-done', k < i); if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+      back.disabled = i === 0; next.disabled = i === N - 1;
+      count.textContent = `step ${i + 1} of ${N}`;
+      if (s.l) {
+        const l = s.l, ck = clockOf(l.clock);
+        card.replaceChildren(
+          el('div', { class: 'lq' }, el('div', { class: 'vhead' }, el('span', { class: 'tag' }, `Lever ${l.n} · decided ${ck.name.toLowerCase()}, ${ck.span}`), pill(LVSTAT[l.status])),
+            el('h3', null, l.name), el('p', { class: 'q' }, l.question), el('p', { class: 'story', 'data-prose': true }, l.story), tagChips(l.tags)),
+          el('div', { class: 'lq' }, el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'What it has bought, where it has been measured'), el('p', { 'data-prose': true }, l.bought)),
+            srcChips((l.signals || []).slice(0, 4)), (l.signals || []).length > 4 ? el('span', { class: 'stamp' }, `and ${l.signals.length - 4} more sources in the big picture`) : null, el('button', { class: 'more-link', type: 'button', onclick: () => { stop(); state.lever = l.id; go('map'); } }, 'This lever in the big picture →')));
+      } else {
+        const lp = s.loop;
+        card.replaceChildren(
+          el('div', { class: 'lq' }, el('span', { class: 'tag' }, 'After the request: re-tuning'), el('h3', null, lp.name), el('p', { class: 'story', 'data-prose': true }, lp.story)),
+          el('div', { class: 'lq' }, el('div', { class: 'kv' }, el('span', { class: 'tag' }, 'Where it stands'), el('p', { 'data-prose': true }, lp.connects)),
+            srcChips(lp.signals || []), el('button', { class: 'more-link', type: 'button', onclick: () => { stop(); go('map'); } }, 'The loop, stage by stage →')));
+      }
+      annotate(card);
+    }
+    const wrap = el('div', { class: 'walk', tabindex: '-1' }, req, list, card, el('div', { class: 'wnav' }, back, next, play, count));
+    wrap.addEventListener('keydown', e => { if (e.target.closest('input, textarea')) return; if (e.key === 'ArrowRight') { stop(); move(1); } if (e.key === 'ArrowLeft') { stop(); move(-1); } });
+    paint();
+    return wrap;
   }
   function viewMap() {
     return [head('How the parts connect', 'The big picture', MAP.umbrella),
@@ -905,20 +1097,25 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     const fresh = D.signals.filter(isNew);
     const moved = seen ? claims.filter(c => c.history.length > 1 && c.history[c.history.length - 1].cycle > seen) : [];
     const banner = (fresh.length || moved.length) ? el('div', { class: 'banner' },
-      el('span', null, `Since you last looked (${fmt(seen)}): ${plural(fresh.length, 'new signal')}, ${plural(moved.length, 'claim')} moved.`),
+      el('span', null, `Since you last looked (${fmt(seen)}): ${plural(fresh.length, 'new source')}, ${plural(moved.length, 'claim')} moved.`),
       el('button', { class: 'ghost', type: 'button', onclick: () => { store.set(seenKey, latest.id); location.reload(); } }, 'Mark as seen')) : null;
     if (!seen && latest.id) store.set(seenKey, latest.id);
 
+    const jump = id => { const t = document.getElementById(id); if (t) t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); };
+    const START = [['go-mx', 'The idea in one picture', 'What adapts, to what, and how'], ['go-walk', 'Follow one request', 'Each decision, in order'],
+      ['go-stand', 'What is proven', 'Five points and how sure each claim is'], ['go-guide', 'Where to go next', 'The other tabs, in three groups']];
     const hero = el('section', { class: 'hero' },
-      el('p', { class: 'eyebrow' }, 'What is happening to the inference layer'),
+      el('p', { class: 'eyebrow' }, 'A daily tracker of the inference layer'),
       el('h1', null, D.thesis.headline.split('*').map((part, i) => i % 2 ? el('em', null, part) : part)),
       el('p', { class: 'sub' }, D.thesis.subhead),
       D.thesis.intro ? el('p', { class: 'intro', 'data-prose': true }, D.thesis.intro) : null,
+      el('nav', { class: 'start', 'aria-label': 'Start here' }, el('span', { class: 'tag' }, 'New here? Read this page top to bottom, about five minutes'),
+        el('ol', null, START.filter(([id]) => id !== 'go-mx' || MX).filter(([id]) => id !== 'go-walk' || MAP.walk).map(([id, label, sub]) => el('li', null, el('button', { type: 'button', onclick: () => jump(id) }, el('span', null, label, el('small', null, sub))))))),
       el('p', { class: 'facts' },
-        el('span', null, el('b', null, active.length), ' signals'), el('span', null, el('b', null, claims.length), ' claims under test'),
+        el('span', null, el('b', null, active.length), ' sources'), el('span', null, el('b', null, claims.length), ' claims under test'), el('span', null, el('b', null, ROSTER.length), ' teams'),
         el('span', null, el('b', null, D.tensions.filter(t => t.status !== 'settled').length), ' open tensions'), el('span', null, el('b', null, openChecks.length), ' checks pending')));
 
-    const points = el('section', { class: 'sec' }, el('h2', null, `${D.thesis.picture.length} things to know right now`),
+    const points = el('section', { class: 'sec' }, el('h2', null, `${capWord(D.thesis.picture.length)} things to know`),
       el('div', { class: 'points' }, D.thesis.picture.map(p => el('div', { class: 'point' }, el('h3', null, p.head), el('p', { 'data-prose': true }, p.text), srcChips(p.signals),
         p.more === 'roster' && ROSTER.length ? el('button', { class: 'more-link', type: 'button', onclick: () => go('who') }, `All ${ROSTER.length} teams and what each one did →`) : null,
         p.more === 'map' && LV.length ? el('button', { class: 'more-link', type: 'button', onclick: () => go('map') }, 'How the levers connect →') : null))));
@@ -941,12 +1138,17 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
     const reads = (course.read_next || []).length ? el('section', { class: 'sec' }, el('h2', null, 'Twenty minutes? Read these'),
       el('ol', { class: 'reads' }, course.read_next.map(r => { const s = sigById[r.signal]; return el('li', null, el('div', null, sigLink(s), el('p', null, r.why))); }))) : null;
 
+    const withId = (id, node) => { if (node) node.id = id; return node; };
     return [banner, hero,
-      LV.length ? section(`The big picture: ${numWord(LV.length)} levers and a loop`, MAP.umbrella, figMap(), el('a', { href: '#map', class: 'small' }, 'Before and after, the levers side by side, and the loop stage by stage')) : section('The shift, in one picture', null, figShift()),
-      el('div', { class: 'cols' }, points, coursePanel),
+      MX ? withId('go-mx', section('The idea in one picture', MX.intro, figMatrix(),
+        el('p', { class: 'small muted' }, 'Hover a row or column name for what it means. Each square names the levers it moves; ', el('a', { href: '#map' }, 'the big picture'), ' shows all seven and how they connect.')))
+        : section('The shift, in one picture', null, figShift()),
+      MAP.walk ? withId('go-walk', section('Follow one request through the stack', MAP.walk.intro, figWalk())) : null,
+      withId('go-stand', el('div', { class: 'cols' }, points, coursePanel)),
       implications(),
-      section('How sure, claim by claim', 'Bar length is confidence. The counts are signals for, mixed and against. Select a claim for its evidence.', figClaims()),
-      el('div', { class: 'cols' }, changes, reads)];
+      section('How sure, claim by claim', 'Bar length is confidence. The counts are sources for, mixed and against. Select a claim for its evidence.', figClaims()),
+      el('div', { class: 'cols' }, changes, reads),
+      withId('go-guide', section('Where to go next', 'The tabs at the top come in three groups. Start with the first group; go to the second when you want to check a number; the third shows what changes day to day.', siteGuide()))];
   }
 
   // =====================================================================
@@ -991,7 +1193,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   }
   function viewThesis() {
     const retired = allClaims.filter(c => c.status !== 'active');
-    return [head('Claims that can lose', 'The thesis', 'Each claim has a confidence that moves only with evidence, and says in advance what would move it.'),
+    return [head('Claims that can lose', 'Claims', 'Each claim has a confidence that moves only with evidence, and says in advance what would move it.'),
       el('div', { class: 'claims' }, claims.map(claimCard)),
       retired.length ? section('Retired or merged', null, el('div', { class: 'cards' }, retired.map(c => el('div', { class: 'card is-off' }, el('h3', null, `${c.id} · ${c.short}`), el('p', null, c.retired_why || c.statement))))) : null];
   }
@@ -1058,7 +1260,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       state.led.ver ? el('button', { class: 'ghost', type: 'button', onclick: () => pick(state.led.ver) }, `Showing ${VERIF[state.led.ver][2].toLowerCase()} · clear`) : null, count);
     draw();
     const featured = D.figures.filter(f => f.featured), others = D.figures.filter(f => !f.featured);
-    return [head('The numbers, and who checked them', 'Evidence', `The charts that carry the argument, then all ${rows.length} quantitative claims from the signals. A speed-up with no baseline is not recorded.`),
+    return [head('The numbers, and who checked them', 'Numbers', `The charts that carry the argument, then all ${rows.length} quantitative claims from the signals. A speed-up with no baseline is not recorded.`),
       featured.length ? el('div', { class: 'fig-grid' }, featured.map(figure)) : null,
       others.length ? section('More charts', 'Narrower comparisons, each about one lever.', el('div', { class: 'fig-grid' }, others.map(figure))) : null,
       bar,
@@ -1093,7 +1295,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       el('td', null, pill(WSTAT[c.status]))); };
     const table = list => el('div', { class: 'scroll-x' }, el('table', { class: 'watch' },
       el('thead', null, el('tr', null, ['Check by', 'What to look for', 'Bears on', 'Status'].map(t => el('th', { scope: 'col' }, t)))), el('tbody', null, list.map(row))));
-    return [head('Written before the answer is known', 'Watchlist', 'Dated checks. Each sweep resolves the ones that are due before it reads anything new.'),
+    return [head('Written before the answer is known', 'Checks', 'Dated checks. Each sweep resolves the ones that are due before it reads anything new.'),
       figWatch(),
       section('Pending', null, openChecks.length ? table(openChecks) : el('p', { class: 'muted' }, 'Nothing pending.')),
       closed.length ? section('Resolved', null, table(closed)) : null,
@@ -1131,7 +1333,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
       sel('venue', 'Any place', M.venues.map(l => [l.id, l.name])), sel('layer', 'Any layer', M.layers.map(l => [l.id, l.name])), sel('kind', 'Any kind', kinds.map(k => [k, k])),
       el('label', { class: 'check' }, el('input', { type: 'checkbox', id: 'sig-off', checked: st.off, onchange: e => { st.off = e.target.checked; draw(); } }), 'Show retired'), count);
     draw();
-    return [head('The raw material', 'Signals', 'Each card says what the source changes. Select a title for the detail and the link.'),
+    return [head('The raw material', 'Sources', 'Each card says what the source changes. Select a title for the detail and the link.'),
       histogram(active), el('div', { class: 'sec' }, controls, listEl)];
   }
 
@@ -1148,7 +1350,7 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
         (c.rejected || []).length ? el('details', null, el('summary', null, `Looked at and left out (${c.rejected.length})`),
           el('ul', { class: 'plain-list' }, c.rejected.map(r => el('li', null, r.url ? el('a', { href: r.url, target: '_blank', rel: 'noopener' }, r.title) : r.title, ` · ${r.reason}`)))) : null);
     const recent = D.cycles.slice(0, 14), older = D.cycles.slice(14);
-    return [head('What each sweep did', 'Cycle log', `${every}, and a deeper pass once a week. Each records what it changed, and what it looked at and left out.`),
+    return [head('What each sweep did', 'Change log', `${every}, and a deeper pass once a week. Each records what it changed, and what it looked at and left out.`),
       el('div', { class: 'cards' }, recent.map(card)),
       older.length ? el('details', null, el('summary', null, `Older cycles (${older.length})`), el('div', { class: 'cards', style: 'margin-top:10px' }, older.map(card))) : null];
   }
@@ -1234,10 +1436,33 @@ dialog::backdrop { background: rgba(8, 9, 16, 0.6); }
   // SHELL
   // =====================================================================
   const VIEWS = { now: viewNow, map: viewMap, build: viewBuild, who: viewWho, thesis: viewThesis, stack: viewStack, ledger: viewLedger, tensions: viewTensions, watch: viewWatch, signals: viewSignals, log: viewLog, glossary: viewGlossary };
-  const TABS = [['now', 'Now'], ['map', 'Big picture'], ['build', 'Build'], ['who', 'Who'], ['thesis', 'Thesis'], ['stack', 'Stack map'], ['ledger', 'Evidence'], ['tensions', 'Tensions'], ['watch', 'Watch'], ['signals', 'Signals'], ['log', 'Cycle log'], ['glossary', 'Glossary']];
+  // Tabs in three groups, so a newcomer sees the shape of the site before its detail. The ids in the address stay as they were.
+  const TAB_GROUPS = [
+    [null, null, [['now', 'Overview']]],
+    ['Understand', 'What is changing, how the parts connect, and how to build it.', [['map', 'Big picture'], ['build', 'Build'], ['who', 'Who'], ['glossary', 'Glossary']]],
+    ['Weigh the evidence', 'Every claim, number and source, and where they disagree.', [['thesis', 'Claims'], ['ledger', 'Numbers'], ['tensions', 'Tensions'], ['signals', 'Sources'], ['stack', 'Stack map']]],
+    ['Follow the changes', 'What is due to be settled, and what each daily sweep changed.', [['watch', 'Checks'], ['log', 'Change log']]]];
+  const TAB_NOTES = {
+    map: () => `How the ${numWord(LV.length)} levers connect, before and after, the loop that re-tunes them, and what nobody has shown yet.`,
+    build: () => `A build order for a ${(D.course.position || { label: 'provider' }).label.toLowerCase()}, with what each step bought others and open-source parts to reuse.`,
+    who: () => `${ROSTER.length} teams building the loop, on a timeline, with what each one actually did.`,
+    glossary: () => `${D.glossary.length} terms in plain words. A dotted underline anywhere on the site shows the definition.`,
+    thesis: () => `${claims.length} claims that could turn out wrong, each with its confidence, its evidence and what would move it.`,
+    ledger: () => 'The charts that carry the argument, then every number with its baseline and who checked it.',
+    tensions: () => `${D.tensions.filter(t => t.status !== 'settled').length} places where credible sources do opposite things, and what would settle each.`,
+    signals: () => `${active.length} sources, searchable, each with what it changes and what to doubt.`,
+    stack: () => 'Every source placed by layer of the stack, by what produced it, and by where it runs.',
+    watch: () => `${openChecks.length} dated questions, written before the answer is known.`,
+    log: () => 'What each daily sweep changed, what it looked at, and what it left out.'
+  };
+  function siteGuide() {
+    return el('div', { class: 'guide' }, TAB_GROUPS.filter(g => g[0]).map(([name, blurb, list]) => el('div', { class: 'gcol' }, el('h3', null, name), el('p', null, blurb),
+      list.map(([id, label]) => el('a', { class: 'glink', href: `#${id}` }, el('strong', null, label), el('span', null, TAB_NOTES[id] ? TAB_NOTES[id]() : ''))))));
+  }
   const dueSoon = openChecks.filter(c => dayDiff(c.due) <= D.meta.cadence_days).length;
   const tabs = document.getElementById('tabs');
-  tabs.append(...TABS.map(([id, label]) => el('a', { href: `#${id}`, 'data-tab': id }, label, id === 'watch' && dueSoon ? el('span', { class: 'count', title: 'Checks due by the next sweep' }, dueSoon) : null)));
+  tabs.append(...TAB_GROUPS.map(([name, blurb, list]) => el('div', { class: 'tgroup', role: 'group', 'aria-label': name || 'Start' }, name ? el('span', { class: 'tglabel', 'aria-hidden': 'true', title: blurb }, name) : null,
+    list.map(([id, label]) => el('a', { href: `#${id}`, 'data-tab': id }, label, id === 'watch' && dueSoon ? el('span', { class: 'count', title: 'Checks due by the next sweep' }, dueSoon) : null)))));
   function go(id) { if (location.hash === `#${id}`) render(); else location.hash = id; }
   function render() {
     const id = VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : 'now';

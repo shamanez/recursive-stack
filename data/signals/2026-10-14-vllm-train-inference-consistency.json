@@ -1,0 +1,56 @@
+{
+  "id": "2026-10-14-vllm-train-inference-consistency",
+  "title": "Finish RL Training Faster: Bitwise-Consistent, High-Performance, Agent-Driven",
+  "url": "https://vllm.ai/blog/2026-10-14-train-inference-consistency",
+  "org": "NVIDIA and Inferact, on the vLLM blog",
+  "authors": "Yan Bai (NVIDIA), Ao Shen (Inferact)",
+  "published": "2026-10-14",
+  "added": "2026-11-26",
+  "kind": "blog",
+  "layers": [
+    "model",
+    "kernels",
+    "engine"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "During reinforcement learning, the serving engine generates answers and the trainer recomputes their probabilities. Fast serving kernels make the two disagree, so the trainer optimises a slightly different model from the one that answered. Here the trainer calls vLLM's own serving kernels, modified to give identical results whatever the batch, phase or parallel layout. An agent skill finds where the two first diverge.",
+  "changes": "Training and serving are being built from the same parts: the weights trained are exactly the model served, at 91% of the fast engine's rollout speed. For a provider that also offers training, it ties the serving engine to the training stack, one more way the levers couple.",
+  "caveats": "Measured on training stability, not serving speed. The baselines were single, untuned configurations, and the authors say a tuned baseline might not collapse so easily. The end-to-end time saved is promised for a later post. Matching takes work model by model and operator by operator, which the agent skill is meant to cheapen.",
+  "numbers": [
+    {
+      "metric": "Gap between trainer and server probabilities over 100 steps",
+      "value": "zero at every step",
+      "baseline": "a fast, untuned setup whose gap grew from 0.002 to 29.9 as reward fell",
+      "verification": "self-reported",
+      "setup": "DeepSeek-V4-Flash"
+    },
+    {
+      "metric": "Rollout throughput with identical numerics",
+      "value": "91.3%",
+      "baseline": "the fast setup that let numerics drift",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Training score on a hard coding benchmark",
+      "value": "held near 0.59, against 0.56 to 0.22",
+      "baseline": "the drifting setup on a Mamba-hybrid model",
+      "verification": "self-reported",
+      "setup": "Nemotron, NVFP4"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "The trainer now runs the serving engine's own kernels, so what is trained is exactly what is served."
+    },
+    {
+      "claim": "C1",
+      "direction": "supports",
+      "note": "An agent skill locates the first operator where trainer and server diverge, fixes it and re-tests; it carried the method to a second model."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

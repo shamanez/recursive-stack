@@ -36,5 +36,7 @@
     }
   ],
   "read": "relayed",
-  "status": "active"
+  "status": "superseded",
+  "superseded_by": "2026-11-03-vals-router-index",
+  "retired_why": "Its point, that a cheaper model is good enough for routine coding so a router adds little, is now made by an outside index in which a cheap single model beat every shipped router on score and cost."
 }

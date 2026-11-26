@@ -54,6 +54,11 @@
       "claim": "C10",
       "direction": "complicates",
       "note": "A drafter is tied to one exact model. Tune the model and the drafter has to be rebuilt."
+    },
+    {
+      "claim": "C12",
+      "direction": "complicates",
+      "note": "Drafters keep improving, but each is built for one exact model, so every tuned or new model needs its own; the maker offers to train them for customers' tuned models."
     }
   ],
   "also": [

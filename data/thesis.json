@@ -1,17 +1,16 @@
 {
-  "headline": "Inference is becoming *load-aware*: the stack now fits itself to the traffic.",
-  "subhead": "Seven levers can move with the load, from which model answers to how deep each token goes. Coding agents are what make re-tuning them affordable.",
-  "intro": "Serving a large language model means a chain of decisions: which model answers, which machine takes the request, how a cluster splits reading prompts from writing answers, how generation is sped up, how much computation each token gets, and how it runs on a particular chip. Each was set once, by hand. During 2026 they began to move with the load: with what is being asked, by whom, on what hardware. Coding agents made that affordable by taking over the tuning. This page maps the levers and how they connect, tracks who has each one working and what it has bought, and checks the claims against the evidence, including your own reading of it. An agent re-examines it every day.",
+  "headline": "Inference now fits itself to the *task*, the *load* and the *system* it runs on.",
+  "subhead": "It adapts three ways: by choosing while it serves, by training the weights, and by rewriting the code. Coding agents make the re-tuning affordable; knowing whether a change is real is the hard part.",
+  "intro": "When you send a message to an AI model, a serving system turns it into an answer. It picks a model and a machine, reads your prompt, and writes the reply one token at a time on a particular chip. For years those choices were set once, by hand, for everyone. During 2026 more of them began to adapt: to the task being asked, to how busy the machines are, and to the model and chip underneath. Some adapt in milliseconds, some through training on real traffic, some because coding agents rewrite the engine. This page maps those parts, tracks who has each working and what it bought, and tests the claims. An AI agent rebuilds it daily.",
   "picture": [
     {
-      "head": "Seven levers can move with the load",
-      "text": "Which model answers, which machine takes it, how the cluster is split, how tokens are written, how the engine runs, what the model is, and how deep each token goes. Four run in production.",
+      "head": "Training has become part of serving",
+      "text": "Drafters train on the traffic they serve, worth 1.2 to 1.45x. Cursor retrains its coding model from live use every five hours; one legal tune went stale within three months.",
       "signals": [
-        "2026-08-13-databricks-smart-routing",
-        "2026-08-17-llmd-sticky-until-saturated",
-        "2026-07-06-dspark",
-        "2026-11-04-together-compiler",
-        "2026-11-20-inkling-2-mini"
+        "2026-03-31-together-aurora",
+        "2025-10-10-together-atlas",
+        "2026-03-26-cursor-real-time-rl",
+        "2026-08-26-harvey-tenet"
       ],
       "more": "map"
     },
@@ -241,12 +240,17 @@
       "statement": "Tuning an open model to one domain or harness (post-training, reinforcement learning, distillation) works as an inference optimisation: a smaller tuned model does a narrow job at lower cost and latency than a general one.",
       "plain": "Instead of making a big model run faster, you make a small one good enough at your one job.",
       "why": "For a provider this is the lever with the most lock-in and the shortest shelf life. A tuned model needs its own drafter and its own compiled engine, and it is tied to a base model that may be withdrawn within months.",
-      "confidence": 0.45,
+      "confidence": 0.5,
       "history": [
         {
           "cycle": "2026-11-19",
           "confidence": 0.45,
           "why": "Opened when the reader widened the frame. Named customers report real gains on narrow tasks, one measured by a third party. Against that: a tuner's own table shows a newer general model beating its tuned one, a frontier lab is withdrawing fine-tuning, and tunable bases churn within weeks."
+        },
+        {
+          "cycle": "2026-11-26",
+          "confidence": 0.5,
+          "why": "Two production cases measured on the owner's own work: Google's model tuned on its own code needed 23% fewer iterations and kept 17% more code in a blind test across 29,000 engineers, and Shopify replaced a frontier model with a smaller one retrained daily, at an estimated 96% lower serving cost. Both self-measured, and neither has been followed against the next general release, so the raise condition is not yet met."
         }
       ],
       "raise_if": "A tuned open model shown head to head against a current frontier model on the customer's own task, with cost, and still ahead three months later.",
@@ -269,6 +273,24 @@
       ],
       "raise_if": "A looped and a dense model of equal quality served in one engine, with the looped one ahead where weights limit what fits and behind where cache or compute does.",
       "lower_if": "A loop added after training beating a larger model at equal decoding time, or a looped model ahead of a dense one of equal compute on throughput per GPU at equal quality.",
+      "status": "active"
+    },
+    {
+      "id": "C12",
+      "short": "Training joins the serving loop",
+      "statement": "Post-training has become a serving lever. Draft models are trained on the deployment's own traffic and swapped in while it serves, and some products retrain the model itself from live use every few hours or every day, so part of fitting the stack to its task and load now happens in the weights.",
+      "plain": "Some speed-ups and quality gains no longer come from settings or code. They come from retraining models on what the service actually sees, and swapping the new weights in while it runs.",
+      "why": "For a provider serving many models, training becomes a recurring cost per model, like a tuned engine: each model needs its own drafter, best trained on that model's traffic. The products that retrain their main model own their users' feedback, which a provider serving them usually does not.",
+      "confidence": 0.7,
+      "history": [
+        {
+          "cycle": "2026-11-26",
+          "confidence": 0.7,
+          "why": "Opened when the reader said post-training is part of how serving adapts. In production: drafters trained on live traffic and hot-swapped, about 1.25x over a static one; Cursor retrains its main coding model from live use every five hours; Shopify retrains a smaller model daily. All self-measured. Against: an outside test found a purpose-trained drafter only matched the one shipped with the model, a code-assistant maker argued per-customer tuning beats retrieval only for rare languages, and swapping weights inside a running engine is still a developer feature."
+        }
+      ],
+      "raise_if": "An outside group measures a model or drafter retrained on a deployment's own traffic against the frozen one, or a serving engine ships live weight updates as a supported feature rather than a developer mode.",
+      "lower_if": "Draft heads shipped with each model match traffic-trained drafters in more outside tests, more products withdraw continual or per-customer training, or continually retrained models are reported to drift or regress in production.",
       "status": "active"
     }
   ]

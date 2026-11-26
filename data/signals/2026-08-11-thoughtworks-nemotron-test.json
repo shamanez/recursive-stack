@@ -39,6 +39,11 @@
       "claim": "C3",
       "direction": "challenges",
       "note": "A drafter trained specially for the deployment did no better than the one shipped with the model."
+    },
+    {
+      "claim": "C12",
+      "direction": "challenges",
+      "note": "Measured outside the vendor, a drafter trained specially for the deployment did no better than the draft head shipped with the model."
     }
   ],
   "read": "relayed",

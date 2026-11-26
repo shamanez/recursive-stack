@@ -113,7 +113,7 @@
       "id": "days",
       "name": "Per hillclimb",
       "span": "hours to days",
-      "desc": "Agents rewriting kernels and engine paths against recorded traffic, then promoting the winners."
+      "desc": "Agents rewriting kernels and engine paths against recorded traffic, or a model or drafter retrained from live use, then promoting the winners."
     },
     {
       "id": "release",
@@ -201,11 +201,11 @@
       "note": "Runs continuously",
       "steps": [
         "Real traffic, replayed",
-        "Agents write candidate code",
+        "Agents rewrite code; trainers update weights",
         "A rig measures end to end",
-        "Winners ship and go upstream"
+        "Winners ship, or swap in live"
       ],
-      "loop": "repeats per model, per workload, per chip"
+      "loop": "repeats per task, per workload, per model and chip"
     }
   }
 }

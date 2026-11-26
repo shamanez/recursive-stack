@@ -40,6 +40,11 @@
       "claim": "C2",
       "direction": "supports",
       "note": "A draft model goes stale as traffic drifts; this was built to fix that."
+    },
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "Drafters trained on one customer's traffic beat a generic one by 1.23 to 1.45x."
     }
   ],
   "read": "relayed",

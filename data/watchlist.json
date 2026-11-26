@@ -332,6 +332,18 @@
       ],
       "status": "open",
       "lens": true
+    },
+    {
+      "id": "W28",
+      "what": "An outside group measuring a model retrained continually from live traffic against the frozen version, or vLLM or SGLang supporting live weight updates outside developer mode.",
+      "why": "Continual retraining of the main model is in production at two products, by their own A/B tests. Nobody outside has measured it, and the open engines still treat swapping weights in a running server as a developer feature.",
+      "opened": "2026-11-26",
+      "due": "2027-02-28",
+      "claims": [
+        "C12"
+      ],
+      "status": "open",
+      "lens": true
     }
   ],
   "feeds": [

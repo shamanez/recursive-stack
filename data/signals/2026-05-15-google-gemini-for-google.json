@@ -1,0 +1,65 @@
+{
+  "id": "2026-05-15-google-gemini-for-google",
+  "title": "Customizing an LLM for Enterprise Software Engineering",
+  "url": "https://arxiv.org/abs/2605.16517",
+  "org": "Google",
+  "authors": "Aditya Kini, Satish Chandra, Milad Hashemi and others",
+  "published": "2026-05-15",
+  "added": "2026-11-26",
+  "kind": "paper",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "cluster",
+  "gist": "Google continued pre-training and post-training its Gemini 2.5 Pro on a trillion-token set drawn from its own software engineering, replaying general data to limit forgetting, and served the result to its engineers. A blind A/B test across 29,000 developers compared it with the untuned model. The paper is written as a blueprint for other companies.",
+  "changes": "The largest measured case of adapting a model to one company's code: fewer turns, faster turns and more code kept, at a scale no other source here comes near. It shows the gain, and the upkeep: the tune was left on an older base while newer models shipped.",
+  "caveats": "Measured by Google on its own engineers and its own metrics. No training cost is given. General ability slipped on some tests, to 0.84 of the base on one hard exam. The tune stayed on Gemini 2.5 Pro for consistency while newer bases existed. A code-assistant maker has argued that per-customer tuning beats retrieval only for rare languages.",
+  "numbers": [
+    {
+      "metric": "Conversational iterations per turn",
+      "value": "−23.1%",
+      "baseline": "untuned Gemini 2.5 Pro, blind A/B test",
+      "verification": "self-reported",
+      "setup": "29,000 developers, seven working days"
+    },
+    {
+      "metric": "Turn latency",
+      "value": "−8.9%",
+      "baseline": "untuned Gemini 2.5 Pro, same test",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Code survival rate",
+      "value": "+16.8%",
+      "baseline": "untuned Gemini 2.5 Pro, same test",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Score on a hard general exam",
+      "value": "0.84 of the base",
+      "baseline": "untuned Gemini 2.5 Pro",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A model tuned on one company's code needed 23% fewer iterations, answered 9% faster and kept 17% more code in a blind test."
+    },
+    {
+      "claim": "C12",
+      "direction": "complicates",
+      "note": "Adapting to one company's code works, but here it was a one-off: general scores slipped and the tune was not carried to the next base model."
+    }
+  ],
+  "also": [
+    {
+      "label": "The counter-argument: retrieval against per-customer tuning",
+      "url": "https://devin.ai/blog/personalization-context-awareness-vs-customer-specific-finetuning"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

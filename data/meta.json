@@ -1,6 +1,6 @@
 {
   "title": "The Recursive Stack",
-  "tagline": "A living read on one question: as inference becomes load-aware, and coding agents take over the tuning, what happens to the layer that serves the models? Updated daily by an agent that has to change its mind in public.",
+  "tagline": "A living read on one question: as inference learns to fit the task, the load and the system it runs on, and coding agents take over the tuning, what happens to the layer that serves the models? Updated daily by an agent that has to change its mind in public.",
   "started": "2026-11-19",
   "cadence_days": 1,
   "repo": "https://github.com/shamanez/recursive-stack",

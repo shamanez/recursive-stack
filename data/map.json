@@ -1,6 +1,6 @@
 {
   "_about": "The big picture. Seven levers that adapt inference to the load, in the order a request meets them, plus the loop that re-tunes them and a build order for the reader's position. Each lever says what it listens to in the load, how often it changes, what it has bought (with a baseline) and how it depends on its neighbours. Update a lever's status only when the evidence changes.",
-  "umbrella": "Inference is becoming load-aware. Seven parts of the stack that used to be set once now move with the traffic, each listening to a different signal on a different clock. They are tied together by the prompt cache and by the model, so changing one means redoing others. Agent loops are what make that redoing affordable.",
+  "umbrella": "Inference is becoming adaptive. Seven parts of the stack that were set once now follow the task, the load or the system underneath, each on its own clock. Some adapt while serving, some through training, some through code that agents rewrite. The prompt cache and the model tie them together, so changing one means redoing others.",
   "levers": [
     {
       "id": "model",
@@ -30,6 +30,11 @@
       ],
       "claims": [
         "C9"
+      ],
+      "story": "The router leaves this session on the open model it started with. Switching now would mean re-reading all 142,000 tokens, at full price, on a model that has none of them cached.",
+      "tags": [
+        "task",
+        "load"
       ]
     },
     {
@@ -51,6 +56,10 @@
       ],
       "claims": [
         "C2"
+      ],
+      "story": "It goes back to the server that handled turn 42, because that server still holds the session's history in its cache. A less busy server would have to fetch or recompute all of it.",
+      "tags": [
+        "load"
       ]
     },
     {
@@ -74,6 +83,10 @@
       ],
       "claims": [
         "C2"
+      ],
+      "story": "Only the new part needs reading, so the machines that read prompts barely notice. What matters is whether turn 42's history is still in GPU memory, in host memory, or gone.",
+      "tags": [
+        "load"
       ]
     },
     {
@@ -103,6 +116,12 @@
       "claims": [
         "C2",
         "C3"
+      ],
+      "story": "A small draft model guesses several tokens ahead and the big model checks them in one pass. Code is predictable, so most guesses land. If the batch is full, the scheduler guesses fewer.",
+      "tags": [
+        "task",
+        "load",
+        "system"
       ]
     },
     {
@@ -128,6 +147,11 @@
         "C1",
         "C2",
         "C6"
+      ],
+      "story": "Every step runs kernels tuned for this model on this chip, some written by coding agents and merged upstream, with settings chosen for agent traffic: long prompts, short answers.",
+      "tags": [
+        "system",
+        "load"
       ]
     },
     {
@@ -135,15 +159,18 @@
       "n": 6,
       "name": "What the model is",
       "base": true,
-      "hint": "under every step above: the weights themselves, tuned to a domain",
+      "hint": "under every step above: the weights themselves, tuned to a domain or retrained from live use",
       "question": "Could a smaller model, trained on this domain, do the job a bigger general one does now?",
-      "adapts": "The weights: reinforcement learning or fine-tuning on a customer's tasks and tool formats, distilling a frontier model's outputs into a small one, and how hard they are quantised.",
+      "adapts": "The weights: reinforcement learning or fine-tuning on a customer's tasks, code and tool formats, retraining from live use, distilling a frontier model into a small one, and how hard they are quantised.",
       "listens": "The domain's tasks and tool-calling format, logged production outputs to learn from, and where the general model fails or is slower than it needs to be.",
       "clock": "release",
-      "status": "early",
-      "bought": "On one legal benchmark, tuning nearly doubled an open model's pass rate at flat cost in August; in November four re-tuned newer models gained 11 to 21 points and one passed the best closed model. 0.9 s against 45 s on one summarisation job.",
+      "status": "working",
+      "bought": "In production: a coding model retrained from live use every five hours kept 2.3% more edits; a company-tuned model kept 17% more code; a daily-retrained small model replaced a frontier one at an estimated 96% less. Tunes go stale within months.",
       "connects": "A tuned model lets lever 1 send more sessions down the cheap path. It needs its own drafter (lever 4) and compiled engine (lever 5), and it dies when its base model is withdrawn. General models passed one tune within three months. Adapters sharing one deployment keep it affordable.",
       "signals": [
+        "2026-08-05-shopify-sidekick-continual-learning",
+        "2026-05-15-google-gemini-for-google",
+        "2026-03-26-cursor-real-time-rl",
         "2026-08-26-harvey-tenet",
         "2026-11-24-baseten-harvey-post-training",
         "2026-11-18-datadog-fine-tune-baseten",
@@ -154,6 +181,11 @@
       ],
       "claims": [
         "C10"
+      ],
+      "story": "Under all of it sits the model itself. If the product retrains it from live use, as one does every five hours, or the provider keeps training its drafter on this traffic, part of the fit happened before the request arrived.",
+      "tags": [
+        "task",
+        "system"
       ]
     },
     {
@@ -178,6 +210,11 @@
       ],
       "claims": [
         "C11"
+      ],
+      "story": "On a looped model, an easy token takes one pass through the shared middle layers and a hard one takes another. Most models in production run a fixed depth today.",
+      "tags": [
+        "task",
+        "load"
       ]
     }
   ],
@@ -191,7 +228,8 @@
       "2026-11-04-together-compiler",
       "2026-10-28-decagon-autoresearch",
       "2026-11-16-sarvam-token-factory"
-    ]
+    ],
+    "story": "Overnight, agents replay traffic like this against candidate kernels and settings, and keep only what measures faster end to end. A person approves what ships, so tomorrow's request meets a slightly different stack."
   },
   "build_intro": "Written for a provider serving many models. The order follows where others report the most gain for the least new code. Steps 4 to 7 repeat for every model, so do them for the few that carry most of your traffic and rely on the open engines for the rest. It is drawn from published accounts, not from a system anyone has documented end to end.",
   "build": [
@@ -608,5 +646,262 @@
         "2026-08-04-cross-model-kv-transfer-linear"
       ]
     }
-  ]
+  ],
+  "matrix": {
+    "intro": "Serving used to be set once, by hand, for everyone. Parts of it now adapt to three things: the task being asked, the load on the machines and the system underneath. They adapt in three ways, each on its own clock. Select any square.",
+    "start": "train:load",
+    "to": [
+      {
+        "id": "task",
+        "name": "The task",
+        "ask": "What is being asked?",
+        "desc": "Code or chat, easy or hard, which field. Code and maths are easier to predict than chat, and a narrow job can be done by a smaller model."
+      },
+      {
+        "id": "load",
+        "name": "The load",
+        "ask": "How busy, and in what shape?",
+        "desc": "How many requests at once, how long the prompts are, and how much of each is already cached. Agent traffic means long prompts, short answers and constant re-reading."
+      },
+      {
+        "id": "system",
+        "name": "The system",
+        "ask": "What does it run on?",
+        "desc": "The model's architecture, the chip and the engine. A setting, a kernel or a draft model tuned for one rarely suits another."
+      }
+    ],
+    "by": [
+      {
+        "id": "choose",
+        "name": "Choose",
+        "clock": "while serving, in milliseconds",
+        "desc": "Pick among options that already exist: which model, which machine, how far to guess ahead, how many passes. No weights or code change."
+      },
+      {
+        "id": "train",
+        "name": "Train",
+        "clock": "hours to weeks",
+        "desc": "Change the weights. Tune a model for a field, train the draft model on the traffic it serves and swap it in live, or train for the chip it will run on."
+      },
+      {
+        "id": "rewrite",
+        "name": "Rewrite",
+        "clock": "days per change",
+        "desc": "Change the code. Coding agents write kernels and engine paths for this model, chip and traffic, and a rig that replays real traffic decides what ships."
+      }
+    ],
+    "cells": [
+      {
+        "by": "choose",
+        "to": "task",
+        "head": "Route by task, think longer on hard tokens",
+        "stat": "Extra pass on hard tokens: +3.8 points",
+        "text": "A router reads the start of a session and picks a cheap open model or a frontier one. A looped model gives a hard token another pass through its middle layers. Speculation pays most on code and maths.",
+        "number": "A second pass on hard tokens added 3.8 points for 4 to 5% more compute, against a single-pass twin. An outside index found all six shipped routers beaten by a single model.",
+        "status": "working",
+        "levers": [
+          "model",
+          "depth",
+          "decode"
+        ],
+        "signals": [
+          "2025-11-11-think-at-hard",
+          "2026-11-03-vals-router-index",
+          "2026-07-06-dspark"
+        ],
+        "claims": [
+          "C9",
+          "C11"
+        ]
+      },
+      {
+        "by": "choose",
+        "to": "load",
+        "head": "Follow the cache, guess less when busy",
+        "stat": "Cache-aware routing: 2.9x input throughput",
+        "text": "Each request goes to the server that already holds its history. The cluster moves machines between reading prompts and writing answers as traffic changes. Draft models guess fewer tokens ahead when batches are full.",
+        "number": "Cache-aware routing gave 2.9x input throughput on code generation, against round-robin. A scheduler that sets speculation by load raised one lab's live throughput by about half.",
+        "status": "working",
+        "levers": [
+          "worker",
+          "split",
+          "decode"
+        ],
+        "signals": [
+          "2026-08-17-llmd-sticky-until-saturated",
+          "2026-07-06-dspark",
+          "2026-11-09-evolving-infra"
+        ],
+        "claims": [
+          "C2"
+        ]
+      },
+      {
+        "by": "choose",
+        "to": "system",
+        "head": "Settings fitted to the model and chip",
+        "stat": "One setting: 78% of a gap",
+        "text": "The parallelism layout, batch limits, cache format and draft length all depend on the model's architecture and the chip. A layout that suited one model's attention failed on the next, and speculation pays differently on mixture-of-experts models.",
+        "number": "On one model, matching a single default setting removed 78% of the largest capacity gap between two open engines, measured by an outside team.",
+        "status": "working",
+        "levers": [
+          "engine",
+          "decode"
+        ],
+        "signals": [
+          "2026-11-04-vllm-sglang-controlled-evaluation",
+          "2026-09-08-vllm-agentx",
+          "2026-06-08-economics-of-speculative-decoding"
+        ],
+        "claims": [
+          "C2"
+        ]
+      },
+      {
+        "by": "train",
+        "to": "task",
+        "head": "Retrain the model on the work it does",
+        "stat": "Retrained from live use every five hours",
+        "text": "A product retrains its own model on what users do with it, or tunes a model on one company's code or one field's tasks, and ships new weights behind an A/B test. It must be redone as base models change.",
+        "number": "Cursor retrains its model from live use as often as every five hours; in an A/B test 2.3% more edits were kept. Google's model tuned on its own code kept 17% more code for 29,000 engineers.",
+        "status": "working",
+        "levers": [
+          "weights",
+          "model"
+        ],
+        "signals": [
+          "2026-03-26-cursor-real-time-rl",
+          "2026-05-15-google-gemini-for-google",
+          "2026-08-05-shopify-sidekick-continual-learning",
+          "2026-11-24-baseten-harvey-post-training"
+        ],
+        "claims": [
+          "C12",
+          "C10"
+        ]
+      },
+      {
+        "by": "train",
+        "to": "load",
+        "head": "Train the draft model on live traffic",
+        "stat": "Online-trained drafter: 1.25x over static",
+        "text": "The small model that guesses tokens ahead is trained on the traffic it actually serves, keeps learning from which guesses were accepted, and is swapped in while the server runs. Here training is part of serving.",
+        "number": "A drafter trained online from live traffic ran about 1.25x faster than a well-trained static one. Drafters trained on one customer's traffic gave 1.2 to 1.45x over generic ones. All vendor-measured.",
+        "status": "working",
+        "levers": [
+          "decode"
+        ],
+        "signals": [
+          "2026-03-31-together-aurora",
+          "2025-10-10-together-atlas",
+          "2026-10-28-decagon-autoresearch",
+          "2026-09-23-modal-trillion-tokens"
+        ],
+        "claims": [
+          "C12"
+        ]
+      },
+      {
+        "by": "train",
+        "to": "system",
+        "head": "Train for the model and the chip",
+        "stat": "Better drafter: +21% accepted tokens",
+        "text": "A draft model is built for one model and must be rebuilt when that model changes. Some models are now trained in the low-precision formats their chips run, with heads that draft their own tokens, and on the serving engine's own kernels.",
+        "number": "A block drafter accepted 21% more tokens per check than its predecessor, for 1.3% more time per cycle. A trainer running vLLM's serving kernels matched the served model exactly, at 91% of rollout speed.",
+        "status": "working",
+        "levers": [
+          "decode",
+          "weights"
+        ],
+        "signals": [
+          "2026-08-18-dflash-2",
+          "2026-10-14-vllm-train-inference-consistency",
+          "2026-06-08-economics-of-speculative-decoding"
+        ],
+        "claims": [
+          "C12",
+          "C6"
+        ]
+      },
+      {
+        "by": "rewrite",
+        "to": "task",
+        "head": "Tune the whole stack to one customer",
+        "stat": "One customer: 2.5x, self-reported",
+        "text": "A company points agents at its own traffic, adapting engine settings, kernels and drafters to its one workload. So far tuning to one customer has bought tens of percent; tuning to a whole class of traffic has bought multiples.",
+        "number": "One customer-service company's agents raised requests per GPU within its latency limit 2.5x over its starting setup; a drafter adapted to its own traffic gave 1.34x. Both self-reported.",
+        "status": "early",
+        "levers": [
+          "engine",
+          "decode"
+        ],
+        "signals": [
+          "2026-10-28-decagon-autoresearch",
+          "2026-10-23-vllm-matches-deepinfer"
+        ],
+        "claims": [
+          "C3"
+        ]
+      },
+      {
+        "by": "rewrite",
+        "to": "load",
+        "head": "Rewrite the engine for the traffic shape",
+        "stat": "+43% under a speed floor",
+        "text": "Agents profile the engine on replayed traffic, write fixes where real requests spend their time, and recompile as traffic drifts. The long prompts and constant re-reading of agent traffic changed which code paths matter.",
+        "number": "An off-the-shelf coding agent found kernel fixes worth 43% more throughput at 30 tokens a second per user, against the best published run on a public agent benchmark.",
+        "status": "working",
+        "levers": [
+          "engine"
+        ],
+        "signals": [
+          "2026-11-09-inferenceforge",
+          "2026-11-04-together-compiler",
+          "2026-09-08-vllm-agentx"
+        ],
+        "claims": [
+          "C1"
+        ]
+      },
+      {
+        "by": "rewrite",
+        "to": "system",
+        "head": "New kernels for each model and chip",
+        "stat": "Merged kernels: 1.3 to 1.9x decode",
+        "text": "Coding agents write kernels and fused decode paths for one model on one chip, build engines for new accelerators, and port each new architecture. Gains measured on a kernel alone mostly shrink to almost nothing inside the full engine.",
+        "number": "Agent-written kernels merged into vLLM for one model on one chip gave 1.31 to 1.92x decode throughput over the stock engine, from 1 to 64 requests at once.",
+        "status": "working",
+        "levers": [
+          "engine"
+        ],
+        "signals": [
+          "2026-10-16-vllm-kimi-k3-megakernel",
+          "2026-05-22-fastkernels",
+          "2026-10-28-agent-loop-learns-new-accelerator"
+        ],
+        "claims": [
+          "C1",
+          "C6"
+        ]
+      }
+    ]
+  },
+  "walk": {
+    "intro": "One agent turn, followed through every decision the stack makes for it, in order. The request is the median of a public set of coding-agent traces.",
+    "request": "The 43rd turn of a coding agent's session: 142,000 tokens of history, almost all of it read on earlier turns, plus a new tool result. It will write back about 440 tokens.",
+    "parts": [
+      {
+        "label": "already read on earlier turns",
+        "tokens": 136000
+      },
+      {
+        "label": "new this turn",
+        "tokens": 6000
+      }
+    ],
+    "out": 440,
+    "signals": [
+      "2026-09-08-vllm-agentx"
+    ]
+  }
 }

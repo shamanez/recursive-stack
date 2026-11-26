@@ -33,6 +33,12 @@ new source did, so treat it as the highest-priority input there is.
   and sweeps never sign in.
 - They asked for **looped models and adaptive depth** to be covered, with their
   appeal for local use in mind. Depth is lever 7, and C11 asks where looping pays.
+- Inference is **task-aware and system-aware as well as load-aware**, and
+  **post-training is one of the ways it adapts**: drafters trained for the workload,
+  small models adapted to a codebase, online reinforcement learning with weights
+  swapped in live. This is the Train row of the front-page picture and claim C12.
+- The **landing page must work for a newcomer**: say what the site is, make the
+  idea clear and interactive, and guide them through the tabs, which are grouped.
 - They see **model routing** as central, for local use too, and asked that
   **moving a cache between models** be tracked with it. It sits under lever 1, the
   third side of T7 and W25; two feeds watch for more.

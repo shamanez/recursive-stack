@@ -23,17 +23,22 @@ reload the file, so you would be looking at the old build.
 
 ## 2. Look at every tab
 
-Now, Big picture, Build, Who, Thesis, Stack map, Evidence, Tensions, Watch,
-Signals, Cycle log, Glossary. For each:
+Overview, then the three groups: Big picture, Build, Who, Glossary; Claims,
+Numbers, Tensions, Sources, Stack map; Checks, Change log. For each:
 
 - The browser console shows no errors.
 - Nothing is clipped, overlapping or spilling out of its box.
+- The Overview drew its picture (nine squares and a detail panel) and its request
+  walk (one step per lever plus the loop), and the four start buttons jump down
+  the page.
 - The figure on that tab drew: the lever map has seven parts and a detail panel,
   the loop ring has five stages, the Who timeline has one mark per roster entry,
   the Watch timeline has one marker per check.
 
 ## 3. Try the things that respond
 
+- Select a square in the Overview picture: it is outlined and the panel below
+  changes. Step the request walk with Next, Back, Play and the arrow keys.
 - Select a lever on the map: the selected part changes colour and the panel
   below changes with it.
 - Select a stage in the loop ring: the panel beside it changes.

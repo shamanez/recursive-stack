@@ -41,6 +41,11 @@
       "claim": "C2",
       "direction": "supports",
       "note": "The stack was designed around the shape of coding-agent traffic: 100k tokens in, 500 out."
+    },
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "A drafter fine-tuned on the target model's coding traces accepted about 20% more tokens per step than a generic one."
     }
   ],
   "read": "opened",

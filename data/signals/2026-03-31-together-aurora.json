@@ -41,6 +41,11 @@
       "claim": "C1",
       "direction": "complicates",
       "note": "This lever adapts by online learning, with no agent writing code."
+    },
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "A drafter trained continuously on live traffic and hot-swapped into serving, in production, beat a well-trained static one by about 1.25x."
     }
   ],
   "also": [

@@ -36,7 +36,8 @@ ROSTER_STAGES = {"production", "upstream", "research", "claimed", "retracted"}
 # Word caps. The page is figure-first; prose that outgrows these belongs behind a link.
 CAPS = {"intro": 120, "roster.gist": 28, "map.umbrella": 60, "lever.question": 24, "lever.adapts": 34, "lever.listens": 34,
         "lever.bought": 44, "lever.connects": 50, "step.do": 44, "step.bought": 48, "step.watch": 36, "picture.head": 9, "picture.text": 34, "verdict.short": 18, "figure.takeaway": 22,
-        "signal.gist": 85, "signal.changes": 55, "signal.caveats": 70}
+        "signal.gist": 85, "signal.changes": 55, "signal.caveats": 70,
+        "matrix.intro": 50, "axis.desc": 36, "cell.head": 9, "cell.stat": 8, "cell.text": 42, "cell.number": 36, "lever.story": 42, "walk.request": 50}
 
 errors, warnings = [], []
 
@@ -270,7 +271,56 @@ def main():
         for cid in lever.get("claims") or []:
             if cid not in claim_ids:
                 err(f"{where}: names unknown claim '{cid}'")
+        cap(lever.get("story"), "lever.story", f"{where} story")
     need(bigmap.get("loop") or {}, ["name", "hint", "text", "connects"], "map.json loop")
+    cap((bigmap.get("loop") or {}).get("story"), "lever.story", "map.json loop story")
+
+    # The front-page picture: what serving adapts to (columns) by how it adapts (rows).
+    matrix = bigmap.get("matrix")
+    to_ids, by_ids = set(), set()
+    if matrix:
+        need(matrix, ["intro", "to", "by", "cells"], "map.json matrix")
+        cap(matrix.get("intro"), "matrix.intro", "map.json matrix intro")
+        for axis, ids in (("to", to_ids), ("by", by_ids)):
+            for item in matrix.get(axis) or []:
+                where = f"map.json matrix {axis} '{item.get('id')}'"
+                need(item, ["id", "name", "desc"] + (["ask"] if axis == "to" else ["clock"]), where)
+                cap(item.get("desc"), "axis.desc", f"{where} desc")
+                ids.add(item.get("id"))
+        seen_cells = set()
+        for cell in matrix.get("cells") or []:
+            where = f"map.json matrix cell {cell.get('by')}:{cell.get('to')}"
+            need(cell, ["to", "by", "head", "stat", "text", "number", "status", "signals"], where)
+            if cell.get("to") not in to_ids or cell.get("by") not in by_ids:
+                err(f"{where}: 'to' and 'by' must be ids from the matrix axes")
+            if (cell.get("to"), cell.get("by")) in seen_cells:
+                err(f"{where}: listed twice")
+            seen_cells.add((cell.get("to"), cell.get("by")))
+            if cell.get("status") not in LEVER_STATUS:
+                err(f"{where}: status must be one of {sorted(LEVER_STATUS)}")
+            for field in ("head", "stat", "text", "number"):
+                cap(cell.get(field), f"cell.{field}", f"{where} {field}")
+            known_signals(cell.get("signals"), where)
+            for lid in cell.get("levers") or []:
+                if lid not in lever_ids:
+                    err(f"{where}: names unknown lever '{lid}'")
+            for cid in cell.get("claims") or []:
+                if cid not in claim_ids:
+                    err(f"{where}: names unknown claim '{cid}'")
+        if matrix.get("start") and matrix["start"] not in {f"{c.get('by')}:{c.get('to')}" for c in matrix.get("cells") or []}:
+            err("map.json matrix: 'start' must be 'by:to' of one of its cells")
+    for lever in bigmap.get("levers") or []:
+        for tag in lever.get("tags") or []:
+            if matrix and tag not in to_ids:
+                err(f"map.json lever '{lever.get('id')}': tag '{tag}' is not a column of the matrix")
+    walk = bigmap.get("walk")
+    if walk:
+        need(walk, ["intro", "request"], "map.json walk")
+        cap(walk.get("request"), "walk.request", "map.json walk request")
+        known_signals(walk.get("signals"), "map.json walk")
+        for part in walk.get("parts") or []:
+            if not part.get("label") or not is_number(part.get("tokens")):
+                err("map.json walk: each part needs a label and a number of tokens")
     known_signals((bigmap.get("loop") or {}).get("signals"), "map.json loop")
     for i, step in enumerate(bigmap.get("build") or []):
         where = f"map.json build[{i}]"
@@ -527,6 +577,19 @@ def brief(b, evidence):
         add("")
         add(b["map"]["umbrella"])
         add("")
+        mx = b["map"].get("matrix")
+        if mx:
+            add("**What it adapts to, and how.** " + mx["intro"].replace(" Select any square.", ""))
+            add("")
+            add("| | " + " | ".join(t["name"] for t in mx["to"]) + " |")
+            add("|---|" + "---|" * len(mx["to"]))
+            for by in mx["by"]:
+                row = []
+                for t in mx["to"]:
+                    cell = next((c for c in mx["cells"] if c["by"] == by["id"] and c["to"] == t["id"]), None)
+                    row.append(f"**{cell['head']}** ({cell['status']}). {cell['number']}" if cell else "")
+                add(f"| **{by['name']}** ({by['clock']}) | " + " | ".join(row) + " |")
+            add("")
         add("| Lever | The question it answers | Listens to | Stage | Has bought |")
         add("|---|---|---|---|---|")
         for lv in levers:

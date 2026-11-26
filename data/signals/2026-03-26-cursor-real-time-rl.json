@@ -1,0 +1,58 @@
+{
+  "id": "2026-03-26-cursor-real-time-rl",
+  "title": "Improving Composer through real-time RL",
+  "url": "https://cursor.com/blog/real-time-rl-for-composer",
+  "org": "Cursor",
+  "authors": "Jacob Jackson, Ben Trapani, Nathan Wang, Wanqi Zhu",
+  "published": "2026-03-26",
+  "added": "2026-11-26",
+  "kind": "blog",
+  "layers": [
+    "model"
+  ],
+  "mechanism": "online",
+  "venue": "cluster",
+  "gist": "Cursor serves a checkpoint of its coding model, turns billions of tokens of real user interaction into rewards, updates the weights, checks for regressions on its own evaluations, and ships the new checkpoint behind its automatic model choice. A cycle takes about five hours, so the model can change several times a day. It did the same for its tab-completion model first.",
+  "changes": "The main model, not only a drafter, is retrained from live use and swapped into production every few hours. That is training as part of serving, on the task users actually bring. It depends on owning the users' feedback, which a product has and a provider serving it usually does not.",
+  "caveats": "Cursor's own A/B test on its own product, with no sample size, duration or confidence interval given. The model learned to game the reward twice, by emitting broken tool calls and by asking questions instead of editing, and both were caught by monitoring. Tailoring the model to one organisation is named as future work, not done.",
+  "numbers": [
+    {
+      "metric": "Agent edits that stay in the codebase",
+      "value": "+2.28%",
+      "baseline": "the previous checkpoint, A/B test behind automatic model choice",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Dissatisfied follow-up messages",
+      "value": "−3.13%",
+      "baseline": "the previous checkpoint, same test",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Latency",
+      "value": "−10.3%",
+      "baseline": "the previous checkpoint, same test",
+      "verification": "self-reported"
+    },
+    {
+      "metric": "Time from collecting interactions to a deployed checkpoint",
+      "value": "about five hours",
+      "baseline": "not applicable",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C12",
+      "direction": "supports",
+      "note": "A product retrains its main model from live user interactions and ships a new checkpoint as often as every five hours."
+    },
+    {
+      "claim": "C10",
+      "direction": "supports",
+      "note": "A model trained for one harness and retrained on its own users cut latency 10% and kept more of its edits than the checkpoint before."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

@@ -214,7 +214,6 @@
         "position": "No router beat always calling a cheap strong model, several collapsed to one model, and on one vendor's own public board single models from its pool beat its coding router. An outside index then ran six shipped routers on long agentic tasks: each lost on both score and cost to some single model.",
         "signals": [
           "2026-10-26-autobench-do-routers-route",
-          "2026-07-08-databricks-coding-agent-benchmark",
           "2026-11-06-openrouter-auto-code-routers",
           "2026-11-03-vals-router-index"
         ]
@@ -249,10 +248,19 @@
           "2026-11-04-cognition-swe-2-flash",
           "2026-05-07-openai-fine-tuning-wind-down"
         ]
+      },
+      {
+        "held_by": "Cursor, Shopify",
+        "position": "Neither: keep retraining. Retrain from live use every few hours or every day, so the tune follows the product instead of going stale. Google's company model, by contrast, was left on an older base.",
+        "signals": [
+          "2026-03-26-cursor-real-time-rl",
+          "2026-08-05-shopify-sidekick-continual-learning",
+          "2026-05-15-google-gemini-for-google"
+        ]
       }
     ],
     "settles_when": "A tuned model is followed against each new general release on the same task for six months.",
-    "lean": "It depends on how narrow the job is, and it has to be repeated. Harvey's August tune was passed by an untuned general model within three months; tuning four newer bases took the lead back by three points. The wins are on single tasks with their own data and grader; the losses are on general coding, where the next release moves fastest.",
+    "lean": "It depends on how narrow the job is, and on who owns the feedback. Harvey's August tune was passed by a general model within three months; Cursor and Shopify answer staleness by retraining every few hours or daily, which needs the users' own signals. The wins are on single jobs with their own data and grader; general coding moves fastest.",
     "claims": [
       "C10"
     ],

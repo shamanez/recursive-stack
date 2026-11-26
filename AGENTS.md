@@ -5,12 +5,13 @@ the single source of truth for how any agent works in this repository.
 
 ## What this repository is
 
-A living, opinionated read on one question: **as inference becomes load-aware and
-adaptive, and coding agents take over the tuning, what happens to the layer that
-serves the models?**
+A living, opinionated read on one question: **as inference learns to fit the task,
+the load and the system it runs on, and coding agents take over the tuning, what
+happens to the layer that serves the models?**
 
 It is not a reading list. It holds a big-picture map of the levers that adapt
-inference to the load and how they connect, a thesis made of claims that can lose,
+inference to the task, the load and the system (by choosing while serving, by
+training the weights and by rewriting code) and how they connect, a thesis made of claims that can lose,
 the evidence for and against each, the places credible sources disagree, dated
 checks written before the answer is known, a build order, and a running verdict on
 whether the human reader's own framing is holding up. An agent updates it every
@@ -28,7 +29,8 @@ over paragraphs. What they have said so far is listed at the top of
 ```
 data/                 the source of truth; everything else is generated from it
   thesis.json         headline, intro paragraph, the five points, the claims with confidence history
-  map.json            the big picture: seven levers, how each connects, the loop, and the build order
+  map.json            the big picture: the front-page picture (what adapts, to what, how), seven levers,
+                      one request walked through them, the loop, and the build order
   course.json         the reader's framing judged part by part, their position, what the evidence implies for it
   signals/*.json      one file per source that moved something
   roster.json         every team that has described the loop, one line each
@@ -104,9 +106,18 @@ otherwise be lost, and never a paragraph that only repeats a figure.
 - Before writing a sentence, ask whether a figure already on the page should
   change instead: a lever's `status` or what it has `bought`, a loop stage, a
   claim's confidence, a row in `figures.json`.
-- `data/map.json` is the organising picture. Every lever says what it listens to
-  in the load, how often it changes, what it has bought with a baseline, and how
-  it depends on its neighbours. The build order follows from it.
+- `data/map.json` is the organising picture. Every lever says what it listens to,
+  which of the task, the load and the system it follows (`tags`), how often it
+  changes, what it has bought with a baseline, how it depends on its neighbours,
+  and what happens to one real request there (`story`). The build order follows
+  from it.
+- The Overview tab is written for someone who has never seen the site. Its
+  centre is `matrix` in `data/map.json`: three columns for what serving adapts to
+  (the task, the load, the system), three rows for how (choose while serving,
+  train the weights, rewrite the code), nine squares that each carry one number
+  with its baseline and a status. When evidence changes what a square has bought
+  or how far along it is, change the square. `walk` follows one request through
+  the levers. Keep both plain enough for a newcomer.
 - `intro` in `data/thesis.json` is the landing paragraph (120 words). Keep it true
   as the thesis moves.
 - `data/roster.json` lists every team found that has described the loop, with a
