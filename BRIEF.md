@@ -3,7 +3,7 @@
 
 Live dashboard: <https://shamanez.github.io/recursive-stack/>
 
-Cycle 4 · as of 2026-11-23 · next sweep due 2026-11-24 · 80 active signals
+Cycle 5 · as of 2026-11-26 · next sweep due 2026-11-27 · 83 active signals
 
 > **Inference is becoming load-aware: the stack now fits itself to the traffic.** Seven levers can move with the load, from which model answers to how deep each token goes. Coding agents are what make re-tuning them affordable.
 
@@ -40,6 +40,7 @@ Inference is becoming load-aware. Seven parts of the stack that used to be set o
 - **Tuning the levers together.** Each lever is tuned alone, yet they are coupled through the cache and the model. Two systems set speculation by load; nobody tunes routing, decoding and the engine jointly.
 - **What the loop costs per model.** One figure exists: about 200 GPU-hours for one bespoke engine. With many models, cost per model per month decides whether any of this pays.
 - **Whether gains compound from one cycle to the next.** The recursive claim needs gain per cycle to rise, or a model trained on optimisation traces to beat its teacher. Nobody has shown either.
+- **Moving a session between models without a re-read.** Three research systems translate a cache between open models for a few points of accuracy. None is in production or crosses a closed model's API, and one was tested on agent tasks.
 
 ## A build order
 
@@ -125,7 +126,7 @@ Inference is becoming load-aware. Seven parts of the stack that used to be set o
 | C5 | The optimisation loop is becoming recursive: the models being served power the agents that optimise their serving, the agents improve their own process, and gains compound from one cycle to the next. | 30% | 8 / 3 / 3 |
 | C6 | New model architectures and new chips now arrive faster than people can hand-tune for them. That, more than agent capability, is what makes an automated loop necessary. | 70% | 13 / 3 / 0 |
 | C7 | Open engines absorb specialised wins within weeks, so a private performance lead over upstream vLLM or SGLang is short-lived. | 55% | 9 / 0 / 2 |
-| C9 | Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made. | 65% | 7 / 7 / 2 |
+| C9 | Open-weight and frontier models coexist behind one harness. Routine sessions go to a cheaper open model and hard ones to a frontier model, and the prompt cache decides how often that choice can be made. | 65% | 7 / 10 / 2 |
 | C10 | Tuning an open model to one domain or harness (post-training, reinforcement learning, distillation) works as an inference optimisation: a smaller tuned model does a narrow job at lower cost and latency than a general one. | 45% | 6 / 3 / 3 |
 | C11 | Looping pays where weight memory binds. Running part of a model more than once per token buys quality per byte of weights at extra compute per token, so it suits a laptop or many models on one GPU; where compute or latency binds, a larger plain model beats a loop added after training. | 65% | 3 / 4 / 0 |
 
@@ -202,18 +203,27 @@ Inference is becoming load-aware. Seven parts of the stack that used to be set o
 - Qwen3-14B, GSM8K: 0.8 pts ([Microsoft Applied Sciences Group](https://arxiv.org/abs/2610.42030))
 - Qwen3-14B, MATH-500: 4.2 pts ([Microsoft Applied Sciences Group](https://arxiv.org/abs/2610.42030))
 
-## What changed in cycle 4
+**What a translated cache costs in accuracy.** Moving a cache between models loses 2 to 3% on short contexts, 8% at 32,000 tokens and 17% at 128,000.
 
-No confidence moved. The red-team of C9 found nothing against it: on OpenRouter's October data the price gap between closed and open models widened to 6.2x, and open models were back above 70% of paid tokens two weeks after three frontier launches. A search found Alibaba's Herschel, a production loop across 120 model variants and ten chip types that the founding sweep had missed. It settles W14, joins the roster, and puts an honest fleet number, 3 to 6% per fix, on build step 6. llm-d measured a host-memory cache tier worth 3.9x once agent sessions outgrow GPU memory, now carried by lever 3 and build step 3. One relayed on-device signal was retired to keep active signals at eighty; fuller pruning is due on the deep pass.
+- Documents up to 8,000 tokens: 3.1% ([Baseten](https://labs.baseten.co/articles/speculative-encoding-many-to-many-cache-translation))
+- Documents of 32,000 tokens: 8% ([Baseten](https://labs.baseten.co/articles/speculative-encoding-many-to-many-cache-translation))
+- Documents of 128,000 tokens: 17% ([Baseten](https://labs.baseten.co/articles/speculative-encoding-many-to-many-cache-translation))
+- Chat and reasoning after a switch: 2.1% ([Xingyu Qu and co-authors](https://arxiv.org/abs/2609.00891))
+- Best of six pairs: 2% ([Taekyung Heo and co-authors](https://arxiv.org/abs/2608.03893))
+- Weakest of the four pairs that worked: 27% ([Taekyung Heo and co-authors](https://arxiv.org/abs/2608.03893))
 
-- **added** `2026-09-30-alibaba-herschel`: Alibaba's production loop: 30-second live profiles matched against 35 known kinds of waste, agents implement and test the fix, experts approve canaries. Most fixes bought 3 to 6% across 50 to 100 deployments. Build step 6's do and bought rewritten; the drift item in open ground now says how it sidesteps the question.
-- **added** `2026-11-23-llmd-sglang-tiered-kv-cache`: SGLang joins llm-d. On GLM-5.2 with replayed agent traces, a host-memory cache tier kept 85 to 95% reuse against 6% and gave 3.94x output at 128 sessions; a shared-storage tier added 14 to 66% to first-token time and paid only on failover. Lever 3's bought and build step 3's bought and watch rewritten.
-- **added**: Roster: Alibaba Group, Herschel, in production by September. Point 1 recounted: eleven since October, twenty before.
-- **watch** `W14`: Hit, late: a hyperscaler describing its loop, in a paper of 30 Sep. Fireworks, Modal, Groq and Cerebras are still silent.
-- **tension** `T5`: Alibaba joins the class-level side: each agent-tested fix is rolled out to 50 to 100 deployments. Still open.
-- **model**: Lever 3's connections now include a measured collision with lever 4: with prefill split from decode, one provider was drafting tokens decode never used.
-- **course**: Re-judged as of 23 Nov; all four verdicts hold. 'The parts are one move' gains the prefill-draft collision as an example. The red-team of C9 leaves the open-models implication standing.
-- **retired** `2026-06-apple-core-ai`: Relayed and referenced nowhere: a vendor compiler fitting a model to one device, which says nothing about the load. Retired to keep active signals at eighty.
+## What changed in cycle 5
+
+Not a full sweep. The reader sent Baseten's paper on translating a cache between models and asked whether the idea was covered; it was not. Three signals now sit under lever 1: one network for seven models, a serving system tested on agent tasks, and a linear map that needs no training but failed on two pairs in six. No confidence moved, because all three are the authors' own results on small open models. The scheduled sweeps of 24 to 26 November did not complete, so the feeds were last scanned on the 23rd and the weekly deep pass is overdue. Active signals stand at 83, three over the guide; pruning is left to that deep pass.
+
+- **added** `2026-11-baseten-speculative-encoding`: One translator carries a cache between seven open models in all 42 directions, keeping 96.9% of accuracy up to 8,000 tokens, 92% at 32,000 and 83% at 128,000, with the first token 2.5 to 7.5x sooner at long contexts.
+- **added** `2026-09-01-cachebridge`: A serving system for the same idea, and the only test on agent tasks under load: first-token time 30 to 98% lower than a re-read after a 14B to 32B switch.
+- **added** `2026-08-04-cross-model-kv-transfer-linear`: The cheapest version: a linear map within one family, fitted on 500 samples with no training. It kept 73 to 98% on four of six pairs and failed on two.
+- **added**: New chart under More charts on the Evidence tab: what a translated cache costs in accuracy, by method and context length.
+- **tension** `T7`: A third side added. Besides choosing the model once or pricing the cache miss every turn, three research systems make the switch itself cheap. The lean stays toward cache boundaries until one ships.
+- **watch** `W25`: Opened, due 2027-02-28: cache transfer reaching an open engine or a product, or an outside test on agent sessions with tool calls.
+- **revised**: Lever 1 now says the tie between a cache and one model is being worked on. Open ground gained a sixth item, moving a session between models without a re-read. Base Labs and an arXiv query joined the feeds, and cache translation joined the glossary.
+- **course**: The reader sees routing as central, for local use too, and asked that cache transfer between models be tracked with it. Recorded in the steering list. The verdict that the parts are one move holds; its note now names this as the first attempt to cut one of the ties.
 
 ## Open tensions
 
@@ -247,6 +257,7 @@ No confidence moved. The red-team of C9 found nothing against it: on OpenRouter'
 | 2026-12-31 | On one NVIDIA chip, a model's fused decode path measured against CUDA Graphs plus PDL on the same traces, from 1 to 16 concurrent. |
 | 2026-12-31 | A router compared with the best single model in its pool on live agent sessions rather than benchmark tasks, with the pricing of cached tokens stated. |
 | 2027-02-28 | vLLM, SGLang, llama.cpp or MLX supporting a looped model upstream with depth chosen per token or per request, rather than a fixed number of passes. |
+| 2027-02-28 | Cross-model cache transfer merged into vLLM, SGLang or llm-d, shipped by a provider or a router, or tested by an outside group on multi-turn agent sessions with tool calls. |
 | 2027-03-31 | A looped and a dense model of equal quality served side by side in one engine, with memory and throughput per GPU at several batch sizes and context lengths. |
 
 Open `index.html` for the interactive version: flow diagrams, stack map, evidence ledger, every signal.

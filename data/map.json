@@ -12,7 +12,7 @@
       "clock": "request",
       "status": "working",
       "bought": "Vendors report 33 to 74% lower cost, each against its own baseline. Against the best single models, one vendor's router lost on its own board and seven shipped routers failed to beat a cheap default outside. A trained research router halved cost.",
-      "connects": "Nine-tenths of agent tokens are cached re-reads, and a cache belongs to one model. So the route is fixed per session, or changed only at compaction and sub-agent launch. Every model you route to needs its own drafter and tuned engine.",
+      "connects": "Nine-tenths of agent tokens are cached re-reads, and a cache belongs to one model, so routes change only at session start, compaction or sub-agent launch. Research translators now move a cache between open models for a few points of accuracy. Each routed model needs its own drafter and engine.",
       "signals": [
         "2026-08-13-databricks-smart-routing",
         "2026-10-05-together-link",
@@ -21,7 +21,10 @@
         "2026-09-22-openrouter-token-state-of-play",
         "2026-10-26-autobench-do-routers-route",
         "2026-05-14-twinrouterbench",
-        "2026-11-06-openrouter-auto-code-routers"
+        "2026-11-06-openrouter-auto-code-routers",
+        "2026-11-baseten-speculative-encoding",
+        "2026-09-01-cachebridge",
+        "2026-08-04-cross-model-kv-transfer-linear"
       ],
       "claims": [
         "C9"
@@ -567,6 +570,21 @@
       "signals": [
         "2026-10-03-seis-self-evolving-inference",
         "2026-03-30-kernel-smith"
+      ]
+    },
+    {
+      "head": "Moving a session between models without a re-read",
+      "text": "Three research systems translate a cache between open models for a few points of accuracy. None is in production or crosses a closed model's API, and one was tested on agent tasks.",
+      "claims": [
+        "C9"
+      ],
+      "checks": [
+        "W25"
+      ],
+      "signals": [
+        "2026-11-baseten-speculative-encoding",
+        "2026-09-01-cachebridge",
+        "2026-08-04-cross-model-kv-transfer-linear"
       ]
     }
   ]

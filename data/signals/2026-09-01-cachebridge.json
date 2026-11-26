@@ -1,0 +1,44 @@
+{
+  "id": "2026-09-01-cachebridge",
+  "title": "CacheBridge: Efficient Cross-Model KV Transfer for Multi-Model LLM Serving",
+  "url": "https://arxiv.org/abs/2609.00891",
+  "org": "Xingyu Qu and co-authors",
+  "authors": "Xingyu Qu, Siyuan Lu, Zhiyu Chen, Sheng Wang, Tao Lin",
+  "published": "2026-09-01",
+  "added": "2026-11-26",
+  "kind": "paper",
+  "layers": [
+    "serving",
+    "routing"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "A serving system built around moving a session's cache from one model to another, for routers, cascades and agent workflows. It pairs a compact mapper with serving-side optimisation so that a switch is faster end to end than re-reading, which the authors say earlier transfer methods were not. Tested on agent tasks under load on one pair, and on five pairs from three families for quality. Revised in November 2026.",
+  "changes": "The only result here on agent tasks under load. Switching from a 14B to a 32B model, first-token time fell 30 to 98% against re-reading at 1 to 24 requests a second, with task success about level. The authors say earlier transfer methods were slower than re-reading end to end, the test that matters.",
+  "caveats": "Read from the abstract. The load test covers one pair inside one family, and the five-pair quality figures name no context length. Task success is called comparable without a number. No engine, chip or code is named there, and it does not say whether each pair needs its own mapper.",
+  "numbers": [
+    {
+      "metric": "Mean time to first token after a model switch, agent tasks",
+      "value": "30 to 98% lower",
+      "baseline": "re-reading the history on the new model",
+      "verification": "self-reported",
+      "setup": "Qwen3 14B to 32B on tau-bench, 1 to 24 requests a second"
+    },
+    {
+      "metric": "Task quality kept after a switch",
+      "value": "97.9% on chat and reasoning, 102.9% on retrieval tasks",
+      "baseline": "re-reading the history on the new model",
+      "verification": "self-reported",
+      "setup": "Five pairs from three families"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "A session could change model mid-task inside an open family without the full re-read the claim assumes."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

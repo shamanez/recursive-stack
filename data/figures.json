@@ -526,5 +526,75 @@
       "C11"
     ],
     "featured": false
+  },
+  {
+    "id": "cache-translation-loss",
+    "type": "bars",
+    "title": "What a translated cache costs in accuracy",
+    "takeaway": "Moving a cache between models loses 2 to 3% on short contexts, 8% at 32,000 tokens and 17% at 128,000.",
+    "unit": "%",
+    "groups": [
+      {
+        "id": "one",
+        "name": "One network for seven models"
+      },
+      {
+        "id": "bridge",
+        "name": "A serving system"
+      },
+      {
+        "id": "linear",
+        "name": "A linear map within a family"
+      }
+    ],
+    "rows": [
+      {
+        "label": "Documents up to 8,000 tokens",
+        "value": 3.1,
+        "group": "one",
+        "note": "Baseten's lab: 96.9% kept on average, 93.1% in the worst of 42 directions",
+        "signal": "2026-11-baseten-speculative-encoding"
+      },
+      {
+        "label": "Documents of 32,000 tokens",
+        "value": 8,
+        "group": "one",
+        "note": "92% kept at full depth; first token about 4x sooner with a shallower translator",
+        "signal": "2026-11-baseten-speculative-encoding"
+      },
+      {
+        "label": "Documents of 128,000 tokens",
+        "value": 17,
+        "group": "one",
+        "note": "83% kept, 2.5x sooner; 16 times longer than any training document",
+        "signal": "2026-11-baseten-speculative-encoding"
+      },
+      {
+        "label": "Chat and reasoning after a switch",
+        "value": 2.1,
+        "group": "bridge",
+        "note": "CacheBridge, five pairs: 97.9% kept; retrieval tasks scored 2.9% above re-reading",
+        "signal": "2026-09-01-cachebridge"
+      },
+      {
+        "label": "Best of six pairs",
+        "value": 2,
+        "group": "linear",
+        "note": "Heo and co-authors: 98% kept, with no training",
+        "signal": "2026-08-04-cross-model-kv-transfer-linear"
+      },
+      {
+        "label": "Weakest of the four pairs that worked",
+        "value": 27,
+        "group": "linear",
+        "note": "73% kept; two further pairs degraded sharply",
+        "signal": "2026-08-04-cross-model-kv-transfer-linear"
+      }
+    ],
+    "caption": "Share of the receiving model's accuracy lost against re-reading the text, each on its own models and tasks. What it buys: the first token 2.5 to 7.5x sooner at long contexts, 30 to 98% lower first-token time under load, and a mapping 2.7 to 25x faster than a re-read. All three are the authors' own numbers on models of 8 to 32 billion parameters.",
+    "claims": [
+      "C9"
+    ],
+    "featured": false
   }
 ]

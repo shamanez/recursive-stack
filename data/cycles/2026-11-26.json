@@ -1,0 +1,69 @@
+{
+  "id": "2026-11-26",
+  "n": 5,
+  "agent": "Claude Code (Fable 5.2)",
+  "deep": false,
+  "summary": "Not a full sweep. The reader sent Baseten's paper on translating a cache between models and asked whether the idea was covered; it was not. Three signals now sit under lever 1: one network for seven models, a serving system tested on agent tasks, and a linear map that needs no training but failed on two pairs in six. No confidence moved, because all three are the authors' own results on small open models. The scheduled sweeps of 24 to 26 November did not complete, so the feeds were last scanned on the 23rd and the weekly deep pass is overdue. Active signals stand at 83, three over the guide; pruning is left to that deep pass.",
+  "changes": [
+    {
+      "type": "added",
+      "ref": "2026-11-baseten-speculative-encoding",
+      "text": "One translator carries a cache between seven open models in all 42 directions, keeping 96.9% of accuracy up to 8,000 tokens, 92% at 32,000 and 83% at 128,000, with the first token 2.5 to 7.5x sooner at long contexts."
+    },
+    {
+      "type": "added",
+      "ref": "2026-09-01-cachebridge",
+      "text": "A serving system for the same idea, and the only test on agent tasks under load: first-token time 30 to 98% lower than a re-read after a 14B to 32B switch."
+    },
+    {
+      "type": "added",
+      "ref": "2026-08-04-cross-model-kv-transfer-linear",
+      "text": "The cheapest version: a linear map within one family, fitted on 500 samples with no training. It kept 73 to 98% on four of six pairs and failed on two."
+    },
+    {
+      "type": "added",
+      "text": "New chart under More charts on the Evidence tab: what a translated cache costs in accuracy, by method and context length."
+    },
+    {
+      "type": "tension",
+      "ref": "T7",
+      "text": "A third side added. Besides choosing the model once or pricing the cache miss every turn, three research systems make the switch itself cheap. The lean stays toward cache boundaries until one ships."
+    },
+    {
+      "type": "watch",
+      "ref": "W25",
+      "text": "Opened, due 2027-02-28: cache transfer reaching an open engine or a product, or an outside test on agent sessions with tool calls."
+    },
+    {
+      "type": "revised",
+      "text": "Lever 1 now says the tie between a cache and one model is being worked on. Open ground gained a sixth item, moving a session between models without a re-read. Base Labs and an arXiv query joined the feeds, and cache translation joined the glossary."
+    },
+    {
+      "type": "course",
+      "text": "The reader sees routing as central, for local use too, and asked that cache transfer between models be tracked with it. Recorded in the steering list. The verdict that the parts are one move holds; its note now names this as the first attempt to cut one of the ties."
+    }
+  ],
+  "swept": [
+    "The reader's link, opened first-hand, and three of the papers it builds on, each read from its arXiv abstract page",
+    "Two web searches for cross-model cache transfer and for reactions to the paper; one search limited to x.com, which found nothing on it",
+    "No feed scan, no red-team and no due checks: this was a single-topic update, and a full sweep is still owed"
+  ],
+  "rejected": [
+    {
+      "title": "Swarm Telepathy: Prefill-Free KV-Cache Transfer Across Families (arXiv 2610.15095)",
+      "url": "https://arxiv.org/abs/2610.15095",
+      "reason": "abstract opened; one translator per pair, aimed at agents talking to each other, and Baseten's paper builds on it. Linked under that signal"
+    },
+    {
+      "title": "Press and blog write-ups of the linear-mapping paper",
+      "url": "https://venturebeat.com/technology/nvidia-finds-that-simple-linear-math-can-replace-costly-ai-model-handoffs",
+      "reason": "seen in search, not opened; the paper itself is the signal. One write-up attributes it to NVIDIA, which the abstract page does not show"
+    },
+    {
+      "title": "Think Before You Speak: training-free latent communication between language models (arXiv 2610.16165)",
+      "url": "https://arxiv.org/abs/2610.16165",
+      "reason": "seen in search, not opened; about models passing internal states to each other, with no serving angle evident"
+    }
+  ],
+  "next_due": "2026-11-27"
+}

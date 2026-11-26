@@ -248,5 +248,14 @@
       "canaries"
     ],
     "def": "Releasing a change to a small slice of live traffic first and watching errors and latency before rolling it out wider. A regression stops the rollout."
+  },
+  {
+    "term": "cache translation",
+    "aka": [
+      "cache transfer",
+      "translated cache",
+      "cross-model cache transfer"
+    ],
+    "def": "Converting the context one model has already read into the form a different model stores, so the second can carry on without reading it again. Lossy so far, and it needs both models' internals, which rules out closed models."
   }
 ]

@@ -1,0 +1,43 @@
+{
+  "id": "2026-08-04-cross-model-kv-transfer-linear",
+  "title": "Cross-Model KV Cache Transfer in LLM Families: A Closed-Form Linear Mapping for Prefill Reuse",
+  "url": "https://arxiv.org/abs/2608.03893",
+  "org": "Taekyung Heo and co-authors",
+  "authors": "Taekyung Heo, Rasoul Shafipour, Ritchie Zhao, Maximilian Golub, Mohammad Mahdi Kamani, Ritika Borkar, Makesh Tarun Chandran, Pantea Zardoshti, Bita Darvish Rouhani",
+  "published": "2026-08-04",
+  "added": "2026-11-26",
+  "kind": "paper",
+  "layers": [
+    "serving",
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "Inside one model family, one model's cache can be predicted from another's with plain linear regression, fitted per attention head on 500 short text samples and with no training. It applies where the two models' attention heads have the same shape. On six pairs from three families it kept most of the receiver's accuracy on four and failed on two; a small non-linear mapper recovered part of the failures.",
+  "changes": "The cheapest route, and one a provider could try today on a small-to-large cascade. It needs no training, only 500 calibration samples, and runs 2.7 to 25x faster than re-reading. It also marks the limit. Two of six pairs degraded sharply, so each pair must be tested before a router relies on it.",
+  "caveats": "Read from the abstract. Works only within a family and only where head counts and sizes match. Accuracy is on benchmark questions, and the range on the four good pairs is wide, 73 to 98%. The speed figure is for the mapper against prefill, with no serving-level number. A later system reports that this mapper needs 8 to 12 times more memory than its own.",
+  "numbers": [
+    {
+      "metric": "Receiver's accuracy kept with a linearly mapped cache",
+      "value": "73 to 98% on four of six pairs; the other two degrade sharply",
+      "baseline": "the receiver reading the text itself",
+      "verification": "self-reported",
+      "setup": "Six pairs in three families with matching attention-head shapes"
+    },
+    {
+      "metric": "Time to map a cache",
+      "value": "2.7 to 25x faster",
+      "baseline": "the receiver re-reading the context",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "Within a family a linear map can replace the re-read after a switch, but one pair in three failed, so the cache still binds wherever the map does not hold."
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

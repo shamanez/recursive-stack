@@ -295,6 +295,18 @@
       ],
       "status": "open",
       "lens": true
+    },
+    {
+      "id": "W25",
+      "what": "Cross-model cache transfer merged into vLLM, SGLang or llm-d, shipped by a provider or a router, or tested by an outside group on multi-turn agent sessions with tool calls.",
+      "why": "Three research systems move a cache between open models faster than a re-read. If one reaches an engine, a router can change model mid-session inside an open pool, which loosens the tie that lever 1 and C9 rest on. Until then it is a lab result on small models.",
+      "opened": "2026-11-26",
+      "due": "2027-02-28",
+      "claims": [
+        "C9"
+      ],
+      "status": "open",
+      "lens": true
     }
   ],
   "feeds": [
@@ -412,6 +424,16 @@
       "name": "vLLM issues on looped models",
       "url": "https://github.com/vllm-project/vllm/issues?q=Ouro+OR+looped+sort%3Aupdated-desc",
       "why": "Where upstream support for looped models and per-token exit would first show up (W23)."
+    },
+    {
+      "name": "Base Labs (Baseten research)",
+      "url": "https://labs.baseten.co",
+      "why": "Baseten's research site, separate from its blog. It carried the first cache translator covering many models at once."
+    },
+    {
+      "name": "arXiv: cross-model cache transfer",
+      "url": "https://arxiv.org/search/?query=%22KV+cache%22+transfer+cross-model&searchtype=all&abstracts=show&order=-announced_date_first&size=25",
+      "why": "Papers on moving a session's cache from one model to another. At least four appeared between August and November 2026."
     }
   ]
 }

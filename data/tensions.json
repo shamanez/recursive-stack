@@ -176,10 +176,19 @@
           "2026-07-22-cursor-router",
           "2026-11-06-openrouter-auto-code-routers"
         ]
+      },
+      {
+        "held_by": "Baseten's lab, CacheBridge, Heo and co-authors",
+        "position": "Make the switch cheap instead. Translate the old model's cache for the new one, 2 to 25x faster than a re-read, for 2 to 8% of accuracy where it works. Research only, open models only.",
+        "signals": [
+          "2026-11-baseten-speculative-encoding",
+          "2026-09-01-cachebridge",
+          "2026-08-04-cross-model-kv-transfer-linear"
+        ]
       }
     ],
     "settles_when": "An independent agentic benchmark with caching priced in compares the two on the same tasks. One early result has a trained per-step router halving cost.",
-    "lean": "Toward cache boundaries in practice. A router that decides every turn and prices the cache still kept the same model nine turns in ten, and Fireworks moved its router from every turn to once per task.",
+    "lean": "Toward cache boundaries in practice. A router that decides every turn and prices the cache still kept the same model nine turns in ten, and Fireworks moved its router from every turn to once per task. Translating the cache would loosen this inside a pool of open models; no engine or product does it yet.",
     "claims": [
       "C9",
       "C2"

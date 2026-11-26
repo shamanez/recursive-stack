@@ -18,6 +18,7 @@ This repository is public. Write here only what you are content for anyone to re
 
 Entries are summarised, never quoted.
 
+- 2026-11-26: sent Baseten's paper on translating a cache between models, asked whether the angle was covered, and said routing matters for local use and cache transfer with it. It was not covered. Added the paper and two it builds on (a serving system and a linear map). They changed lever 1, added a third side to T7, a chart, a sixth open-ground item and W25. No confidence moved: all three are authors' own results on small open models, and none crosses a closed model's API.
 - 2026-11-22: asked whether looped models were covered, pointing to a training-free looping paper and their appeal for local use, and left the call to the agent. They were not. Depth became lever 7, with C11, T11, W23, W24, a chart and seven signals, including Thinking Machines' looped Inkling 2 Mini.
 - 2026-11-19: clarified that local means the stack fitting what you have, with hardware itself not the point. The on-device claim, its tension and two checks were retired; per-device evidence moved under C2.
 - 2026-11-19: reading this as a provider. Position recorded; implications for a provider added; provider-side checks opened.

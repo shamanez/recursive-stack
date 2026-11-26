@@ -1,0 +1,64 @@
+{
+  "id": "2026-11-baseten-speculative-encoding",
+  "title": "Speculative Encoding: Many-to-Many Cache Translation",
+  "url": "https://labs.baseten.co/articles/speculative-encoding-many-to-many-cache-translation",
+  "org": "Baseten (Base Labs) and Ramp Labs",
+  "authors": "Ben Geist (Ramp Labs), Thomas Villeneuve",
+  "published": "2026-11",
+  "added": "2026-11-26",
+  "kind": "paper",
+  "layers": [
+    "routing",
+    "serving",
+    "model"
+  ],
+  "mechanism": "hand",
+  "venue": "any",
+  "gist": "One 2.35-billion-parameter network converts what a source model computed while reading a context into the form a different model needs, so the second model can continue without re-reading it. It covers seven open models of 8 to 14 billion parameters from four families, all 42 directions, where earlier translators needed one network per pair. A second network shrinks the translated cache to what a given question needs.",
+  "changes": "The tracker's map rests on a cache belonging to one model, so a session stays on its first model. This attacks that tie. Inside a pool of open models a switch could cost a fraction of a re-read and a few points of accuracy. It does nothing across a closed model's API.",
+  "caveats": "The authors' own results, on small models and multiple-choice questions over documents, with no agent sessions or tool calls. The loss grows with length, from 3% at 8,000 tokens to 8% at 32,000 and 17% at 128,000. Timings assume the source's side is already computed. The method needs the source's internal states and the target's weights, so closed models are out. No code, and no test of adding a model.",
+  "numbers": [
+    {
+      "metric": "Accuracy kept with a translated cache, documents up to 8,000 tokens",
+      "value": "96.9% on average, 93.1% in the worst direction",
+      "baseline": "the receiving model reading the text itself",
+      "verification": "self-reported",
+      "setup": "Seven models of 8 to 14 billion parameters, 42 directions, 12 tasks, three seeds"
+    },
+    {
+      "metric": "Time to first token at 32,000 tokens",
+      "value": "4x faster, keeping over 90% of accuracy",
+      "baseline": "the receiving model re-reading the text",
+      "verification": "self-reported",
+      "setup": "One H200 with vLLM, the source's side already computed, median over 42 directions"
+    },
+    {
+      "metric": "Time to first token at 128,000 tokens",
+      "value": "2.5x faster at 83% of accuracy; 6.1x and 7.5x for 1 to 2 points less with a shallower translator",
+      "baseline": "the receiving model re-reading the text",
+      "verification": "self-reported",
+      "setup": "Documents 16 times longer than any used in training"
+    },
+    {
+      "metric": "Translated cache shrunk for one question",
+      "value": "up to 128x smaller within 2 points at 32,000 and 64,000 tokens; 4.3 points better at 128,000 and 64x",
+      "baseline": "the full translated cache",
+      "verification": "self-reported"
+    }
+  ],
+  "bears_on": [
+    {
+      "claim": "C9",
+      "direction": "complicates",
+      "note": "Inside a pool of open models the cache need not pin a session to one model, if a few points of accuracy are acceptable. Across a closed model's API the claim's cache limit stands."
+    }
+  ],
+  "also": [
+    {
+      "label": "SwaT, the pair-by-pair method it builds on",
+      "url": "https://arxiv.org/abs/2610.15095"
+    }
+  ],
+  "read": "opened",
+  "status": "active"
+}

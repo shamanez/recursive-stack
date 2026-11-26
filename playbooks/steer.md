@@ -33,6 +33,9 @@ new source did, so treat it as the highest-priority input there is.
   and sweeps never sign in.
 - They asked for **looped models and adaptive depth** to be covered, with their
   appeal for local use in mind. Depth is lever 7, and C11 asks where looping pays.
+- They see **model routing** as central, for local use too, and asked that
+  **moving a cache between models** be tracked with it. It sits under lever 1, the
+  third side of T7 and W25; two feeds watch for more.
 
 The current wording of their framing lives in `data/course.json`
 (`reader_framing`, `position`).
